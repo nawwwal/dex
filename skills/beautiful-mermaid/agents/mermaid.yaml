@@ -1,0 +1,5 @@
+interface:
+  display_name: "Beautiful Mermaid"
+  short_description: "Create themed Mermaid diagrams (SVG/ASCII)"
+  default_prompt: "Use $beautiful-mermaid to generate a Mermaid diagram and (if needed) render it to a themed SVG for embedding in Markdown/HTML."
+

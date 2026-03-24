@@ -1,0 +1,36 @@
+# Secrets and credentials
+*.env
+.env.*
+**/secrets/
+**/credentials/
+
+# Dependencies
+node_modules/
+.venv/
+__pycache__/
+
+# Backups and temporary
+*.bak
+*-backup*
+*.zip
+*.tar.gz
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Claude readout/cost data
+readout-*.json
+stats-cache.json
+
+# Session data (never commit)
+sessions/
+learnings-queue.json*
+
+# Deep research local state
+skills/deep-research/.env
+skills/deep-research/.venv/
+skills/deep-research/node_modules/
+
+# Self-review personal config
+skills/self-review-gather/self-review-config.json

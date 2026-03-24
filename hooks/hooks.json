@@ -1,0 +1,76 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [{
+          "type": "command",
+          "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/vault-health.sh\"",
+          "timeout": 12,
+          "statusMessage": "Running vault health check..."
+        }]
+      },
+      {
+        "hooks": [{
+          "type": "command",
+          "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/weekly-memory-update.sh\"",
+          "timeout": 5,
+          "statusMessage": "Checking memory freshness..."
+        }]
+      },
+      {
+        "hooks": [{
+          "type": "command",
+          "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/session-context.sh\"",
+          "timeout": 5,
+          "statusMessage": "Loading project context..."
+        }]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [{
+          "type": "command",
+          "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/subagent-context.sh\"",
+          "timeout": 5,
+          "statusMessage": "Loading vault context for agent..."
+        }]
+      }
+    ],
+    "UserPromptSubmit": [
+      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/enrich-short-messages.sh\"", "timeout": 3 }] },
+      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/continuation-enricher.sh\"", "timeout": 3 }] },
+      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/frustration-structure.sh\"", "timeout": 3 }] },
+      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/resume-injector.sh\"", "timeout": 3 }] },
+      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/fill-compact.sh\"", "timeout": 3 }] },
+      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/reflect-others-detector.sh\"", "timeout": 3 }] }
+    ],
+    "PreToolUse": [
+      { "matcher": "Bash", "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/simplify-and-verify-commit.sh\"", "timeout": 10 }] },
+      { "matcher": "mcp__chrome-devtools__navigate_page", "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/devtools-redirect.sh\"", "timeout": 3 }] }
+    ],
+    "PostToolUse": [
+      { "matcher": "Bash", "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/capture-commits.sh\"", "timeout": 5 }] },
+      { "matcher": "Write", "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/decision-backlink.sh\"", "timeout": 5 }] },
+      { "matcher": "Edit", "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/decision-backlink.sh\"", "timeout": 5 }] },
+      { "matcher": "Skill", "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/track-skill-usage.sh\"", "timeout": 3 }] },
+      { "matcher": "mcp__plugin_figma_figma__", "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/capture-figma-actions.sh\"", "timeout": 3 }] }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [{
+          "type": "command",
+          "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/pre-compact-save.sh\"",
+          "timeout": 5,
+          "statusMessage": "Saving session state before compaction..."
+        }]
+      }
+    ],
+    "Stop": [
+      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/skills/taskmaster/hooks/check-completion.sh\"", "timeout": 10 }] },
+      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/commit-reminder.sh\"", "timeout": 15, "statusMessage": "Checking for uncommitted changes..." }] },
+      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/session-breadcrumb.sh\"", "timeout": 5, "statusMessage": "Saving session breadcrumb..." }] },
+      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/episodic-memory-sync.sh\"", "timeout": 5, "statusMessage": "Syncing episodic memory..." }] },
+      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/write-session-note.sh\"", "timeout": 5, "statusMessage": "Writing session note..." }] }
+    ]
+  }
+}

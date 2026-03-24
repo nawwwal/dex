@@ -1,0 +1,42 @@
+╔═══════════════════════════════════════════════════════════════╗
+║                                                               ║
+║           🔬 Deep Research Skill - Installation               ║
+║                                                               ║
+║   Automated research combining 50+ YouTube videos            ║
+║   and 20+ web articles into comprehensive summaries          ║
+║                                                               ║
+╚═══════════════════════════════════════════════════════════════╝
+
+Quick Start:
+------------
+1. Open Terminal in this folder
+2. Run: ./install.sh
+3. Follow the prompts (takes 5-10 min)
+4. Ask Claude Code: "Research [your topic]"
+
+That's it!
+
+Documentation:
+--------------
+• README.md        - Complete guide (start here)
+• QUICKSTART.md    - Quick reference
+• SKILL.md         - Technical details
+
+Requirements:
+-------------
+• macOS or Linux
+• Python 3.8+
+• Google account (for NotebookLM)
+• Internet connection
+
+Output:
+-------
+~/Documents/Work related/Claude code/Vault/{topic}/summary-{date}.md
+
+Support:
+--------
+• Read README.md for troubleshooting
+• Run ./verify.sh to check installation
+• See QUICKSTART.md for usage tips
+
+Happy researching! 🚀

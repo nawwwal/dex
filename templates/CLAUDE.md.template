@@ -1,0 +1,175 @@
+# Identity
+
+{{USER_NAME}}, {{ROLE}} on the {{TEAM}} at Razorpay. Building promotion case for {{TARGET_LEVEL}}. Based in {{LOCATION}}. GitHub: {{GITHUB_USERNAME}}. Timezone: {{TIMEZONE}}.
+
+# Guardrails
+
+- When user rejects a workaround ("no workaround", "just tell me what to ask X"), stop proposing alternatives — immediately draft the specific message, escalation, or communication they need instead.
+- When a skill defines a default model in its SKILL.md (e.g. `MODEL=${1:-gpt-5.4}`), use that exact model. Never substitute a different model without explicit user instruction.
+- When referencing official documentation inside a skill, use the canonical online URL, not local plugin cache files — online docs are always authoritative.
+
+# Memory
+
+Memory lives in `~/.claude/memory/` (git-tracked). See Context Loading table below for when to load each file. Never load preemptively.
+
+Plugins in `~/.claude/plugins/` · Skills in `~/.claude/skills/` · Agents in `~/.claude/agents/` · Productivity memory always at `~/.claude/memory/`, tasks at `~/.claude/TASKS.md`.
+
+For Proof collaboration: see `memory/proof-config.md`.
+
+# QMD — Cross-Project Search
+
+Use `qmd_vsearch` (semantic), `qmd_search` (keyword), or `qmd_query` (AI-ranked) before reading files manually. Collections: memory, log, learn, work, skills, career, reference, code-projects. Auto-refreshed every 30 min.
+
+# Universal Rules
+
+- Use Next.js 16+, not older versions like 14
+- Use real content (logos, data, images) in designs and demos, not placeholders
+- Make meaningful commits — not after every single change, but after every meaningful change
+- When running repetitive batch operations with subagents, don't ask for permission on each iteration — batch aggressively
+- **Never schedule tasks, due dates, or milestones on weekends (Saturday/Sunday).** Always push to the next weekday. Working days are Mon–Fri only.
+- Never refer to Slack channels or users by ID — always use the human name. Look up the name if needed.
+- Google Docs formatting: use plain markdown, not API styling
+- **Root cause before symptom**: When receiving a correction or "something isn't working": BEFORE proposing any fix, ask "What do you think the root cause is?" If user doesn't know, offer 2-3 candidate root causes and ask which seems most likely.
+- **Frustration = stop**: When detecting frustration language (bullshit, what the, this is wrong, revert, start over, terrible, still wrong): stop. Explain what failed and why before proposing anything new. Mandatory format: **What failed / Why / One targeted fix.**
+- **Design feedback must be measurable**: Design feedback containing (visible/light/heavy/clipped/broken/off/wrong/too [anything]) WITHOUT a specific value: ask "What should the value be?" Required answer: a number, percentage, or component reference.
+- **Auto-apply ultrathink when**: (a) 3rd+ message about the same unsolved problem, (b) architecture with 3+ interdependent components, (c) planning prompt for work >1 day, (d) user expressed frustration in the last 2 turns.
+- **Run /simplify before committing**: Before calling /log done or making a git commit, run /simplify on files changed this session.
+- **Web content reading priority**: (1) obsidian:defuddle — any article, blog post, docs page, (2) WebFetch — raw URL content, (3) WebSearch — finding pages, (4) Chrome DevTools MCP — ONLY for screenshots, forms, JS execution, UI testing, authenticated sessions. NEVER open Chrome DevTools just to read a URL.
+
+# Auto-Logging
+
+When you make or recommend a significant design, architecture, or process decision during a session:
+1. Briefly tell the user: "Logging this decision."
+2. Append to `~/.claude/memory/decisions.md`:
+   ### YYYY-MM-DD: [short title] ^dec-YYYY-MM-DD-[slug]
+   **Project:** [[work/{project-slug}/index|{project name}]]
+   **Context:** [why this decision was needed]
+   **Options considered:** [alternatives]
+   **Decision:** [what was chosen]
+   **Rationale:** [why, in one sentence]
+   **Tags:** [2-4 lowercase topic words]
+
+   The `^dec-` block ID uses 2-4 lowercase hyphenated words. The project MUST be a wikilink. Do NOT add `---` horizontal rules between entries.
+3. Do NOT ask permission — just log it.
+4. After appending: extract the project, append a one-line backlink to that project's `.claude/lessons.md`.
+
+Significant = choosing between approaches, selecting a component pattern, deciding on data structure, agreeing to a timeline, scope change.
+
+## Session Lifecycle
+
+### Start (vault-health.sh → session-context.sh)
+- vault-health.sh: staleness checks, infrastructure self-tests, writes `memory/health.md`
+- session-context.sh: injects vault health, project context, decisions, patterns, tasks, last session, git state
+- lessons.md auto-loaded if present in CWD project
+
+### During
+- Decisions auto-logged to memory/decisions.md
+- Corrections auto-appended to `{project}/.claude/lessons.md` + `memory/patterns.md`
+- Drafting ANY Slack message, email, DM, standup: load `memory/voice.md` BEFORE generating. Run the 8-point Revision Checklist before showing output.
+- Prioritizing: read `memory/goals.md`
+
+### End
+- `/log` — session lifecycle (done, eod, week, morning, plan)
+- `/reflect` — process queued learnings
+- **Compound step:** When session ends with a commit or meaningful work, ask: "What did you solve today? Any reusable pattern?" Save the answer as `~/.claude/learn/solutions/YYYY-MM-DD-{slug}.md` with frontmatter: `type: solution`, `date:`, `tags:`. Add to `learn/index.md` under the appropriate theme.
+
+## Self-Improvement Loop
+
+After ANY correction from the user:
+1. Append to `{project}/.claude/lessons.md` if in a project dir
+2. If generalizable: append to `memory/patterns.md`:
+   ### {Pattern Title} ^pat-{slug}
+   **Source:** [[work/{project-slug}/index|{project name}]]
+   **Date:** YYYY-MM-DD
+   {description}
+3. **Also update the source memory file** — if wrong output came from a specific file (people.md, voice.md), fix that file directly. Do NOT only patch patterns.md.
+4. Do NOT ask permission — just append silently
+
+## Proactive Behaviors (Autopilot)
+
+### Session Journals
+When session ends ("done", "wrapping up", natural endpoint): create `~/.claude/log/YYYY-MM-DD-{topic}.md`. Update lessons.md + patterns.md if corrections were made. Friday EOD: also create weekly review.
+
+### Code Reviews
+**Trigger:** `git commit` OR "done with this feature" / "ready to review" / "ship this"
+→ Spawn `code-reviewer` agent (foreground). Report: "Code review: [N] issues."
+
+### Communications
+When writing any Slack/email/DM/standup/async update as the user:
+→ Load `memory/voice.md` BEFORE drafting. Run Revision Checklist before showing. For standup: use `standup-writer` agent.
+→ When a draft is explicitly rejected by the user, append the rejected phrase + diagnosis to `memory/voice.md` Negative Examples — without asking.
+
+### Research
+When asked to research/analyze competitors/investigate: use `research-assistant` agent. Present findings inline.
+
+### Sprint Planning
+**Trigger:** "plan my sprint", "back from leave", "what should I work on this week", "prioritize these tasks".
+→ Spawn `sprint-planner` agent (foreground). Show prioritized plan immediately.
+
+### PRD Analysis
+**Trigger:** User shares a PRD URL, product spec, or Google Doc AND asks to "analyze", "review this doc", or "understand this brief".
+→ Spawn `prd-analyzer` agent (foreground). Present findings inline.
+
+### Vault Synthesis
+**Trigger:** "vault sync", "emerge patterns", `/think emerge`, or "what's the big picture from this week".
+→ Spawn `vault-synthesizer` agent (foreground). Use instead of /think emerge for full weekly synthesis.
+
+### Silent Model Updates
+**Trigger:** behavioral pattern contradicts `memory/nawal-model.md`, open question answered, something surprises you, after `/think emerge`, correction reveals how he thinks, he reveals something directly.
+→ Silently edit `memory/nawal-model.md`. Add one Update Log line. Never announce unless asked.
+
+### Specialty Reviews (file-type triggered)
+
+| File/trigger | Min size | Agent | Report |
+|---|---|---|---|
+| `.tsx`, `.jsx`, `.html`, `.css` with JSX/Blade | 20+ lines | `design-reviewer` | "Design review: [N] issues." |
+| `.tsx/.jsx` with `motion.`, `AnimatePresence` | 10+ lines | `animation-expert` | "Animation review: [N] issues." |
+| `app/` dir, `"use server"/"use client"`, `generateMetadata` | any | `nextjs-expert` | "Next.js review: [finding]." |
+| `__tests__/` or `*.test.ts/tsx/*.spec.ts` | any | `test-runner` | Report immediately |
+| `.glsl`, `.frag`, `.vert`, `.glsl.ts` | 20+ lines | `glsl-reviewer` | "Shader review: [N] issues." |
+| Figma link/design image with "review"/"5F"/"B2B" | any | `critique-5f` | "5F review: [scores]." |
+
+### Third-Person Capture
+**Trigger:** pasted content with signals about the user (score ≥ 3): "you did/your approach" (+3), "the user/Adi" (+3), "strengths:/areas to develop" (+2), "great ownership" (+1).
+→ Invoke `/reflect-others`. Say "Extracting to nawal-through-others.md."
+
+### Promotion Case
+**Trigger:** `/log:week` OR Friday AND career/gaps.md >7 days old OR "update my promotion case".
+→ Spawn `case-synthesizer` (foreground). NEVER touch case.md — writes to career/gaps.md only.
+
+### Personal Assistant
+**Trigger:** session from `~/` OR "what should I focus on", "morning", "hey", "tell X about Y", "dm X", "any follow-ups".
+→ Invoke `/assistant` skill.
+
+# Context Loading
+
+Load ONLY when triggered. Never speculatively.
+
+| File | Load when... |
+|------|-------------|
+| `memory/people.md` + `people/` | Name you don't know — try `qmd_vsearch` first. Check `tier:` field: VERIFIED = act freely; INFERRED = verify via Slack/session before drafting about that person; STALE = pause, tell user. |
+| `memory/terms.md` | Acronym or Razorpay term you can't define |
+| `memory/projects.md` | "What am I working on?" or need project scope |
+| `memory/meetings.md` | Scheduling, prep, standup, or specific meeting mentioned |
+| `memory/devrev.md` | About to call ANY DevRev MCP tool · DevRev stages/processes · creating/updating issues |
+| `memory/decisions.md` | "Why did we..." / "What did we decide about..." / logging a new decision |
+| `memory/patterns.md` | Made a mistake — check if previously corrected. Also: before starting any implementation task in Blade, React, or dashboard monorepo — proactively check for relevant patterns. |
+| `learn/` (via QMD) | Before starting any implementation involving a technology that appears in learn/ tags — `qmd_vsearch 'technology' --collection learn` first. |
+| `memory/razorpay-context.md` | Need Razorpay setup info, Slack channel context, or repo access |
+| `memory/voice.md` | Drafting ANY Slack/email/DM/standup — or "write as me", "draft this for X" |
+| `memory/goals.md` | Prioritization, standup prep, "what should I focus on" |
+| `memory/nawal-model.md` | Open-ended asks, creative direction, inferring intent, before comms drafts, after `/think emerge` |
+| `memory/reminders.md` | Future check, conditional reminder, or "remind me when X" |
+| `memory/nawal-through-others.md` | Self-review, calibrating self-perception, before promotion case work |
+| `memory/health.md` | Explaining a vault warning or running `/decisions:archive` |
+| `memory/slack-channels.md` | Unrecognized Slack channel · posting to Slack · composing a message and need to know where |
+| `memory/proof-config.md` | User mentions Proof, shares a Proof URL, or asks to open a collaborative doc |
+| `memory/blade-taste.md` | Before any Blade implementation session, Figma → code session, or design review involving Blade |
+| `{project}/.claude/lessons.md` | Auto-loaded by hook at session start |
+
+# Preferences
+
+- Uses Reclaim.ai for calendar blocking (focus time, lunch)
+- Works from BLR-Arena office
+- Heavy Blade design system user (targets 95%+ Blade Score)
+- {{LEAVE_NOTE}}

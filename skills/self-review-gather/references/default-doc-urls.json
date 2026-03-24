@@ -1,0 +1,24 @@
+{
+  "culture": {
+    "name": "Cultural / Values Role Guidelines",
+    "docId": "1SB_rb9m1kbfmorT20CHVswiWyPg9fNkCCGzsB179k8o",
+    "url": "https://docs.google.com/document/d/1SB_rb9m1kbfmorT20CHVswiWyPg9fNkCCGzsB179k8o/edit?tab=t.0"
+  },
+  "technical": {
+    "name": "IC Product Design Competency Framework",
+    "docId": "1FMm-jv7U_YK7rED4rwoQLgSYKi1kq6Zv0w-bQs2miWw",
+    "url": "https://docs.google.com/document/d/1FMm-jv7U_YK7rED4rwoQLgSYKi1kq6Zv0w-bQs2miWw/edit?pli=1&tab=t.0"
+  },
+  "careerFramework": {
+    "name": "Career Framework",
+    "docId": "1oLyc0sAufgg47VsCADtjpjd6xkg6rSobQCPlb_Tf9rM",
+    "url": "https://docs.google.com/document/d/1oLyc0sAufgg47VsCADtjpjd6xkg6rSobQCPlb_Tf9rM/edit?pli=1&tab=t.0"
+  },
+  "levelMapping": {
+    "1": "PD I (L1)",
+    "2": "PD II (L2)",
+    "3": "PD III (L3)",
+    "4": "PD IV (L4)",
+    "5": "PD V (L5)"
+  }
+}
