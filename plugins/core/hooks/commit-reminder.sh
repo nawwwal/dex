@@ -23,18 +23,13 @@ if [ -z "$CHANGES" ]; then
   exit 0  # Working tree clean, nothing to remind about
 fi
 
-# There are uncommitted changes — block and remind
-cat <<'EOF'
-Before finishing, review your uncommitted changes (git status / git diff).
+REASON="Before finishing, review your uncommitted changes with git status or git diff.
 If there are meaningful, logically-grouped changes, commit them now.
 
 Guidelines:
-- Group related changes into one commit (e.g. "Add user auth endpoint with tests").
-- Do NOT commit after every single-line tweak — batch related edits together.
-- Use clear, descriptive commit messages that explain WHY, not just WHAT.
-- Skip committing if the changes are trivial WIP that the user will handle later.
+- Group related changes into one commit.
+- Batch related edits together instead of committing every tiny tweak.
+- Use a descriptive message that explains why the change exists.
+- Skip committing only if the changes are trivial WIP the user will handle later."
 
-Check git status now and decide whether a commit is appropriate.
-EOF
-
-exit 2  # Block stop so Claude acts on the reminder
+jq -n --arg reason "$REASON" '{ decision: "block", reason: $reason }'

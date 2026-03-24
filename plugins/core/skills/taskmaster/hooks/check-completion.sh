@@ -23,6 +23,12 @@ if [ -f "$COUNTER_FILE" ]; then
   COUNT=$(cat "$COUNTER_FILE")
 fi
 
+# If another stop hook has already blocked this stop, do not stack more blockers.
+if [ "$STOP_HOOK_ACTIVE" = "true" ]; then
+  rm -f "$COUNTER_FILE"
+  exit 0
+fi
+
 # After max continuations, allow stop and clean up (0 = infinite, never cap)
 if [ "$MAX" -gt 0 ] && [ "$COUNT" -ge "$MAX" ]; then
   rm -f "$COUNTER_FILE"
@@ -45,20 +51,12 @@ if [ -f "$TRANSCRIPT" ]; then
     HAS_INCOMPLETE_SIGNALS=true
   fi
 
-  # If the hook already fired once (stop_hook_active=true) and there are no
-  # incomplete signals, the agent has had a chance to review and chose to stop
-  # again — that means it genuinely believes it's done. Allow the stop.
-  if [ "$STOP_HOOK_ACTIVE" = "true" ] && [ "$HAS_INCOMPLETE_SIGNALS" = false ]; then
-    rm -f "$COUNTER_FILE"
-    exit 0
-  fi
+fi
 
-  # If the hook has fired 3+ times and stop_hook_active=true, the agent has
-  # confirmed completion multiple times. Trust it and allow the stop.
-  if [ "$STOP_HOOK_ACTIVE" = "true" ] && [ "$COUNT" -ge 3 ]; then
-    rm -f "$COUNTER_FILE"
-    exit 0
-  fi
+# Ordinary complete sessions should stop cleanly.
+if [ "$HAS_INCOMPLETE_SIGNALS" = false ]; then
+  rm -f "$COUNTER_FILE"
+  exit 0
 fi
 
 # --- decide ---
@@ -66,11 +64,7 @@ NEXT=$((COUNT + 1))
 echo "$NEXT" > "$COUNTER_FILE"
 
 # Build the continuation reason with context
-if [ "$HAS_INCOMPLETE_SIGNALS" = true ]; then
-  PREAMBLE="Incomplete tasks or recent errors were detected in the session."
-else
-  PREAMBLE="Verify that all work is truly complete before stopping."
-fi
+PREAMBLE="Incomplete tasks or recent errors were detected in the session."
 
 if [ "$MAX" -gt 0 ]; then
   LABEL="TASKMASTER (${NEXT}/${MAX})"
@@ -80,16 +74,10 @@ fi
 
 REASON="${LABEL}: ${PREAMBLE}
 
-Before stopping, do each of these checks:
+Review the latest transcript tail for the pending task or error signal, then either:
+- finish the incomplete work, or
+- fix the recent error before stopping.
 
-1. RE-READ THE ORIGINAL USER MESSAGE(S). List every discrete request or acceptance criterion. For each one, confirm it is fully addressed — not just started, FULLY done. If the user explicitly changed their mind, withdrew a request, or told you to stop or skip something, treat that item as resolved and do NOT continue working on it.
-2. CHECK THE TASK LIST. Review every task. Any task not marked completed? Do it now — unless the user indicated it is no longer wanted.
-3. CHECK THE PLAN. Walk through each step. Any step skipped or partially done? Finish it — unless the user redirected or deprioritized it.
-4. CHECK FOR ERRORS. Did any tool call, build, test, or lint fail? Fix it.
-5. CHECK FOR LOOSE ENDS. Any TODO comments, placeholder code, missing tests, or follow-ups noted but not acted on?
-
-IMPORTANT: The user's latest instructions always take priority. If the user said to stop, move on, or skip something, respect that — do not force completion of work the user no longer wants.
-
-If after this review everything is genuinely 100% done (or explicitly deprioritized by the user), briefly confirm completion for each user request. Otherwise, immediately continue working on whatever remains — do not just describe what is left, ACTUALLY DO IT."
+Only continue if there is still real unfinished work. Do not loop just to re-verify a clean session."
 
 jq -n --arg reason "$REASON" '{ decision: "block", reason: $reason }'

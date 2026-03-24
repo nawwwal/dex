@@ -85,8 +85,6 @@ echo "Date: $DATE_TODAY"
 echo "Session source: $SOURCE"
 if [ -n "$PROJECT_NAME" ]; then
   echo "Project: $PROJECT_NAME"
-  [ -n "$PROJECT_DEVREV" ] && echo "DevRev: $PROJECT_DEVREV"
-  [ -n "$PROJECT_SLACK" ] && echo "Slack: $PROJECT_SLACK"
 fi
 echo ""
 
@@ -95,9 +93,7 @@ if [ -f "$HEALTH_FILE" ]; then
   HEALTH_WARNINGS=$(grep -m1 -oE 'warnings: [0-9]+' "$HEALTH_FILE" | awk '{print $2}')
   if [ "${HEALTH_WARNINGS:-0}" -gt 0 ] 2>/dev/null; then
     echo "--- VAULT HEALTH (${HEALTH_WARNINGS} issues) ---"
-    HEALTH_TOP=$(grep -E "STALE|MISSING|NEEDED|NOT RUN|\[FAIL\]|\[PERSISTENT\]" "$HEALTH_FILE" | head -3)
-    [ -n "$HEALTH_TOP" ] && echo "$HEALTH_TOP"
-    [ "${HEALTH_WARNINGS:-0}" -gt 3 ] && echo "... see $HEALTH_FILE"
+    echo "See $HEALTH_FILE"
     echo ""
   fi
 fi
@@ -147,10 +143,9 @@ if [ -n "$SESSION_FILE" ] && [ -f "$SESSION_FILE" ]; then
 fi
 
 if [ -n "$PROJECT_CONTEXT_FILE" ]; then
-  CONTEXT_LINES=$(wc -l < "$PROJECT_CONTEXT_FILE" | tr -d ' ')
   CONTEXT_TITLE=$(grep -m1 '^# ' "$PROJECT_CONTEXT_FILE" 2>/dev/null | sed 's/^# //')
   echo "--- PROJECT CONTEXT ---"
-  echo "$PROJECT_CONTEXT_FILE (${CONTEXT_LINES} lines)${CONTEXT_TITLE:+ - $CONTEXT_TITLE}"
+  echo "$PROJECT_CONTEXT_FILE${CONTEXT_TITLE:+ - $CONTEXT_TITLE}"
   echo "Open the file directly or run /briefing if deeper context is needed."
   echo ""
 fi
@@ -169,10 +164,10 @@ with open(sys.argv[1]) as f:
         text = text.split(" | ")[0]
         text = re.sub(r"\*\*([^*]+)\*\*", r"\1", text)
         text = text.replace(chr(96), "")
-        if len(text) > 140:
-            text = text[:137].rstrip() + "..."
+        if len(text) > 90:
+            text = text[:87].rstrip() + "..."
         items.append(text)
-        if len(items) == 3:
+        if len(items) == 2:
             break
 print("\n".join(items))
 PYEOF
@@ -181,7 +176,7 @@ PYEOF
     TOTAL_OPEN=$(grep -c '^\- \[ \]' "$TASKS_FILE" 2>/dev/null || echo 0)
     echo "--- ACTIVE TASKS ($TOTAL_OPEN open) ---"
     echo "$OPEN_TASKS"
-    [ "${TOTAL_OPEN:-0}" -gt 3 ] 2>/dev/null && echo "... and $((TOTAL_OPEN - 3)) more"
+    [ "${TOTAL_OPEN:-0}" -gt 2 ] 2>/dev/null && echo "... and $((TOTAL_OPEN - 2)) more"
     echo ""
   fi
 fi
@@ -201,7 +196,7 @@ DECISIONS_FILE="$MEMORY_DIR/decisions.md"
 if [ -f "$DECISIONS_FILE" ]; then
   DEC_COUNT=$(grep -c '^### ' "$DECISIONS_FILE" 2>/dev/null || echo 0)
   echo "--- RECENT DECISIONS ($DEC_COUNT total) ---"
-  print_recent_titles "$DECISIONS_FILE" 3 "- "
+  print_recent_titles "$DECISIONS_FILE" 2 "- "
   echo "Query details with: qmd vsearch '<topic>' --collection memory"
   echo ""
 fi
@@ -210,7 +205,7 @@ PATTERNS_FILE="$MEMORY_DIR/patterns.md"
 if [ -f "$PATTERNS_FILE" ]; then
   PAT_COUNT=$(grep -c '^### ' "$PATTERNS_FILE" 2>/dev/null || echo 0)
   echo "--- RECENT PATTERNS ($PAT_COUNT total) ---"
-  print_recent_titles "$PATTERNS_FILE" 5 "- "
+  print_recent_titles "$PATTERNS_FILE" 3 "- "
   echo "Query details with: qmd vsearch '<topic>' --collection memory"
   echo ""
 fi
@@ -218,10 +213,10 @@ fi
 if git -C "$CWD" rev-parse --is-inside-work-tree &>/dev/null; then
   BRANCH=$(git -C "$CWD" branch --show-current 2>/dev/null)
   DIRTY=$(git -C "$CWD" status --porcelain 2>/dev/null | wc -l | tr -d ' ')
-  LAST_COMMIT=$(git -C "$CWD" log -1 --format='%h %s' 2>/dev/null)
+  LAST_COMMIT=$(git -C "$CWD" log -1 --format='%h' 2>/dev/null)
   echo "--- GIT STATE ---"
   echo "Branch: $BRANCH | Uncommitted: $DIRTY files"
-  echo "Last commit: $LAST_COMMIT"
+  [ -n "$LAST_COMMIT" ] && echo "Last commit: $LAST_COMMIT"
   echo ""
 fi
 
@@ -259,15 +254,6 @@ if [ "$CWD" = "$HOME" ] || [ "$CWD" = "$HOME/" ]; then
     echo "Run /assistant for help with priorities, communication, or context."
   fi
   echo ""
-fi
-
-REMINDERS_FILE="$CLAUDE_DIR/memory/reminders.md"
-if [ -f "$REMINDERS_FILE" ]; then
-  OVERDUE_COUNT=$(grep -c '^Status: pending$' "$REMINDERS_FILE" 2>/dev/null || echo 0)
-  if [ "${OVERDUE_COUNT:-0}" -gt 0 ] 2>/dev/null; then
-    echo "Reminder sweep may be needed - check $REMINDERS_FILE"
-    echo ""
-  fi
 fi
 
 echo "=== END SESSION CONTEXT ==="
