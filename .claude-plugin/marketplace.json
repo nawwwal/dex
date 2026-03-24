@@ -4,27 +4,26 @@
     "name": "Aditya Nawal"
   },
   "metadata": {
-    "description": "Vault system for R1 Design team",
-    "pluginRoot": "./plugins"
+    "description": "Vault system for R1 Design team"
   },
   "plugins": [
     {
       "name": "core",
-      "source": "./core",
+      "source": "./plugins/core",
       "description": "Session lifecycle, hooks, memory scaffolding, core workflow",
-      "version": "1.0.1"
+      "version": "1.0.2"
     },
     {
       "name": "design",
-      "source": "./design",
+      "source": "./plugins/design",
       "description": "Design critique, dashboard patterns, UI review, motion",
-      "version": "1.0.1"
+      "version": "1.0.2"
     },
     {
       "name": "tools",
-      "source": "./tools",
+      "source": "./plugins/tools",
       "description": "Research, dev tools, creative tools, writing",
-      "version": "1.0.1"
+      "version": "1.0.2"
     }
   ]
 }
