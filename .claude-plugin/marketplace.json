@@ -1,20 +1,30 @@
 {
   "name": "nawwwal-dex",
   "owner": {
-    "name": "Aditya Nawal",
-    "email": "nawwwal@github.com"
+    "name": "Aditya Nawal"
   },
   "metadata": {
     "description": "Vault system for R1 Design team",
-    "version": "1.0.0"
+    "pluginRoot": "./plugins"
   },
   "plugins": [
     {
-      "name": "dex",
-      "source": "./",
-      "description": "Session lifecycle, design intelligence, quality agents, smart onboarding",
-      "version": "1.0.0",
-      "strict": true
+      "name": "core",
+      "source": "core",
+      "description": "Session lifecycle, hooks, memory scaffolding, core workflow",
+      "version": "1.0.0"
+    },
+    {
+      "name": "design",
+      "source": "design",
+      "description": "Design critique, dashboard patterns, UI review, motion",
+      "version": "1.0.0"
+    },
+    {
+      "name": "tools",
+      "source": "tools",
+      "description": "Research, dev tools, creative tools, writing",
+      "version": "1.0.0"
     }
   ]
 }

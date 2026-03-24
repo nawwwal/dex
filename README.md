@@ -6,11 +6,13 @@ A vault system for Claude Code. Gives Claude persistent memory, session lifecycl
 
 ```
 /plugin marketplace add nawwwal/dex
-/plugin install dex@nawwwal-dex
-/dex:setup
+/plugin install core@nawwwal-dex       # everyone — hooks, setup, workflow
+/plugin install design@nawwwal-dex     # designers — critique, dashboard, UI review
+/plugin install tools@nawwwal-dex      # optional — research, dev, creative tools
+/core:setup
 ```
 
-Three commands. `/dex:setup` reads your Slack and DevRev (with your permission) to generate a personalized `CLAUDE.md` and scaffold your memory structure.
+Add the marketplace once, then install the plugins you need. `/core:setup` reads your Slack and DevRev (with your permission) to generate a personalized `CLAUDE.md` and scaffold your memory structure.
 
 ## Prerequisites
 
@@ -104,7 +106,9 @@ This bumps version, commits, tags, pushes, and re-creates the dev symlink. Teamm
 ## Updating
 
 ```
-/plugin update dex@nawwwal-dex
+/plugin update core@nawwwal-dex
+/plugin update design@nawwwal-dex
+/plugin update tools@nawwwal-dex
 ```
 
 Or reload plugins in an active session:
