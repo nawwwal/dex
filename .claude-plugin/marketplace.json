@@ -1,0 +1,23 @@
+{
+  "name": "nawwwal-dex",
+  "owner": {
+    "name": "Aditya Nawal",
+    "email": "nawwwal@github.com"
+  },
+  "metadata": {
+    "description": "Vault system for R1 Design team",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "dex",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/nawwwal/dex.git"
+      },
+      "description": "Session lifecycle, design intelligence, quality agents, smart onboarding",
+      "version": "1.0.0",
+      "strict": true
+    }
+  ]
+}
