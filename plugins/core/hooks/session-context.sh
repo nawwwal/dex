@@ -156,7 +156,27 @@ if [ -n "$PROJECT_CONTEXT_FILE" ]; then
 fi
 
 if [ -f "$TASKS_FILE" ]; then
-  OPEN_TASKS=$(grep '^\- \[ \]' "$TASKS_FILE" 2>/dev/null | head -3 | sed 's/^- \[ \] //')
+  OPEN_TASKS=$(python3 - "$TASKS_FILE" <<'PYEOF' 2>/dev/null
+import re
+import sys
+
+items = []
+with open(sys.argv[1]) as f:
+    for line in f:
+        if not line.startswith("- [ ] "):
+            continue
+        text = line[6:].strip()
+        text = text.split(" | ")[0]
+        text = re.sub(r"\*\*([^*]+)\*\*", r"\1", text)
+        text = text.replace(chr(96), "")
+        if len(text) > 140:
+            text = text[:137].rstrip() + "..."
+        items.append(text)
+        if len(items) == 3:
+            break
+print("\n".join(items))
+PYEOF
+)
   if [ -n "$OPEN_TASKS" ]; then
     TOTAL_OPEN=$(grep -c '^\- \[ \]' "$TASKS_FILE" 2>/dev/null || echo 0)
     echo "--- ACTIVE TASKS ($TOTAL_OPEN open) ---"
