@@ -1,7 +1,7 @@
 {
   "name": "core",
   "description": "Session lifecycle, hooks, memory scaffolding, core workflow",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": {
     "name": "Aditya Nawal"
   }
