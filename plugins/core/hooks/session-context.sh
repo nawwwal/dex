@@ -223,25 +223,24 @@ if [ -f "$CWD/.claude/lessons.md" ]; then
   echo ""
 fi
 
-# --- 5. Recent decisions (last 5 entries) ---
+# --- 5. Decisions index (QMD-first — query for details) ---
 DECISIONS_FILE="$MEMORY_DIR/decisions.md"
 if [ -f "$DECISIONS_FILE" ]; then
-  echo "--- RECENT DECISIONS (last 5) ---"
-  START_LINE=$(grep -n '^### ' "$DECISIONS_FILE" 2>/dev/null \
-    | tail -5 | head -1 | cut -d: -f1)
+  DEC_COUNT=$(grep -c '^### ' "$DECISIONS_FILE" 2>/dev/null || echo 0)
+  echo "--- DECISIONS ($DEC_COUNT total) — query: qmd vsearch '<topic>' --collection memory ---"
+  START_LINE=$(grep -n '^### ' "$DECISIONS_FILE" 2>/dev/null | tail -1 | cut -d: -f1)
   if [ -n "$START_LINE" ]; then
-    tail -n +"$START_LINE" "$DECISIONS_FILE" | head -100
-  else
-    tail -80 "$DECISIONS_FILE"
+    tail -n +"$START_LINE" "$DECISIONS_FILE" | head -15
   fi
   echo ""
 fi
 
-# --- 6. Patterns (always load — prevents repeat mistakes) ---
+# --- 6. Patterns index (QMD-first — query for details) ---
 PATTERNS_FILE="$MEMORY_DIR/patterns.md"
 if [ -f "$PATTERNS_FILE" ]; then
-  echo "--- PATTERNS & CORRECTIONS ---"
-  cat "$PATTERNS_FILE"
+  PAT_COUNT=$(grep -c '^### ' "$PATTERNS_FILE" 2>/dev/null || echo 0)
+  echo "--- PATTERNS ($PAT_COUNT total) — query: qmd vsearch '<topic>' --collection memory ---"
+  grep '^### ' "$PATTERNS_FILE" | tail -10 | sed 's/^### /  • /'
   echo ""
 fi
 
