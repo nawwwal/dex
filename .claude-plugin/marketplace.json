@@ -11,10 +11,7 @@
   "plugins": [
     {
       "name": "dex",
-      "source": {
-        "source": "url",
-        "url": "https://github.com/nawwwal/dex.git"
-      },
+      "source": ".",
       "description": "Session lifecycle, design intelligence, quality agents, smart onboarding",
       "version": "1.0.0",
       "strict": true
