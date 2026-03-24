@@ -10,21 +10,21 @@
   "plugins": [
     {
       "name": "core",
-      "source": "core",
+      "source": "./core",
       "description": "Session lifecycle, hooks, memory scaffolding, core workflow",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     {
       "name": "design",
-      "source": "design",
+      "source": "./design",
       "description": "Design critique, dashboard patterns, UI review, motion",
-      "version": "1.0.0"
+      "version": "1.0.1"
     },
     {
       "name": "tools",
-      "source": "tools",
+      "source": "./tools",
       "description": "Research, dev tools, creative tools, writing",
-      "version": "1.0.0"
+      "version": "1.0.1"
     }
   ]
 }
