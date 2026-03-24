@@ -76,8 +76,8 @@ Using the template at `${CLAUDE_PLUGIN_ROOT}/templates/CLAUDE.md.template`:
    ```
    mkdir -p ~/.claude/memory ~/.claude/career ~/.claude/log
    mkdir -p ~/.claude/sessions ~/.claude/config ~/.claude/work
-   mkdir -p ~/.claude/archive ~/.claude/agent-memory
-   mkdir -p ~/.claude/people ~/.claude/projects
+   mkdir -p ~/.claude/archive
+   mkdir -p ~/.claude/people
    ```
 
 4. **Scaffold memory files** from `${CLAUDE_PLUGIN_ROOT}/templates/memory-scaffolds/`:
@@ -113,7 +113,7 @@ Setup complete!
 Generated:
   ~/.claude/CLAUDE.md (personalized for [name])
   ~/.claude/memory/ (20 files scaffolded)
-  ~/.claude/career/, log/, sessions/, config/, work/, archive/, agent-memory/, people/, projects/
+  ~/.claude/career/, log/, sessions/, config/, work/, archive/, people/
 
 Prerequisites verified:
   python3 ✓ | jq ✓ | node ✓ | Compass ✓ | Figma MCP: [✓/⚠ not found]

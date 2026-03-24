@@ -1,6 +1,6 @@
 # dex
 
-Vault system for the R1 Design team — session lifecycle, design intelligence, quality agents, smart onboarding.
+A vault system for Claude Code. Gives Claude persistent memory, session lifecycle management, design intelligence, quality agents, and smart onboarding. Built for the R1 Design team at Razorpay.
 
 ## Install
 
@@ -10,48 +10,105 @@ Vault system for the R1 Design team — session lifecycle, design intelligence, 
 /dex:setup
 ```
 
-That's it. Three commands.
+Three commands. `/dex:setup` reads your Slack and DevRev (with your permission) to generate a personalized `CLAUDE.md` and scaffold your memory structure.
 
 ## Prerequisites
 
 - **Compass plugin** (includes Blade MCP) — required
-- **Figma MCP** — optional, needed for design skills
-- **python3**, **jq**, **node** — required for hooks
+- **Figma MCP** — optional, enables design skills
+- **python3**, **jq**, **node** — required by hooks
 
 ## What you get
 
-- **37 skills**: design critique, dashboard patterns, council, TDD, agent-browser, deep-research, and more
-- **16 agents**: code reviewer, design reviewer, sprint planner, standup writer, and more
-- **22 hooks**: session lifecycle, frustration detection, commit capture, skill tracking
-- **Smart onboarding**: `/dex:setup` reads your Slack/DevRev (with consent) and generates a personalized CLAUDE.md + memory structure
+### Skills
 
-## Customizing
+| Category | Skills |
+|---|---|
+| **Design** | `dashboard-design`, `critique-5f`, `design`, `ui-design`, `motion`, `shader` |
+| **Thinking** | `council`, `think`, `codex`, `deep-research` |
+| **Development** | `tdd`, `react-doctor`, `agent-browser`, `agent-development` |
+| **Workflow** | `assistant`, `log`, `ops`, `today`, `switch-project`, `taskmaster` |
+| **Writing** | `polish`, `writing-skills`, `beautiful-mermaid`, `generate-image` |
+| **Meta** | `setup`, `release`, `self-review-gather`, `reflect-others` |
 
-Plugin files are read-only. To customize a skill or agent:
-1. Copy it to your `~/.claude/skills/` or `~/.claude/agents/`
-2. Edit the local copy
-3. The local copy takes precedence over the plugin version
+### Agents
 
-## Updating
+Specialized subagents Claude spawns automatically: code reviewer, design reviewer, blade implementer, standup writer, sprint planner, animation expert, Next.js expert, GLSL reviewer, and more.
 
-Plugin updates are pulled automatically when the marketplace refreshes. Your local customizations (in `~/.claude/`) are never overwritten.
+### Hooks
 
-## Memory structure
+Session lifecycle hooks that fire automatically: vault health checks, session context loading, frustration detection, commit capture, skill usage tracking, session breadcrumbs.
 
-`/dex:setup` scaffolds these directories (one-time, not part of plugin):
+## Memory system
+
+`/dex:setup` creates this structure (one-time, outside the plugin):
 
 ```
 ~/.claude/
-├── CLAUDE.md          (personalized identity + rules)
-├── TASKS.md           (task tracking)
-├── memory/            (20 files: goals, patterns, decisions, voice, etc.)
-├── career/            (promotion case, evidence)
-├── log/               (session journals)
-├── sessions/          (session state)
-├── config/            (project registry)
-├── work/              (project workspaces)
-├── archive/           (archived decisions, patterns)
-├── agent-memory/      (agent state)
-├── people/            (people profiles)
-└── projects/          (project context)
+├── CLAUDE.md           ← personalized identity + behavioral rules
+├── TASKS.md            ← task tracking
+├── memory/             ← 20 files: goals, patterns, decisions, voice, projects, etc.
+├── career/             ← promotion case, evidence
+├── log/                ← session journals
+├── sessions/           ← session state persistence
+├── config/             ← project registry
+├── work/               ← project workspaces
+├── archive/            ← archived decisions, patterns
+└── people/             ← people profiles
+```
+
+`memory/projects.md` is a lightweight index that points into `work/` for project context.
+
+## Customizing
+
+Plugin files are managed by the plugin system. To customize a skill or agent:
+
+1. Copy it to `~/.claude/skills/` or `~/.claude/agents/`
+2. Edit the local copy
+3. The local copy takes precedence over the plugin version
+
+Your customizations are never overwritten by plugin updates.
+
+## For developers
+
+If you're developing dex (editing skills, agents, hooks):
+
+**Setup live editing:**
+```bash
+cd ~/dex
+./scripts/dev-link.sh
+```
+
+This symlinks the plugin cache to your source repo. Edits in `~/dex/` are reflected in the next Claude session — no reinstall needed. Other plugins are unaffected.
+
+**Working directory:** Always `~/dex/`.
+
+**After editing:** Just start a new Claude session. Changes are live.
+
+## Releasing
+
+When you're ready to push updates to teammates:
+
+```
+/dex:release          # patch bump (1.0.0 → 1.0.1)
+/dex:release minor    # minor bump (1.0.1 → 1.1.0)
+/dex:release major    # major bump (1.1.0 → 2.0.0)
+```
+
+This bumps version, commits, tags, pushes, and re-creates the dev symlink. Teammates update with:
+
+```
+/plugin update dex@nawwwal-dex
+```
+
+## Updating
+
+```
+/plugin update dex@nawwwal-dex
+```
+
+Or reload plugins in an active session:
+
+```
+/reload-plugins
 ```

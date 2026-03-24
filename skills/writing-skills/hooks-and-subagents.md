@@ -134,8 +134,8 @@ You are an API developer following the team's conventions loaded in your skills 
 
 | Scope | Location | Use when |
 |---|---|---|
-| `user` | `~/.claude/agent-memory/<name>/` | Cross-project learnings |
-| `project` | `.claude/agent-memory/<name>/` | Project-specific, in VCS (recommended default) |
-| `local` | `.claude/agent-memory-local/<name>/` | Project-specific, gitignored |
+| `user` | `~/.claude/memory/` | Cross-project learnings (shared with main memory) |
+| `project` | `.claude/memory/<name>/` | Project-specific, in VCS (recommended default) |
+| `local` | `.claude/memory-local/<name>/` | Project-specific, gitignored |
 
 When `memory` is set, first 200 lines of `MEMORY.md` are injected into the subagent's system prompt at startup.

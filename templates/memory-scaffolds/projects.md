@@ -5,6 +5,8 @@ type: knowledge-base
 status: active
 ---
 
-# projects
+# Projects
 
-<!-- Scaffolded by /dex:setup. Add content as you work. -->
+Lightweight index of active projects. Each entry points to its workspace in `~/.claude/work/`.
+
+<!-- Scaffolded by /dex:setup. Add projects as you work on them. -->
