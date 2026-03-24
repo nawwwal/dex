@@ -1,6 +1,6 @@
 # dex
 
-A vault system for Claude Code. Gives Claude persistent memory, session lifecycle management, design intelligence, quality agents, and smart onboarding. Built for the R1 Design team at Razorpay.
+A vault system for Claude Code. Gives Claude persistent memory, session lifecycle management, design intelligence, quality agents, and smart onboarding. Built for the design team at Razorpay.
 
 ## Install
 
