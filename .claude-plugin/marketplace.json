@@ -11,7 +11,7 @@
   "plugins": [
     {
       "name": "dex",
-      "source": ".",
+      "source": "./",
       "description": "Session lifecycle, design intelligence, quality agents, smart onboarding",
       "version": "1.0.0",
       "strict": true
