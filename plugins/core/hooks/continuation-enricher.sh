@@ -5,5 +5,5 @@ MSG=$(echo "$INPUT" | python3 -c "import sys,json; d=json.load(sys.stdin); print
 
 # Match bare continuation words (with optional punctuation)
 if echo "$MSG" | grep -qxE '(continue|yes|proceed|done|next|go|okay|ok|sure|yep|yup)[.!?]?'; then
-  echo '{"additionalContext": "User approved continuation without specifying direction. Before executing: declare your top 2 planned actions and ask if the user wants to skip or reprioritize anything. Wait for confirmation before proceeding."}'
+  echo '{"additionalContext": "Bare continuation request. Briefly state the next action you plan to take and confirm that direction before proceeding."}'
 fi

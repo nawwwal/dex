@@ -9,4 +9,4 @@ if [[ "$MSG" == /* ]] || [[ -z "$MSG" ]] || [[ "$MSG_LEN" -ge 20 ]]; then
   exit 0
 fi
 
-echo '{"additionalContext": "User sent a very short message. Before responding, ask: did you mean to continue with the last task, or redirect to something new? Do not assume continuation — clarify first."}'
+echo '{"additionalContext": "Short prompt may be ambiguous. Clarify whether the user wants to continue the previous task or start something new."}'

@@ -1,38 +1,18 @@
 #!/bin/bash
-# SubagentStart hook: inject lightweight vault context into agent sessions.
-# Main sessions get full context via session-context.sh (SessionStart).
-# Subagents don't inherit that — this fills the gap with behavioral files.
-# Payload budget: ~4KB total. Patterns first (highest signal).
+# SubagentStart hook: keep subagent context tiny and index-like.
 
 MEMORY_DIR="$HOME/.claude/memory"
-
-# Load 20 most recent patterns (recency bias — newest most relevant)
 PATTERNS_FILE="$MEMORY_DIR/patterns.md"
+
+echo "--- SUBAGENT CONTEXT ---"
+
 if [ -f "$PATTERNS_FILE" ]; then
-  echo "--- KEY PATTERNS (recent 20) ---"
-  grep -n '^###' "$PATTERNS_FILE" | tail -20 | while IFS=: read -r linenum _; do
-    sed -n "${linenum},$((linenum+6))p" "$PATTERNS_FILE"  # 6: header + Source + Date + description + blank
-    echo ""
-  done
-fi
-
-# Load voice revision checklist only (not full voice.md — just the checklist section)
-VOICE_FILE="$MEMORY_DIR/voice.md"
-if [ -f "$VOICE_FILE" ]; then
-  CHECKLIST=$(grep -A 15 "Revision Checklist" "$VOICE_FILE" 2>/dev/null | head -18)
-  if [ -n "$CHECKLIST" ]; then
-    echo "--- VOICE REVISION CHECKLIST ---"
-    echo "$CHECKLIST"
-    echo ""
+  PATTERN_TITLES=$(grep '^### ' "$PATTERNS_FILE" 2>/dev/null | tail -5 | sed 's/^### /- /')
+  if [ -n "$PATTERN_TITLES" ]; then
+    echo "Recent patterns:"
+    echo "$PATTERN_TITLES"
   fi
 fi
 
-# Load active projects — conditional: only if file is 30 lines or fewer
-PROJECTS_FILE="$MEMORY_DIR/projects.md"
-if [ -f "$PROJECTS_FILE" ]; then
-  LINE_COUNT=$(wc -l < "$PROJECTS_FILE")
-  if [ "$LINE_COUNT" -le 30 ]; then
-    echo "--- ACTIVE PROJECTS ---"
-    cat "$PROJECTS_FILE"
-  fi
-fi
+echo "Load ~/.claude/memory/voice.md before drafting communication."
+echo "Pull broader project context on demand instead of assuming from hook state."

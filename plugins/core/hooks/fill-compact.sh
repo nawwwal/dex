@@ -13,5 +13,5 @@ fi
 if [[ -f "$COMPACT_FILE" ]] && grep -q "<!-- Claude:" "$COMPACT_FILE" 2>/dev/null; then
   # Create sentinel so this fires only once today
   touch "$SENTINEL_FILE"
-  echo "{\"additionalContext\": \"IMPORTANT: A context compact happened earlier today. The compact summary at $COMPACT_FILE is unfilled — it has a <!-- Claude: --> placeholder that needs to be completed. BEFORE responding to the user's current message: read that file and fill in the work summary (what was being worked on, decisions in flight, next steps, blockers). Then respond to the user's message.\"}"
+  echo "{\"additionalContext\": \"A compact summary from earlier today is still unfilled at $COMPACT_FILE. Fill that placeholder before answering, then continue with the user's request.\"}"
 fi
