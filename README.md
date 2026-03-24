@@ -4,30 +4,13 @@ Vault system for the R1 Design team — session lifecycle, design intelligence, 
 
 ## Install
 
-1. Add the marketplace to your `~/.claude/settings.json`:
-
-```json
-{
-  "extraKnownMarketplaces": {
-    "nawwwal-dex": {
-      "source": {
-        "source": "github",
-        "repo": "nawwwal/dex"
-      }
-    }
-  }
-}
 ```
-
-2. Install the plugin:
-```
+/plugin marketplace add nawwwal/dex
 /plugin install dex@nawwwal-dex
-```
-
-3. Run setup:
-```
 /dex:setup
 ```
+
+That's it. Three commands.
 
 ## Prerequisites
 
