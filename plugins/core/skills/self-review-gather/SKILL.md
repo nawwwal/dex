@@ -1,6 +1,7 @@
 ---
 name: self-review-gather
 description: "Gather promotion evidence from vault, DevRev, and Slack."
+argument-hint: "[setup | gather | status]"
 disable-model-invocation: true
 ---
 

@@ -1,6 +1,7 @@
 ---
 name: dashboard-design
 description: "Guide for building dashboard features at Razorpay — create, share, PR, ship."
+argument-hint: "[create | build | share | pr | ship]"
 disable-model-invocation: true
 allowed-tools: Read, Grep, Glob, Bash, Write
 ---

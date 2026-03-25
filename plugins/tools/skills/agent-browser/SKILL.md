@@ -1,6 +1,7 @@
 ---
 name: agent-browser
 description: "Browser automation — login flows, form submission, screenshots, data extraction."
+argument-hint: "[url] [--headed] [--profile name]"
 disable-model-invocation: true
 allowed-tools: Bash(agent-browser:*)
 ---

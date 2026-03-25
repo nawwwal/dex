@@ -1,6 +1,7 @@
 ---
 name: media-optimizer
 description: "Optimize images and videos — compress, convert, resize."
+argument-hint: "[file-or-dir] [--format webp|avif] [--quality N]"
 disable-model-invocation: true
 ---
 

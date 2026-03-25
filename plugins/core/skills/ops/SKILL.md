@@ -1,6 +1,7 @@
 ---
 name: ops
 description: "Design documents, PRDs, design rationale, handoff specs, presentations."
+argument-hint: "[prd | lens | rationale | slides | visual | spec]"
 disable-model-invocation: true
 allowed-tools: Read, Write, Bash, Grep, Glob
 ---

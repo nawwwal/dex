@@ -1,6 +1,7 @@
 ---
 name: taskmaster
 description: "Stop hook — prevents premature completion when plans are incomplete."
+argument-hint: "(auto-triggered, no arguments)"
 disable-model-invocation: true
 author: blader
 version: 1.0.0

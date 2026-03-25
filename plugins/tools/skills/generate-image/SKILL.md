@@ -1,6 +1,7 @@
 ---
 name: generate-image
 description: "AI image generation and editing via CLI scripts."
+argument-hint: "[prompt] or [edit image-path prompt]"
 disable-model-invocation: true
 ---
 

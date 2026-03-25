@@ -1,6 +1,7 @@
 ---
 name: design
 description: "Design review, a11y, UI implementation, motion, shader, polish, archaeology, prototypes, case studies."
+argument-hint: "[review | a11y | implement | motion | shader | polish | archaeology | prototype | case]"
 allowed-tools: Read, Write, Bash, Grep, Glob, Skill, Agent, Edit
 ---
 
