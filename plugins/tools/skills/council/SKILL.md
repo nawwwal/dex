@@ -1,10 +1,7 @@
 ---
 name: council
-description: >
-  Use when multi-agent deep investigation is needed across a codebase, vault, or problem space.
-  Triggers on: "council", "/council [topic]", "deep research on", "thoroughly investigate",
-  "full audit of", "multi-agent analysis of", "audit the vault", "find inconsistencies",
-  "what's wrong with", "investigate this".
+description: "Multi-agent deep investigation across codebase or vault."
+disable-model-invocation: true
 argument-hint: "[topic or area of interest]"
 allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent, mcp__qmd__query, mcp__qmd__vsearch, mcp__qmd__search
 ---

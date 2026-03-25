@@ -1,6 +1,7 @@
 ---
 name: codex
-description: "Use when the current plan needs a second opinion before implementation — auth, data models, concurrency, multi-service coordination, security review, or anything taking days to implement. Triggers on: 'codex review', 'second opinion', 'cross-model review', 'review this plan with codex'."
+description: "Cross-model plan review via OpenAI Codex CLI."
+disable-model-invocation: true
 argument-hint: "[model-name]"
 allowed-tools: Bash, Write
 user-invocable: true

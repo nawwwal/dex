@@ -1,6 +1,6 @@
 ---
 name: case-synthesizer
-description: Weekly promotion case gap analysis. Reads recent decisions.md entries, session journals from the last 7 days, goals.md competency table, and career/case.md. Writes career/gaps.md only — NEVER modifies case.md. Use when running /log:week on Fridays, or when explicitly invoked with /case:synthesize.
+description: Weekly promotion case gap analysis. Reads recent decisions.md entries, session journals from the last 7 days, goals.md competency table, and career/case.md. Writes career/gaps.md only — NEVER modifies case.md. Use when running /assistant week on Fridays, or when explicitly invoked with /case:synthesize.
 tools: Read, Grep, Glob, Bash, Write
 model: sonnet
 ---

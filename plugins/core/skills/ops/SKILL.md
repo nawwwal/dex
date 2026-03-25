@@ -1,6 +1,7 @@
 ---
 name: ops
-description: "Use when generating design documents — PRDs, designer's POV analysis, design rationale, handoff specs, visual explanations, or presentations."
+description: "Design documents, PRDs, design rationale, handoff specs, presentations."
+disable-model-invocation: true
 allowed-tools: Read, Write, Bash, Grep, Glob
 ---
 
@@ -24,7 +25,7 @@ Triggers: "rationale", "why did we design it this way", "document the decision",
 ### Handoff Spec
 Triggers: "handoff", "spec", "states", "edge cases", "engineer handoff", "Blade mapping", "component inventory"
 → Read `$CLAUDE_SKILL_DIR/spec.md`
-Then: Auto-runs /ui-design a11y as final check
+Then: Auto-runs /design review a11y as final check
 
 ### Visual Explanation
 Triggers: "diagram", "architecture diagram", "visual explanation", "make this visual", "explain this system", "diff review", OR any table with >3 columns and >4 rows

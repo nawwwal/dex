@@ -1,6 +1,7 @@
 ---
 name: dashboard-design
-description: Use when a Razorpay designer is working on any phase of a dashboard feature — creating a new app, building UI, sharing with the team on devstack, opening a PR, or shipping to users. Guides through each phase using plain language with no technical jargon.
+description: "Guide for building dashboard features at Razorpay — create, share, PR, ship."
+disable-model-invocation: true
 allowed-tools: Read, Grep, Glob, Bash, Write
 ---
 

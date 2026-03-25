@@ -1,10 +1,7 @@
 ---
 name: generate-image
-description: >-
-  Use when any skill or user request needs AI-generated images, image editing, or
-  visual content creation. Also use when another skill needs to generate an image
-  programmatically. Triggers on: "generate an image", "create image", "edit this
-  image", "make a visual", or any request for AI image output.
+description: "AI image generation and editing via CLI scripts."
+disable-model-invocation: true
 ---
 
 # generate-image

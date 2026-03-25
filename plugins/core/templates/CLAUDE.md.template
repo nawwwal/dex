@@ -33,7 +33,7 @@ Use `qmd_vsearch` (semantic), `qmd_search` (keyword), or `qmd_query` (AI-ranked)
 - **Frustration = stop**: When detecting frustration language (bullshit, what the, this is wrong, revert, start over, terrible, still wrong): stop. Explain what failed and why before proposing anything new. Mandatory format: **What failed / Why / One targeted fix.**
 - **Design feedback must be measurable**: Design feedback containing (visible/light/heavy/clipped/broken/off/wrong/too [anything]) WITHOUT a specific value: ask "What should the value be?" Required answer: a number, percentage, or component reference.
 - **Auto-apply ultrathink when**: (a) 3rd+ message about the same unsolved problem, (b) architecture with 3+ interdependent components, (c) planning prompt for work >1 day, (d) user expressed frustration in the last 2 turns.
-- **Run /simplify before committing**: Before calling /log done or making a git commit, run /simplify on files changed this session.
+- **Run /simplify before committing**: Before calling /assistant done or making a git commit, run /simplify on files changed this session.
 - **Web content reading priority**: (1) obsidian:defuddle — any article, blog post, docs page, (2) WebFetch — raw URL content, (3) WebSearch — finding pages, (4) Chrome DevTools MCP — ONLY for screenshots, forms, JS execution, UI testing, authenticated sessions. NEVER open Chrome DevTools just to read a URL.
 
 # Auto-Logging
@@ -69,7 +69,7 @@ Significant = choosing between approaches, selecting a component pattern, decidi
 - Prioritizing: read `memory/goals.md`
 
 ### End
-- `/log` — session lifecycle (done, eod, week, morning, plan)
+- `/assistant` — session lifecycle (done, eod, week, morning, plan)
 - `/reflect` — process queued learnings
 - **Compound step:** When session ends with a commit or meaningful work, ask: "What did you solve today? Any reusable pattern?" Save the answer as `~/.claude/learn/solutions/YYYY-MM-DD-{slug}.md` with frontmatter: `type: solution`, `date:`, `tags:`. Add to `learn/index.md` under the appropriate theme.
 
@@ -111,11 +111,11 @@ When asked to research/analyze competitors/investigate: use `research-assistant`
 → Spawn `prd-analyzer` agent (foreground). Present findings inline.
 
 ### Vault Synthesis
-**Trigger:** "vault sync", "emerge patterns", `/think emerge`, or "what's the big picture from this week".
-→ Spawn `vault-synthesizer` agent (foreground). Use instead of /think emerge for full weekly synthesis.
+**Trigger:** "vault sync", "emerge patterns", `/assistant emerge`, or "what's the big picture from this week".
+→ Spawn `vault-synthesizer` agent (foreground). Use instead of /assistant emerge for full weekly synthesis.
 
 ### Silent Model Updates
-**Trigger:** behavioral pattern contradicts `memory/nawal-model.md`, open question answered, something surprises you, after `/think emerge`, correction reveals how he thinks, he reveals something directly.
+**Trigger:** behavioral pattern contradicts `memory/nawal-model.md`, open question answered, something surprises you, after `/assistant emerge`, correction reveals how he thinks, he reveals something directly.
 → Silently edit `memory/nawal-model.md`. Add one Update Log line. Never announce unless asked.
 
 ### Specialty Reviews (file-type triggered)
@@ -134,7 +134,7 @@ When asked to research/analyze competitors/investigate: use `research-assistant`
 → Invoke `/reflect-others`. Say "Extracting to nawal-through-others.md."
 
 ### Promotion Case
-**Trigger:** `/log:week` OR Friday AND career/gaps.md >7 days old OR "update my promotion case".
+**Trigger:** `/assistant week` OR Friday AND career/gaps.md >7 days old OR "update my promotion case".
 → Spawn `case-synthesizer` (foreground). NEVER touch case.md — writes to career/gaps.md only.
 
 ### Personal Assistant
@@ -158,7 +158,7 @@ Load ONLY when triggered. Never speculatively.
 | `memory/razorpay-context.md` | Need Razorpay setup info, Slack channel context, or repo access |
 | `memory/voice.md` | Drafting ANY Slack/email/DM/standup — or "write as me", "draft this for X" |
 | `memory/goals.md` | Prioritization, standup prep, "what should I focus on" |
-| `memory/nawal-model.md` | Open-ended asks, creative direction, inferring intent, before comms drafts, after `/think emerge` |
+| `memory/nawal-model.md` | Open-ended asks, creative direction, inferring intent, before comms drafts, after `/assistant emerge` |
 | `memory/reminders.md` | Future check, conditional reminder, or "remind me when X" |
 | `memory/nawal-through-others.md` | Self-review, calibrating self-perception, before promotion case work |
 | `memory/health.md` | Explaining a vault warning or running `/decisions:archive` |

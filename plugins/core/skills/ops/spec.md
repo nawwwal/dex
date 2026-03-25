@@ -86,4 +86,4 @@ KEY: value
 
 ## Step 6: Auto-run Accessibility Check
 After writing the spec: "Running accessibility check on this spec..."
-→ Signal to /ui-design a11y to verify the spec covers all a11y requirements.
+→ Signal to /design review a11y to verify the spec covers all a11y requirements.

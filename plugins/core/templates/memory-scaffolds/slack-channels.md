@@ -7,4 +7,4 @@ status: active
 
 # Slack Channels
 
-<!-- Scaffolded from Slack MCP during /dex:setup. Lists your team channels with context. -->
+<!-- Scaffolded from Slack MCP during /dex setup. Lists your team channels with context. -->

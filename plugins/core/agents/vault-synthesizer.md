@@ -1,6 +1,6 @@
 ---
 name: vault-synthesizer
-description: Cross-vault intelligence synthesis using Reflexion pattern. Use when emerging patterns from sessions, decisions, and TIL notes. Synthesizes → searches for contradictions → revises up to 3x until stable. Returns findings with confidence markers [solid] / [evolving] / [hypothesis]. More powerful than /think emerge for full weekly synthesis.
+description: Cross-vault intelligence synthesis using Reflexion pattern. Use when emerging patterns from sessions, decisions, and TIL notes. Synthesizes → searches for contradictions → revises up to 3x until stable. Returns findings with confidence markers [solid] / [evolving] / [hypothesis]. More powerful than /assistant emerge for full weekly synthesis.
 model: sonnet
 color: blue
 tools: Read, Grep, Glob, Bash

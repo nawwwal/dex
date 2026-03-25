@@ -1,14 +1,8 @@
 ---
 name: assistant
-description: >-
-  Use when starting any conversation, for morning briefing, planning,
-  communication, vault questions, cleanup, or anything else. Single entry point
-  that detects context and runs the right combination of skills automatically.
-  Triggers on everything: "hey", "morning", "what's up", "tell X about Y",
-  "what should I focus on", "any follow-ups", "clean up", "challenge X",
-  "trace X", "ideas for X", "plan my week", "done", "wrapping up".
-argument-hint: "[morning | eod | challenge X | clean up | plan my week | trace X | ideas for X | tell Name msg]"
-allowed-tools: Bash, Read, Write, Edit, Task, AskUserQuestion, Glob, Grep, WebFetch, mcp__plugin_compass_devrev__get_tool_metadata, mcp__plugin_compass_devrev__get_self, mcp__plugin_compass_devrev__hybrid_search, mcp__plugin_compass_devrev__list_issues, mcp__plugin_compass_devrev__get_issue, mcp__plugin_compass_devrev__update_issue, mcp__plugin_compass_devrev__create_issue, mcp__plugin_compass_devrev__get_enhancement, mcp__plugin_compass_devrev__list_enhancements, mcp__plugin_compass_devrev__update_enhancement, mcp__plugin_compass_devrev__create_enhancement, mcp__plugin_compass_devrev__get_ticket, mcp__plugin_compass_devrev__update_ticket, mcp__plugin_compass_devrev__fetch_object_context, mcp__plugin_compass_devrev__add_comment, mcp__plugin_compass_devrev__link_issue_with_issue, mcp__plugin_compass_slack-mcp__slack_search_messages, mcp__plugin_compass_slack-mcp__slack_get_channel_messages, mcp__plugin_compass_slack-mcp__slack_get_thread_replies, mcp__plugin_compass_slack-mcp__slack_send_message, mcp__plugin_compass_slack-mcp__slack_send_dm, mcp__plugin_compass_slack-mcp__slack_get_users, mcp__plugin_compass_slack-mcp__slack_get_channels, mcp__plugin_compass_google-workspace__get_doc_content, mcp__plugin_compass_google-workspace__search_docs, mcp__plugin_compass_google-workspace__get_drive_file_content, mcp__plugin_compass_google-workspace__search_drive_files, mcp__plugin_compass_google-workspace__get_events, mcp__plugin_compass_google-workspace__create_event, mcp__plugin_compass_google-workspace__modify_event, mcp__plugin_compass_google-workspace__search_gmail_messages, mcp__plugin_compass_google-workspace__get_gmail_content, mcp__plugin_compass_google-workspace__send_gmail_message, mcp__plugin_compass_google-workspace__draft_gmail_message, mcp__plugin_compass_google-workspace__modify_sheet_values, mcp__plugin_compass_google-workspace__read_sheet_values, mcp__qmd__search, mcp__qmd__vsearch, mcp__qmd__query, mcp__qmd__get
+description: "Session start, morning briefing, planning, comms, vault ops, session lifecycle, cognitive ops."
+argument-hint: "[morning | done | eod | week | emerge | trace X | challenge X | plan | tell Name msg]"
+allowed-tools: Bash, Read, Write, Edit, Task, AskUserQuestion, Glob, Grep, WebFetch, mcp__plugin_episodic-memory_episodic-memory__search, mcp__plugin_compass_devrev__get_tool_metadata, mcp__plugin_compass_devrev__get_self, mcp__plugin_compass_devrev__hybrid_search, mcp__plugin_compass_devrev__list_issues, mcp__plugin_compass_devrev__get_issue, mcp__plugin_compass_devrev__update_issue, mcp__plugin_compass_devrev__create_issue, mcp__plugin_compass_devrev__get_enhancement, mcp__plugin_compass_devrev__list_enhancements, mcp__plugin_compass_devrev__update_enhancement, mcp__plugin_compass_devrev__create_enhancement, mcp__plugin_compass_devrev__get_ticket, mcp__plugin_compass_devrev__update_ticket, mcp__plugin_compass_devrev__fetch_object_context, mcp__plugin_compass_devrev__add_comment, mcp__plugin_compass_devrev__link_issue_with_issue, mcp__plugin_compass_slack-mcp__slack_search_messages, mcp__plugin_compass_slack-mcp__slack_get_channel_messages, mcp__plugin_compass_slack-mcp__slack_get_thread_replies, mcp__plugin_compass_slack-mcp__slack_send_message, mcp__plugin_compass_slack-mcp__slack_send_dm, mcp__plugin_compass_slack-mcp__slack_get_users, mcp__plugin_compass_slack-mcp__slack_get_channels, mcp__plugin_compass_google-workspace__get_doc_content, mcp__plugin_compass_google-workspace__search_docs, mcp__plugin_compass_google-workspace__get_drive_file_content, mcp__plugin_compass_google-workspace__search_drive_files, mcp__plugin_compass_google-workspace__get_events, mcp__plugin_compass_google-workspace__create_event, mcp__plugin_compass_google-workspace__modify_event, mcp__plugin_compass_google-workspace__search_gmail_messages, mcp__plugin_compass_google-workspace__get_gmail_content, mcp__plugin_compass_google-workspace__send_gmail_message, mcp__plugin_compass_google-workspace__draft_gmail_message, mcp__plugin_compass_google-workspace__modify_sheet_values, mcp__plugin_compass_google-workspace__read_sheet_values, mcp__qmd__search, mcp__qmd__vsearch, mcp__qmd__query, mcp__qmd__get
 ---
 
 # Personal Assistant — God Mode
@@ -62,41 +56,48 @@ Read [dispatch.md](dispatch.md) now — it contains the full signal table and pr
 
 Quick reference:
 - **Morning Mode** → Calendar + Slack + DevRev + drift + standup draft (if standup day)
-- **EOD Mode** → invoke `/log` skill (eod trigger) directly
-- **Week Mode** → invoke `/log` skill (week trigger) directly (auto-runs drift + graduate)
+- **EOD Mode** → read `$CLAUDE_SKILL_DIR/log/day.md` (eod trigger)
+- **Week Mode** → read `$CLAUDE_SKILL_DIR/log/week.md` (auto-runs drift + graduate)
 - **Communication Mode** → draft → show → wait for send approval → send
 - **Context Mode** → QMD + decisions + sessions → sourced answer
 - **Ghost Mode** → vault search → draft in the user's voice → show, don't send
-- **Housekeeper Mode** → invoke `/think graph` skill (runs as forked Explore agent)
+- **Housekeeper Mode** → read `$CLAUDE_SKILL_DIR/think/graph.md` (runs as forked Explore agent)
 - **Meeting Prep** → project context brief for upcoming meeting
-- **/log plan Mode** → invoke `/log plan` skill
-- **Challenge Mode** → invoke `/think challenge` with topic
-- **Ideas Mode** → invoke `/think leverage` with scope
-- **Emerge Mode** → invoke `/think emerge` with topic or broad vault scan
+- **Plan Mode** → read `$CLAUDE_SKILL_DIR/log/plan.md`
+- **Challenge Mode** → read `$CLAUDE_SKILL_DIR/think/challenge.md` with topic
+- **Ideas Mode** → read `$CLAUDE_SKILL_DIR/think/leverage.md` with scope
+- **Emerge Mode** → read `$CLAUDE_SKILL_DIR/think/emerge.md` with topic or broad vault scan
 
-## Available Skills
+## Integrated Sub-Skills (loaded on demand)
 
-| Skill | Invoke when |
-|-------|---|
-| `/log morning` | Full sprint planning, Slack gap analysis, standup |
-| `/log` | Session wrap-up (done trigger) |
-| `/log` | End of day (eod trigger) |
-| `/log` | Friday synthesis (week trigger) |
-| `/think drift` | Silences check (also runs automatically in morning mode) |
-| `/think emerge` | After /log (week trigger), or "anything worth saving?" (graduation mode) |
-| `/log plan` | "Plan my next 7 days" |
-| `/think challenge` | "Challenge my thinking on X" |
-| `/think emerge` | "What patterns?" / "connect X to Y" |
-| `/think leverage` | "Any ideas for X?" |
-| `/think trace` | "How did X evolve?" |
-| `/think graph` | "Show me the vault" |
-| `/think graph` | "Any missing links?" (monthly) |
-| `/think contradict` | "Any inconsistencies across projects?" |
-| `/think graph` | "Clean up" / "mom mode" / "organize" |
-| `/switch-project` | Context switch |
+### Session Lifecycle (from log)
+| Trigger | Sub-file |
+|---|---|
+| "done", "wrapping up", task complete | `$CLAUDE_SKILL_DIR/log/day.md` |
+| "eod", end of day | `$CLAUDE_SKILL_DIR/log/day.md` (eod mode) |
+| Friday, "week", weekly review | `$CLAUDE_SKILL_DIR/log/week.md` |
+| "morning", session start | `$CLAUDE_SKILL_DIR/log/morning.md` |
+| "plan my week", "plan next 7 days" | `$CLAUDE_SKILL_DIR/log/plan.md` |
+
+### Cognitive Ops (from think)
+| Trigger | Sub-file |
+|---|---|
+| "emerge", "patterns", "what did I learn" | `$CLAUDE_SKILL_DIR/think/emerge.md` |
+| "trace X", "how did X evolve" | `$CLAUDE_SKILL_DIR/think/trace.md` |
+| "challenge X", "devil's advocate" | `$CLAUDE_SKILL_DIR/think/challenge.md` |
+| "drift", "what am I avoiding" | `$CLAUDE_SKILL_DIR/think/drift.md` |
+| "graph", "vault health", "orphans" | `$CLAUDE_SKILL_DIR/think/graph.md` |
+| "contradict", "inconsistencies" | `$CLAUDE_SKILL_DIR/think/contradict.md` |
+| "leverage", "ideas for X" | `$CLAUDE_SKILL_DIR/think/leverage.md` |
+| "stranger", visitor perspective | `$CLAUDE_SKILL_DIR/think/stranger.md` |
+| "full synthesis", "deep audit" | `$CLAUDE_SKILL_DIR/think/compound.md` |
+
+### Other Skills (external, invoke via Skill tool)
+| Skill | When |
+|---|---|
 | `/ops lens` | PRD analysis |
 | `/ops prd` | Generate requirements doc |
-| `/polish` | Spec/prose quality pass (written artifacts only) |
+| `/design polish` | Written artifact quality pass |
 
 ## System Hygiene (auto-check in every briefing mode)
 

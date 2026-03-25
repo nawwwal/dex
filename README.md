@@ -9,10 +9,10 @@ A vault system for Claude Code. Gives Claude persistent memory, session lifecycl
 /plugin install core@nawwwal-dex       # everyone — hooks, setup, workflow
 /plugin install design@nawwwal-dex     # designers — critique, dashboard, UI review
 /plugin install tools@nawwwal-dex      # optional — research, dev, creative tools
-/core:setup
+/dex setup
 ```
 
-Add the marketplace once, then install the plugins you need. `/core:setup` reads your Slack and DevRev (with your permission) to generate a personalized `CLAUDE.md` and scaffold your memory structure.
+Add the marketplace once, then install the plugins you need. `/dex setup` reads your Slack and DevRev (with your permission) to generate a personalized `CLAUDE.md` and scaffold your memory structure.
 
 ## Prerequisites
 
@@ -26,12 +26,12 @@ Add the marketplace once, then install the plugins you need. `/core:setup` reads
 
 | Category | Skills |
 |---|---|
-| **Design** | `dashboard-design`, `critique-5f`, `design`, `ui-design`, `motion`, `shader` |
-| **Thinking** | `council`, `think`, `codex`, `deep-research` |
+| **Design** | `dashboard-design`, `critique-5f`, `design` |
+| **Thinking** | `council`, `codex`, `deep-research` |
 | **Development** | `tdd`, `react-doctor`, `agent-browser`, `agent-development` |
-| **Workflow** | `assistant`, `log`, `ops`, `today`, `switch-project`, `taskmaster` |
-| **Writing** | `polish`, `writing-skills`, `beautiful-mermaid`, `generate-image` |
-| **Meta** | `setup`, `release`, `self-review-gather`, `reflect-others` |
+| **Workflow** | `assistant`, `ops`, `today`, `switch-project`, `taskmaster` |
+| **Writing** | `writing-skills`, `beautiful-mermaid`, `generate-image` |
+| **Meta** | `dex`, `self-review-gather`, `reflect-others` |
 
 ### Agents
 
@@ -43,7 +43,7 @@ Session lifecycle hooks that fire automatically: vault health checks, session co
 
 ## Memory system
 
-`/dex:setup` creates this structure (one-time, outside the plugin):
+`/dex setup` creates this structure (one-time, outside the plugin):
 
 ```
 ~/.claude/
@@ -92,9 +92,9 @@ This symlinks the plugin cache to your source repo. Edits in `~/dex/` are reflec
 When you're ready to push updates to teammates:
 
 ```
-/dex:release          # patch bump (1.0.0 → 1.0.1)
-/dex:release minor    # minor bump (1.0.1 → 1.1.0)
-/dex:release major    # major bump (1.1.0 → 2.0.0)
+/dex release          # patch bump (1.0.0 → 1.0.1)
+/dex release minor    # minor bump (1.0.1 → 1.1.0)
+/dex release major    # major bump (1.1.0 → 2.0.0)
 ```
 
 This bumps version, commits, tags, pushes, and re-creates the dev symlink. Teammates update with:

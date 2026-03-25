@@ -7,4 +7,4 @@ status: active
 
 # messages
 
-<!-- Scaffolded by /dex:setup. Add content as you work. -->
+<!-- Scaffolded by /dex setup. Add content as you work. -->

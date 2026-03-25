@@ -1,6 +1,7 @@
 ---
 name: self-review-gather
-description: "Use when gathering self-review evidence for a Razorpay PD promotion case. Mines the second brain vault (session logs, decisions.md, goals.md), DevRev issues, and optionally Slack (opt-in, recent 6 weeks only) to surface competency-tagged evidence candidates framed at PD II level. No browser required. Vault-first; Slack optional. Triggers on: self-review setup, configure self-review, gather evidence, self-review collect, or self-review page."
+description: "Gather promotion evidence from vault, DevRev, and Slack."
+disable-model-invocation: true
 ---
 
 # Self-Review Gather (v2)

@@ -96,8 +96,8 @@ safe_auto_files = [
     {
         'fname': 'nawal-model.md',
         'auto_after_days': 30,
-        'skill': 'think',
-        'variant': 'think:emerge',
+        'skill': 'assistant',
+        'variant': 'assistant emerge',
     },
 ]
 

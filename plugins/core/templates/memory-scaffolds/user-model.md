@@ -14,7 +14,7 @@ status: active
 
 | Dimension | Value |
 |---|---|
-| Role | (filled by /dex:setup) |
+| Role | (filled by /dex setup) |
 | Communication style | (learned over time) |
 | Decision-making approach | (learned over time) |
 | Energy patterns | (learned over time) |

@@ -54,8 +54,8 @@ memory_action_map = {
     'projects.md': ('/productivity:update', 'confirm-required'),
     'people.md': ('/productivity:update', 'confirm-required'),
     'decisions.md': ('/decisions:archive', 'confirm-required'),
-    'nawal-model.md': ('/think emerge', 'safe-auto'),
-    'goals.md': ('/log:week', 'confirm-required'),
+    'nawal-model.md': ('/assistant emerge', 'safe-auto'),
+    'goals.md': ('/assistant week', 'confirm-required'),
     'voice.md': ('manual update', 'confirm-required'),
     'terms.md': ('update from session context', 'safe-auto'),
     'razorpay-context.md': ('update from Slack/calendar context', 'safe-auto'),
@@ -168,7 +168,7 @@ output['learn_warnings'] = learn_warnings
 gaps_path = os.path.join(career_dir, 'gaps.md')
 case_warning = 0
 if not os.path.exists(gaps_path):
-    case_status = 'NOT RUN - career/gaps.md missing. Run /log:week on next Friday.'
+    case_status = 'NOT RUN - career/gaps.md missing. Run /assistant week on next Friday.'
     case_warning = 1
 else:
     mtime = os.path.getmtime(gaps_path)
@@ -176,7 +176,7 @@ else:
     days = (today - mod.date()).days
     mod_str = mod.strftime('%Y-%m-%d')
     if days > 7:
-        case_status = f'STALE - last ran {mod_str} ({days}d ago). Run /log:week.'
+        case_status = f'STALE - last ran {mod_str} ({days}d ago). Run /assistant week.'
         case_warning = 1
     else:
         case_status = f'OK - last ran {mod_str} ({days}d ago)'

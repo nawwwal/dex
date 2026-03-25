@@ -14,7 +14,7 @@ Detailed instructions for each mode. Referenced from SKILL.md when a mode is act
 5. Search Slack: `from:@nawal.deepakbhai after:{yesterday}` — threads needing follow-up
 6. Search Slack for messages TO @nawal — unanswered asks
 7. Check DevRev: `list_issues` owned by self — overdue items
-8. Inline: run /drift — if silences, surface top one as first action
+8. Inline: run /assistant drift — if silences, surface top one as first action
 9. If standup day (check meetings.md): draft standup and send to the user's DM (U09KQAFK740) immediately, no asking
 10. If meeting in 60 min: pull project context for that meeting inline
 
@@ -37,16 +37,16 @@ Detailed instructions for each mode. Referenced from SKILL.md when a mode is act
 
 **Runs when:** "wrapping up", "done for today", "eod", time after 6pm
 
-**Invoke /log skill (eod trigger) directly.** Don't re-implement — just call it.
+**Invoke /assistant eod directly.** Don't re-implement — just call it.
 
-If Friday: also invoke /log (week trigger) after /log (eod trigger).
-After /log (eod trigger): offer /think emerge (graduation mode) — "Any insights worth keeping from today's sessions?"
+If Friday: also invoke /assistant week after /assistant eod.
+After /assistant eod: offer /assistant emerge (graduation mode) — "Any insights worth keeping from today's sessions?"
 
 ## Week Mode
 
 **Runs when:** Friday + "wrapping up", or $ARGUMENTS contains "week"
 
-**Invoke /log (week trigger) directly.** /log (week trigger) already calls /think drift at start and /think emerge (graduation mode) at end.
+**Invoke /assistant week directly.** /assistant week already calls /assistant drift at start and /assistant emerge (graduation mode) at end.
 
 ## Communication Mode
 
@@ -70,7 +70,7 @@ After /log (eod trigger): offer /think emerge (graduation mode) — "Any insight
 2. Read decisions.md for matching `^dec-` block IDs
 3. Read recent sessions mentioning the topic
 4. Check DevRev if there's a linked enhancement
-5. If topic is a project + "how did it evolve" → run /think trace instead
+5. If topic is a project + "how did it evolve" → run /assistant trace instead
 
 ## Ghost Mode
 
@@ -86,7 +86,7 @@ After /log (eod trigger): offer /think emerge (graduation mode) — "Any insight
 
 **Runs when:** "clean up", "organize", "mom mode", "housekeeper", "what's messy"
 
-Run `/think graph` skill — it executes as a forked Explore agent and returns a report. Present the report, wait for user to say "do 1, 3" or "do all" before applying changes.
+Run `/assistant graph` — it executes as a forked Explore agent and returns a report. Present the report, wait for user to say "do 1, 3" or "do all" before applying changes.
 
 ## Meeting Prep Mode
 
@@ -98,20 +98,20 @@ Run `/think graph` skill — it executes as a forked Explore agent and returns a
 4. Surface: last decision, open carry-forwards, who's in the meeting and their roles (from people.md)
 5. One-paragraph brief: "You have [meeting] in [X] min. Context: [2-3 key facts]"
 
-## /log plan Mode
+## Plan Mode
 
 **Runs when:** "plan my week", "7 days", "next week", $ARGUMENTS = "plan"
 
-**Invoke /log (plan trigger) directly.**
+**Invoke /assistant plan directly.**
 
 ## Challenge Mode
 
 **Runs when:** "challenge X", "argue against", "pre-mortem"
 
-**Invoke /think challenge with the topic from $ARGUMENTS or conversation.**
+**Invoke /assistant challenge with the topic from $ARGUMENTS or conversation.**
 
 ## Ideas Mode
 
 **Runs when:** "ideas for X", "what could I explore"
 
-**Invoke /think leverage with the scope from $ARGUMENTS or conversation.**
+**Invoke /assistant leverage with the scope from $ARGUMENTS or conversation.**

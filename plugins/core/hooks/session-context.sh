@@ -137,7 +137,7 @@ if [ -n "$SESSION_FILE" ] && [ -f "$SESSION_FILE" ]; then
   echo "--- LAST SESSION NOTE ---"
   echo "$(basename "$SESSION_FILE") (${SESSION_LINES} lines)"
   if [ "${SESSION_LINES:-0}" -lt 20 ] 2>/dev/null; then
-    echo "Stub note detected - run /log eod if you need a proper recap."
+    echo "Stub note detected - run /assistant eod if you need a proper recap."
   fi
   echo ""
 fi

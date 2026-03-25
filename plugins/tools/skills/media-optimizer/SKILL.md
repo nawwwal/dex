@@ -1,11 +1,7 @@
 ---
 name: media-optimizer
-description: >
-  Use when optimizing images or videos —
-  'optimize png', 'compress jpeg', 'convert to webp', 'optimize video',
-  'batch optimize media', 'resize image', 'optimo',
-  'optimize svg', 'compress svg', 'minify svg', 'reduce svg size',
-  'optimize image', 'shrink video', 'compress media'.
+description: "Optimize images and videos — compress, convert, resize."
+disable-model-invocation: true
 ---
 
 # Media Optimizer

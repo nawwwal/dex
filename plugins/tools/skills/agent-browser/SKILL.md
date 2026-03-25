@@ -1,6 +1,7 @@
 ---
 name: agent-browser
-description: "Use when automating browser interactions — login flows, form submission, screenshots, data extraction, or testing. Use auth vault for username/password forms, --headed for Google/OAuth (headless triggers CAPTCHA), --profile for persistent sessions, login-machine agent for complex SSO flows."
+description: "Browser automation — login flows, form submission, screenshots, data extraction."
+disable-model-invocation: true
 allowed-tools: Bash(agent-browser:*)
 ---
 

@@ -1,6 +1,7 @@
 ---
 name: taskmaster
-description: "Use as a Stop hook — fires automatically when Claude tries to stop before all plans are complete."
+description: "Stop hook — prevents premature completion when plans are incomplete."
+disable-model-invocation: true
 author: blader
 version: 1.0.0
 ---

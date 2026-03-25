@@ -9,4 +9,4 @@ status: active
 
 Lightweight index of active projects. Each entry points to its workspace in `~/.claude/work/`.
 
-<!-- Scaffolded by /dex:setup. Add projects as you work on them. -->
+<!-- Scaffolded by /dex setup. Add projects as you work on them. -->
