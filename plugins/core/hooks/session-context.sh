@@ -66,6 +66,9 @@ DATE_TODAY=$(date '+%Y-%m-%d')
 ENCODED_PATH=$(echo "$CWD" | sed 's|/|-|g')
 PROJECT_MEMORY="$HOME/.claude/projects/$ENCODED_PATH/CLAUDE.md"
 PROJECT_CONTEXT_FILE=""
+PROJECT_KEY=$(echo "$CWD" | tr '/[:space:]' '--' | tr -cd '[:alnum:]._-' | sed 's/--*/-/g; s/^-//; s/-$//' | cut -c1-120)
+[ -z "$PROJECT_KEY" ] && PROJECT_KEY="root"
+COMPACT_FILE="$SESSIONS_DIR/session-compact-${PROJECT_KEY}.md"
 
 if [ -f "$PROJECT_MEMORY" ]; then
   PROJECT_CONTEXT_FILE="$PROJECT_MEMORY"
@@ -74,10 +77,50 @@ elif [ -f "$CWD/CLAUDE.md" ]; then
 fi
 
 case "$SOURCE" in
-  compact) CONTEXT_LABEL="=== POST-COMPACT CONTEXT RESTORED ===" ;;
+  compact) CONTEXT_LABEL="=== COMPACT ===" ;;
   resume)  CONTEXT_LABEL="=== RESUMED SESSION CONTEXT ===" ;;
   *)       CONTEXT_LABEL="=== SESSION CONTEXT ===" ;;
 esac
+
+if [ "$SOURCE" = "compact" ]; then
+  echo "$CONTEXT_LABEL"
+  echo "Repo: $(basename "$CWD")"
+  [ -n "$PROJECT_NAME" ] && echo "Project: $PROJECT_NAME"
+
+  if [ -f "$COMPACT_FILE" ]; then
+    if grep -q "<!-- Claude:" "$COMPACT_FILE" 2>/dev/null; then
+      echo "Snapshot: pending"
+    else
+      echo "Snapshot: ready"
+    fi
+  fi
+
+  if [ -n "$PROJECT_CONTEXT_FILE" ]; then
+    if [ "$PROJECT_CONTEXT_FILE" = "$CWD/CLAUDE.md" ]; then
+      echo "Context: CLAUDE.md"
+    else
+      echo "Context: project memory"
+    fi
+  fi
+
+  if [ -f "$TASKS_FILE" ]; then
+    TOTAL_OPEN=$(grep -c '^\- \[ \]' "$TASKS_FILE" 2>/dev/null || echo 0)
+    if [ "${TOTAL_OPEN:-0}" -gt 0 ] 2>/dev/null; then
+      echo "Tasks: $TOTAL_OPEN open"
+    fi
+  fi
+
+  if git -C "$CWD" rev-parse --is-inside-work-tree &>/dev/null; then
+    BRANCH=$(git -C "$CWD" branch --show-current 2>/dev/null)
+    DIRTY=$(git -C "$CWD" status --porcelain 2>/dev/null | wc -l | tr -d ' ')
+    LAST_COMMIT=$(git -C "$CWD" log -1 --format='%h' 2>/dev/null)
+    GIT_LINE="Git: $BRANCH, $DIRTY dirty"
+    [ -n "$LAST_COMMIT" ] && GIT_LINE="$GIT_LINE, $LAST_COMMIT"
+    echo "$GIT_LINE"
+  fi
+
+  exit 0
+fi
 
 echo "$CONTEXT_LABEL"
 echo "CWD: $CWD"
