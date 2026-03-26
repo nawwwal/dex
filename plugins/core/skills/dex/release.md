@@ -93,15 +93,7 @@ git push origin HEAD
 git push origin "v$NEW_VERSION"
 ```
 
-### 6. Re-create dev symlink
-
-```bash
-if [ -x "$(pwd)/scripts/dev-link.sh" ]; then
-  ./scripts/dev-link.sh
-fi
-```
-
-### 7. Done
+### 6. Done
 
 ```
 Released dex v$NEW_VERSION

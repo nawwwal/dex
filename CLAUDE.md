@@ -6,15 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `dex` is a Claude Code plugin published as `nawwwal/dex` on the plugin marketplace. It ships three installable plugins — `core`, `design`, `tools` — each containing skills, agents, and hooks that extend Claude Code with persistent memory, session lifecycle management, and design intelligence.
 
-## Development setup
+## Development
 
-```bash
-./dev-link.sh
-```
-
-This symlinks all three plugin caches (`~/.claude/plugins/cache/nawwwal-dex/{plugin}/{version}`) to the source directories in `plugins/`. Edits are live in the next Claude session. Run `/reload-plugins` to pick up changes without restarting.
-
-**No build step.** Everything is shell scripts and Markdown.
+**No build step.** Everything is shell scripts and Markdown. Edit files in `plugins/` and start a new Claude session (or run `/reload-plugins`) to pick up changes.
 
 **Prerequisites** (required by hooks): `python3`, `jq`, `node`
 
@@ -26,7 +20,7 @@ This symlinks all three plugin caches (`~/.claude/plugins/cache/nawwwal-dex/{plu
 /dex release major
 ```
 
-The release skill bumps versions across **four files** (`plugins/{core,design,tools}/.claude-plugin/plugin.json` and root `.claude-plugin/marketplace.json`), commits, tags, pushes, and re-runs `dev-link.sh`. Must be on `main` with a clean worktree.
+The release skill bumps versions across **four files** (`plugins/{core,design,tools}/.claude-plugin/plugin.json` and root `.claude-plugin/marketplace.json`), commits, tags, and pushes. Must be on `main` with a clean worktree.
 
 ## Plugin architecture
 

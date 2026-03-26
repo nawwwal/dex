@@ -75,17 +75,9 @@ Your customizations are never overwritten by plugin updates.
 
 If you're developing dex (editing skills, agents, hooks):
 
-**Setup live editing:**
-```bash
-cd ~/dex
-./scripts/dev-link.sh
-```
-
-This symlinks the plugin cache to your source repo. Edits in `~/dex/` are reflected in the next Claude session — no reinstall needed. Other plugins are unaffected.
-
 **Working directory:** Always `~/dex/`.
 
-**After editing:** Just start a new Claude session. Changes are live.
+**After editing:** Start a new Claude session or run `/reload-plugins`. Changes are live.
 
 ## Releasing
 
@@ -97,7 +89,7 @@ When you're ready to push updates to teammates:
 /dex release major    # major bump (1.1.0 → 2.0.0)
 ```
 
-This bumps version, commits, tags, pushes, and re-creates the dev symlink. Teammates update with:
+This bumps version, commits, tags, and pushes. Teammates update with:
 
 ```
 /plugin update dex@nawwwal-dex
