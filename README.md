@@ -81,7 +81,11 @@ If you're developing dex (editing skills, agents, hooks):
 
 ## Releasing
 
-Release maintenance is project-local, not part of the shipped plugin. Use the repo-local `dex` maintainer skill in `.claude/skills/dex/` or `.codex/skills/dex/`.
+Release maintenance is project-local, not part of the shipped plugin.
+
+- The installed plugin keeps only the user-facing `dex setup` workflow.
+- Repo-maintainer workflows like release operations live only in `.claude/skills/dex/` and `.codex/skills/dex/`.
+- This keeps the shipped plugin focused on usable end-user skills while leaving project maintenance local to this repository.
 
 When you're ready to push updates to teammates:
 
