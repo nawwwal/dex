@@ -11,7 +11,7 @@
       "name": "core",
       "source": "./plugins/core",
       "description": "Session lifecycle, hooks, memory scaffolding, core workflow",
-      "version": "2.1.1"
+      "version": "2.2.0"
     },
     {
       "name": "design",
