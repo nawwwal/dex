@@ -1,15 +1,14 @@
 ---
 name: dex
-description: "Plugin release (version bump, tag, push) and onboarding setup."
+description: "Onboarding setup for dex users."
 disable-model-invocation: true
-argument-hint: "[release [patch|minor|major] | setup]"
+argument-hint: "[setup]"
 ---
 
-# /dex — Plugin Management
+# /dex — Dex Setup
 
 ## Dispatch
 
-**release** → Read `$CLAUDE_SKILL_DIR/release.md`
 **setup** → Read `$CLAUDE_SKILL_DIR/setup.md`
 
-If no argument: ask "Release a new version, or run setup?"
+If no argument: ask "Run dex setup?"

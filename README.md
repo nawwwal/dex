@@ -81,15 +81,17 @@ If you're developing dex (editing skills, agents, hooks):
 
 ## Releasing
 
+Release maintenance is project-local, not part of the shipped plugin. Use the repo-local `dex` maintainer skill in `.claude/skills/dex/` or `.codex/skills/dex/`.
+
 When you're ready to push updates to teammates:
 
 ```
-/dex release          # patch bump (1.0.0 → 1.0.1)
-/dex release minor    # minor bump (1.0.1 → 1.1.0)
-/dex release major    # major bump (1.1.0 → 2.0.0)
+/dex release tools            # patch bump tools
+/dex release tools minor      # minor bump tools
+/dex release tools major      # major bump tools
 ```
 
-This bumps version, commits, tags, and pushes. Teammates update with:
+The project-level release skill bumps the selected plugin version, updates marketplace metadata, commits, tags, pushes, and creates a GitHub Release with changelog notes. Teammates update with:
 
 ```
 /plugin update dex@nawwwal-dex
