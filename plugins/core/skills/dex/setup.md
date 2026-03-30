@@ -101,6 +101,22 @@ If found:
 
 If confirmed: remove vault hook entries, keep any SUPERSET notify.sh entries.
 
+Also check for legacy mirror symlinks created by older vault setups:
+
+```bash
+~/.agents/skills -> ~/.claude/skills
+~/.agents/agents -> ~/.claude/agents
+```
+
+These are no longer required by dex and can break third-party installers that expect
+`~/.agents/*` to be real directories.
+
+If found:
+> "I found legacy ~/.agents mirror symlinks into ~/.claude. Replace them with real directories to avoid installer loops? [Yes/No]"
+
+If confirmed: remove only the mirror symlink itself and recreate the directory in place.
+Do not delete the contents of `~/.claude/skills/` or `~/.claude/agents/`.
+
 ## Phase 6 — Report
 
 ```

@@ -346,6 +346,45 @@ else
   CURRENT_FAILURES="${CURRENT_FAILURES}settings.json invalid JSON\n"
 fi
 
+# Legacy dex setups mirrored ~/.agents/{skills,agents} into ~/.claude/.
+# That breaks third-party installers that expect ~/.agents/* to be real dirs.
+repair_legacy_agents_dir_link() {
+  local name="$1"
+  local link="$HOME/.agents/$name"
+  local target="$CLAUDE_DIR/$name"
+  local link_real=""
+  local target_real=""
+
+  [ -L "$link" ] || return
+
+  link_real=$(python3 - "$link" <<'PY' 2>/dev/null
+import os, sys
+path = sys.argv[1]
+print(os.path.realpath(path) if os.path.islink(path) else "")
+PY
+)
+  target_real=$(python3 - "$target" <<'PY' 2>/dev/null
+import os, sys
+print(os.path.realpath(sys.argv[1]))
+PY
+)
+
+  if [ -z "$link_real" ] || [ "$link_real" != "$target_real" ]; then
+    return
+  fi
+
+  mkdir -p "$HOME/.agents"
+  if rm "$link" 2>/dev/null && mkdir -p "$link" 2>/dev/null; then
+    AUTOFIX_LOG="${AUTOFIX_LOG}[AUTO-FIXED] replaced ~/.agents/${name} symlink into ~/.claude/${name} with a real directory to avoid installer loops\n"
+  else
+    TEST_INFRA="${TEST_INFRA}[FAIL] ~/.agents/${name}: could not replace legacy mirror symlink\n"
+    CURRENT_FAILURES="${CURRENT_FAILURES}~/.agents/${name}: legacy mirror symlink could not be repaired\n"
+  fi
+}
+
+repair_legacy_agents_dir_link "skills"
+repair_legacy_agents_dir_link "agents"
+
 # Hook scripts: executable (auto-fix chmod +x)
 HOOK_ALL_OK=1
 for hook in "$CLAUDE_DIR/hooks"/*.sh; do

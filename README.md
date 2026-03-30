@@ -71,6 +71,9 @@ Plugin files are managed by the plugin system. To customize a skill or agent:
 
 Your customizations are never overwritten by plugin updates.
 
+Dex does not require `~/.agents/skills` or `~/.agents/agents` to mirror `~/.claude/`.
+Leave `~/.agents/` available for tools that manage their own installs there.
+
 ## For developers
 
 If you're developing dex (editing skills, agents, hooks):
