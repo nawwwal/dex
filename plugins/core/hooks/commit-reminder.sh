@@ -23,13 +23,6 @@ if [ -z "$CHANGES" ]; then
   exit 0  # Working tree clean, nothing to remind about
 fi
 
-REASON="Before finishing, review your uncommitted changes with git status or git diff.
-If there are meaningful, logically-grouped changes, commit them now.
-
-Guidelines:
-- Group related changes into one commit.
-- Batch related edits together instead of committing every tiny tweak.
-- Use a descriptive message that explains why the change exists.
-- Skip committing only if the changes are trivial WIP the user will handle later."
+REASON="Uncommitted changes remain. Review and commit if ready."
 
 jq -n --arg reason "$REASON" '{ decision: "block", reason: $reason }'

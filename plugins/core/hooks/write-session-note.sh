@@ -45,17 +45,4 @@ if [[ -z "$EXISTING" ]]; then
   } > "$OUTFILE"
 fi
 
-# --- Design + Interpersonal TIL prompt ---
-# Soft reminder if no non-engineering TIL was captured this month
-MONTH=$(date +%Y-%m)
-LEARN_DIR="$HOME/.claude/learn"
-DESIGN_COUNT=$(find "${LEARN_DIR}" -maxdepth 1 -name "design-${MONTH}-*.md" 2>/dev/null | wc -l | tr -d ' ')
-PEOPLE_COUNT=$(find "${LEARN_DIR}" -maxdepth 1 -name "people-${MONTH}-*.md" 2>/dev/null | wc -l | tr -d ' ')
-if [ "${DESIGN_COUNT:-0}" = "0" ] || [ "${PEOPLE_COUNT:-0}" = "0" ]; then
-  MISSING=""
-  [ "${DESIGN_COUNT:-0}" = "0" ] && MISSING="design thinking"
-  [ "${PEOPLE_COUNT:-0}" = "0" ] && MISSING="${MISSING:+${MISSING} + }interpersonal"
-  echo "TIL: No ${MISSING} TIL this month. Anything from today worth capturing? (learn/design-YYYY-MM-DD-slug.md or learn/people-YYYY-MM-DD-slug.md)"
-fi
-
 exit 0

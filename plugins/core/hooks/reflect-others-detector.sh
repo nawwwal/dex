@@ -54,7 +54,7 @@ if [[ "${SCORE:-0}" -lt 3 ]]; then
   exit 0
 fi
 
-# Write to queue + emit systemMessage in one python3 call
+# Write to queue silently; avoid spending prompt tokens on a reminder.
 QUEUE="$HOME/.claude/learnings-queue.json"
 python3 - "$QUEUE" "$SCORE" << 'PYEOF'
 import fcntl, json, os, time, sys
@@ -85,12 +85,6 @@ with open(lock_path, 'w') as lf:
         os.replace(tmp_path, queue_path)
     finally:
         fcntl.flock(lf, fcntl.LOCK_UN)
-
-# Emit systemMessage in the same process
-msg = {
-    'systemMessage': f'Third-person signal staged (score={score}). Run /reflect-others to review and confirm before saving to memory.'
-}
-print(json.dumps(msg))
 PYEOF
 
 exit 0

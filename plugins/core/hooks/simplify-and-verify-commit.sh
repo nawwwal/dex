@@ -36,17 +36,17 @@ fi
 
 # If transcript path was empty/missing, allow commit but warn
 if [[ -z "$TRANSCRIPT" ]] || [[ ! -f "$TRANSCRIPT" ]]; then
-  echo '{"systemMessage": "No transcript available to verify. Ensure you have verified changes visually and run /simplify."}'
+  echo '{"systemMessage": "No transcript. Verify changes and run /simplify before commit."}'
   exit 0
 fi
 
 if [[ "$VERIFIED" -eq 0 ]]; then
-  echo '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"Verify changes with agent browser first. Take a screenshot or run tests, then commit."}}'
+  echo '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"Verify the change first: run tests or capture a screenshot, then commit."}}'
   exit 2
 fi
 
 if [[ "$SIMPLIFIED" -eq 0 ]]; then
-  echo '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"Run /simplify on changed files before committing to remove AI slop."}}'
+  echo '{"hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"Run /simplify on changed files before commit."}}'
   exit 2
 fi
 

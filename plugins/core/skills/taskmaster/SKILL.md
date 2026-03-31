@@ -1,40 +1,56 @@
 ---
 name: taskmaster
-description: "Stop hook — prevents premature completion when plans are incomplete."
+description: |
+  Original Taskmaster-style stop hook that keeps work moving
+  until an explicit parseable done signal is emitted.
 argument-hint: "(auto-triggered, no arguments)"
 disable-model-invocation: true
 author: blader
-version: 1.0.0
+version: 4.2.0
 ---
 
 # Taskmaster
 
-A stop hook that prevents the agent from stopping prematurely. When a response
-finishes and the agent is about to stop, this hook intercepts and prompts it
-to re-examine whether all work is truly done.
+This plugin mirrors the original Taskmaster completion contract for Claude
+Stop hooks: the run is not done until an explicit parseable done signal is
+present in the assistant output.
 
 ## How It Works
 
-1. **Agent tries to stop** — the stop hook fires.
-2. **The hook checks** for incomplete signals (pending tasks, recent errors).
-3. **Agent is prompted** to verify: original requests addressed, plan steps
-   completed, tasks resolved, errors fixed, no loose ends.
-4. **If work remains**, the agent continues. If truly done, it confirms and
-   the hook allows the stop on the next cycle.
+1. **Agent tries to stop** and the Stop hook fires.
+2. **The hook checks** the latest assistant output and transcript for the
+   parseable completion token:
+   `TASKMASTER_DONE::<session_id>`
+3. **Token missing**:
+   - block stop
+   - return the shared Taskmaster compliance prompt
+   - force same-session continuation until the work is actually complete
+4. **Token present**: allow stop and clear the session counter.
 
-## Loop Protection
+## Parseable Done Signal
 
-A session-scoped counter limits continuations to **10 by default**. Set
-`TASKMASTER_MAX` environment variable to change:
+When the work is genuinely complete, the agent must include this exact line
+in its final response (on its own line):
 
-```bash
-export TASKMASTER_MAX=20  # allow up to 20 continuations
-export TASKMASTER_MAX=0   # infinite — never cap (relies on stop_hook_active check only)
+```text
+TASKMASTER_DONE::<session_id>
 ```
+
+This gives external automation a deterministic completion marker to parse.
+
+## Configuration
+
+- `TASKMASTER_MAX` (default `0`): max warning count before suppression in the
+  stop hook. `0` means unlimited warnings.
+
+Fixed behavior (not configurable):
+- Done token prefix: `TASKMASTER_DONE`
+- Shared compliance prompt text lives in `hooks/taskmaster-compliance-prompt.sh`
+- Stop-hook enforcement lives in `hooks/check-completion.sh`
 
 ## Setup
 
-The hook must be registered in `~/.claude/settings.json`:
+Register the Stop hook and let it run automatically:
 
 ```json
 {
@@ -53,9 +69,3 @@ The hook must be registered in `~/.claude/settings.json`:
   }
 }
 ```
-
-## Disabling
-
-To temporarily disable, either:
-- Remove or comment out the Stop hook in `~/.claude/settings.json`
-- Set `TASKMASTER_MAX=1` to allow only one continuation check

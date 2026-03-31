@@ -26,27 +26,12 @@
         }]
       }
     ],
-    "SubagentStart": [
-      {
-        "hooks": [{
-          "type": "command",
-          "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/subagent-context.sh\"",
-          "timeout": 5,
-          "statusMessage": "Loading vault context for agent..."
-        }]
-      }
-    ],
+    "SubagentStart": [],
     "UserPromptSubmit": [
-      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/enrich-short-messages.sh\"", "timeout": 3 }] },
-      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/continuation-enricher.sh\"", "timeout": 3 }] },
-      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/frustration-structure.sh\"", "timeout": 3 }] },
-      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/resume-injector.sh\"", "timeout": 3 }] },
-      { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/fill-compact.sh\"", "timeout": 3 }] },
       { "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/reflect-others-detector.sh\"", "timeout": 3 }] }
     ],
     "PreToolUse": [
-      { "matcher": "Bash", "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/simplify-and-verify-commit.sh\"", "timeout": 10 }] },
-      { "matcher": "mcp__chrome-devtools__navigate_page", "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/devtools-redirect.sh\"", "timeout": 3 }] }
+      { "matcher": "Bash", "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/simplify-and-verify-commit.sh\"", "timeout": 10 }] }
     ],
     "PostToolUse": [
       { "matcher": "Bash", "hooks": [{ "type": "command", "command": "\"${CLAUDE_PLUGIN_ROOT}/hooks/capture-commits.sh\"", "timeout": 5 }] },

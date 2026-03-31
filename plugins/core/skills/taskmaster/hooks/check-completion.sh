@@ -1,70 +1,108 @@
 #!/usr/bin/env bash
 #
-# Stop hook: keep the agent working until the plan and user requests are 100% done.
+# Stop hook: keep firing until the agent emits an explicit done signal.
 #
-# Uses a session-scoped counter to prevent infinite loops.
-# Set TASKMASTER_MAX to change the max continuation count (default: 10, 0 = infinite).
+# The stop is allowed only after the transcript contains:
+#   TASKMASTER_DONE::<session_id>
+#
+# Optional env vars:
+#   TASKMASTER_MAX          Max number of blocks before allowing stop (default: 0 = infinite)
 #
 set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck disable=SC1091
+source "$SCRIPT_DIR/taskmaster-compliance-prompt.sh"
 
 INPUT=$(cat)
 SESSION_ID=$(echo "$INPUT" | jq -r '.session_id')
 TRANSCRIPT=$(echo "$INPUT" | jq -r '.transcript_path')
-STOP_HOOK_ACTIVE=$(echo "$INPUT" | jq -r '.stop_hook_active // false')
+# Expand leading ~ to $HOME (tilde not expanded inside quotes by bash)
+TRANSCRIPT="${TRANSCRIPT/#\~/$HOME}"
+if [ -z "$SESSION_ID" ] || [ "$SESSION_ID" = "null" ]; then
+  SESSION_ID="unknown-session"
+fi
 
-# --- loop guard ---
+# --- skip subagents: they have very short transcripts ---
+if [ -f "$TRANSCRIPT" ]; then
+  LINE_COUNT=$(wc -l < "$TRANSCRIPT" 2>/dev/null || echo "0")
+  if [ "$LINE_COUNT" -lt 20 ]; then
+    exit 0
+  fi
+fi
+
+# --- counter ---
 COUNTER_DIR="${TMPDIR:-/tmp}/taskmaster"
 mkdir -p "$COUNTER_DIR"
 COUNTER_FILE="${COUNTER_DIR}/${SESSION_ID}"
-MAX=${TASKMASTER_MAX:-10}
+MAX=${TASKMASTER_MAX:-0}
 
 COUNT=0
 if [ -f "$COUNTER_FILE" ]; then
-  COUNT=$(cat "$COUNTER_FILE")
+  COUNT=$(cat "$COUNTER_FILE" 2>/dev/null || echo "0")
 fi
 
-# If another stop hook has already blocked this stop, do not stack more blockers.
-if [ "$STOP_HOOK_ACTIVE" = "true" ]; then
-  rm -f "$COUNTER_FILE"
-  exit 0
+transcript_has_done_signal() {
+  local transcript_path="$1"
+  local done_signal="$2"
+
+  [ -f "$transcript_path" ] || return 1
+
+  tail -400 "$transcript_path" 2>/dev/null \
+    | jq -Rr '
+        fromjson?
+        | select(.type == "response_item" and .payload.type == "message" and .payload.role == "assistant")
+        | .payload.content[]?
+        | select(.type == "output_text")
+        | .text // empty
+      ' 2>/dev/null \
+    | grep -Fq "$done_signal"
+}
+
+# --- done signal detection ---
+DONE_SIGNAL="TASKMASTER_DONE::${SESSION_ID}"
+HAS_DONE_SIGNAL=false
+HAS_RECENT_ERRORS=false
+
+# Check last_assistant_message first (available immediately, unlike transcript)
+LAST_MSG=$(echo "$INPUT" | jq -r '.last_assistant_message // ""')
+if echo "$LAST_MSG" | grep -Fq "$DONE_SIGNAL" 2>/dev/null; then
+  HAS_DONE_SIGNAL=true
 fi
 
-# After max continuations, allow stop and clean up (0 = infinite, never cap)
-if [ "$MAX" -gt 0 ] && [ "$COUNT" -ge "$MAX" ]; then
-  rm -f "$COUNTER_FILE"
-  exit 0
+# Fall back to transcript search
+if [ "$HAS_DONE_SIGNAL" = false ] && [ -f "$TRANSCRIPT" ]; then
+  if transcript_has_done_signal "$TRANSCRIPT" "$DONE_SIGNAL"; then
+    HAS_DONE_SIGNAL=true
+  fi
 fi
-
-# --- transcript analysis ---
-HAS_INCOMPLETE_SIGNALS=false
 
 if [ -f "$TRANSCRIPT" ]; then
-  TAIL=$(tail -50 "$TRANSCRIPT" 2>/dev/null || true)
-
-  # Check for task-list items still pending/in-progress
-  if echo "$TAIL" | grep -qi '"status":\s*"in_progress"\|"status":\s*"pending"' 2>/dev/null; then
-    HAS_INCOMPLETE_SIGNALS=true
+  TAIL_40=$(tail -40 "$TRANSCRIPT" 2>/dev/null || true)
+  if echo "$TAIL_40" | grep -qi '"is_error":\s*true' 2>/dev/null; then
+    HAS_RECENT_ERRORS=true
   fi
-
-  # Check for recent errors in tool results
-  if echo "$TAIL" | grep -qi '"is_error":\s*true' 2>/dev/null; then
-    HAS_INCOMPLETE_SIGNALS=true
-  fi
-
 fi
 
-# Ordinary complete sessions should stop cleanly.
-if [ "$HAS_INCOMPLETE_SIGNALS" = false ]; then
+if [ "$HAS_DONE_SIGNAL" = true ]; then
   rm -f "$COUNTER_FILE"
   exit 0
 fi
 
-# --- decide ---
 NEXT=$((COUNT + 1))
 echo "$NEXT" > "$COUNTER_FILE"
 
-# Build the continuation reason with context
-PREAMBLE="Incomplete tasks or recent errors were detected in the session."
+# Optional escape hatch. Default is infinite (0) so hook keeps firing.
+if [ "$MAX" -gt 0 ] && [ "$NEXT" -ge "$MAX" ]; then
+  rm -f "$COUNTER_FILE"
+  exit 0
+fi
+
+if [ "$HAS_RECENT_ERRORS" = true ]; then
+  PREAMBLE="Recent tool errors were detected. Resolve them before declaring done."
+else
+  PREAMBLE="Stop is blocked until completion is explicitly confirmed."
+fi
 
 if [ "$MAX" -gt 0 ]; then
   LABEL="TASKMASTER (${NEXT}/${MAX})"
@@ -72,12 +110,10 @@ else
   LABEL="TASKMASTER (${NEXT})"
 fi
 
+# --- reprompt ---
+SHARED_PROMPT="$(build_taskmaster_compliance_prompt "$DONE_SIGNAL")"
 REASON="${LABEL}: ${PREAMBLE}
 
-Review the latest transcript tail for the pending task or error signal, then either:
-- finish the incomplete work, or
-- fix the recent error before stopping.
-
-Only continue if there is still real unfinished work. Do not loop just to re-verify a clean session."
+${SHARED_PROMPT}"
 
 jq -n --arg reason "$REASON" '{ decision: "block", reason: $reason }'
