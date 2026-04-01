@@ -10,7 +10,7 @@
     {
       "name": "core",
       "source": "./plugins/core",
-      "description": "Session lifecycle, hooks, memory scaffolding, core workflow",
+      "description": "Memory scaffolding, core workflow, and onboarding",
       "version": "2.3.0"
     },
     {

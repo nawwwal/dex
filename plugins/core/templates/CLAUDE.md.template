@@ -55,12 +55,11 @@ When you make or recommend a significant design, architecture, or process decisi
 
 Significant = choosing between approaches, selecting a component pattern, deciding on data structure, agreeing to a timeline, scope change.
 
-## Session Lifecycle
+## Session Rhythm
 
-### Start (vault-health.sh → session-context.sh)
-- vault-health.sh: staleness checks, infrastructure self-tests, writes `memory/health.md`
-- session-context.sh: injects vault health, project context, decisions, patterns, tasks, last session, git state
-- lessons.md auto-loaded if present in CWD project
+### Start
+- Review `memory/health.md`, active project context, decisions, patterns, tasks, and recent git state when they matter for the work
+- Load `lessons.md` if the current project has one
 
 ### During
 - Decisions auto-logged to memory/decisions.md
@@ -165,7 +164,7 @@ Load ONLY when triggered. Never speculatively.
 | `memory/slack-channels.md` | Unrecognized Slack channel · posting to Slack · composing a message and need to know where |
 | `memory/proof-config.md` | User mentions Proof, shares a Proof URL, or asks to open a collaborative doc |
 | `memory/blade-taste.md` | Before any Blade implementation session, Figma → code session, or design review involving Blade |
-| `{project}/.claude/lessons.md` | Auto-loaded by hook at session start |
+| `{project}/.claude/lessons.md` | Load when resuming work in that project |
 
 # Preferences
 

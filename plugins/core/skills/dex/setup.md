@@ -10,7 +10,7 @@ Check what already exists:
 ```
 READ ~/.claude/CLAUDE.md       → if exists, extract identity (name, role, team)
 READ ~/.claude/memory/          → list which files already exist
-READ ~/.claude/settings.json    → check for leftover vault hooks that might double-fire
+READ ~/.claude/settings.json    → inspect enabled plugins and existing local setup
 CHECK prerequisites:
   - python3 (required): which python3
   - jq (required): which jq
@@ -88,20 +88,7 @@ Using the template at `${CLAUDE_PLUGIN_ROOT}/templates/CLAUDE.md.template`:
 
 ## Phase 5 — Migration Check
 
-Scan `~/.claude/settings.json` for vault hooks that now live in the dex plugin:
-
-```python
-# Check for hooks referencing $HOME/.claude/hooks/
-# These would double-fire with plugin hooks
-```
-
-If found:
-> "I found vault hooks in your settings.json that now live in the dex plugin.
-> Remove them to prevent double-firing? (SUPERSET notification hooks will be kept.)"
-
-If confirmed: remove vault hook entries, keep any SUPERSET notify.sh entries.
-
-Also check for legacy mirror symlinks created by older vault setups:
+Check for legacy mirror symlinks created by older vault setups:
 
 ```bash
 ~/.agents/skills -> ~/.claude/skills
@@ -133,5 +120,5 @@ Prerequisites verified:
 Next steps:
   1. Review ~/.claude/CLAUDE.md — customize the Identity section
   2. Optional: install Figma MCP for design skills
-  3. Start a new session to activate all hooks
+  3. Start a new session to load the updated memory files
 ```

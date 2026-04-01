@@ -1,12 +1,12 @@
 # dex
 
-A vault system for Claude Code. Gives Claude persistent memory, session lifecycle management, design intelligence, quality agents, and smart onboarding. Built for the design team at Razorpay.
+A vault system for Claude Code. Gives Claude persistent memory, design intelligence, quality agents, and smart onboarding. Built for the design team at Razorpay.
 
 ## Install
 
 ```
 /plugin marketplace add nawwwal/dex
-/plugin install core@nawwwal-dex       # everyone — hooks, setup, workflow
+/plugin install core@nawwwal-dex       # everyone — setup, memory, workflow
 /plugin install design@nawwwal-dex     # designers — critique, dashboard, UI review
 /plugin install tools@nawwwal-dex      # optional — research, dev, creative tools
 /dex setup
@@ -18,7 +18,7 @@ Add the marketplace once, then install the plugins you need. `/dex setup` reads 
 
 - **Compass plugin** (includes Blade MCP) — required
 - **Figma MCP** — optional, enables design skills
-- **python3**, **jq**, **node** — required by hooks
+- **python3**, **jq**, **node** — required by setup and local scripts
 
 ## What you get
 
@@ -29,17 +29,13 @@ Add the marketplace once, then install the plugins you need. `/dex setup` reads 
 | **Design** | `dashboard-design`, `critique-5f`, `design` |
 | **Thinking** | `council`, `codex`, `deep-research` |
 | **Development** | `tdd`, `react-doctor`, `agent-browser`, `agent-development` |
-| **Workflow** | `assistant`, `ops`, `today`, `switch-project`, `taskmaster` |
+| **Workflow** | `assistant`, `ops`, `today`, `switch-project` |
 | **Writing** | `writing-skills`, `beautiful-mermaid`, `generate-image` |
 | **Meta** | `dex`, `self-review-gather`, `reflect-others` |
 
 ### Agents
 
 Specialized subagents Claude spawns automatically: code reviewer, design reviewer, blade implementer, standup writer, sprint planner, animation expert, Next.js expert, GLSL reviewer, and more.
-
-### Hooks
-
-Session lifecycle hooks that fire automatically: vault health checks, session context loading, frustration detection, commit capture, skill usage tracking, session breadcrumbs.
 
 ## Memory system
 
@@ -76,7 +72,7 @@ Leave `~/.agents/` available for tools that manage their own installs there.
 
 ## For developers
 
-If you're developing dex (editing skills, agents, hooks):
+If you're developing dex (editing skills, agents, templates):
 
 **Working directory:** Always `~/dex/`.
 
