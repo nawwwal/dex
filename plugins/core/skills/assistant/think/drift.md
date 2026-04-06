@@ -3,11 +3,11 @@
 Finds what's been quietly going silent.
 
 ## Step 1: Check Projects
-Read memory/projects.md. For each project, check when it last appeared in sessions:
+Scan `~/.claude/work/` for active project slugs, then check when each last appeared in sessions:
 ```bash
-for project in agent-marketplace us-research curlec-onboarding non-blade-migration; do
+for project in $(ls ~/.claude/work/ 2>/dev/null); do
   LAST=$(ls -t ~/.claude/log/ 2>/dev/null | grep "$project" | head -1)
-  echo "$project: last session = $LAST"
+  echo "$project: last session = ${LAST:-never}"
 done
 ```
 

@@ -99,27 +99,13 @@ Quick reference:
 | `/ops prd` | Generate requirements doc |
 | `/design polish` | Written artifact quality pass |
 
-## System Hygiene (auto-check in every briefing mode)
+## #product-design-bulletin Protocol
 
-When generating any briefing, check `~/.claude/memory/health.md` for skill and memory staleness. If health.md contains STALE or NEVER USED entries, include a concise **System Hygiene** block at the end of the briefing:
+Post must include: business context, Figma link, PRD link, prototype link if exists, Blade Score (dashboard/onboarding only, NOT checkout), tags `// @Pingal @Varghese @[PM] @[EM] @[stakeholders]`, 1-2 screenshots.
 
-```
-System Hygiene
-Skills: N stale — skill1 (Xd), skill2 (never), ...
-Memory: file.md (Xd stale) → /suggested-action
-        file.md (Xd stale) → /suggested-action
-```
+Local lookup order: TASKS.md → `work/{slug}/index.md` → Slack. Never search Slack for something already in local files.
 
-Rules:
-- Only show if health.md exists and has STALE/NEVER USED items
-- Keep to 3-4 lines max — list only the top stale items
-- Append after main briefing content, not before
-- For memory files: pull from the "Suggested Action" column in health.md
-- For skills: pull from the "Skill Freshness" section in health.md
-
-## Protocols and Knowledge System
-
-**See [protocols.md](protocols.md) for:** project inventory protocol, bulletin post protocol, knowledge system reference, inline execution policy, FY27 timeline awareness, conversation style.
+After composing → send to user's own DM (U09KQAFK740) immediately. No asking.
 
 ## Core Principle
 
@@ -127,5 +113,5 @@ Act, don't suggest. Execute, don't recommend.
 
 - Never say "Want me to...?" — just do it
 - Exception: Slack messages to OTHER people — show draft first, send on "go"/"yep"
-- Sending to the user's own DM → send directly without asking (bulletin drafts, standup drafts, EOD recaps)
-- One rule above all: results appear in THIS response, not "later" or "in background"
+- Sending to the user's own DM → send directly without asking
+- Results appear in THIS response, not later

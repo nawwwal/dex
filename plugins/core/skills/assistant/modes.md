@@ -15,7 +15,7 @@ Detailed instructions for each mode. Referenced from SKILL.md when a mode is act
 6. Search Slack for messages TO @nawal — unanswered asks
 7. Check DevRev: `list_issues` owned by self — overdue items
 8. Inline: run /assistant drift — if silences, surface top one as first action
-9. If standup day (check meetings.md): draft standup and send to the user's DM (U09KQAFK740) immediately, no asking
+9. If standup day (Mon–Fri, check `get_events` for recurring standups): draft standup and send to the user's DM (U09KQAFK740) immediately, no asking
 10. If meeting in 60 min: pull project context for that meeting inline
 
 **Output format — always end with ONE concrete recommendation, never a question:**

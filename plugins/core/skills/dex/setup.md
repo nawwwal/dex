@@ -78,7 +78,7 @@ Using the template at `${CLAUDE_PLUGIN_ROOT}/templates/CLAUDE.md.template`:
 
 4. **Scaffold memory files** from `${CLAUDE_PLUGIN_ROOT}/templates/memory-scaffolds/`:
    - Copy each file to `~/.claude/memory/` if it doesn't already exist
-   - For pre-filled files (terms.md, razorpay-context.md, devrev.md, blade-taste.md, agent-onboarding.md, agent-protocol.md): copy as-is (shared Razorpay knowledge)
+   - For pre-filled files (terms.md): copy as-is (shared Razorpay knowledge)
    - For slack-channels.md: if Slack MCP was read, populate with discovered channels; otherwise copy empty template
    - For voice.md: if Slack messages were read, extract 3-5 tone examples; otherwise copy empty template
    - For goals.md: if DevRev was read, populate with discovered active issues; otherwise copy empty template

@@ -4,7 +4,7 @@ Generates a concrete day-by-day plan for the next 7 working days.
 
 ## Step 1: Load Context
 - Read memory/goals.md — current priorities and OKRs
-- Read memory/projects.md — active project status
+- QMD search for active projects (`qmd_vsearch "active project status"`)
 - Read ~/.claude/TASKS.md — all open tasks
 - Check Google Calendar (if MCP available) — events and constraints next 7 days
 - Run /think drift — what's been quiet that needs attention?

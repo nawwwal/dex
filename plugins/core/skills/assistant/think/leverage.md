@@ -5,7 +5,7 @@ Identifies where concentrated effort will compound most.
 ## Step 1: Load Goals and Status
 - Read memory/goals.md — current OKRs, promotion criteria, priorities
 - Read career/case.md — evidence gaps by competency
-- Read memory/projects.md — active projects by status
+- QMD search `work/` for active projects (`qmd_vsearch "active project status"`)
 - Read memory/patterns.md — repeated patterns (skills you've already developed)
 
 ## Step 2: Map Current Investment
