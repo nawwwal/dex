@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-`dex` is a Claude Code plugin published as `nawwwal/dex` on the plugin marketplace. It ships three installable plugins — `core`, `design`, `tools` — each containing skills, agents, and templates that extend Claude Code with persistent memory, onboarding, and design intelligence.
+`dex` is a Claude/Codex plugin published as `nawwwal/dex` on the plugin marketplace. It ships three installable plugins — `core`, `design`, `tools` — each containing skills, agents, and templates that extend the assistants with persistent memory, onboarding, and design intelligence.
 
 ## Development
 
@@ -14,13 +14,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Releasing
 
-```
-/dex release           # patch bump
-/dex release minor
-/dex release major
+```text
+/dex release core
+/dex release design minor
+/dex release tools major
 ```
 
-The release skill bumps versions across **four files** (`plugins/{core,design,tools}/.claude-plugin/plugin.json` and root `.claude-plugin/marketplace.json`), commits, tags, and pushes. Must be on `main` with a clean worktree.
+The release skill bumps the selected plugin version across the plugin's Claude and Codex manifests plus the Claude marketplace metadata, then commits, tags, and pushes. Must be on `main` with a clean worktree.
 
 ## Plugin architecture
 
@@ -28,6 +28,7 @@ The release skill bumps versions across **four files** (`plugins/{core,design,to
 plugins/
 ├── core/                    # Memory scaffolding, core skills, templates
 │   ├── .claude-plugin/plugin.json
+│   ├── .codex-plugin/plugin.json
 │   ├── skills/              # SKILL.md files (one dir per skill)
 │   ├── agents/              # Agent .md files
 │   └── templates/           # CLAUDE.md template + memory scaffolds
@@ -38,7 +39,7 @@ plugins/
     └── skills/
 ```
 
-Each plugin's `plugin.json` contains `name` and `version`. The root `.claude-plugin/marketplace.json` mirrors all three versions — always keep them in sync.
+Each plugin ships separate Claude and Codex manifests. The root `.claude-plugin/marketplace.json` mirrors published Claude plugin versions, and `.agents/plugins/marketplace.json` exposes the same plugin folders as a repo-local Codex marketplace.
 
 ## Adding a skill
 

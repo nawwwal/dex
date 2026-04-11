@@ -1,0 +1,16 @@
+{
+  "name": "tools",
+  "version": "2.2.0",
+  "description": "Research, dev tools, creative tools, writing",
+  "author": {
+    "name": "Aditya Nawal"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Dex Tools",
+    "shortDescription": "Research, dev tools, creative tools, writing",
+    "longDescription": "Dex tools for research, developer workflows, creative work, and writing support.",
+    "developerName": "Aditya Nawal",
+    "category": "Productivity"
+  }
+}

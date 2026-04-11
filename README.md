@@ -14,6 +14,8 @@ A vault system for Claude Code. Gives Claude persistent memory, design intellige
 
 Add the marketplace once, then install the plugins you need. `/dex setup` reads your Slack and DevRev (with your permission) to generate a personalized `CLAUDE.md` and scaffold your memory structure.
 
+For local Codex development in this repo, use the repo marketplace at `.agents/plugins/marketplace.json` and restart Codex after changing plugin files.
+
 ## Prerequisites
 
 - **Compass plugin** (includes Blade MCP) — required
@@ -83,7 +85,7 @@ If you're developing dex (editing skills, agents, templates):
 Release maintenance is project-local, not part of the shipped plugin.
 
 - The installed plugin keeps only the user-facing `dex setup` workflow.
-- Repo-maintainer workflows like release operations live only in `.claude/skills/dex/` and `.codex/skills/dex/`.
+- Repo-maintainer workflows like release operations live only in `.claude/skills/dex/` and `.agents/skills/dex/`.
 - This keeps the shipped plugin focused on usable end-user skills while leaving project maintenance local to this repository.
 
 When you're ready to push updates to teammates:

@@ -4,9 +4,9 @@ Release one dex marketplace plugin with a version bump, commit, tag, push, and G
 
 ## Usage
 
-`/dex release tools` — patch bump `tools`
-`/dex release tools minor` — minor bump `tools`
-`/dex release tools major` — major bump `tools`
+`/dex release core` - patch bump `core`
+`/dex release design minor` - minor bump `design`
+`/dex release tools major` - major bump `tools`
 
 Supported plugins: `core`, `design`, `tools`
 

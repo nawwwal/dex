@@ -1,0 +1,16 @@
+{
+  "name": "design",
+  "version": "2.2.0",
+  "description": "Design critique, dashboard patterns, UI review, motion",
+  "author": {
+    "name": "Aditya Nawal"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Dex Design",
+    "shortDescription": "Design critique, dashboard patterns, UI review, motion",
+    "longDescription": "Dex design workflows for critique, UI review, dashboard work, and motion guidance.",
+    "developerName": "Aditya Nawal",
+    "category": "Design"
+  }
+}
