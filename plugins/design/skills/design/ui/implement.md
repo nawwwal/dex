@@ -67,6 +67,46 @@ Trigger blade-implementer agent when:
 - No hardcoded hex colors, pixel spacing, or magic numbers
 - Remove unused imports before reporting done
 
+## Blade Score Gate (Mode A — always run after implementation)
+
+After all Blade implementation work is done, check coverage and iterate until ≥ 90%.
+
+### 1. Measure
+
+Invoke the `blade-score` skill with the dev server URL:
+
+```
+Skill("blade-score", "<dev-server-url-for-this-page> --json --threshold 90")
+```
+
+If exit 0 (coverage ≥ 90%) → implementation is complete.
+
+### 2. Identify gaps (if below 90%)
+
+Inspect the component file(s) just written. Find native HTML elements (`<div>`, `<span>`, `<p>`, `<button>`, `<input>`, etc.) that a Blade component could replace.
+
+### 3. Spawn improvement subagents
+
+Spawn one `Agent` per distinct UI area needing improvement. Each subagent receives:
+- The component file(s) to fix
+- Current blade-score JSON (coverage, totalNodes, bladeNodes)
+- Task: replace non-Blade HTML elements with their Blade equivalents
+
+**Subagent workflow:**
+1. For each non-Blade element in scope, call `get_blade_component_docs([candidates])` to confirm the right Blade component and its props
+2. Call `get_blade_general_docs("box")` for any layout `<div>` (Box replaces most layout divs)
+3. Call `get_blade_pattern_docs` if the element is part of a known Blade pattern
+4. Replace the element, update imports, remove unused HTML elements
+5. No hardcoded hex/spacing — use Blade tokens throughout
+
+### 4. Re-measure and loop
+
+After subagents complete, re-run the blade-score skill. Repeat steps 2–4 until:
+- Coverage ≥ 90% (exit 0), or
+- Two consecutive runs return the same score (no further Blade improvement possible — log final score and stop)
+
+---
+
 ## Output
 
 ```
@@ -88,4 +128,7 @@ Mode: Blade / Generic
 - [x] Spacing correct
 - [x] Typography correct
 - [ ] Loading state — not in Figma, scaffolded with Spinner
+
+### Blade Score (Mode A)
+- Final coverage: 93.4% (PASS ≥ 90%)
 ```
