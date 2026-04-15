@@ -1,7 +1,7 @@
 {
   "name": "core",
   "description": "Memory scaffolding, core workflow, and onboarding",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "author": {
     "name": "Aditya Nawal"
   }
