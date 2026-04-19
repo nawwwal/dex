@@ -23,7 +23,7 @@ If reviewing a live page:
 
 For .tsx/.jsx files:
 - Invoke `design-reviewer` agent (it has a full review protocol)
-- In Blade mode: also check Blade compliance using `blade-reviewer` agent
+- In Blade mode: also run `/blade-score` skill for Blade compliance scoring
 - Check WCAG basics (chains to a11y.md automatically in Step 6)
 
 ## Step 4: Animation Craft Review

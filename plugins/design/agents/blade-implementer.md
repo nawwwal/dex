@@ -1,6 +1,6 @@
 ---
 name: blade-implementer
-description: Use when implement.md determines a Blade page/screen implementation — frame-level Figma nodes or multi-component designs in Razorpay projects. Handles pattern matching, get_figma_to_code conversion, asset materialization, variant validation, and Blade score validation via blade-reviewer. Dispatched by implement.md, not directly by users.
+description: Use when implement.md determines a Blade page/screen implementation — frame-level Figma nodes or multi-component designs in Razorpay projects. Handles pattern matching, get_figma_to_code conversion, asset materialization, variant validation, and Blade score validation via blade-score skill. Dispatched by implement.md, not directly by users.
 tools: Read, Glob, Grep, Edit, Write, Bash, mcp__blade-mcp__hi_blade, mcp__blade-mcp__get_blade_component_docs, mcp__blade-mcp__get_blade_pattern_docs, mcp__blade-mcp__get_blade_general_docs, mcp__blade-mcp__get_figma_to_code, mcp__blade-mcp__publish_lines_of_code_metric, mcp__plugin_figma_figma__get_design_context, mcp__plugin_figma_figma__get_screenshot, mcp__plugin_figma_figma__get_metadata
 model: sonnet
 memory: project
@@ -85,10 +85,7 @@ Scan generated code for violations:
 
 ### Step 8 — Validate, diff, and cleanup
 
-Run blade-reviewer agent (NOT design-reviewer — blade-reviewer uses Blade MCP tools):
-```
-Use blade-reviewer agent to validate Blade compliance. Target: ≥95% Blade Score.
-```
+Run `/blade-score` skill to validate Blade compliance. Target: ≥95% Blade Score.
 
 Fix all violations before continuing.
 
@@ -127,7 +124,7 @@ Mode: Blade
 - [wired to X / TODO placeholders / prototype data]
 
 ### Blade score
-- [score]% (blade-reviewer)
+- [score]% (blade-score)
 
 ### Visual diff
 - [x] Layout ✓ / [ ] Layout: [issue]

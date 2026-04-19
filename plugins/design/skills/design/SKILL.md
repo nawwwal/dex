@@ -1,7 +1,7 @@
 ---
 name: design
 description: "Design review, a11y, UI implementation, motion, shader, interface polish, archaeology, prototypes, case studies."
-argument-hint: "[review | a11y | implement | enhance | typeset | normalize | motion | shader | archaeology | prototype | case]"
+argument-hint: "[review | a11y | implement | enhance | harden | typeset | clarify | normalize | motion | shader | archaeology | prototype | case | context | distill]"
 allowed-tools: Read, Write, Bash, Grep, Glob, Skill, Agent, Edit
 ---
 
@@ -22,7 +22,7 @@ Classify intent from the action verb, then load the matching sub-file. First mat
 ### ANALYZE routes
 
 **Design Review + Accessibility**
-Triggers: "review", "critique", "design feedback", "annotate", "check the design", "feels off"
+Triggers: "review", "critique", "design feedback", "annotate", "check the design"
 Chain: `$CLAUDE_SKILL_DIR/ui/review.md` → `$CLAUDE_SKILL_DIR/ui/a11y.md` [auto-chains]
 
 **Accessibility Only**
@@ -60,6 +60,10 @@ Chain: `$CLAUDE_SKILL_DIR/ui/enhance.md`
 Triggers: "typeset", "typography", "type scale", "font", "font smoothing", "tabular numbers", "tabular-nums", "text-wrap", "text balance", "text pretty"
 Chain: `$CLAUDE_SKILL_DIR/ui/typeset.md`
 
+**Clarify**
+Triggers: "clarify", "UX copy", "error message", "microcopy", "label text"
+Chain: `$CLAUDE_SKILL_DIR/ui/clarify.md`
+
 **Normalize / Arrange**
 Triggers: "normalize", "arrange", "clean up layout"
 Chain: `$CLAUDE_SKILL_DIR/ui/normalize.md` → `$CLAUDE_SKILL_DIR/ui/arrange.md`
@@ -82,6 +86,10 @@ Chain: `$CLAUDE_SKILL_DIR/ui/before.md` → `$CLAUDE_SKILL_DIR/ui/case.md`
 **Prototype**
 Triggers: "prototype", "make interactive", "build playground"
 Chain: `$CLAUDE_SKILL_DIR/ui/prototype.md`
+
+**Design Context**
+Triggers: "design context", "setup design", "DESIGN.md"
+Chain: `$CLAUDE_SKILL_DIR/ui/context.md`
 
 ### SPECIALTY routes
 
