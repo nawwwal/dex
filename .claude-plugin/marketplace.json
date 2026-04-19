@@ -11,19 +11,19 @@
       "name": "core",
       "source": "./plugins/core",
       "description": "Memory scaffolding, core workflow, and onboarding",
-      "version": "2.6.1"
+      "version": "2.6.2"
     },
     {
       "name": "design",
       "source": "./plugins/design",
       "description": "Design critique, dashboard patterns, UI review, motion, divergence",
-      "version": "2.5.0"
+      "version": "2.6.0"
     },
     {
       "name": "tools",
       "source": "./plugins/tools",
       "description": "Research, dev tools, creative tools, writing",
-      "version": "2.3.0"
+      "version": "2.4.0"
     }
   ]
 }
