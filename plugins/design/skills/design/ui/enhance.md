@@ -6,7 +6,7 @@ Directional enhancement: polish, bolder, quieter, colorize, or add delight. Dete
 
 | User says | Sub-mode |
 |-----------|----------|
-| "polish", "pre-ship", "final pass", "tighten" | **Polish** |
+| "polish", "pre-ship", "final pass", "tighten", "make it feel better", "visual polish", "feels off" | **Polish** |
 | "bolder", "more impact", "flat", "boring", "timid" | **Bolder** |
 | "quieter", "too loud", "too heavy", "overwhelming" | **Quieter** |
 | "colorize", "add color", "monochromatic", "flat colors" | **Colorize** |
@@ -28,6 +28,11 @@ Apply before shipping. Checks states, transitions, edge cases.
 - For animation timing, easing, and GPU rules — load /design motion
 - [ ] No autoplaying media, no janky scroll, no layout shift on load
 - [ ] Edge cases: empty, 0 items, 1 item, 100+ items, very long text, very short text
+- [ ] Nested rounded surfaces use concentric radius math
+- [ ] Icons are optically aligned, not just mathematically centered
+- [ ] Buttons, cards, and containers use shadows for depth rather than borders where appropriate
+- [ ] Images use subtle neutral outlines, not tinted ones
+- [ ] Interactive targets meet the hit-area floor from `ui/a11y.md`
 
 Anti-AI-slop: see anti-patterns.md for the full detection list (glassmorphism, cyan/purple gradients, bounce easing, etc.)
 
@@ -115,6 +120,18 @@ Add moments that make the product feel alive.
 ### Concentric Border Radius
 Nested elements: outer-radius = inner-radius + padding. Example: if inner element has 8px border-radius and sits inside a container with 16px padding, the container should have 24px border-radius.
 
+Use strict concentric math when surfaces are visually nested and close together. If spacing grows beyond roughly `24px`, treat the two layers as separate surfaces instead of forcing radius math that no longer reads as related.
+
+### Optical Alignment
+When geometric centering looks off, align optically instead.
+
+- Buttons with text + icon: make the icon-side padding about `2px` tighter than the text side
+- Play triangles and asymmetric icons usually need a slight nudge
+- Fix the SVG itself when possible; use margin or padding compensation only when the asset cannot be changed
+
+### Shadows Over Borders
+For buttons, cards, and containers that are using a border only to simulate elevation, prefer layered transparent shadows. Keep real borders for dividers, table cell boundaries, and form control outlines where separation or accessibility matters.
+
 ### Shadow System
 Layer 3+ box-shadows with decreasing opacity for realistic depth:
 
@@ -161,6 +178,30 @@ Directly transitioning `box-shadow` forces paint on every frame. Instead, animat
 
 ### Semi-transparent Borders
 Use `border: 1px solid var(--gray-a4)` — alpha-channel gray adapts to any background color (light, dark, colored). Pure solid borders need different values per theme.
+
+### Image Outlines
+Images should get a subtle outline so they sit cleanly against varied surfaces.
+
+- Light mode: `rgba(0, 0, 0, 0.1)`
+- Dark mode: `rgba(255, 255, 255, 0.1)`
+- Use pure black or pure white only. Do not use tinted neutrals such as slate, zinc, or project ink colors; they read as dirty edges against photographs
+
+Prefer `outline` with an inset offset so the image dimensions do not change:
+
+```css
+img {
+  outline: 1px solid rgba(0, 0, 0, 0.1);
+  outline-offset: -1px;
+}
+```
+
+### Hit Areas
+Micro-polish never overrides accessibility floors.
+
+- Default target size is `44x44px`
+- If the visible affordance is smaller, extend the hit area with a pseudo-element
+- A constrained fallback of `40x40px` is acceptable only when layout makes `44x44px` impossible
+- Never let two interactive hit areas overlap
 
 ### Button Shadow Anatomy (6 layers)
 A polished button typically has:

@@ -56,4 +56,4 @@ Score: X/100. Starts at 100, floor is 0. Critical: -15 each. Warning: -8 each.
 ## Step 6: Auto-chain to A11y
 
 "Running accessibility check now..."
-→ Read and follow a11y.md
+→ Read and follow `ui/a11y.md`

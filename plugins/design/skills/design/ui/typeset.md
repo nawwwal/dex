@@ -45,6 +45,31 @@ Check `get_blade_component_docs("Text,Heading,Display,Code")` for the correct Bl
 Replace hardcoded px values with rem-based CSS custom properties matching the scale in "Scale strategy" above:
 `--text-xs: 0.75rem; --text-sm: 0.875rem; --text-base: 1rem; --text-lg: 1.125rem; --text-xl: 1.25rem; --text-2xl: 1.5rem; --text-3xl: 2rem`
 
+## Micro-Typography Details
+
+### Text Wrapping
+- Use `text-wrap: balance` on headings, titles, and other short blocks where even line distribution matters
+- Use `text-wrap: pretty` for short-to-medium body copy, captions, list items, and descriptions
+- Skip both on long body copy, code blocks, and preformatted content
+- Browser support is intentionally bounded: `balance` is best on short text, not long paragraphs
+
+### Font Smoothing
+- Apply `-webkit-font-smoothing: antialiased` and `-moz-osx-font-smoothing: grayscale` once at the root layout
+- Do not sprinkle font smoothing per component; inconsistent rendering is worse than none
+- Safe to apply globally: non-macOS platforms ignore it
+
+### Tabular Numbers
+- Use `font-variant-numeric: tabular-nums` for dynamic numbers: counters, timers, prices, dashboards, and numeric table columns
+- Skip it for prose, phone numbers, zip codes, version strings, and decorative display numerals
+- Verify the chosen font after enabling it. Some fonts, including Inter, visually widen the `1`, which is usually correct for alignment but still worth checking
+
+### Review Checklist
+- [ ] Heading wrapping uses `text-wrap: balance`
+- [ ] Short body copy uses `text-wrap: pretty`
+- [ ] Root layout applies font smoothing once
+- [ ] Dynamic numbers use `tabular-nums`
+- [ ] Paragraphs keep readable line length (`max-width: 65ch`)
+
 ## Output
 
 ```
@@ -75,13 +100,14 @@ Replace hardcoded px values with rem-based CSS custom properties matching the sc
 - Leave `font-optical-sizing: auto` — never override (browser optimizes for size automatically)
 
 ### Rendering
-- `-webkit-font-smoothing: antialiased` on retina displays for crisp rendering
+- `-webkit-font-smoothing: antialiased` at the root layout for crisp rendering
+- `-moz-osx-font-smoothing: grayscale` at the root layout for macOS consistency
 - `font-synthesis: none` for display/icon fonts — prevents browser from synthesizing fake bold/italic
 - `font-display: swap` for web fonts — text visible during font load
 
 ### Line Wrapping
-- `text-wrap: balance` on headings — eliminates uneven line breaks in multi-line headings
-- `text-wrap: pretty` on body text — eliminates orphaned single words on the last line
+- `text-wrap: balance` on headings and short text blocks — do not use it on long paragraphs
+- `text-wrap: pretty` on short-to-medium body text — eliminates orphaned single words on the last line
 - `text-align: justify` requires `hyphens: auto` — without hyphens, creates river spacing
 
 ### Variable Fonts
