@@ -117,6 +117,11 @@ What non-software domain does it borrow from?
 | Library | Browse, serendipity, quiet focus |
 | Emergency room | Triage, severity, rapid action |
 | Garden | Tend, grow, patience, seasonal rhythm |
+| Air traffic control | Real-time multi-agent coordination, zero tolerance for error, radar/inference |
+| Jazz ensemble | Improvisation within structure, listening, riffing on shared themes |
+| Greenhouse | Controlled environment, nurturing growth, monitoring conditions, micro-climate |
+| Auction house | Revealed preferences, time pressure, competitive bidding, reserve price |
+| Triage nurse | Rapid assessment, ruthless prioritization, resource-constrained, severity-based |
 
 ### 12. Constraint Axis
 What artificial constraint reshapes the design?
@@ -129,6 +134,24 @@ What artificial constraint reshapes the design?
 - Assumes users are anxious and need reassurance
 - Must feel premium without looking luxurious
 - Works on a watch / in a car / eyes-free
+
+### 13. Emotional Posture Axis
+What is the product's emotional register?
+
+| Pole A | Pole B |
+|--------|--------|
+| Functional / utilitarian (tool, no personality) | Emotionally resonant / identity-forming (users feel something, product reflects who they are) |
+
+Sub-positions: invisible utility → reliable tool → trusted companion → identity expression → emotional mirror → ritual/sacred object
+
+### 14. Adaptability Axis
+Does the product learn and change?
+
+| Pole A | Pole B |
+|--------|--------|
+| Static (same for everyone, every time) | Deeply personalized (learns, adapts, evolves per user) |
+
+Sub-positions: identical for all → configurable → preference-learning → behavior-predicting → context-aware → fully autonomous adaptation
 
 ---
 
@@ -216,6 +239,40 @@ Label which ones are likely brilliant vs likely terrible, and why.
 - one is designed for repeat daily use without becoming annoying
 ```
 
+### Frame: Persona Extremes
+```
+Redesign [problem] for 4 radically different users:
+• a power user who does this 50 times a day (speed is everything)
+• a first-timer who will never learn the interface (it must be self-evident)
+• a user in a crisis with 10 seconds (triage mode)
+• a user who actively hates this product category (prove value before asking anything)
+Each persona demands a fundamentally different mechanism, not just a different skin.
+See persona-lens.md for the full persona library.
+```
+
+### Frame: Emotion Targets
+```
+Design 6 concepts for [problem], each starting from a target emotion:
+• Relief: "the weight is lifted"
+• Mastery: "I'm getting better at this"
+• Surprise: "I didn't know that was possible"
+• Confidence: "I know I'm making the right choice"
+• Curiosity: "I want to explore more"
+• Calm: "everything is under control"
+Design backward: what product makes the user feel this within 30 seconds?
+See creative-provocations.md Technique 5 for the full emotion library.
+```
+
+### Frame: Problem Dissolution
+```
+What would make [problem] not exist?
+5 concepts that eliminate the problem rather than solve it.
+• 2 that remove the cause upstream
+• 2 that automate around it so no human is involved
+• 1 that reframes it as a symptom of something else entirely
+Some may not be software. That's fine.
+```
+
 ---
 
 ## Banned Patterns (detect and replace)
@@ -232,6 +289,8 @@ These indicate failure to diverge. If any concept matches, replace it.
 | Tab bar with 4-5 sections | Navigation ≠ concept. |
 | Chat interface without novel agent behavior | Putting a chat bubble on it is not innovation. |
 | Same concept with light/dark theme | Cosmetic, not structural. |
+| AI chatbot that answers questions about X | Putting a chat bubble on it is not innovation. Only allowed if the conversational mechanic is genuinely novel (e.g., negotiation, Socratic method, adversarial). |
+| Notification system that alerts when X | A notification is a delivery channel, not a concept. The concept is what happens after the alert. |
 
 ## Fake Novelty Detector
 
