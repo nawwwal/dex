@@ -58,7 +58,7 @@ People select tools based on the overall experience, not just functionality. Goo
 ---
 
 ## Core Rules
-- NEVER animate `width`, `height`, `top`, `left`, `margin`, `padding` — only `transform` and `opacity`
+- NEVER animate `width`, `height`, `top`, `left`, `margin`, `padding` — prefer `transform` and `opacity`; use subtle `filter` effects only when they materially improve the transition
 - NEVER exceed 300ms for interaction feedback
 - ALWAYS check `prefers-reduced-motion`
 - NEVER add `will-change` outside an active animation

@@ -1,8 +1,25 @@
 # Performance Rules & Accessibility
 
-## Only Animate transform and opacity
+## Never Use `transition: all`
 
-These properties skip layout and paint, running on the GPU. Animating `padding`, `margin`, `height`, or `width` triggers all three rendering steps and causes jank.
+Always specify the exact properties that change.
+
+```css
+.button {
+  transition-property: transform, opacity;
+  transition-duration: 150ms;
+  transition-timing-function: ease-out;
+}
+```
+
+Tailwind note:
+- `transition-transform` covers transform-related properties only
+- For multiple explicit properties, use bracket syntax such as `transition-[scale,opacity,filter]`
+- Do not use Tailwind's bare `transition` utility when you need strict control
+
+## Prefer transform and opacity
+
+These properties skip layout and paint, running on the GPU. Animating `padding`, `margin`, `height`, or `width` triggers all three rendering steps and causes jank. Subtle `filter` effects like blur are acceptable for polish when used sparingly, but they are still more expensive than plain `transform` and `opacity`.
 
 ## CSS Variables Are Inheritable — Be Careful
 
@@ -33,6 +50,27 @@ This matters when the browser is simultaneously loading content, running scripts
 ## CSS Animations Beat JS Under Load
 
 CSS animations run off the main thread. When the browser is busy loading a new page, Framer Motion animations (using `requestAnimationFrame`) drop frames. CSS animations remain smooth. Use CSS for predetermined animations; JS for dynamic, interruptible ones.
+
+## Use `will-change` Sparingly
+
+`will-change` is a last-mile performance hint, not a default styling tool.
+
+- Use it only when you notice first-frame stutter
+- Limit it to compositor-friendly properties such as `transform`, `opacity`, and `filter`
+- Never use `will-change: all`
+- Prefer applying it only around the animation window instead of permanently across the app
+
+```css
+.animated-card {
+  will-change: transform, opacity;
+}
+```
+
+```css
+.animated-card {
+  will-change: all; /* never */
+}
+```
 
 ## Use WAAPI for Programmatic CSS Animations
 
@@ -91,6 +129,6 @@ prefers-reduced-motion has three dimensions — each owned by a different file:
 
 1. **CSS animation** (this file) — transform-based motion, position animations
 2. **Audio/sound** → `motion/audio.md` — suppress audio playback when PRM is enabled
-3. **Accessibility checklist** → `ui-design/a11y.md` — pointer to both
+3. **Accessibility checklist** → `ui/a11y.md` — pointer to both
 
 When `prefers-reduced-motion: reduce` is active, suppress audio feedback alongside visual motion. Motion-sensitive users frequently have auditory sensitivity as well.

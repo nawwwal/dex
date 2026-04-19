@@ -2,7 +2,7 @@
 
 ## Buttons Must Feel Responsive
 
-Add `transform: scale(0.97)` on `:active`. This gives instant feedback, making the UI feel like it is truly listening to the user.
+Add `transform: scale(0.96)` on `:active`. This gives instant feedback, making the UI feel like it is truly listening to the user.
 
 ```css
 .button {
@@ -10,11 +10,11 @@ Add `transform: scale(0.97)` on `:active`. This gives instant feedback, making t
 }
 
 .button:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
 }
 ```
 
-This applies to any pressable element. The scale should be subtle (0.95-0.98).
+This applies to any pressable element. The scale should be subtle, and `0.96` is the default. Avoid anything below `0.95`; it feels exaggerated. If motion would be distracting, provide a static mode or skip the scale entirely.
 
 ## Never Animate from scale(0)
 
@@ -82,7 +82,7 @@ CSS transitions can be interrupted and retargeted mid-animation. Keyframes resta
 ```css
 /* Interruptible — good for UI */
 .toast {
-  transition: transform 400ms ease;
+  transition: transform 240ms ease-out;
 }
 
 /* Not interruptible — avoid for dynamic UI */
@@ -104,7 +104,7 @@ When a crossfade between two states feels off despite trying different easings a
 }
 
 .button:active {
-  transform: scale(0.97);
+  transform: scale(0.96);
 }
 
 .button-content {
@@ -118,6 +118,63 @@ When a crossfade between two states feels off despite trying different easings a
 ```
 
 Keep blur under 20px. Heavy blur is expensive, especially in Safari.
+
+## Split and Stagger Enter Animations
+
+Avoid animating a whole container as one slab. Split the content into semantic groups and stagger them.
+
+- Title, description, actions, and media should usually animate separately
+- Default stagger is about `80-100ms`
+- Use `opacity`, `translate`, and subtle `blur(4px)` for entry
+
+```tsx
+<motion.div
+  initial="hidden"
+  animate="visible"
+  variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+>
+  <motion.h1 variants={fadeUp} />
+  <motion.p variants={fadeUp} />
+  <motion.div variants={fadeUp} />
+</motion.div>
+```
+
+## Exit Animations Should Be Subtle
+
+Exits should preserve context without fighting for attention.
+
+- Prefer a small fixed `translateY` or `translateX`
+- Exit should usually be faster than enter
+- Use `ease-out`, not `ease-in`, so the element gets out of the way quickly
+
+```tsx
+<motion.div
+  exit={{
+    opacity: 0,
+    y: -12,
+    filter: "blur(4px)",
+    transition: { duration: 0.15, ease: "easeOut" },
+  }}
+/>
+```
+
+## Contextual Icon Animations
+
+When icons appear or swap based on hover or state, animate them with `opacity`, `scale`, and `blur` instead of toggling visibility.
+
+- Default values: `scale: 0.25 -> 1`, `opacity: 0 -> 1`, `filter: blur(4px) -> blur(0px)`
+- Motion libraries: use `transition: { type: "spring", duration: 0.3, bounce: 0 }`
+- CSS-only fallback: keep both icons in the DOM, absolutely stack one, and cross-fade with `cubic-bezier(0.2, 0, 0, 1)`
+
+## Skip First-Paint Exit/Enter Noise
+
+When an element is already present in the default UI state, prevent `AnimatePresence` from animating it on the initial render.
+
+```tsx
+<AnimatePresence initial={false}>
+  {isOpen ? <Panel /> : null}
+</AnimatePresence>
+```
 
 ## @starting-style for CSS-Native Entry Animation
 
@@ -227,7 +284,7 @@ Duplicate the tab list. Style the copy as "active" (different background, differ
 
 ### Hold-to-Delete Pattern
 
-Use `clip-path: inset(0 100% 0 0)` on a colored overlay. On `:active`, transition to `inset(0 0 0 0)` over 2s with linear timing. On release, snap back with 200ms ease-out. Add `scale(0.97)` on the button for press feedback.
+Use `clip-path: inset(0 100% 0 0)` on a colored overlay. On `:active`, transition to `inset(0 0 0 0)` over 2s with linear timing. On release, snap back with 200ms ease-out. Add `scale(0.96)` on the button for press feedback.
 
 ### Image Reveals on Scroll
 
