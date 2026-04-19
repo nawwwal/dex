@@ -22,9 +22,9 @@ Prompt: `Map the blast radius of changing the core hook lifecycle.`
 
 ## Example 3
 
-Prompt: `Find inconsistencies in our memory scaffolding.`
+Prompt: `How do other design systems handle dark mode token architecture?`
 
-- mode: `vault`
+- mode: `research`
 - depth: `standard`
 - goal: `findings`
 - ask questions: `no`
@@ -40,12 +40,12 @@ Prompt: `Review this workflow and surface hidden bottlenecks.`
 
 ## Example 5
 
-Prompt: `What are we not thinking about in this plugin architecture?`
+Prompt: `Should we use Zustand or Jotai for this state management?`
 
-- mode: `system`
-- depth: `deep`
-- goal: `risks`
-- ask questions: `maybe 1 question if scope is unclear`
+- mode: `opinion`
+- depth: `standard`
+- goal: `decision`
+- ask questions: `no`
 
 ## Example 6
 
@@ -64,3 +64,30 @@ Prompt: `Take a look at this and tell me what you think.`
 - depth: `standard`
 - goal: `findings`
 - ask questions: `yes, ask up to 3 routing questions`
+
+## Example 8
+
+Prompt: `What are the best practices for designing webhook retry systems?`
+
+- mode: `research`
+- depth: `standard`
+- goal: `findings`
+- ask questions: `no`
+
+## Example 9
+
+Prompt: `I'm thinking of splitting this monolith. Get me different expert perspectives.`
+
+- mode: `opinion`
+- depth: `deep`
+- goal: `decision`
+- ask questions: `maybe 1 to clarify which monolith`
+
+## Example 10
+
+Prompt: `Compare how Stripe, Razorpay, and Adyen handle payment retries.`
+
+- mode: `research`
+- depth: `deep`
+- goal: `findings`
+- ask questions: `no`

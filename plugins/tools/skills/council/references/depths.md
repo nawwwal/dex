@@ -69,12 +69,34 @@ Required agents:
 
 Prefer breadth with discipline. Do not pad the council with low-signal variants of the same question.
 
+## Mode-specific agent guidance
+
+### Research mode agents
+
+- Give every research agent access to `WebSearch` and `WebFetch` tools.
+- Assign each agent a **distinct search angle** (landscape, deep-dive, competitive, contrarian). Do not have multiple agents searching the same thing.
+- Instruct agents to **cite sources** with URLs or file paths for every finding.
+- Instruct agents to **rate confidence** per finding (well-documented / single-source / inference).
+
+### Opinion mode agents
+
+- Brief each agent with a **specific expert persona** from the persona library in `modes/opinion.md`.
+- Each persona prompt should state: role, focus area, natural skepticism, and what they value.
+- For debate format: spawn exactly 2 agents with opposing positions + require each to steel-man the other side before arguing their own.
+- Instruct opinion agents to **state their assumptions** before giving their assessment.
+
+### Code / System / Workflow agents
+
+- Give agents `Read`, `Grep`, `Glob`, `Bash` tools for code exploration.
+- Ground every finding in a specific file path or artifact.
+- For system mode, agents may need broader exploration permissions across plugin boundaries.
+
 ## Shared agent return contract
 
 Tell every agent to return:
 
 - `Findings:` concrete bullets only
-- `Evidence:` file paths, artifacts, or source anchors
+- `Evidence:` file paths, URLs, artifacts, or source anchors
 - `Confidence:` `high`, `medium`, or `low`
 - `Open questions:` unresolved unknowns
 - `Next move:` one recommended follow-up
@@ -106,6 +128,29 @@ Return:
 - Next move
 
 Do not describe your plan. Do the investigation.
+```
+
+### Persona-enhanced skeleton (for opinion mode)
+
+```text
+You are a [ROLE] with [EXPERIENCE LEVEL] experience.
+You focus on [SPECIALTY] and are naturally skeptical of [ANTI-PATTERN].
+You value [VALUE] over [COUNTER-VALUE].
+
+You are being consulted on: [TOPIC]
+
+Context:
+[DECISION/QUESTION DETAILS]
+
+Give your honest expert assessment. State your assumptions first.
+Then give your position. Then state what evidence would change your mind.
+
+Return:
+- Position (2-3 sentences)
+- Key concern (the single thing you'd flag)
+- Assumptions you're making
+- What would change your mind
+- Confidence: high/medium/low
 ```
 
 ## Failure handling

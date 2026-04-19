@@ -23,7 +23,8 @@ Prefer structured multiple-choice questions over open-ended prompts.
 Use when `mode` is unclear.
 
 - `Code area`
-- `Vault / docs / memory`
+- `Research topic (gathering external information)`
+- `Expert opinions on a decision`
 - `System / architecture / integration`
 - `Workflow / process`
 
@@ -52,6 +53,7 @@ Use only when the user has a very specific downstream need.
 - `Risk map`
 - `Blind-spot review`
 - `Decision memo`
+- `Research summary`
 
 ## Output Mapping
 
@@ -74,6 +76,8 @@ If the user declines to answer or stays vague:
 
 - `mode=system` for broad cross-cutting repo questions
 - `mode=code` for clearly implementation-local questions
+- `mode=research` for questions about external information or best practices
+- `mode=opinion` for questions seeking perspectives or recommendations
 - `depth=standard`
 - `goal=findings`
 

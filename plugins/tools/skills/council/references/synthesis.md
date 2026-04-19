@@ -10,7 +10,7 @@ Synthesize the tension between lenses, not just the inventory of observations.
 
 ```markdown
 # Council Report: [TOPIC]
-*[depth] council · [date]*
+*[depth] council · [mode] · [date]*
 
 ## Top 3 Takeaways
 - ...
@@ -90,3 +90,26 @@ Adjust the report emphasis by `goal`:
 - `risks`: emphasize failure modes, fragility, and blast radius
 - `decision`: emphasize tradeoffs, disagreements, and recommendation logic
 - `actions`: emphasize sequence, priorities, and low-regret moves
+
+## Mode-specific synthesis
+
+### Research mode
+
+- Lead with the answer to the research question, not the research process.
+- Distinguish well-supported findings (2+ sources) from single-source leads.
+- Flag information gaps: what you searched for but couldn't find.
+- Rate source quality for key claims.
+- End with: "What we're confident about / What needs more investigation."
+
+### Opinion mode
+
+- Lead with the consensus (if any) across expert personas.
+- Present each expert's core position in 2-3 sentences, not full essays.
+- Highlight the crux of any disagreement: what specific claim or assumption do experts diverge on?
+- If debate format was used, state which side had the stronger evidence.
+- End with: the recommendation and what assumption, if proven wrong, would change it.
+
+### Code / System / Workflow modes
+
+- Follow the standard report structure above.
+- Ground findings in specific files, lines, or artifacts.

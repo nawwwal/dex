@@ -1,12 +1,12 @@
 ---
 name: council
-description: "Multi-angle investigation across code, vault, systems, and workflows. Use when you need an audit, blind-spot review, dependency map, inconsistency hunt, architecture investigation, workflow fragility review, risk review, or a 'what are we missing?' pass."
+description: "Multi-agent research, investigation, and expert opinion engine. Use when you need parallel research on a topic, multiple expert perspectives, an audit, blind-spot review, dependency map, architecture investigation, or a 'what are we missing?' pass. Spawns subagents with distinct lenses and synthesizes their findings."
 disable-model-invocation: true
-argument-hint: "[topic] [--mode auto|code|vault|system|workflow] [--depth quick|standard|deep] [--goal findings|risks|decision|actions]"
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent, AskUserQuestion, mcp__qmd__query, mcp__qmd__vsearch, mcp__qmd__search
+argument-hint: "[topic] [--mode auto|code|research|opinion|system|workflow] [--depth quick|standard|deep] [--goal findings|risks|decision|actions]"
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Agent, AskUserQuestion, WebSearch, WebFetch
 ---
 
-# Council — Intent-Aware Multi-Agent Investigation
+# Council — Multi-Agent Research & Investigation
 
 Topic: **$ARGUMENTS**
 
@@ -28,3 +28,5 @@ Hard rules:
 - Optimize for perspective diversity, not parallel repetition.
 - Always include a devil's advocate lens and a blind-spot lens.
 - Surface contradictions, confidence, and next actions in the final report.
+- For research mode, give agents WebSearch and WebFetch tools.
+- For opinion mode, brief each agent with a specific expert persona.

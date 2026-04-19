@@ -23,9 +23,14 @@ Infer the mode without asking questions when the message is clear.
 | Mode | Strong signals |
 |---|---|
 | `code` | files, dirs, modules, APIs, tests, refactor, implementation, code review, regression |
-| `vault` | notes, docs, memory, journals, decisions, patterns, wiki, scaffolding, knowledge hygiene |
+| `research` | how do others, best practice, compare, evaluate, alternatives, state of the art, what exists, survey |
+| `opinion` | what do you think, second opinion, should we, expert view, perspectives, debate, which approach |
 | `system` | architecture, hooks, lifecycle, integrations, plugins, ownership, blast radius, cross-system behavior |
 | `workflow` | process, handoff, review flow, bottleneck, repeated churn, operating model, automation gap |
+
+Prefer `research` over `code` when the question is about external information, alternatives, or best practices rather than investigating existing code.
+
+Prefer `opinion` over `research` when the user wants perspectives on a decision rather than factual information gathering.
 
 Prefer `system` over `code` when the request spans multiple parts of the repo or asks about interactions, ownership, or lifecycle.
 
@@ -33,9 +38,9 @@ Prefer `system` over `code` when the request spans multiple parts of the repo or
 
 | Goal | Strong signals |
 |---|---|
-| `findings` | audit, investigate, analyze, map, understand, what is going on |
+| `findings` | audit, investigate, analyze, map, understand, what is going on, research |
 | `risks` | fragile, what could break, failure mode, adversarial, risk review, threat, blind spot |
-| `decision` | compare, choose, should we, which direction, recommend a path |
+| `decision` | compare, choose, should we, which direction, recommend a path, what do you think |
 | `actions` | what should we do, prioritize, next steps, fix plan, action plan |
 
 If multiple goals are implied, choose the most decision-heavy one:
@@ -47,7 +52,7 @@ If multiple goals are implied, choose the most decision-heavy one:
 |---|---|
 | `quick` | single file, single skill, narrow slice, fast contrarian pass, one immediate question |
 | `standard` | normal investigation, medium scope, moderate uncertainty |
-| `deep` | full audit, architecture review, inconsistency hunt, cross-plugin or cross-system review |
+| `deep` | full audit, architecture review, inconsistency hunt, cross-system review, comprehensive research |
 
 Bias toward `quick` when the blast radius is narrow and the user wants speed.
 Bias toward `deep` only when the topic is broad enough to justify wider fan-out.
@@ -79,6 +84,10 @@ Before spawning agents, spend 1-3 tool calls to ground the investigation:
 - identify constraints or adjacent systems
 - collect enough context to shape non-overlapping lenses
 
+For `research` mode, the reconnaissance pass should include 1-2 quick web searches to map the landscape before assigning deeper research to agents.
+
+For `opinion` mode, the reconnaissance pass should identify what the decision is, what constraints exist, and what the stakes are, so agents can be briefed with the right personas.
+
 Do not try to answer the whole question in reconnaissance.
 
 ## Step 7: Load only the selected references
@@ -99,7 +108,7 @@ After routing, store the working context in this shape:
 {
   "investigation_context": {
     "topic": "...",
-    "mode": "code|vault|system|workflow",
+    "mode": "code|research|opinion|system|workflow",
     "depth": "quick|standard|deep",
     "goal": "findings|risks|decision|actions",
     "scope_note": "...",
