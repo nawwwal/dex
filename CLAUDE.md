@@ -32,7 +32,7 @@ plugins/
 │   ├── skills/              # SKILL.md files (one dir per skill)
 │   ├── agents/              # Agent .md files
 │   └── templates/           # CLAUDE.md template + memory scaffolds
-├── design/                  # Design critique, UI review, motion, shader
+├── design/                  # Design critique, UI review, motion, divergence
 │   ├── skills/
 │   └── agents/
 └── tools/                   # Research, dev tools, creative tools

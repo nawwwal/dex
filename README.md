@@ -7,7 +7,7 @@ A vault system for Claude Code. Gives Claude persistent memory, design intellige
 ```
 /plugin marketplace add nawwwal/dex
 /plugin install core@nawwwal-dex       # everyone — setup, memory, workflow
-/plugin install design@nawwwal-dex     # designers — critique, dashboard, UI review
+/plugin install design@nawwwal-dex     # designers — critique, dashboard, UI review, divergence
 /plugin install tools@nawwwal-dex      # optional — research, dev, creative tools
 /dex setup
 ```
@@ -28,7 +28,7 @@ For local Codex development in this repo, use the repo marketplace at `.agents/p
 
 | Category | Skills |
 |---|---|
-| **Design** | `dashboard-design`, `critique-5f`, `design` |
+| **Design** | `dashboard-design`, `critique-5f`, `design`, `diverge` |
 | **Thinking** | `council`, `codex`, `deep-research` |
 | **Development** | `tdd`, `react-doctor`, `agent-browser`, `agent-development` |
 | **Workflow** | `assistant`, `ops`, `today`, `switch-project` |
