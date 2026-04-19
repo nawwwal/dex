@@ -1,7 +1,7 @@
 ---
 name: design
-description: "Design review, a11y, UI implementation, motion, shader, interface polish, archaeology, prototypes, case studies."
-argument-hint: "[review | a11y | implement | enhance | harden | typeset | clarify | normalize | motion | shader | archaeology | prototype | case | context | distill]"
+description: "Design review, a11y, UI implementation, motion, shader, interface polish, prototypes."
+argument-hint: "[review | a11y | implement | enhance | harden | typeset | clarify | normalize | motion | shader | prototype | distill]"
 allowed-tools: Read, Write, Bash, Grep, Glob, Skill, Agent, Edit
 ---
 
@@ -53,7 +53,7 @@ Triggers: "harden", "edge cases", "error states", "loading states"
 Chain: `$CLAUDE_SKILL_DIR/ui/harden.md`
 
 **Enhance**
-Triggers: "enhance", "improve", "level up", "make it feel better", "feel better", "visual polish", "UI polish", "hover state", "micro-interaction", "press feedback", "optical alignment", "border radius", "image outline", "box shadow", "feels off"
+Triggers: "enhance", "improve", "level up", "make it feel better", "feel better", "visual polish", "UI polish", "press feedback", "optical alignment", "border radius", "image outline", "box shadow", "feels off"
 Chain: `$CLAUDE_SKILL_DIR/ui/enhance.md`
 
 **Typeset**
@@ -75,21 +75,9 @@ Chain: `elements-of-style` skill (via Skill tool)
 
 ### CONTEXT routes
 
-**Archaeology**
-Triggers: "before I start on X", "what do we know about X", "prior decisions"
-Chain: `$CLAUDE_SKILL_DIR/ui/before.md`
-
-**Case Study**
-Triggers: "case study", "portfolio piece", "promotion narrative"
-Chain: `$CLAUDE_SKILL_DIR/ui/before.md` → `$CLAUDE_SKILL_DIR/ui/case.md`
-
 **Prototype**
 Triggers: "prototype", "make interactive", "build playground"
 Chain: `$CLAUDE_SKILL_DIR/ui/prototype.md`
-
-**Design Context**
-Triggers: "design context", "setup design", "DESIGN.md"
-Chain: `$CLAUDE_SKILL_DIR/ui/context.md`
 
 ### SPECIALTY routes
 
@@ -135,4 +123,4 @@ Chain: `$CLAUDE_SKILL_DIR/ui/distill.md`
 
 ### COMPREHENSIVE
 Triggers: "full design review", "comprehensive audit", "everything"
-Chain: `$CLAUDE_SKILL_DIR/ui/before.md` → `$CLAUDE_SKILL_DIR/ui/review.md` → `$CLAUDE_SKILL_DIR/ui/a11y.md` → `$CLAUDE_SKILL_DIR/ui/case.md`
+Chain: `$CLAUDE_SKILL_DIR/ui/review.md` → `$CLAUDE_SKILL_DIR/ui/a11y.md`
