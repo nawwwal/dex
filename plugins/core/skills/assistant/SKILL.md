@@ -16,7 +16,7 @@ Act, don't suggest. Results in THIS response, not later. Never say "Want me to..
 ```bash
 date +"%I:%M %p IST, %A %B %d %Y"
 ls ~/.claude/log/ | grep "^$(date +%Y-%m-%d)" | grep -v eod | grep -v compact | grep "\.md$" | wc -l
-python3 -c "from datetime import date; d=(date(2026,3,5)-date.today()).days; print(str(d)+' days' if d>0 else 'on leave')"
+cat ~/.claude/next-leave.txt 2>/dev/null | xargs -I{} python3 -c "from datetime import date; d=(date.fromisoformat('{}')-date.today()).days; print(str(d)+' days to leave' if d>0 else 'on leave')" 2>/dev/null || echo "no leave scheduled"
 grep -c "^\- \[ \]" ~/.claude/TASKS.md 2>/dev/null || echo "?"
 grep "^\- \[ \]" ~/.claude/TASKS.md 2>/dev/null | head -3
 ```

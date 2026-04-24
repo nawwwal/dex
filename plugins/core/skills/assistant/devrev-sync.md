@@ -15,6 +15,9 @@ slack_mention_pattern: "<@U09KQAFK740"
 default_part: don:core:dvrv-in-1:devo/2sRI6Hepzz:product/31  # PROD-31 "Design" — fallback for unmatched tasks
 task_type: Design
 timezone: Asia/Kolkata
+
+# Known project parts (high-confidence routing)
+agent_studio_design: don:core:dvrv-in-1:devo/2sRI6Hepzz:enhancement/18008  # ENH-18008 "M2: Launch 100 Merchants" — all Agent Studio Phase 2 design issues
 ```
 
 ## Stage IDs
@@ -84,6 +87,10 @@ For each action item from Slack, determine the correct DevRev part:
 
 1. **Channel-based resolution:** Map Slack channels to known parts. Build this mapping from the user's existing issues — check which parts their issues are under and which Slack channels those projects use.
 
+   Known mappings (use these before searching):
+   - Agent Studio / Nexus / merchant journey / design sprint → ENH-18008 (`agent_studio_design`)
+   - Generic design work, decks, misc → PROD-31 (`default_part`)
+
 2. **Keyword-based resolution:** Use `hybrid_search` with namespace "part" to find matching enhancements:
    ```
    hybrid_search query: "{action item title} {channel context}" namespace: "part"
@@ -124,9 +131,12 @@ create_issue:
   title: {concise title from Slack}
   applies_to_part: {resolved part DON ID}
   owned_by: [self]
+  subtype: task                         # always task, not story — gives access to estimated_effort field
   sprint: {resolved sprint ID}
-  target_start_date: {inferred from Slack context, default: today}
-  target_close_date: {inferred from Slack deadline, default: today + estimated effort}
+  target_start_date: {ISO 8601 with +05:30 — IST midnight = UTC 18:30 previous day}
+  target_close_date: {ISO 8601 with +05:30 — IST end of day = UTC 18:29:59 same day}
+  tnt__remaining_effort: {effort in days, float — e.g. 1, 1.5, 2}
+  tnt__skills: ["Design"]
   body: |
     {Contextual summary from Slack thread}
 
@@ -137,6 +147,8 @@ create_issue:
 
     **Blockers:** {if any}
 ```
+
+**Post-creation note:** `ctype__task_type` defaults to "Engineering" and cannot be set via API. Update it to "Design" in the DevRev UI after bulk creation.
 
 ### For EXISTING issues that need updates:
 

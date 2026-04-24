@@ -11,7 +11,7 @@
       "name": "core",
       "source": "./plugins/core",
       "description": "Memory scaffolding, core workflow, and onboarding",
-      "version": "2.6.2"
+      "version": "2.6.3"
     },
     {
       "name": "design",
