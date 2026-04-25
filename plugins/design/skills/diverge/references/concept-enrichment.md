@@ -1,12 +1,12 @@
 # Concept Enrichment Techniques
 
-Loaded during Pass 0 (first-principles), Pass 2 (failure modes), and Pass 2.5 (cross-pollination, narratives, convergence). Not all sections are used in every pass. Follow the loading instructions in SKILL.md.
+Loaded during Step 1 (break down the problem), Step 4 (how each concept dies), and Step 5 (hybrid combinations, narratives, picking what to prototype). Not all sections are used in every step. Follow the loading instructions in SKILL.md.
 
 ---
 
-## First-Principles Decomposition
+## Break down the problem
 
-Use at the start of Pass 0, before generating any concepts.
+Use at the start of Step 1, before generating any concepts.
 
 ### 1. Jobs to Be Done
 
@@ -36,7 +36,7 @@ What is the **real constraint** underneath the problem? Not "users need a better
 
 Identify the **primary constraint** and the **secondary constraint**. These directly shape which axes and provocations to prioritize.
 
-### 3. Problem Dissolution
+### 3. Eliminate the problem
 
 Not "solve it better." Make it not exist.
 
@@ -48,19 +48,19 @@ Ask: **"What would make this problem disappear entirely?"** Three angles:
 
 Write one problem dissolution statement. This often produces the most radical concept in the set.
 
-### 4. Structural Siblings
+### 4. Similar problems in other fields
 
 Who else solves a **structurally similar problem** in a completely different domain?
 
 A restaurant reservation system and a doctor's appointment system share structure. But "restaurant for doctors" isn't interesting. What IS interesting is how restaurants solved the no-show problem (deposits, waitlists, overbooking) and whether those mechanisms transfer.
 
-Identify **2 structural siblings**. For each, name the mechanism they use that the user's domain hasn't tried.
+Identify **2 similar problems in other fields**. For each, name the mechanism they use that the user's domain hasn't tried.
 
 ---
 
-## Cross-Pollination Round
+## Hybrid combinations
 
-Use during Pass 2.5, after the user has selected concepts to prototype.
+Use during Step 5, after the user has selected concepts to prototype.
 
 ### Process
 
@@ -80,7 +80,7 @@ A good hybrid has emergent properties: it produces something neither parent conc
 
 ## Day-in-the-Life Narratives
 
-Use during Pass 2.5 for each shortlisted concept (typically 2-4 concepts).
+Use during Step 5 for each shortlisted concept (typically 2-4 concepts).
 
 ### Format
 
@@ -103,9 +103,9 @@ What's different after using it? What did the user NOT have to do? How do they f
 
 ---
 
-## Failure Mode Analysis
+## How each concept dies
 
-Use during Pass 2, as an additional column in the stress test table.
+Use during Step 4, as an additional column in the comparison table.
 
 ### Format
 
@@ -124,11 +124,11 @@ The death scenario should name **who** is affected, **what** goes wrong, and **w
 
 ---
 
-## Convergence Bridge
+## Picking what to prototype
 
-Use after Pass 2.5, before moving to prototyping.
+Use after Step 5, before moving to building.
 
-The diverge skill is about NOT converging prematurely. But the output must be actionable. This bridge helps the user decide **what to prototype**, not what to ship.
+The diverge skill is about NOT converging prematurely. But the output must be actionable. This step helps the user decide **what to prototype**, not what to ship.
 
 ### Decision Framework
 

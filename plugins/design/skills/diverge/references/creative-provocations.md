@@ -45,7 +45,7 @@ The value: terrible ideas often contain a hidden mechanism that, when inverted, 
 
 ---
 
-## Technique 4: Bisociation / Random Domain Entry
+## Technique 4: Random domain connection
 
 Force-connect the problem with a domain that has no obvious relationship. Pick **2 domains** from this library:
 
@@ -79,7 +79,7 @@ For each selected domain, answer:
 
 ---
 
-## Technique 5: Emotion-First Generation
+## Technique 5: Start from the emotion
 
 Instead of starting from mechanisms, start from the **target emotional state** the product should produce.
 
@@ -98,7 +98,7 @@ Select **2-3 emotions** that contrast with each other (e.g., Calm + Urgency, or 
 
 ---
 
-## Technique 6: Era / Medium Transplant
+## Technique 6: Different era or medium
 
 Shift the **era or medium** entirely. Not "what industry" but "what material reality":
 
@@ -117,13 +117,13 @@ Select **1-2 transplants** that challenge the problem's assumed medium. The conc
 
 ---
 
-## Technique 7: Provocative Operations (PO)
+## Technique 7: What if…
 
 State deliberately absurd "what if" provocations specific to the problem. The goal is not the absurd idea itself but the **useful tension** it reveals.
 
-**Generic POs to adapt:**
+**Generic provocations to adapt:**
 
-| PO | Tension it reveals |
+| Provocation | Tension it reveals |
 |----|-------------------|
 | "What if we charged users for NOT using it?" | Value of engagement, cost of inaction |
 | "What if the product got worse the more you used it?" | Diminishing returns, freshness, over-reliance |
@@ -134,7 +134,7 @@ State deliberately absurd "what if" provocations specific to the problem. The go
 | "What if the interface was intentionally slow?" | Reflection, patience, anti-impulse |
 | "What if users had to teach the product, not learn it?" | Inversion of onboarding, user-as-trainer |
 
-Generate **3 POs specific to the problem** (not from the list above). For each:
+Generate **3 provocations specific to the problem** (not from the list above). For each:
 1. State the absurd provocation
 2. Identify the useful tension underneath
 3. Channel that tension into a concept direction
@@ -147,13 +147,13 @@ Match techniques to problem characteristics:
 
 | Problem type | Recommended techniques |
 |-------------|----------------------|
-| Well-understood problem, stale solutions | Assumption Reversal + Bisociation |
-| Vague or emotional problem | Emotion-First + SCAMPER |
-| Deeply technical problem | Era/Medium Transplant + Provocative Operations |
+| Well-understood problem, stale solutions | Assumption Reversal + Random domain connection |
+| Vague or emotional problem | Start from the emotion + SCAMPER |
+| Deeply technical problem | Different era or medium + What if… |
 | "How do we improve existing X?" | Worst Possible Idea + Assumption Reversal |
-| Crowded competitive space | Bisociation + Era/Medium Transplant |
-| Internal tool / B2B | Persona lens (persona-lens.md) + Provocative Operations |
-| Consumer-facing | Emotion-First + Bisociation |
-| Platform / ecosystem problem | Bisociation + Provocative Operations |
-| Behavior-change / habit problem | Emotion-First + Worst Possible Idea |
+| Crowded competitive space | Random domain connection + Different era or medium |
+| Internal tool / B2B | Persona lens (persona-lens.md) + What if… |
+| Consumer-facing | Start from the emotion + Random domain connection |
+| Platform / ecosystem problem | Random domain connection + What if… |
+| Behavior-change / habit problem | Start from the emotion + Worst Possible Idea |
 | Problem the user gave as a solution | SCAMPER (Eliminate + Reverse) + Worst Possible Idea |

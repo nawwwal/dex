@@ -4,89 +4,89 @@
 
 Each axis represents a fundamental dimension along which two concepts can differ. Concepts that share fewer than 3 axes are **not divergent** — they are variations.
 
-### 1. Agency Axis
+### 1. Who drives (user → system)
 Who drives the action?
 
-| Pole A | Pole B |
+| From | To |
 |--------|--------|
 | User-driven (manual, explicit) | Agent-driven (automatic, inferred) |
 
 Sub-positions: user initiates → user confirms → system suggests → system acts → system acts silently
 
-### 2. Interface Surface Axis
+### 2. Where it lives (screen → off-screen)
 Where does the product live?
 
-| Pole A | Pole B |
+| From | To |
 |--------|--------|
 | Screen-based (dashboard, app, page) | Off-screen (notification, ambient, hardware, voice, environment) |
 
 Sub-positions: full app → widget → notification → ambient display → no screen → physical object
 
-### 3. Temporality Axis
+### 3. When it happens (one moment → ongoing)
 When does interaction happen?
 
-| Pole A | Pole B |
+| From | To |
 |--------|--------|
 | Single moment (transaction, one-shot) | Ongoing system (continuous, background, longitudinal) |
 
 Sub-positions: one-shot → session → ritual → continuous background → event-driven
 
-### 4. Information Architecture Axis
+### 4. How info is structured (browse → filter)
 How is information structured?
 
-| Pole A | Pole B |
+| From | To |
 |--------|--------|
 | Browse/find (explore, discover) | Filter/eliminate (narrow, reduce) |
 
 Sub-positions: open canvas → feed → ranked list → filtered view → single recommendation → zero-UI auto-pick
 
-### 5. Tone Axis
+### 5. How it feels (tool → toy)
 What does it feel like to use?
 
-| Pole A | Pole B |
+| From | To |
 |--------|--------|
 | Serious professional tool | Playful mechanic / game / toy |
 
 Sub-positions: Bloomberg terminal → Excel → consumer app → gamified → literal game → toy
 
-### 6. Workflow Axis
+### 6. How users express intent (form → invisible)
 How does the user express intent?
 
-| Pole A | Pole B |
+| From | To |
 |--------|--------|
 | Explicit workflow (form fill, step-by-step) | Invisible defaults (system infers, user overrides) |
 
 Sub-positions: form → wizard → conversation → direct manipulation → gesture → invisible default
 
-### 7. Social Axis
+### 7. Who's involved (solo → social)
 Who is involved?
 
-| Pole A | Pole B |
+| From | To |
 |--------|--------|
 | Solo use (single user, private) | Collaborative / social (shared, multiplayer, community) |
 
 Sub-positions: solo private → shared state → collaborative → social feed → marketplace → community-governed
 
-### 8. Problem Direction Axis
+### 8. Direction (help do → eliminate need)
 Does it help do, or help avoid?
 
-| Pole A | Pole B |
+| From | To |
 |--------|--------|
 | Assistance (help user do the thing) | Inversion (eliminate the need to do the thing) |
 
 Sub-positions: assist → accelerate → automate → delegate → prevent → eliminate the problem entirely
 
-### 9. Density Axis
+### 9. Density (cockpit → single thing)
 How much information per unit of attention?
 
-| Pole A | Pole B |
+| From | To |
 |--------|--------|
 | High density (power user, data-rich) | Minimal (one thing at a time, progressive) |
 
 Sub-positions: cockpit → dashboard → card → single metric → binary signal → no signal (absence = good)
 
-### 10. Mechanism Axis
-What system behavior powers it?
+### 10. What system behavior powers it
+The mechanism that makes the product work:
 
 - Recommendation
 - Ranking
@@ -103,8 +103,8 @@ What system behavior powers it?
 - Narration / journaling
 - Ritual / habit loop
 
-### 11. Mental Model Axis
-What non-software domain does it borrow from?
+### 11. Real-world reference
+Which non-software domain does it borrow from?
 
 | Domain | Implies |
 |--------|---------|
@@ -123,7 +123,7 @@ What non-software domain does it borrow from?
 | Auction house | Revealed preferences, time pressure, competitive bidding, reserve price |
 | Triage nurse | Rapid assessment, ruthless prioritization, resource-constrained, severity-based |
 
-### 12. Constraint Axis
+### 12. Artificial constraint
 What artificial constraint reshapes the design?
 
 - Only one button
@@ -135,19 +135,19 @@ What artificial constraint reshapes the design?
 - Must feel premium without looking luxurious
 - Works on a watch / in a car / eyes-free
 
-### 13. Emotional Posture Axis
+### 13. Tone (tool → identity)
 What is the product's emotional register?
 
-| Pole A | Pole B |
+| From | To |
 |--------|--------|
 | Functional / utilitarian (tool, no personality) | Emotionally resonant / identity-forming (users feel something, product reflects who they are) |
 
 Sub-positions: invisible utility → reliable tool → trusted companion → identity expression → emotional mirror → ritual/sacred object
 
-### 14. Adaptability Axis
+### 14. Adaptation (static → personalized)
 Does the product learn and change?
 
-| Pole A | Pole B |
+| From | To |
 |--------|--------|
 | Static (same for everyone, every time) | Deeply personalized (learns, adapts, evolves per user) |
 
@@ -239,15 +239,15 @@ Label which ones are likely brilliant vs likely terrible, and why.
 - one is designed for repeat daily use without becoming annoying
 ```
 
-### Frame: Persona Extremes
+### Frame: Extreme Users
 ```
 Redesign [problem] for 4 radically different users:
 • a power user who does this 50 times a day (speed is everything)
 • a first-timer who will never learn the interface (it must be self-evident)
 • a user in a crisis with 10 seconds (triage mode)
 • a user who actively hates this product category (prove value before asking anything)
-Each persona demands a fundamentally different mechanism, not just a different skin.
-See persona-lens.md for the full persona library.
+Each user demands a fundamentally different mechanism, not just a different skin.
+See persona-lens.md for the full library.
 ```
 
 ### Frame: Emotion Targets
@@ -260,10 +260,10 @@ Design 6 concepts for [problem], each starting from a target emotion:
 • Curiosity: "I want to explore more"
 • Calm: "everything is under control"
 Design backward: what product makes the user feel this within 30 seconds?
-See creative-provocations.md Technique 5 for the full emotion library.
+See creative-provocations.md "Start from the emotion" for the full library.
 ```
 
-### Frame: Problem Dissolution
+### Frame: Eliminate the problem
 ```
 What would make [problem] not exist?
 5 concepts that eliminate the problem rather than solve it.
@@ -292,9 +292,9 @@ These indicate failure to diverge. If any concept matches, replace it.
 | AI chatbot that answers questions about X | Putting a chat bubble on it is not innovation. Only allowed if the conversational mechanic is genuinely novel (e.g., negotiation, Socratic method, adversarial). |
 | Notification system that alerts when X | A notification is a delivery channel, not a concept. The concept is what happens after the alert. |
 
-## Fake Novelty Detector
+## Duplicate detector
 
-Two concepts are "fake novelty" if:
+Two concepts are duplicates if:
 1. They solve the same sub-problem
 2. Using the same core mechanic
 3. With the same level of user agency

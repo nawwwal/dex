@@ -131,6 +131,7 @@ const concept = {
   id: "ghost-agent",
   name: "Ghost Agent",
   premise: "The best interface is one you never see.",
+  anchor: "Background agent (Gmail Smart Compose, Apple Photos auto-organize)",
   mechanic: "Background agent that acts silently, surfaces only on anomalies.",
   sacrifices: "User has no visibility into what's happening. Trust required.",
   axes: ["agency:agent-driven", "surface:off-screen", "density:minimal"],
@@ -335,6 +336,9 @@ export default function ConceptMeta({ concept, isOpen, onToggle }) {
       {isOpen && (
         <div style={{ padding: "0 16px 16px", fontSize: 12, lineHeight: 1.6, color: "#8892a0" }}>
           <div><strong style={{ color: "#a78bfa" }}>Mechanic:</strong> {concept.mechanic}</div>
+          {concept.anchor && (
+            <div><strong style={{ color: "#34d399" }}>Anchor:</strong> {concept.anchor}</div>
+          )}
           <div><strong style={{ color: "#f87171" }}>Sacrifices:</strong> {concept.sacrifices}</div>
           <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginTop: 8 }}>
             {concept.axes.map((a) => (

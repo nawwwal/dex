@@ -1,12 +1,12 @@
 # Persona & Context Lens Library
 
-Select **1 persona extreme** and optionally **1 context shift** per diverge session. Apply after selecting axes and provocation techniques. Each lens must produce at least 1 concept that would not have existed without the lens.
+Select **1 extreme user** and optionally **1 context** per diverge session. Apply after selecting axes and provocation techniques. Each lens must produce at least 1 concept that would not have existed without the lens.
 
 **Application rule:** Don't just imagine the existing concept "for this user." Ask: **"What fundamentally different MECHANISM would serve this user?"** If the mechanism doesn't change, the lens didn't work. Try harder.
 
 ---
 
-## Persona Extremes
+## Extreme users
 
 For the user's problem, consider what the solution looks like for:
 
@@ -21,11 +21,11 @@ For the user's problem, consider what the solution looks like for:
 | Expert who finds existing tools insulting | What if the user knows more than the tool? | Exposes raw data, scriptable, no guardrails, respects expertise, gets out of the way |
 | Child (10 years old) | What if usable with zero training? | Direct manipulation, immediate feedback, no text-heavy UI, forgiving, explorable |
 
-Select **1 extreme** (or 2 if the problem is broad enough). For each, redesign the core interaction from scratch.
+Select **1 extreme user** (or 2 if the problem is broad enough). For each, redesign the core interaction from scratch.
 
 ---
 
-## Temporal Pressure Variants
+## Different time budgets
 
 How does the solution change when the time budget is radically different?
 
@@ -42,7 +42,7 @@ Select **1-2 time budgets** that differ from the problem's assumed usage pattern
 
 ---
 
-## Context Shifts
+## Different contexts
 
 Where is the user when they encounter this problem?
 
@@ -61,9 +61,9 @@ Select **1 context** that contrasts with the problem's default context assumptio
 
 ---
 
-## Combination Patterns
+## Combining lenses
 
-The strongest concepts often come from combining a persona extreme with a context shift:
+The strongest concepts often come from combining an extreme user with a context:
 
 - **Crisis user + Walking** = "What if someone needs to resolve this urgent problem while running between meetings?"
 - **Expert + Late at night** = "What if a power user needs to handle this when they're too tired for complex interfaces?"
