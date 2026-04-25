@@ -24,7 +24,7 @@ Run these in order. Don't skip the orientation calls — they're cheap and preve
 2. `get_font_family_info` — once per session, before any typographic decisions
 3. For each concept (loop):
    - `create_artboard` — sized per the device defaults below, named after the concept (`Concept 01 — Ghost Agent`)
-   - `write_html` — header strip, then the main scene, then the anchor card, then the meta strip (4 calls per artboard, each adds one visual group)
+   - `write_html` — header strip, then the main scene, then the anchor card, then the delight card, then the meta strip (5 calls per artboard, each adds one visual group)
 4. `get_screenshot` — one per artboard, for the user's gallery export
 5. `finish_working_on_nodes` — at the end, no exceptions
 
@@ -40,16 +40,16 @@ Artboards laid out horizontally with **80px gaps** so the user can pan across th
 
 ## Per-artboard layout
 
-Each artboard contains four sections, top to bottom, written as separate `write_html` calls:
+Each artboard contains five sections, written as separate `write_html` calls:
 
 ```
 ┌─────────────────────────────────────────────┐
 │ [Header strip]                              │   ← concept name + what this product believes
 │                                              │
 │  ┌─────────────────────────┐  ┌──────────┐  │
-│  │                          │  │          │  │
-│  │   [Main scene]           │  │ [Anchor] │  │   ← the first scene to build
-│  │                          │  │          │  │      sidebar card with the real-world reference
+│  │                          │  │ [Anchor] │  │   ← the first scene to build (left)
+│  │   [Main scene]           │  ├──────────┤  │     anchor card on top right
+│  │                          │  │ [Delight]│  │     delight card on bottom right
 │  │                          │  │          │  │
 │  └─────────────────────────┘  └──────────┘  │
 │                                              │
@@ -69,16 +69,25 @@ The first scene to build, rendered in HTML. This is the actual prototype frame �
 
 Use realistic mock data, real component shapes, real spacing. Inline styles only. Flex layout. No margins (use padding + gap).
 
-### Anchor card (right sidebar, ~280px wide)
+### Anchor card (right sidebar top, ~280px wide × ~50% height)
 
-A small card showing the real-world reference the concept borrows from. Contents:
+A small card showing the real-world reference the concept's MECHANIC borrows from. Contents:
 
 - Section label: `ANCHOR`
-- Anchor name: `Snap-to-tier picker`
-- Real-world example: `Apple Music EQ · Stripe pricing tiers`
-- One-line note on what the concept inherits: `Discrete steps on a continuous track make the tradeoff visible.`
+- Anchor name: `Outer Wilds knowledge-as-progression`
+- Bucket: `Video games`
+- One-line note on what the concept inherits: `The only thing that persists is what the user has now learned.`
 
-This card is what makes the Paper output uniquely useful — it makes the borrowed-from-real DNA visible at a glance.
+### Delight card (right sidebar bottom, ~280px wide × ~50% height)
+
+A small card showing the real-world reference the concept's DELIGHT MOMENT borrows from. Contents:
+
+- Section label: `DELIGHT`
+- Delight name: `Quaker meeting silence`
+- Bucket: `History / ritual`
+- One-line note on the moment the user feels: `The agent only speaks when something genuinely needs attention; the room is otherwise quiet.`
+
+The two cards together make the Paper output uniquely useful — they show the borrowed-from-real DNA for both the mechanic and the emotional peak at a glance, ideally from different domain buckets.
 
 ### Meta strip (bottom, ~60px tall)
 

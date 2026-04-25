@@ -123,6 +123,8 @@ Which non-software domain does it borrow from?
 | Auction house | Revealed preferences, time pressure, competitive bidding, reserve price |
 | Triage nurse | Rapid assessment, ruthless prioritization, resource-constrained, severity-based |
 
+For a much wider set of named real-world references organized by category (video games, arts and installation, cinema and TV, literature, music, history and ritual, sport, architecture and craft, domestic and social, mythology and folklore), see `anchor-library.md`. The Anchor and Delight moment fields in Step 3 must draw from that library, biased away from software.
+
 ### 12. Artificial constraint
 What artificial constraint reshapes the design?
 

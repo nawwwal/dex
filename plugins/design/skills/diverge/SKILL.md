@@ -95,6 +95,7 @@ Reply 'all', a list of which to anchor on, or 'something else' to keep going.
 3. Assign each concept a different primary axis. No two concepts share the same primary axis.
 4. Select **2-3 creative provocation techniques** from `$CLAUDE_SKILL_DIR/references/creative-provocations.md`. Use the Selection Guide at the bottom of that file to match techniques to the problem type. Each selected technique must influence at least 1 concept.
 5. Select **1 extreme user or context** from `$CLAUDE_SKILL_DIR/references/persona-lens.md`. At least 1 concept must be designed for this extreme user/context.
+6. Open `$CLAUDE_SKILL_DIR/references/anchor-library.md`. Skim all 10 buckets. The Anchor and Delight moment fields below MUST draw from this library, biased AWAY from software.
 
 **Generate 8-10 concepts. For each, output:**
 
@@ -107,20 +108,60 @@ Reply 'all', a list of which to anchor on, or 'something else' to keep going.
 | **What the user no longer has to do** | The effort or decision this concept eliminates. |
 | **What it gives up** | The tradeoff. What gets worse. Be honest. |
 | **What makes it different** | Why this is a different species, not a different skin. Reference which axes it diverges on. |
-| **Anchor** | A real, named thing this concept borrows from: a component, an interaction pattern, a real product's mechanic, a real-world metaphor with a proper name. One line. Examples: "Snap-to-tier (Apple Music EQ)", "Living state (GitHub contribution graph)", "Disclosure pattern (Stripe payment methods)". |
+| **Anchor** | A real, named thing this concept's MECHANIC borrows from. One line. Must be Googleable. Pull from `anchor-library.md`. Example mix below. |
+| **Delight moment** | The single sensory instant (≤ 30 seconds into use) where the user feels something. Names (a) what the user sees / hears / feels and (b) a real-world reference for the moment, with the source in parentheses. Pull from `anchor-library.md`. The Delight moment's reference can be from a different bucket than the Anchor. |
 | **Where the idea came from** | Which technique or lens generated this concept (axis combination, SCAMPER, assumption reversal, random domain connection, extreme user, start from the emotion, etc.) |
 | **First scene to build** | The single screen/moment/interaction to build first to test the concept. |
 
-**Anchor quality gate:**
-The Anchor must be Googleable. The user must be able to look it up and find a real artifact (a product, a Wikipedia page, a Material/Apple/iOS HIG entry, a real product feature). If a concept's anchor is "spaceship console" or any invented thing, replace the anchor — but **don't dampen the concept**. "Bloomberg Terminal density on a phone" is a real anchor, "Boeing 737 HUD as approval surface" is a real anchor, "Tamagotchi as inbox" is a real anchor. The gate kills *invented fluff*, not ambition.
+**Anchor and Delight examples (pull from across buckets, not just software):**
 
-**Minimum diversity requirements:**
+```
+- Snap-to-tier (Apple Music EQ)                       — software pattern
+- Stardew Valley friendship hearts                    — game mechanic
+- Mughal jharokha (daily balcony moment)              — historical ritual
+- F1 pit stop choreography                            — sport
+- Wes Anderson chapter card                           — cinema
+- Disco Elysium Thought Cabinet                       — game (slow internalization)
+- Kintsugi gold seams                                 — craft
+- Brian Eno's Music for Airports (generative ambient) — music
+- Quaker meeting silence                              — ritual
+- Borges Library of Babel                             — literature
+```
+
+**Anchor and Delight quality gate (Googleable):**
+Each Anchor and each Delight moment must name a real, Googleable thing. The user must be able to look it up and find a real artifact (a specific game's mechanic, a specific installation, a specific historical practice, a specific film device). If an Anchor or Delight is "spaceship console" or any invented thing, replace it. **The gate kills invented fluff, not ambition.** "Bloomberg Terminal density on a phone" is a real anchor. "Stardew Valley friendship hearts on a CRM dashboard" is a real anchor. "Mughal jharokha for daily standup" is a real anchor.
+
+**Delight moment quality gate (load-bearing):**
+If you removed the Delight moment, would the concept still feel novel? If yes, the delight is decorative — replace it with one that reinforces the concept's core mechanic.
+
+**Delight moment quality gate (no cringe):**
+For each Delight moment, answer four questions. If any is "no", replace.
+- Does this reward real behavior, or just decorate it?
+- Would users still value it after week 3?
+- Can it be ignored without breaking the workflow?
+- Does it create pride, not chores?
+
+Bribery patterns (XP for opening the app, badges for reading docs, points-for-points loops) fail this gate.
+
+**Cross-bucket diversity quota (the gate that actually bites):**
+
+The Anchor field across the set of 10 concepts must satisfy these minimums. Same minimums apply to Delight moment references separately.
+
+| Domain bucket | Minimum anchors | Minimum delight refs |
+|---|---|---|
+| Video games (specific titles) | 2 | 1 |
+| Arts / cinema / music / literature / mythology | 2 | 2 |
+| History / ritual / sport / craft / architecture | 2 | 1 |
+| Domestic / social / fashion | 1 | 1 |
+| Software / SaaS / consumer app | at most 3 | at most 3 |
+
+If the set fails the quota, drop the weakest software-anchored concept and regenerate it with a forced bucket assignment ("regenerate concept #7 with an Anchor from video games and a Delight moment from cinema").
+
+**Other diversity requirements (still apply):**
 - At least 2 concepts remove the need for a traditional screen
 - At least 2 rely heavily on automation or agent behavior
 - At least 2 invert the problem (help users avoid/reduce/delegate rather than do)
-- At least 1 feels like a game or toy
 - At least 1 feels like a serious professional power tool
-- At least 1 borrows its operating logic from a non-software domain
 - At least 1 generated from a creative provocation technique (not just axis combination)
 - At least 1 designed for a non-obvious user or context
 
@@ -194,7 +235,7 @@ diverge-[problem-slug]/
 ```
 
 **Key rules:**
-1. Each concept is a separate file in `src/concepts/` exporting `{ id, name, premise, anchor, mechanic, sacrifices, axes, controls, Scene }`
+1. Each concept is a separate file in `src/concepts/` exporting `{ id, name, premise, anchor, delight, mechanic, sacrifices, axes, controls, Scene }`
 2. The `Scene` component receives `{ values }` from DialKit and responds in real-time
 3. DialKit controls must reflect the concept's *mechanism*, not cosmetics — see control libraries in picker-template.md
 4. 3-6 controls per concept, each changing *behavior* not appearance
@@ -212,7 +253,7 @@ Read `$CLAUDE_SKILL_DIR/references/paper-canvas-template.md` for the per-concept
 3. `get_screenshot` per artboard
 4. `finish_working_on_nodes` at the end
 
-Each artboard contains: header strip (concept name + what this product believes), main scene (first scene to build), anchor card (the Anchor with its real-world reference), meta strip (axes + where the idea came from).
+Each artboard contains: header strip (concept name + what this product believes), main scene (first scene to build), anchor card (the Anchor with its real-world reference), delight card (the Delight moment with its real-world reference), meta strip (axes + where the idea came from).
 
 #### Option (c): Both
 

@@ -47,7 +47,7 @@ The value: terrible ideas often contain a hidden mechanism that, when inverted, 
 
 ## Technique 4: Random domain connection
 
-Force-connect the problem with a domain that has no obvious relationship. Pick **2 domains** from this library:
+Force-connect the problem with a domain that has no obvious relationship. Pick **2 domains** from the table below, OR (preferred when generating Anchors and Delight moments) pull a specific named entry from `anchor-library.md` — that file lists 100+ real references across video games, arts, cinema, literature, music, history, sport, architecture, domestic life, and mythology. The table here is a starting set; the library is the wider menu.
 
 | # | Domain | Core dynamic |
 |---|--------|-------------|

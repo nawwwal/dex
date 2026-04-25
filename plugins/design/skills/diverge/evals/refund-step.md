@@ -32,9 +32,13 @@ A correct run produces, in order:
 
 ## Pass criteria (eyeball)
 
-- Vocabulary surface step ran (didn't skip; the prompt has anchor language)
-- Every concept block contains a line starting with `Anchor:` followed by something with a parenthetical real-world reference, e.g. `Anchor: Snap-to-tier (Apple Music EQ)`
-- Zero invented anchors. Each anchor passes the "could I Google this and find a real artifact" test.
+- Vocabulary surface step ran (didn't skip; the prompt has anchor language).
+- Every concept block contains BOTH an `Anchor:` line and a `Delight moment:` line, each with a real-world reference cited in the parenthetical.
+- Zero invented anchors or delights. Each passes the "could I Google this and find a real artifact" test.
+- **Cross-bucket quota satisfied across the 10 concepts:**
+  - Anchors: ≥2 from video games, ≥2 from arts/cinema/music/literature/mythology, ≥2 from history/ritual/sport/craft/architecture, ≥1 from domestic/social/fashion, ≤3 from software.
+  - Delights: ≥1 video game, ≥2 arts cluster, ≥1 history/sport/craft cluster, ≥1 domestic/social, ≤3 software.
+- Delight moments name a sensory instant (sees / hears / feels), not a generic pattern label.
 - No usage of stripped jargon: `Pole A`, `Pole B`, `Provocative Operations`, `Bisociation`, `Convergence Bridge`, `Problem Dissolution`, `structural divergence engine`, `explode the solution space`. Grep the transcript.
 - The skill asks the React/Paper/Both question and waits.
 
@@ -42,7 +46,9 @@ A correct run produces, in order:
 
 - Concepts include "spaceship console", "digital garden as primary mechanism", or any anchor that fails the Google test.
 - Vocabulary step skipped despite the prompt having "slider".
-- A concept's Anchor field is missing or matches its Mechanic field verbatim (the anchor must add information, not duplicate).
+- A concept's Anchor or Delight field is missing, or matches its Mechanic field verbatim (the references must add information, not duplicate).
+- More than 3 of 10 anchors come from software / SaaS / consumer apps. The library is the bottleneck — push the model into games / arts / history.
+- Delight moments read as decorative ("confetti on submit", "celebration animation"). The load-bearing test fails: removing the delight leaves the concept unchanged.
 - Step 6 auto-picks an output type without asking.
 
 ## Real-use trigger
