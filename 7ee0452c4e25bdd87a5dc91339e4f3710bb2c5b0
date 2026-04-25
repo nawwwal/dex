@@ -1,0 +1,18 @@
+plugins/design/skills/diverge/SKILL.md
+  926d711b-8236-41eb-a630-f60f51a7ec09:2026-04-25T18:38:42.112Z 3,6,8,25,28-33,36,40,45-46,48,50,52,54-58,60,62-63,65-68,70-71,73-76,78-79,81-85,87,89,97,104,108-112,114-115,125,127,129,133,136,140,145,149,151,155,159,161,163-167,170,172,197,205,207,209-213,215,217,219,228,231-232,234-235,242,245,247-248,250-251,253-255,265,267-272,274,280,284,286,288,290-296,301,305,307,309,311-316,318-321,323,334-336
+plugins/design/skills/diverge/evals/refund-step.md
+  926d711b-8236-41eb-a630-f60f51a7ec09:2026-04-25T18:39:19.831Z 1,3,5,7-9,11,13,15,17-23,25,27,29,31,33,35-39,41,43-46,48,50,52,54
+plugins/design/skills/diverge/references/concept-enrichment.md
+  926d711b-8236-41eb-a630-f60f51a7ec09:2026-04-25T18:35:10.042Z 3,7,9,39,51,57,61,63,83,106,108,127,129,131
+plugins/design/skills/diverge/references/creative-provocations.md
+  926d711b-8236-41eb-a630-f60f51a7ec09:2026-04-25T18:33:19.679Z 48,82,101,120,124,126,137,150-152,154-158
+plugins/design/skills/diverge/references/divergence-axes.md
+  926d711b-8236-41eb-a630-f60f51a7ec09:2026-04-25T18:32:23.328Z 7,10,16,19,25,28,34,37,43,46,52,55,61,64,70,73,79,82,88-89,106-107,126,138,141,147,150,242,249-250,263,266,295,297
+plugins/design/skills/diverge/references/paper-canvas-template.md
+  926d711b-8236-41eb-a630-f60f51a7ec09:2026-04-25T18:36:29.073Z 1,3,5,7,9-12,14-17,19,21,23-29,31,33-37,39,41,43,45-58,60,62-64,66,68,70,72,74,76-79,81,83,85,87-88,90,92,94,96-102,104,106,108,110-112,114,116,118,120
+plugins/design/skills/diverge/references/persona-lens.md
+  926d711b-8236-41eb-a630-f60f51a7ec09:2026-04-25T18:34:03.180Z 3,9,24,28,45,64,66
+plugins/design/skills/diverge/references/picker-template.md
+  926d711b-8236-41eb-a630-f60f51a7ec09:2026-04-25T18:35:39.692Z 134,339-341
+---
+{"schema_version": "authorship/3.0.0", "base_commit_sha": "HEAD~1", "prompts": {"926d711b-8236-41eb-a630-f60f51a7ec09:2026-04-25T18:38:42.112Z": {"agent_id": {"tool": "claude_code", "model": ""}, "human_author": "aditya.nawal@razorpay.com", "accepted_lines": 134, "overriden_lines": 0}, "926d711b-8236-41eb-a630-f60f51a7ec09:2026-04-25T18:39:19.831Z": {"agent_id": {"tool": "claude_code", "model": ""}, "human_author": "aditya.nawal@razorpay.com", "accepted_lines": 35, "overriden_lines": 0}, "926d711b-8236-41eb-a630-f60f51a7ec09:2026-04-25T18:35:10.042Z": {"agent_id": {"tool": "claude_code", "model": ""}, "human_author": "aditya.nawal@razorpay.com", "accepted_lines": 14, "overriden_lines": 0}, "926d711b-8236-41eb-a630-f60f51a7ec09:2026-04-25T18:33:19.679Z": {"agent_id": {"tool": "claude_code", "model": ""}, "human_author": "aditya.nawal@razorpay.com", "accepted_lines": 15, "overriden_lines": 0}, "926d711b-8236-41eb-a630-f60f51a7ec09:2026-04-25T18:32:23.328Z": {"agent_id": {"tool": "claude_code", "model": ""}, "human_author": "aditya.nawal@razorpay.com", "accepted_lines": 34, "overriden_lines": 0}, "926d711b-8236-41eb-a630-f60f51a7ec09:2026-04-25T18:36:29.073Z": {"agent_id": {"tool": "claude_code", "model": ""}, "human_author": "aditya.nawal@razorpay.com", "accepted_lines": 82, "overriden_lines": 0}, "926d711b-8236-41eb-a630-f60f51a7ec09:2026-04-25T18:34:03.180Z": {"agent_id": {"tool": "claude_code", "model": ""}, "human_author": "aditya.nawal@razorpay.com", "accepted_lines": 7, "overriden_lines": 0}, "926d711b-8236-41eb-a630-f60f51a7ec09:2026-04-25T18:35:39.692Z": {"agent_id": {"tool": "claude_code", "model": ""}, "human_author": "aditya.nawal@razorpay.com", "accepted_lines": 4, "overriden_lines": 0}}}
