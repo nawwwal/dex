@@ -131,6 +131,8 @@ const concept = {
   id: "ghost-agent",
   name: "Ghost Agent",
   premise: "The best interface is one you never see.",
+  modality: "Input: implicit signals (errors, anomalies, calendar events) → Output: a single ribbon at the top of the dashboard → Feedback: ribbon dismisses when acknowledged.",
+  structuralThesis: "Treats agents as a Quaker meeting because the Brief said this needs to feel calm not surveilled — silence is the default, only meaningful interruptions speak.",
   anchor: "Outer Wilds knowledge-as-progression — the only thing that persists across the loop is what you now know.",
   delight: "Quaker meeting silence — the agent only speaks when something genuinely needs your attention, otherwise the room is quiet.",
   mechanic: "Background agent that acts silently, surfaces only on anomalies.",
@@ -336,6 +338,12 @@ export default function ConceptMeta({ concept, isOpen, onToggle }) {
       </button>
       {isOpen && (
         <div style={{ padding: "0 16px 16px", fontSize: 12, lineHeight: 1.6, color: "#8892a0" }}>
+          {concept.structuralThesis && (
+            <div><strong style={{ color: "#60a5fa" }}>Thesis:</strong> {concept.structuralThesis}</div>
+          )}
+          {concept.modality && (
+            <div><strong style={{ color: "#a3a3a3" }}>Modality:</strong> {concept.modality}</div>
+          )}
           <div><strong style={{ color: "#a78bfa" }}>Mechanic:</strong> {concept.mechanic}</div>
           {concept.anchor && (
             <div><strong style={{ color: "#34d399" }}>Anchor:</strong> {concept.anchor}</div>
@@ -448,3 +456,30 @@ Scenes should NOT:
 - Use localStorage (use React state via parent)
 - Import external component libraries (keep self-contained)
 - Be layout-only wireframes with lorem ipsum
+
+## Prototype-output bans (taste guardrails)
+
+These bans apply to the actual rendered scenes. They prevent generic LLM AI-tells. Some are universal; some are conditional on the Brief's consistency contract.
+
+### Universal (always banned)
+
+- **Acme / Nexus / SmartFlow / similar startup-slop names** in mockups → use the actual product name from the Brief, or "Atlas Capital" / "Lumen Studio" style realistic names if the product is unnamed.
+- **John Doe / Sarah Chan / Jack Su / placeholder users** → use realistic names representative of the user's stated audience (Indian names for Razorpay merchants, mixed for global audiences).
+- **Fake round-number metrics** like 99.99%, 50%, 1234567 → use organic messy data (47.2%, +1 (312) 847-1928, ₹1,84,720).
+- **"Elevate / Seamless / Unleash / Next-Gen / Revolutionary"** copy → use concrete verbs ("track", "compare", "schedule").
+- **Three-equal-cards-in-a-row layouts** → use asymmetric grid, zig-zag, or horizontal scroll.
+- **AI-Purple gradient glows** (the default `from-purple-500 to-blue-500` cliché) → use desaturated singular accents.
+- **Pure black `#000000`** → use Zinc-950 (`#0a0a0a`) or Charcoal.
+- **Emoji as functional icons** → use SVG icons or skip the icon.
+
+### Conditional on Brief's consistency contract
+
+If the Brief's consistency contract names the user's design system (e.g., "Blade components", "Material 3", "shadcn/ui"), use those tokens. Otherwise:
+
+- **Inter** as a default font → only banned if the Brief's design system doesn't already use it. Inter is fine if the user's stack uses Inter; reach for Geist, Satoshi, Cabinet Grotesk, or Outfit only when the Brief says nothing.
+- **Color palette** → match the Brief's named palette. If unnamed, use a single high-contrast accent on a Zinc/Slate neutral base (no rainbow gradients).
+- **Component shapes** → if the Brief names a component library, use those shapes. If not, prefer borders + dividers over cards-everywhere.
+
+### What to do when violated
+
+The kill ledger flags concepts whose prototype scene would violate any universal ban. If a Scene component uses `from-purple-500 to-blue-500` or "John Doe" or "Acme Corp," the concept gets a Rewrite, not a Kill — the mechanic may still be sound, but the rendering needs to change.

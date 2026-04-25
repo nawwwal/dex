@@ -8,6 +8,30 @@ Use this in Step 3 (Generate concepts) alongside the axes and provocations. The 
 
 Each entry: `Reference name — one sentence on the mechanic or moment it provides`.
 
+## When a Brief is present, taste-profile within bucket
+
+If Step 1 produced a Brief naming 3-5 reference works (e.g., "Disco Elysium, Wes Anderson, Brian Eno"), do NOT just pick adjacent references. That produces monoculture (everything in one bucket).
+
+Instead, **decompose the Brief's references into qualities** — abstract aesthetic traits — and pick within-bucket anchors whose qualities match across buckets. Examples:
+
+- "Disco Elysium" → fragmented narrative, internalization-as-mechanic, deadpan absurdity
+- "Wes Anderson" → deadpan framing, symmetric color, chapter beats
+- "Brian Eno's Music for Airports" → ambient generativity, no central event, time as material
+- "F1 pit stop" → choreographed precision, role specialization, time-budget constraint
+- "Mughal jharokha" → temporal ritual, scarce attention window, asymmetric power
+
+Then for each anchor within a bucket, pick the entry whose qualities match. So the above Brief produces:
+
+- Game bucket: Outer Wilds (knowledge-as-progression, fragmented), Disco Elysium itself, NOT Animal Crossing
+- Arts bucket: Sol LeWitt instructions (deadpan systemic), Yayoi Kusama (rhythm-as-experience)
+- Music bucket: Brian Eno itself, Steve Reich phasing (ambient generativity)
+- History bucket: Mughal jharokha (temporal ritual matches), Quaker meeting silence
+- Architecture bucket: Tadao Ando concrete walls (deadpan material), MUJI store layout (symmetric quietness)
+
+The bucket quota stays the same minimum across buckets. Within-bucket choice is taste-targeted by the Brief's qualities.
+
+**Brief enrichment is runtime-only.** New references named in the Brief that aren't in this library can be used at runtime, but they are NOT persisted to this file. The library is read-only from the skill's perspective.
+
 ---
 
 ## Video games

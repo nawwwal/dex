@@ -1,6 +1,6 @@
 # Concept Enrichment Techniques
 
-Loaded during Step 1 (break down the problem), Step 4 (how each concept dies), and Step 5 (hybrid combinations, narratives, picking what to prototype). Not all sections are used in every step. Follow the loading instructions in SKILL.md.
+Loaded during Step 1 (break down the problem), Step 4 (kill ledger), Step 5 (how each concept dies), and Step 6 (hybrid combinations, narratives, simplicity pass, real-world states, picking what to prototype). Not all sections are used in every step. Follow the loading instructions in SKILL.md.
 
 ---
 
@@ -103,9 +103,56 @@ What's different after using it? What did the user NOT have to do? How do they f
 
 ---
 
+## Kill ledger
+
+Use during Step 4, BEFORE the user sees the comparison table. Thin the set so only concepts worth comparing reach the user.
+
+The skill runs every generated concept through this ledger. For each concept, record one of:
+
+- **Keep** — concept stands as-is.
+- **Rewrite** — concept has a fixable flaw; one-line revision instruction.
+- **Kill** — concept is structurally weaker than another, redundant, or violates a foundation gate.
+
+### Kill criteria (any one is enough)
+
+1. **Interchangeable Structural thesis** — if two concepts' Structural thesis sentences can be swapped without changing meaning, kill the weaker. (Per doc.cc/syntax/concept: a layout variation is not a concept.)
+2. **Foundation veto** — concept requires impossible latency, trust, data quality, or autonomy that doesn't exist in the user's context. Kill or flag risky. (Per Stripe/Figma craft hierarchy of needs: foundations come before aesthetics.)
+3. **Anchor monoculture** — concept shares its bucket with 3+ other concepts after taste-profiling, and adds no orthogonal axis. Kill the weakest in the bucket.
+4. **Layout variation** — concept differs from another only in visual treatment, copy, or layout, not mechanism. Kill the weaker.
+5. **Off main thing** — concept doesn't serve the Main Thing from the Brief. Kill.
+6. **Anchor or Delight fails the Googleable gate** — Anchor or Delight references invented fluff. Rewrite with a real reference.
+7. **Conflicts with consistency contract** — concept breaks something the Brief said must stay familiar, without earning the conflict (no compelling reason to break consistency). Rewrite.
+
+### Output format
+
+```
+Kill ledger
+
+01. Mission Control Wallboard — KEEP
+02. Apple Home for Agents      — REWRITE  (fatal flaw: shares Structural thesis with #07; required revision: shift modality from glanceable to ritualized)
+03. Kitchen Pass (KDS)         — KEEP
+04. Razorville Citizens        — KILL     (fatal flaw: foundation veto — pixel-art layer adds delight surface but the underlying problem of agent visibility is unaddressed)
+05. Boring Wallboard           — KILL     (fatal flaw: layout variation of #01 with inverted density)
+...
+
+Killed: 3 concepts (Razorville Citizens, Boring Wallboard, Money Pulse).
+```
+
+The user sees only Keep + Rewritten concepts in Step 5. The Killed list is shown as a one-line summary at the bottom; the user can ask to revive any of them.
+
+### No praise quota
+
+Do NOT include "what works" bullets per concept. The kill ledger is doing one job: thinning the set. Praise is not the scarce resource here. Per doc.cc/syntax/critique: "necessary collisions" — adversarial thought to pressure-test, not a victory lap.
+
+### Honesty gate
+
+On ordinary non-trivial runs, zero Kill/Rewrite requires explicit justification. The kill ledger must reason out loud why every concept passed. This prevents the gate from biting performatively (forcing a sacrificial kill) AND from being toothless (rubber-stamping all 10 concepts).
+
+---
+
 ## How each concept dies
 
-Use during Step 4, as an additional column in the comparison table.
+Use during Step 5, as an additional column in the comparison table the user sees.
 
 ### Format
 
@@ -124,9 +171,40 @@ The death scenario should name **who** is affected, **what** goes wrong, and **w
 
 ---
 
+## Simplicity pass
+
+Use during Step 6 (deepen the picks), AFTER the day-in-the-life narrative for each shortlisted concept.
+
+### The question
+
+> What can be removed, combined, or hidden without killing the concept?
+
+For each shortlisted concept, write a one-line before/after:
+
+```
+Mission Control Wallboard
+Original: Single dense panel with all 10 agents as rows of micro-cells, plus quick-action toolbar, plus filter chips, plus search bar.
+Simplified: Single dense panel with all 10 agents as rows. Search via cmd-K. No toolbar, no chips. Density is the feature.
+```
+
+### Quality gate
+
+If the simplified version is identical to the original, the gate failed — you didn't run the pass honestly. Per doc.cc/syntax/simplicity: simplicity is repeatedly saying no before getting to a yes. If you can't say no to anything, the concept is too crowded to ship.
+
+### Real-world states
+
+In the same step, for each shortlisted concept, describe how it handles the real-world states the Brief named (empty / error / loading / first-time / long-content). Quality gate: states must be **substantively different from the happy path**. "Loading shows a spinner" is not a state — that's a placeholder.
+
+Good real-world state lines:
+- *Empty: garden plot is bare soil, with one seed packet labeled "your first agent."*
+- *Error: agent's tile dims to grayscale and a small ribbon explains in plain language what failed.*
+- *First-time: garden starts as a single sprouted seedling; new agents bloom only after the user has used at least one.*
+
+---
+
 ## Picking what to prototype
 
-Use after Step 5, before moving to building.
+Use after Step 6, before moving to building.
 
 The diverge skill is about NOT converging prematurely. But the output must be actionable. This step helps the user decide **what to prototype**, not what to ship.
 

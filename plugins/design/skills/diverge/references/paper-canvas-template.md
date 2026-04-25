@@ -63,6 +63,8 @@ Each artboard contains five sections, written as separate `write_html` calls:
 - Concept name (large, bold): `Ghost Agent`
 - What this product believes (one line, italic, muted): `The best interface is one you never see.`
 
+Keep the header clean. Do NOT put the Structural thesis or Modality on the header strip — they go in the meta strip at the bottom. Visual artifacts read better when the header is short.
+
 ### Main scene (left column, fills remaining space)
 
 The first scene to build, rendered in HTML. This is the actual prototype frame — what the user would see at the moment that proves the concept.
@@ -89,14 +91,19 @@ A small card showing the real-world reference the concept's DELIGHT MOMENT borro
 
 The two cards together make the Paper output uniquely useful — they show the borrowed-from-real DNA for both the mechanic and the emotional peak at a glance, ideally from different domain buckets.
 
-### Meta strip (bottom, ~60px tall)
+### Meta strip (bottom, ~80px tall)
 
-A horizontal row of pills:
+Two rows of pills + one Structural thesis line.
 
+Top row (pills):
+- Modality: `Input: implicit signals → Output: top ribbon → Feedback: dismiss`
 - Axes the concept diverges on: `agency:agent-driven` · `surface:off-screen` · `density:minimal`
 - Where the idea came from: `Random domain connection: kindergarten teaching`
 
-Pill style: small, rounded, muted background. Same visual language as the React picker's meta tags.
+Bottom line (full width, italic, small):
+- Structural thesis: `Treats agents as a Quaker meeting because the Brief said this needs to feel calm not surveilled — silence is the default, only meaningful interruptions speak.`
+
+Pill style: small, rounded, muted background. Same visual language as the React picker's meta tags. The Structural thesis sits below pills as readable prose, not as a pill (too long).
 
 ## HTML conventions (Paper-specific)
 
@@ -109,6 +116,30 @@ Paper's `write_html` parses HTML into design nodes. Follow these rules:
 - Use `<pre>` for code blocks or content where whitespace matters.
 - Don't use emojis as icons. Use SVG inline or skip the icon.
 - For each top-level visual group, use a `layer-name` attribute so the layer tree is readable: `<div layer-name="Header strip" style="...">`
+
+## HTML-escape user-provided strings
+
+Any string sourced from the Brief (References list, Constraints list, Audience line, free-text user replies) must be HTML-escaped before being inserted into a `write_html` call. Use a simple escape: `&` → `&amp;`, `<` → `&lt;`, `>` → `&gt;`, `"` → `&quot;`, `'` → `&#39;`.
+
+Curated strings (Anchor and Delight references pulled from `anchor-library.md`, axes, where-the-idea-came-from labels) are safe and don't need escaping — they are skill-controlled and don't contain hostile input.
+
+## Prototype-output bans (taste guardrails)
+
+Same universal bans as the React picker (see `picker-template.md`):
+
+- No Acme / Nexus / SmartFlow placeholder company names → use Brief product name
+- No John Doe / Sarah Chan placeholder users → use realistic names per Brief audience
+- No fake round-number metrics → use organic messy data
+- No "Elevate / Seamless / Unleash / Next-Gen" copy → concrete verbs
+- No three-equal-cards layouts → asymmetric grid or horizontal scroll
+- No AI-Purple gradient glows → desaturated singular accent
+- No pure black `#000000` → Zinc-950 or Charcoal
+
+Plus Paper-specific:
+
+- **No emojis as icons** — use inline SVG or skip the icon.
+- **No fake stock photos** — if a photo is needed, use a placeholder rectangle with a caption describing what should be there. Don't pull random Unsplash URLs into Paper artboards.
+- **Font and color** are conditional on the Brief's consistency contract. If the Brief names "Blade design system," use Blade tokens (Wix grey, primary blue). If the Brief names "Inter" as the brand font, use Inter — don't substitute Geist.
 
 ## Gallery layout
 
