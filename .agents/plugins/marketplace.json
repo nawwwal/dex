@@ -1,13 +1,15 @@
 {
-  "name": "nawwwal-dex-local",
+  "name": "nawwwal-dex",
   "interface": {
-    "displayName": "Dex Local Plugins"
+    "displayName": "Dex"
   },
   "plugins": [
     {
       "name": "core",
       "source": {
-        "source": "local",
+        "source": "git-subdir",
+        "url": "https://github.com/nawwwal/dex.git",
+        "ref": "main",
         "path": "./plugins/core"
       },
       "policy": {
@@ -19,7 +21,9 @@
     {
       "name": "design",
       "source": {
-        "source": "local",
+        "source": "git-subdir",
+        "url": "https://github.com/nawwwal/dex.git",
+        "ref": "main",
         "path": "./plugins/design"
       },
       "policy": {
@@ -31,7 +35,9 @@
     {
       "name": "tools",
       "source": {
-        "source": "local",
+        "source": "git-subdir",
+        "url": "https://github.com/nawwwal/dex.git",
+        "ref": "main",
         "path": "./plugins/tools"
       },
       "policy": {
