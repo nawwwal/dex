@@ -1,3 +1,10 @@
+---
+name: communicate
+description: "Use when drafting or sending a Slack message, DM, or reply to someone by name."
+argument-hint: "tell [Name] [message]"
+allowed-tools: Bash, Read, mcp__claude_ai_Slack__slack_send_message, mcp__claude_ai_Slack__slack_send_message_draft, mcp__claude_ai_Slack__slack_search_users, mcp__claude_ai_Slack__slack_read_user_profile, mcp__qmd__search, mcp__qmd__get
+---
+
 # Communication Mode
 
 Draft and send messages in the user's voice.
