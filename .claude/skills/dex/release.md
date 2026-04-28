@@ -15,6 +15,16 @@ The repo is both the Claude marketplace and the Codex marketplace:
 
 Supported plugins: `core`, `design`, `tools`
 
+## Version bump rules
+
+| Bump | When |
+|------|------|
+| `patch` | Bug fixes, wording changes, small additions to existing skills that don't change their interface |
+| `minor` | New skills or agents added, existing skill behavior meaningfully changed, memory schema changes |
+| `major` | Breaking changes: skills renamed/removed that users depend on, routing changes that require user action, memory files deleted |
+
+Default is `patch` when no bump is specified. When in doubt, prefer `minor` over `patch` if users will notice the change.
+
 ## Steps
 
 Run these as bash commands from the repo root. Stop on any failure.
@@ -164,22 +174,44 @@ git push origin "$TAG"
 
 Use GitHub Releases as the changelog surface, not tags alone.
 
+First, get the previous tag to scope the commit range:
+
+```bash
+PREV_TAG=$(git tag --sort=-version:refname | grep "^$PLUGIN-v" | head -1)
+if [ -n "$PREV_TAG" ]; then
+  COMMIT_RANGE="$PREV_TAG..HEAD"
+else
+  COMMIT_RANGE="HEAD"
+fi
+```
+
+Before writing the release notes, read the commits in that range and synthesize them into user-facing bullets. Do not paste raw commit messages — rewrite them as what changed for the user.
+
+```bash
+git log --oneline "$COMMIT_RANGE"
+```
+
+Group changes into:
+- **New** — new skills, agents, commands added
+- **Changed** — behavior changes, routing changes, renames
+- **Removed** — deleted skills, files, memory artifacts
+- **Fixed** — bug fixes
+
+Omit groups with no entries. Omit internal-only changes (version bumps, lint, formatting) unless they affect behavior.
+
+Then create the release:
+
 ```bash
 NOTES_FILE=$(mktemp)
-cat > "$NOTES_FILE" <<EOF
-## Summary
-- Released \`$PLUGIN\` plugin v$NEW_VERSION
+cat > "$NOTES_FILE" <<NOTES
+## What's new
 
-## Changelog
-- Describe the user-facing changes in this release
-- Mention any important migration or behavior notes
+<!-- write synthesized bullets here before running gh -->
 
 ## Versioning
 - Claude plugin manifest: \`plugins/$PLUGIN/.claude-plugin/plugin.json\`
 - Codex plugin manifest: \`plugins/$PLUGIN/.codex-plugin/plugin.json\`
-- Claude marketplace version: \`.claude-plugin/marketplace.json\`
-- Codex marketplace source: \`.agents/plugins/marketplace.json\` tracks \`main\`
-EOF
+NOTES
 
 gh release create "$TAG" \
   --title "$PLUGIN v$NEW_VERSION" \
