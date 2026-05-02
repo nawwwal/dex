@@ -1,425 +1,690 @@
 ---
 name: diverge
-description: Brainstorm radically different concepts for a design problem. Extracts a Brief from the user (main thing, references, constraints), surfaces real-world vocabulary, generates concepts anchored to specific named references across video games, arts, history, music, sport, and craft, runs them through a kill ledger, then outputs the survivors as either an interactive React prototype or a Paper canvas. Triggers on "diverge", "explore directions", "brainstorm directions", "conceptual range", "radically different concepts", "product directions", "divergent prototypes", "give me range".
+description: Layered divergence system for product designers. Use when exploring different ways a software product, surface, flow, page, modal, dashboard, component, interaction, state, copy system, visual language, or product direction could work across product mechanics, UX structure, UI presentation, copy, interaction, states, emotion, persuasion, education, accessibility, and implementation handoff.
 ---
 
-# /diverge — Brainstorm Radically Different Concepts
+# /diverge - Layered Product Design Divergence
 
-Generate concepts that differ in *mechanism*, not *styling*. The output is not a moodboard. It is a set of different machines that solve the same problem through fundamentally different operating principles, each anchored to a real-world thing the user can Google.
+Generate design directions that differ by observable design layers, not by decorative names. The skill supports divergence across product mechanics, UX structure, interaction behavior, information hierarchy, copywriting, layout, visual language, typography, color, motion, emotional design, persuasive design, education, states, accessibility, and implementation handoff.
 
-The skill does two things v2.7.x didn't: it **extracts a Brief** from the user before generating anything (so concepts target real taste, not generic divergence), and it **runs a kill ledger** before the user sees the concepts (so weak concepts get cut, not delivered).
+Replace:
 
-## When to Use
-
-- Early-stage product exploration before converging on a direction
-- Breaking out of "default SaaS dashboard" gravity
-- Generating prototype-worthy concepts that stress-test different interaction models
-- When the user says "diverge", "explore directions", "give me range", "brainstorm", "radically different", "product directions"
-
-## Core Rule
-
-Every concept must differ from every other concept on **at least 3** of the divergence axes. Concepts whose Structural thesis sentences can be swapped without changing meaning are layout variations, not concepts — kill the weaker.
-
-Read `$CLAUDE_SKILL_DIR/references/divergence-axes.md` for the full axis library (14 axes), prompt frames, and banned patterns.
-
----
-
-## Workflow: 7 steps
-
-```
-Step 1: Brief + Break down the problem    — interview, infer, decompose
-Step 2: Surface vocabulary                 — name real concepts the user is reaching for
-Step 3: Generate concepts                  — 8-10 concepts using axes + provocations + lenses + Brief-targeted anchors
-Step 4: Kill ledger                        — Keep / Rewrite / Kill before user sees the set
-Step 5: Compare and pick                   — comparison table on the survivors
-Step 6: Deepen the picks                   — hybrids, narratives, simplicity pass, real-world states
-Step 7: Build it                           — React prototype OR Paper canvas
+```text
+problem -> references -> metaphor-led names -> decorative reward moments -> kill ledger
 ```
 
-### Step 1: Brief + Break down the problem
+With:
 
-Phase 1.A is an interview. The skill posts ONE message with three required questions and waits.
-
-```
-Before I diverge, three quick things. Answer in any format — bullets, fragments, vibes.
-
-1. The main thing — if you could only get ONE thing right about this, what is it? (one sentence)
-2. References — name 3-5 products / installations / games / films / artworks you admire. Anything that raises your bar; doesn't have to relate to this problem.
-3. Constraints and anti-patterns — what cannot change (design system, brand, downstream consumers) and what's already been tried that didn't work / what would feel deeply wrong.
-
-Reply 'go' once done.
+```text
+problem -> altitude detection -> product model -> user decision -> state/action map -> divergence layer selection -> layered directions -> execution details -> state matrix -> tradeoff -> prototype slice -> handoff blueprint
 ```
 
-If the user replies with `skip brief`, the skill self-generates a degraded Brief from the prompt alone and marks the run as DEGRADED at the top of the output.
+## Non-negotiable Principle
 
-Phase 1.B — emit the Brief block. Skill drafts the inferred fields:
+A direction only counts if it changes a specific design layer and explains the observable outcome.
 
-```
-Brief
+Every direction must answer:
 
-Main thing: <one sentence>
-References: <3-5 named works>
-Constraints: <list>
-Anti-patterns: <list>
-Audience (inferred): <one line, mark if uncertain>
-Consistency contract (inferred): <list of familiar things every concept must keep>
-Altitude (inferred): <surface | underlying issue | both>
-Rave-tweet (drafted): "<20-word tweet a happy user would post>"
+- What layer changed?
+- What stayed constant?
+- What does the user see?
+- What does the user do?
+- What does the system do?
+- What information becomes more or less prominent?
+- What copy changes?
+- What layout/hierarchy changes?
+- What state behavior changes?
+- What emotional or behavioral effect is intended?
+- What tradeoff does this create?
 
-Reply 'go' to lock, or correct any line.
-```
+Do not accept "different vibe" as divergence. Do not accept "same screen with different styling" as conceptual divergence. Do not accept metaphor unless it changes product behavior, UI structure, copy, interaction, or visual execution.
 
-The skill drafts the rave-tweet given Main thing + References. The Audience comes from constraints (e.g., "Razorpay merchants in India"). The Consistency contract lists what must stay familiar (e.g., "Blade components, dashboard navigation, login state"). The Altitude is inferred from how the prompt is framed.
+## Reference Map
 
-The Brief becomes load-bearing. Every downstream step references it.
+Load only the references needed for the selected altitude:
 
-Phase 1.C — Break down the problem (per `references/concept-enrichment.md` "Break down the problem" section).
+- `references/divergence-axes.md` - layered axes across product, UX, interaction, UI, copy, visual system, emotional, and persuasive layers.
+- `references/concept-enrichment.md` - JTBD, constraints, product model, layer diagnosis, state/action matrix, enrichment passes, kill ledger, narratives, simplicity, and prototype selection.
+- `references/creative-provocations.md` - layer-specific provocations.
+- `references/persona-lens.md` - persona effects on density, copy, hierarchy, interaction, education, error handling, accessibility, and emotion.
+- `references/anchor-library.md` - optional reference-handling rules.
+- `references/reference-pattern-library.md` - optional mental library for disciplined reference use.
+- `references/copywriting-divergence.md` - copy roles, surfaces, axes, formulas, and gates.
+- `references/layout-divergence.md` - layout topologies and quality gates.
+- `references/hierarchy-divergence.md` - information hierarchy strategies and squint test.
+- `references/interaction-divergence.md` - interaction models and gates.
+- `references/typography-divergence.md` - typography strategies and output requirements.
+- `references/color-divergence.md` - color roles, strategies, and gates.
+- `references/motion-divergence.md` - motion strategy and reduced-motion checks.
+- `references/emotional-design.md` - visceral, behavioral, reflective design.
+- `references/persuasive-design.md` - ethical persuasive design.
+- `references/user-education.md` - education patterns and gates.
+- `references/bluff-and-slop-firewall.md` - banned metaphor, visual, and copy slop.
+- `references/picker-template.md` - React prototype template.
+- `references/paper-canvas-template.md` - Paper canvas template.
 
-**Output (150-200 words, tight):**
-- 3 JTBD statements: obvious, emotional, surprising — each must serve the Main thing
-- The real constraint (time / knowledge / access / trust / motivation / coordination / attention)
-- One problem-elimination statement: "What would make this problem not exist?"
-- 2 similar problems in other fields + the mechanism they use
+## Workflow
 
-### Step 2: Surface vocabulary
+### 1. Brief Intake
 
-Read the user's prompt for fuzzy descriptions and name the real-world concepts they might be reaching for. The user often knows what they mean but doesn't know the word for it.
+Ask only what is missing. If the user already gave enough context, infer the rest and show assumptions.
 
-**Trigger rules:**
-- User mentions a UI element by family ("slider", "tab", "modal", "feed") → name adjacent patterns + real product examples
-- User uses fuzzy adjectives ("delightful", "alive", "calm", "fun") → name 2-3 real-world delight patterns by name
-- User uses negation ("not a slider", "shouldn't be a stepper") → name the family of alternatives
-- Greenfield prompt with no anchorable language → skip; say "no anchor surfaced, going wide"
+```md
+### Brief Intake
 
-**Output format (3-6 items max, one line each):**
+1. Surface or flow
+   What are we designing?
 
-```
-Vocabulary you might be reaching for:
+2. User role
+   Who is using it?
 
-Interaction patterns
-- Snap-to-tier (Apple Music EQ, Stripe pricing): discrete steps on a continuous track. Often what people mean by "not a slider."
-- Disclosure pattern (Stripe payment methods): collapsed options that reveal on tap.
+3. Core user job
+   What is the user trying to decide, understand, complete, avoid, or recover from?
 
-Real-world references
-- GitHub contribution graph (living state for activity).
-- Stardew Valley friendship hearts (silent cumulative score).
-- Mughal jharokha (ritual at a fixed time).
+4. Product objects
+   What objects exist in this product?
 
-Reply 'all', a list of which to anchor on, or 'something else' to keep going.
-```
+5. Known states
+   What states must the design handle?
 
-User reply: `all` / list / `something else` / `skip`. Selected items become anchor candidates for Step 3.
+6. Available actions
+   What can the user do?
 
-### Step 3: Generate concepts
+7. System actions
+   What can the system do?
 
-**Input:** Problem + Brief + breakdown + vocabulary candidates.
+8. Constraints
+   What cannot change?
 
-**Before generating:**
+9. Existing anti-patterns
+   What has already failed or feels wrong?
 
-1. List the 5 most predictable solutions for this problem. **Ban them.**
-2. Consult `divergence-axes.md` and select 8-10 axes that apply. Assign each concept a different primary axis.
-3. Select 2-3 provocation techniques from `creative-provocations.md`. Each must influence at least 1 concept.
-4. Select 1 extreme user or context from `persona-lens.md`. At least 1 concept designed for this lens.
-5. Open `anchor-library.md`. Decompose the Brief's references into qualities (e.g., "Disco Elysium" → fragmented narrative, internalization-as-mechanic, deadpan absurdity). Pick within-bucket anchors whose qualities match — see the "When a Brief is present, taste-profile within bucket" section in that file.
+10. Register
+   Is this a product surface, brand surface, content/editorial surface, or mixed?
 
-**Generate 8-10 concepts. Each emits:**
+11. Emotional target
+   What should the user feel?
 
-| Field | What it answers |
-|-------|----------------|
-| **Name** | Evocative 2-3 word concept name |
-| **What this product believes** | One sentence. What this product *believes* about the problem. |
-| **Core mechanic** | The single interaction/system behavior that defines it. |
-| **Modality** | Input (how user expresses intent) → Output (what the system shows / does) → Feedback loop (what the user gets back). One line. From doc.cc/syntax/interface — concepts that share all three modalities are usually layout variations. |
-| **Structural thesis** | One rigorous sentence stating the structural difference. References the Main thing from the Brief. Example: "Treats agents as a household garden because the Brief said this needs to feel ALIVE not surveilled — gardens reward attention with growth instead of demanding it with metrics." |
-| **What the user no longer has to do** | The effort or decision this concept eliminates. |
-| **What it gives up** | The tradeoff. Be honest. |
-| **Anchor** | A real, named thing this concept's MECHANIC borrows from. Pull from `anchor-library.md` with Brief taste-profiling. Googleable. |
-| **Delight moment** | The single sensory instant (≤30s) where the user feels something. Names the real-world reference (parenthetical). Pull from `anchor-library.md`. |
-| **Where the idea came from** | Which technique / lens / axis combination generated this. |
-| **First scene to build** | The single screen/moment to build first. |
+12. Behavioral target
+   What behavior should the interface encourage?
 
-**Anchor and Delight examples (cross-bucket):**
+13. Visual system
+   What type, color, component, or brand rules already exist?
 
-```
-- Snap-to-tier (Apple Music EQ)                       — software pattern
-- Stardew Valley friendship hearts                    — game mechanic
-- Mughal jharokha (daily balcony moment)              — historical ritual
-- F1 pit stop choreography                            — sport
-- Wes Anderson chapter card                           — cinema
-- Disco Elysium Thought Cabinet                       — game (slow internalization)
-- Kintsugi gold seams                                 — craft
-- Brian Eno's Music for Airports (generative ambient) — music
-- Quaker meeting silence                              — ritual
-- Borges Library of Babel                             — literature
+14. Reference input
+   Optional. If provided, I will decompose references into mechanisms and qualities.
 ```
 
-**Anchor / Delight Googleable gate:**
-Each Anchor and each Delight moment must name a real, Googleable thing. The user must be able to look it up and find a real artifact. Replace invented fluff. The gate kills "spaceship console" and similar; it does NOT kill ambition. "Bloomberg Terminal density on a phone" is real. "Tamagotchi as inbox" is real. "Mughal jharokha for daily standup" is real.
+If only a few fields are missing, ask a narrow question. If missing fields do not block useful output, proceed.
 
-**Delight moment quality gates:**
-- *Load-bearing:* if removed, would the concept still feel novel? If yes, the delight is decorative — replace with one that reinforces the mechanic.
-- *No-cringe (4 questions):* (1) Does this reward real behavior, or just decorate it? (2) Would users still value it after week 3? (3) Can it be ignored without breaking the workflow? (4) Does it create pride, not chores? Any "no" → replace. Bribery patterns (XP for opening, badges for reading) fail.
+### 2. Assumption Ledger
 
-**Cross-bucket diversity quota:**
+Always show assumptions when context is incomplete.
 
-| Domain bucket | Min anchors | Min delight refs |
-|---|---|---|
-| Video games (specific titles) | 2 | 1 |
-| Arts / cinema / music / literature / mythology | 2 | 2 |
-| History / ritual / sport / craft / architecture | 2 | 1 |
-| Domestic / social / fashion | 1 | 1 |
-| Software / SaaS / consumer app | at most 3 | at most 3 |
+```md
+### Assumption Ledger
 
-**Other diversity requirements:**
-- At least 2 concepts remove the need for a traditional screen
-- At least 2 rely heavily on automation or agent behavior
-- At least 2 invert the problem (avoid/reduce/delegate rather than do)
-- At least 1 feels like a serious professional power tool
-- At least 1 generated from a creative provocation (not just axis combination)
-- At least 1 designed for a non-obvious user or context
+Known:
+- ...
 
-### Step 4: Kill ledger (NEW — runs before user sees concepts)
+Assumed:
+- ...
 
-Before showing the comparison table, run the kill ledger from `references/concept-enrichment.md` ("Kill ledger" section). For each concept:
+Unknown:
+- ...
 
-- **Decision:** Keep | Rewrite | Kill
-- **Fatal flaw** (if Rewrite or Kill): one specific line
-- **Required revision** (if Rewrite): one line of what to change
-
-**Kill criteria (any one is enough):**
-1. Interchangeable Structural thesis with another concept → kill the weaker
-2. Foundation veto (impossible latency / trust / data / autonomy in user's context) → kill or flag risky
-3. Anchor monoculture (3+ concepts in same bucket, no orthogonal axis) → kill weakest
-4. Layout variation (only visual / copy / layout differs from another) → kill weaker
-5. Off the Main thing in the Brief → kill
-6. Anchor or Delight fails Googleable gate → rewrite
-7. Conflicts with consistency contract without earning the conflict → rewrite
-
-No praise quota. The ledger is doing one job: thinning the set.
-
-**Honesty gate:** on ordinary non-trivial runs, zero Kill/Rewrite requires explicit justification. Reason out loud why every concept passed.
-
-**User sees only Keep + Rewritten concepts in Step 5.** The Killed list is a one-line summary at the bottom; user can ask to revive any.
-
-### Step 5: Compare and pick
-
-Present a compact comparison table of the surviving concepts (Keep + Rewritten):
-
-| Concept | Modality | User Effort | System Intelligence | Risk Level | How it dies | Where the idea came from |
-
-**How it dies:** see `concept-enrichment.md` "How each concept dies" — be specific about who, what, when.
-
-Then answer:
-- Which 3 are most structurally promising and why?
-- Which 1 is the "dangerous" idea (brilliant or terrible)?
-
-Ask the user: **"Which concepts should I prototype? Pick 2-4, or say 'surprise me.'"**
-
-(Note: duplicate detection now happens in Step 4's kill ledger, not here.)
-
-### Step 6: Deepen the picks
-
-For shortlisted concepts (or top 3 if "surprise me"):
-
-Read `concept-enrichment.md` — sections **Hybrid combinations**, **Day-in-the-Life Narratives**, **Simplicity pass**, and **Picking what to prototype**.
-
-1. **Hybrid combinations:** From shortlisted, attempt 2-3 hybrids. Swap if more interesting than the weakest pick.
-2. **Day-in-the-Life:** 3-paragraph narrative per concept (trigger / interaction / aftermath). Diary-entry tone, not press release.
-3. **Simplicity pass:** for each shortlisted concept, write a one-line before/after — what can be removed, combined, or hidden without killing the concept. If identical, the gate failed.
-4. **Real-world states:** for each shortlisted concept, describe how it handles the states the Brief named (empty / error / loading / first-time / long-content). Substantively different from happy path. "Loading shows a spinner" is not a state.
-5. **Picking what to prototype:** decision framework table (signal strength, feasibility, risk of skipping, team conviction).
-
-Ask: **"Ready to prototype? Or want to explore any hybrids further?"**
-
-### Step 7: Build it
-
-Ask one question, wait:
-
-```
-Step 7 output:
-  (a) React prototype with DialKit (interactive, tunable, ~10 min build)
-  (b) Paper canvas with one artboard per concept (visual side-by-side, fast, no code)
-  (c) Both — Paper first, React only for the favorites you pick
+Risk:
+- The output may be weaker around <specific layer> because <missing information>.
 ```
 
-Don't auto-pick. Wait.
+Do not stall unless a missing fact would make the output unsafe or meaningless.
 
-#### Robustness layer (applies to all build paths)
+### 3. Divergence Altitude
 
-- **Slug sanitization:** convert problem name → `[a-z0-9-]+` only for `diverge-[slug]/` directory naming. Strip apostrophes, punctuation, spaces (replace with `-`), lowercase. Truncate to 40 chars.
-- **Overwrite protection:** if `diverge-[slug]/` already exists, append a timestamp suffix `diverge-[slug]-YYYY-MM-DD-HHMM/` to the new run. Don't silently overwrite prior work.
-- **Prototype-safe Brief summary:** before writing artifact files, generate a derivative of the Brief that strips PII, customer names, API keys, internal URLs. The full Brief is used in conversation; the prototype-safe summary is what lands in code/artboards.
-- **HTML escape:** when writing user-provided strings to Paper artboards via `write_html`, escape `& < > " '`. Curated strings (Anchors, Delight references, axis labels) are skill-controlled and don't need escaping.
+Classify the request before ideation:
 
-#### Option (a): React prototype
+- Product-level
+- UX-level
+- UI-level
+- Copy-level
+- Visual-system-level
+- Interaction-level
+- State-handling-level
+- Mixed
 
-Read `references/picker-template.md` for the full template.
+Infer altitude:
 
-**App structure:**
-```
-diverge-[slug]/
-├── index.html
-├── package.json          (vite + react deps)
-├── vite.config.js
-└── src/
-    ├── main.jsx
-    ├── App.jsx
-    ├── concepts/
-    │   ├── concept-1.jsx
-    │   └── ...
-    ├── components/
-    │   ├── ConceptNav.jsx
-    │   ├── ConceptMeta.jsx
-    │   └── DialKitPanel.jsx
-    └── styles.css
-```
+- "Diverge on this product idea", "product directions", "what should this be" -> Product-level.
+- "Different ways to present this page/layout/modal" -> UX/UI-level.
+- "Different copy", labels, CTAs, errors, onboarding text -> Copy-level.
+- "Look/feel", typography, color, visual language, design system -> Visual-system-level.
+- "How should this interaction work?" -> Interaction-level.
+- Dashboards, health, sync, permissions, errors, progress, onboarding, empty states -> State-handling-level.
+- If unclear, run Mixed: one product pass, one UX pass, and one UI pass.
 
-**Key rules:**
-1. Each concept exports `{ id, name, premise, modality, structuralThesis, anchor, delight, mechanic, sacrifices, axes, controls, Scene }`
-2. Scene receives `{ values }` from DialKit and responds in real-time
-3. DialKit controls reflect the *mechanism*, not cosmetics
-4. 3-6 controls per concept
-5. After scaffolding: `npm install && npm run dev`
+### 4. Product Model
 
-Apply the prototype-output bans from `picker-template.md` (universal: no Acme/John Doe/fake metrics/Elevate copy/three-equal-cards/AI-Purple/Pure-Black/emoji-as-icons; conditional on Brief consistency contract: font and color choices match the Brief's named design system).
+Every run extracts a product model before ideation.
 
-#### Option (b): Paper canvas
+```md
+### Product Model
 
-Read `references/paper-canvas-template.md` for the artboard layout, MCP call order, and HTML conventions.
+Core objects:
+- Object:
+- Meaning:
+- Properties:
+- States:
+- User actions:
+- System actions:
+- Dependencies:
 
-**Summary:**
-1. `get_basic_info`, `get_font_family_info`
-2. For each concept: `create_artboard` (1440 × 900 default; 390 × 844 mobile), then `write_html` for header strip / main scene / anchor card / delight card / meta strip
-3. `get_screenshot` per artboard
-4. `finish_working_on_nodes` at the end
+Current user decision:
+- What is the user trying to decide?
+- What information do they need?
+- What action follows?
+- What can go wrong?
 
-Each artboard contains: header strip (concept name + believes), main scene (first scene to build), anchor card, delight card, meta strip (Modality + axes + idea source + Structural thesis as bottom line). Structural thesis stays in meta strip, NOT header — keeps the visual clean.
+Current surface assumption:
+- The current design seems organized around:
+- But the user's real decision is about:
 
-Apply the same prototype-output bans as the React picker, plus Paper-specific: no emojis as icons, no fake stock photos.
-
-#### Option (c): Both
-
-Run option (b) first — Paper gallery for visual range. After user picks 1-3 favorites, run option (a) for those concepts only. Saves the time of building 8-10 React scenes when only a few will be tuned.
-
----
-
-## Output Format
-
-```
-## Diverge: {PROBLEM}
-
-### Brief
-[interview answers + skill-inferred fields]
-
-### Break down the problem (Step 1.C)
-- JTBD: [3 statements]
-- Real constraint: [primary + secondary]
-- Eliminate the problem: [statement]
-- Similar problems in other fields: [2 domains + mechanisms]
-
-### Vocabulary surfaced (Step 2)
-[3-6 named patterns/components/references — or "skipped, going wide"]
-
-### Banned directions (predictable solutions removed)
-- [5 banned solutions]
-
-### Provocation techniques selected
-- [2-3 techniques + 1 lens]
-
-### Concepts generated: {N}
-[concept tables]
-
-### Kill ledger (Step 4)
-[Keep / Rewrite / Kill labels per concept]
-Killed: [one-line reason per killed concept]
-
-### Compare and pick (Step 5)
-[comparison table on survivors + picks]
-
-### Deepen the picks (Step 6)
-[hybrids + narratives + simplicity passes + real-world states + decision table]
-
-### Built (Step 7)
-Output type: [React prototype / Paper canvas / Both]
-Location: [path or canvas]
-Concepts included: [list]
+Failure modes:
+- User cannot tell what matters.
+- User cannot tell what changed.
+- User cannot tell what to do next.
+- User cannot trust the recommendation.
+- User cannot recover from failure.
+- User fixes the wrong thing first.
+- User gets educated instead of guided.
+- User sees status but not consequence.
+- User sees all information with no priority.
+- User gets decorative UI instead of decision support.
 ```
 
----
+### 5. State and Action Matrix
 
-## Output Budget
+For software products, divergence without states is incomplete. Use domain-specific states from the prompt when provided.
 
-| Step | Budget |
-|------|--------|
-| Step 1 (Brief + breakdown) | 250-350 words |
-| Step 2 (Surface vocabulary) | 50-100 words |
-| Step 3 (Generate concepts) | 8-10 concepts × ~120 words each = 1000-1200 words |
-| Step 4 (Kill ledger) | 1-2 lines per concept × 10 + Killed summary = ~150-200 words |
-| Step 5 (Compare and pick) | Comparison table + 100-150 words commentary |
-| Step 6 (Deepen the picks) | 3 narratives × 200 + simplicity + states + decision table = ~900 words |
-| Step 7 (Build it) | Code or canvas output (no word budget) |
-
-Total text output before building: ~2700 words.
-
-## Technique Rotation
-
-Each run should use a different combination of provocation techniques. The libraries (7 techniques, 8 extreme users, 6 time budgets, 8 contexts) have enough combinations to never repeat.
-
----
-
-## When to use parallel agents
-
-| Step | Strategy |
-|------|----------|
-| Step 1 | Main conversation |
-| Step 2 | Main conversation |
-| Step 3 | Parallel subagents (optional, when problem space is broad) |
-| Step 4 | Main conversation (kill ledger requires holistic view) |
-| Step 5 | Main conversation |
-| Step 6 | Parallel subagents for narratives |
-| Step 7 (React) | Parallel subagents for Scene components |
-| Step 7 (Paper) | Main conversation (Paper MCP must be sequential) |
-
-**Subagent briefing rules:**
-- **Every parallel subagent prompt MUST include the Brief block in full.** Without the Brief, taste calibration vanishes — fall back to single-thread.
-- Always include the problem statement, breakdown, vocabulary, and concept table format.
-- Always specify which axes/techniques the agent should use.
-- After agents return, run the kill ledger in the main conversation on the merged set.
-
-**Parallel concept generation example (Step 3):**
-
-```
-Agent 1: "Generate 4 concepts for [problem] using axes [A, B, C, D] and 
-         provocation [X]. Each concept must have all required fields including 
-         Modality and Structural thesis. Anchor and Delight must be Googleable 
-         and pulled with Brief taste-profiling.
-
-         Brief: [paste full Brief block]
-         Vocabulary anchors: [paste from Step 2]
-         [paste concept table format]"
-
-Agent 2: "Generate 4 concepts for [problem] using axes [E, F, G, H] and 
-         provocation [Y] + lens [Z]. [same format + Brief]"
+```md
+| State | User meaning | System meaning | Severity | User action | System action | UI representation | Copy requirement | Edge case |
+|---|---|---|---|---|---|---|---|---|
 ```
 
----
+Common states: empty, loading, partial loading, error, first-time, returning, long-content, stale data, permission denied, offline, success, undoable success, irreversible success, warning, blocked, degraded, recovering.
 
-## Edge Cases
+### 6. Layer Diagnosis
 
-- **User provides a solution, not a problem** — Reframe: "You've described a solution. The problem underneath seems to be [X]. I'll diverge on the problem."
-- **User asks for < 5 concepts** — Generate 8-10 internally, surface only the requested count, selecting for maximum range.
-- **User asks for "variations"** — Redirect: "Variations optimize within one direction. Diverge generates different directions."
-- **Problem is too broad** — Ask one sharpening question. No more.
-- **Problem is too narrow** — Widen one level. State what you widened.
-- **User says "skip brief"** — Self-generate degraded Brief from prompt; mark output as DEGRADED at top.
-- **User says "quick" or "just brainstorm"** — Run Steps 1-5 only, skip 6 and 7.
-- **User says "surprise me"** — Top 3 by maximum structural range, proceed to Step 6 and 7.
-- **Vocabulary surface yields nothing useful** — say "no anchor surfaced, going wide" and proceed; Step 3 still requires Anchor.
+Diagnose which layers are weak before generating. Only diverge layers that matter.
 
-## What This Skill Is NOT
+```md
+| Layer | Current weakness | Evidence from prompt | Should diverge? | Why |
+|---|---|---|---|---|
+| Product mechanics | | | yes/no | |
+| UX flow | | | yes/no | |
+| Interaction | | | yes/no | |
+| Information hierarchy | | | yes/no | |
+| Copy | | | yes/no | |
+| Layout | | | yes/no | |
+| Typography | | | yes/no | |
+| Color | | | yes/no | |
+| Motion | | | yes/no | |
+| Emotional design | | | yes/no | |
+| Persuasion | | | yes/no | |
+| Education | | | yes/no | |
+```
 
-- Not a UI polish tool (use `/design`)
-- Not a variation generator
-- Not a wireframing tool
-- Not converging — explicitly avoids premature optimization
-- Not exhaustive — selects from technique libraries, doesn't apply all of them
+Do not generate typography variants when the real problem is product trust. Do not generate product concepts when the user asked for CTA copy.
+
+### 7. Obvious Baseline
+
+Always include the baseline before divergent directions.
+
+```md
+### Obvious Baseline
+
+- What the default sensible solution is:
+- Why it might be correct:
+- Where it fails:
+- What would make it enough:
+- What divergence must beat:
+```
+
+Novelty is not automatically better. If obvious wins, say so.
+
+### 8. Banned Bad Directions
+
+List predictable weak answers and ban them unless deliberately revived.
+
+Examples:
+
+- Same cards with renamed labels.
+- Generic status dashboard.
+- Alert carousel.
+- Tooltip tour for unclear UI.
+- Wizard by default.
+- Every button primary.
+- Purple-blue gradient "AI" treatment.
+- Metaphor name with unchanged mechanics.
+
+### 9. Divergence Strategy
+
+State which layers this run will explore:
+
+```md
+### Divergence Strategy
+
+This run will explore:
+- Product layers:
+- UX layers:
+- UI layers:
+- Emotional/persuasive layers:
+```
+
+### 10. Generate Layered Directions
+
+Default to 5-7 directions. Use the selected mode's output structure. Every direction must use this template unless the user requested a narrower mode such as copy-only.
+
+```md
+## Direction: <plain functional name>
+
+### Altitude
+Product-level / UX-level / UI-level / Copy-level / Visual-system-level / Mixed
+
+### Product bet
+One sentence explaining the hypothesis.
+
+### Layers changed
+- Product mechanics:
+- UX structure:
+- Interaction:
+- Information hierarchy:
+- Copy:
+- Layout:
+- Typography:
+- Color:
+- Motion:
+- Emotional design:
+- Persuasive behavior:
+- State handling:
+
+Use "unchanged" where a layer is intentionally held constant.
+
+### What stays constant
+Name the existing constraints or mechanics preserved.
+
+### User job
+When [situation], the user wants to [motivation], so they can [outcome].
+
+### Core mechanic
+What makes this direction work structurally.
+
+### Screen anatomy
+- Top region:
+- Primary region:
+- Secondary region:
+- Detail region:
+- Persistent elements:
+- Primary CTA:
+- Secondary actions:
+- What is hidden by default:
+- What appears only after interaction:
+
+### Information hierarchy
+1. First thing user should notice:
+2. Second thing:
+3. Third thing:
+4. What is deliberately quiet:
+5. What is removed:
+
+### Interaction loop
+Trigger -> user action -> system response -> next user decision.
+
+### Copy system
+- Page title:
+- Section heading:
+- Primary CTA:
+- Secondary CTA:
+- Empty state:
+- Loading state:
+- Error state:
+- Success state:
+- Tooltip/helper text only if necessary:
+- Confirmation copy if relevant:
+
+### Layout execution
+- Layout topology:
+- Grid/columns:
+- Density:
+- Spacing rhythm:
+- Grouping logic:
+- Scroll behavior:
+- Responsive behavior:
+
+### Typography execution
+- Font strategy:
+- Type scale:
+- Weight strategy:
+- Line height:
+- Line length:
+- Numeric/data style:
+- Accessibility notes:
+
+### Color execution
+- Palette role:
+- Semantic colors:
+- Accent usage:
+- Status usage:
+- Contrast requirements:
+- Non-color backup signal:
+
+### Motion and feedback
+- State transitions:
+- Loading:
+- Success:
+- Error:
+- Hover/focus:
+- Reduced-motion alternative:
+
+### Emotional design
+- Before-use emotional state:
+- During-use emotional state:
+- After-use emotional state:
+- Visceral mechanism:
+- Behavioral mechanism:
+- Reflective mechanism:
+
+### Persuasive design
+- Desired behavior:
+- Motivation:
+- Ability/friction:
+- Prompt:
+- Ethical boundary:
+- Failure if persuasion goes too far:
+
+### States to design
+- Empty:
+- Loading:
+- Error:
+- Permission denied:
+- Success:
+- Partial failure:
+- Stale data:
+- Long content:
+
+### Data required
+
+### Component requirements
+
+### Edge cases
+List at least 5.
+
+### What the user no longer has to do
+
+### Tradeoff
+
+### How it dies
+Specific failure mode: who is affected, what goes wrong, when.
+
+### Prototype slice
+Smallest screen or flow that proves the direction.
+
+### Story mode
+- Trigger:
+- Moment of confusion or need:
+- Product response:
+- User action:
+- Aftermath:
+
+### Handoff notes
+- Objects:
+- States:
+- Events:
+- Components:
+- Data dependencies:
+- Permissions:
+- Edge cases:
+- Analytics:
+- Accessibility:
+- Localization:
+- QA scenarios:
+```
+
+## Output Modes
+
+### Mode 1: Full layered divergence
+
+Use for broad prompts.
+
+Output:
+1. Product model
+2. State/action matrix
+3. Banned obvious bad directions
+4. Obvious baseline
+5. 5-7 layered directions
+6. Comparison table
+7. Recommendation
+8. Prototype slices
+9. Handoff blueprint
+
+### Mode 2: Product mechanics divergence
+
+Use when product behavior is open.
+
+Output:
+- 5-7 product directions.
+- Each changes at least 2 product layers.
+- UI details included but not over-polished.
+- Data, trust, and automation tradeoffs included.
+
+### Mode 3: UX structure divergence
+
+Use when the product concept is stable but flow/surface is open.
+
+Output:
+- 6-8 UX structures.
+- IA, flow, interaction, hierarchy, state handling.
+- Rough screen anatomy.
+- Typography/color mostly constant unless relevant.
+
+### Mode 4: UI presentation divergence
+
+Use when screen concept is stable.
+
+Output:
+- 6-8 UI treatments.
+- Vary layout, hierarchy, density, components, copy, type, color, motion.
+- Do not change product mechanics.
+- Include what each treatment optimizes for.
+
+### Mode 5: Copywriting divergence
+
+Use when words are the design problem. Load `copywriting-divergence.md`.
+
+Output:
+- Copy diagnosis.
+- User mental state.
+- Copy roles.
+- 8-12 copy directions grouped by tone/function.
+- Labels, CTAs, helper text, errors, empty states, success states.
+- Behavioral effect of each.
+- "Too clever" and "too vague" kills.
+
+### Mode 6: Interaction divergence
+
+Use when the user asks how an interaction should work. Load `interaction-divergence.md`.
+
+Output:
+- 6-8 interaction models.
+- Input, feedback, states, accessibility, speed, edge cases.
+- Power-user path and first-time path.
+
+### Mode 7: Visual-system divergence
+
+Use when look/feel/art direction is requested. Load visual modules.
+
+Output:
+- Register decision: product, brand, or mixed.
+- 5-7 visual language directions.
+- Type, color, layout rhythm, motion, shape, imagery/icon logic.
+- Observable user effect for each visual decision.
+- Accessibility checks.
+
+### Mode 8: State-handling divergence
+
+Use for dashboards, health, sync, permissions, errors, progress, onboarding, and empty states.
+
+Output:
+- State taxonomy.
+- Severity model.
+- Repair/recovery model.
+- User/system action map.
+- 5-7 state presentation models.
+- Copy for each state.
+- Edge-case matrix.
+
+## Register Rule
+
+Every run must choose register.
+
+### Product register
+
+Design serves the task. Default to familiar components, clear states, restrained color, useful density, clear typography, motion for feedback, copy for action and consequence, and delight only at specific moments.
+
+### Brand register
+
+Design is part of the product. Stronger visual expression, distinctive type, memorable composition, voice, motion/story, and atmospheric color are allowed, while preserving accessibility and usability.
+
+### Mixed register
+
+Define which parts behave like product and which behave like brand.
+
+Example:
+Agent builder = product. Launch page = brand. First success moment = product with brand expression.
+
+## Speed and Exposure Principle
+
+Favor fast end-to-end exploration before polishing fragments.
+
+- Full-flow sketch first.
+- Detail pass second.
+- Polish pass last.
+
+For broad tasks, produce multiple end-to-end directions quickly. Do not over-perfect one small component before the whole flow is discussable.
+
+## Obvious-vs-Novel Decision Rule
+
+For every run, ask:
+
+- Does the obvious solution solve the user job?
+- Is novelty adding capability, clarity, emotion, or trust?
+- Is novelty increasing learning cost?
+- Is the product category one where familiarity is valuable?
+- Would users punish us for being clever?
+
+If the obvious baseline wins, say so.
+
+## Default Output Structure
+
+```md
+# Diverge: <surface/problem>
+
+## 1. Brief
+- Surface:
+- User:
+- Job:
+- Objects:
+- States:
+- Actions:
+- Constraints:
+- Register:
+- Emotional target:
+- Behavioral target:
+- Anti-patterns:
+
+## 2. Assumption Ledger
+Known:
+Assumed:
+Unknown:
+Risk:
+
+## 3. Product Model
+Core objects:
+State/action matrix:
+Current decision:
+Current surface assumption:
+Product-design tension:
+
+## 4. Layer Diagnosis
+<table>
+
+## 5. Obvious Baseline
+
+## 6. Banned Bad Directions
+
+## 7. Divergence Strategy
+
+## 8. Directions
+<5-7 layered directions>
+
+## 9. Comparison
+| Direction | Altitude | Best for | What changes | Biggest tradeoff | Data needed | Prototype value | How it dies |
+
+## 10. Recommendation
+- Prototype first:
+- Prototype second:
+- Keep as UI treatment:
+- Keep as product provocation:
+- Kill:
+- Obvious baseline verdict:
+
+## 11. Prototype slices
+- Screen/flow:
+- States:
+- Interactions:
+- Copy:
+- Components:
+- Data:
+- Success signal:
+
+## 12. Handoff Blueprint
+- Components:
+- State machine:
+- Events:
+- API/data requirements:
+- Analytics:
+- Accessibility:
+- Localization:
+- QA cases:
+```
+
+## Quality Gates
+
+Load `bluff-and-slop-firewall.md` and `concept-enrichment.md` for full gates.
+
+Universal kill/rewrite triggers:
+
+1. Direction does not name altitude.
+2. Direction does not say which layers changed.
+3. Direction cannot be sketched.
+4. Direction cannot be prototyped.
+5. Direction does not handle real states.
+6. Direction has no clear user action.
+7. Direction uses metaphor without execution.
+8. Direction ignores constraints.
+9. Direction hides complexity users need.
+10. Direction is only a different visual treatment but claims product-level divergence.
+
+## Reference Handling
+
+References are optional. They are never required in every output. Every reference must pass:
+
+```md
+Reference:
+Observed mechanism:
+Design layer it informs:
+Product translation:
+Concrete execution:
+What not to copy:
+```
+
+Study artists and non-design references for mechanics, not aesthetics. Designers often provide known answers; artists can help question assumptions. Use both, but make every reference pay rent in execution.

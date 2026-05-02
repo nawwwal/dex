@@ -1,159 +1,221 @@
-# Creative Provocation Library
+# Layered Creative Provocations
 
-Select **2-3 techniques** per diverge session. Apply them AFTER selecting divergence axes but BEFORE generating concepts. Each selected technique must influence at least 1 of the 8-10 concepts. Do not apply all techniques mechanically.
+Use provocations to escape defaults inside the selected layer. Every answer must translate into execution.
 
----
+## Product provocations
 
-## Technique 1: SCAMPER Lens
+### 1. Change the organizing object
 
-For the user's problem, rapidly generate one provocation per letter:
+What if the page was not about connectors, but agents at risk?
 
-| Letter | Operation | Prompt |
-|--------|-----------|--------|
-| **S** | Substitute | What if you replaced the core element with something unexpected? |
-| **C** | Combine | What if this merged with a completely unrelated product category? |
-| **A** | Adapt | What solution exists in an unrelated field for the analogous problem? |
-| **M** | Modify / Magnify | What if the key parameter was 100x larger or smaller? |
-| **P** | Put to other uses | Who else has this problem but calls it something completely different? |
-| **E** | Eliminate | What if you removed the thing users think is essential? |
-| **R** | Reverse | What if the user and system swapped roles entirely? |
+### 2. Change the responsibility
 
-Run all 7 operations. Select the **2-3 most surprising seeds** and develop them into full concepts. Discard the predictable ones.
+What if the system did the safe parts and asked only for risky parts?
 
----
+### 3. Eliminate the screen
 
-## Technique 2: Assumption Reversal
+What if the user never visited this page unless intervention was required?
 
-1. List **5-7 assumptions** everyone makes about this problem domain.
-   Examples of assumptions: "users need to see a list", "this requires real-time data", "the user initiates the action", "more information helps the user decide", "users want control", "the interface should be fast."
-2. **Flip each assumption** to its opposite.
-3. For each flip, ask: "What product would you build if this flipped assumption were actually true?"
-4. Select the **2 most fertile flips** for full concept development.
+### 4. Prevent instead of repair
 
-The best flips are the ones where the reversed assumption feels uncomfortable but not impossible.
+What upstream action would make this issue never happen?
 
----
+### 5. Convert status into work
 
-## Technique 3: Worst Possible Idea
+What if every status became a task with owner, deadline, and fix path?
 
-1. Generate **3 genuinely terrible solutions** to the user's problem. The kind that would get you fired. Not "a bad UI" but structurally awful concepts: "make the user fill out a 50-field form every time", "only show data from 6 months ago", "require manager approval for every action."
-2. For each terrible solution, identify the **specific quality** that makes it terrible.
-3. **Invert that quality** into its positive extreme. "50-field form" inverts to "zero-field, fully inferred." "6-month-old data" inverts to "predictive, shows data that doesn't exist yet."
-4. Develop **1-2 concepts** from the most interesting inversions.
+### 6. Convert data into contract
 
-The value: terrible ideas often contain a hidden mechanism that, when inverted, produces genuinely novel concepts that pure brainstorming misses.
+What promise is the product making, and how does the UI show whether it can keep it?
 
----
+## UX provocations
 
-## Technique 4: Random domain connection
+### 1. Change the first question
 
-Force-connect the problem with a domain that has no obvious relationship. Pick **2 domains** from the table below, OR (preferred when generating Anchors and Delight moments) pull a specific named entry from `anchor-library.md` — that file lists 100+ real references across video games, arts, cinema, literature, music, history, sport, architecture, domestic life, and mythology. The table here is a starting set; the library is the wider menu.
+What should the user decide first?
 
-| # | Domain | Core dynamic |
-|---|--------|-------------|
-| 1 | Surgery | Precision under pressure, sterile protocols, irreversibility |
-| 2 | Jazz improvisation | Real-time listening, riffing on shared themes, structured freedom |
-| 3 | Air traffic control | Multi-agent coordination, real-time prioritization, zero tolerance for error |
-| 4 | Kindergarten teaching | Scaffolding, patience, making abstract concrete, reward stickers |
-| 5 | Competitive cooking | Time pressure, ingredient constraints, judging by result not process |
-| 6 | Wildlife migration | Long-term patterns, environmental signals, collective movement |
-| 7 | Prison architecture | Control flow, visibility, zones of access, rehabilitation vs security |
-| 8 | Standup comedy | Timing, reading the room, callbacks, subverting expectations |
-| 9 | Beekeeping | Collective behavior, hive health over individual, minimal intervention |
-| 10 | Freight logistics | Routing optimization, batch processing, hub-and-spoke, last-mile |
-| 11 | Archaeological excavation | Layered discovery, careful extraction, context matters more than artifact |
-| 12 | Nightclub DJ | Reading energy, sequencing, transitions, building toward a peak |
-| 13 | Submarine navigation | Limited visibility, sonar/inference, crew coordination, silent running |
-| 14 | Forest firefighting | Controlled burns, containment lines, resource deployment under chaos |
-| 15 | Auction house | Revealed preferences, time pressure, competitive bidding, reserve price |
-| 16 | Hospice care | Dignity, comfort over cure, listening, managing expectations |
-| 17 | Theme park design | Queue psychology, progressive reveal, emotional sequencing, wayfinding |
-| 18 | Olympic coaching | Peak performance, periodization, marginal gains, mental preparation |
-| 19 | Street food vending | Speed, limited menu, location optimization, sensory marketing |
-| 20 | Space mission control | Checklists, abort criteria, communication delays, redundancy |
+### 2. Change the sequence
 
-For each selected domain, answer:
-1. How does this domain solve the **equivalent** of the user's problem?
-2. What is the **core mechanism** in that domain?
-3. **Translate** that mechanism into a product concept for the user's problem.
+What if the last step came first?
 
----
+### 3. Change the default
 
-## Technique 5: Start from the emotion
+What if the page was empty until something mattered?
 
-Instead of starting from mechanisms, start from the **target emotional state** the product should produce.
+### 4. Change disclosure
 
-| Emotion | Design-backward question |
-|---------|------------------------|
-| Relief | "The weight is lifted." What product makes the user exhale within 30 seconds? |
-| Mastery | "I'm getting better." What product makes the user feel measurably more skilled? |
-| Surprise | "I didn't know that was possible." What product reveals something the user didn't expect? |
-| Confidence | "I know I'm making the right choice." What product eliminates second-guessing? |
-| Curiosity | "I want to explore this more." What product rewards exploration without punishing wandering? |
-| Pride | "Look what I built/achieved." What product creates something the user wants to show others? |
-| Calm | "Everything is under control." What product reduces ambient anxiety about this problem? |
-| Urgency | "I need to act now, and I know exactly what to do." What product converts panic into directed action? |
+What is visible to everyone, and what appears only on selection, failure, maturity, or role?
 
-Select **2-3 emotions** that contrast with each other (e.g., Calm + Urgency, or Mastery + Surprise). For each, design backward: what product would produce this emotion as its primary output?
+### 5. Change the entry point
 
----
+What if users arrive from notification, search, affected object, or command palette instead of navigation?
 
-## Technique 6: Different era or medium
+### 6. Change the recovery path
 
-Shift the **era or medium** entirely. Not "what industry" but "what material reality":
+What if errors were the main experience, not an edge case?
 
-| Transplant | Constraint it introduces |
-|------------|------------------------|
-| Command line, 1985 | Text-only, keyboard-driven, no visual affordances, scriptable |
-| AI-native, 2026 | User never directly manipulates data; describes intent, reviews output |
-| Spatial / AR | Information exists in physical space, gestured, context-aware |
-| Voice-only (driving) | Zero visual attention, conversational, stateless per utterance |
-| Physical product | A card, poster, device, or tangible object that solves this |
-| Inside a messaging app | Conversational, inline, no separate app, shared with others |
-| Browser extension | Modifies existing tools rather than replacing them |
-| Smartwatch | Glanceable, 2-inch screen, haptic, 5-second interactions |
+## UI provocations
 
-Select **1-2 transplants** that challenge the problem's assumed medium. The concept must genuinely work in that medium, not just be the original concept "but on a watch."
+### 1. Change layout topology
 
----
+Can this be a queue, matrix, timeline, inspector, split pane, table, or canvas?
 
-## Technique 7: What if…
+### 2. Change hierarchy
 
-State deliberately absurd "what if" provocations specific to the problem. The goal is not the absurd idea itself but the **useful tension** it reveals.
+What becomes largest, highest, first, repeated, pinned, hidden, or removed?
 
-**Generic provocations to adapt:**
+### 3. Change density
 
-| Provocation | Tension it reveals |
-|----|-------------------|
-| "What if we charged users for NOT using it?" | Value of engagement, cost of inaction |
-| "What if the product got worse the more you used it?" | Diminishing returns, freshness, over-reliance |
-| "What if you could only use it once per month?" | Scarcity as focus, high-stakes single interactions |
-| "What if the product was designed for your enemy?" | Adversarial robustness, defensive design |
-| "What if the output was irreversible?" | Commitment, deliberation, consequence |
-| "What if there was no undo?" | Forcing intentionality, live consequences |
-| "What if the interface was intentionally slow?" | Reflection, patience, anti-impulse |
-| "What if users had to teach the product, not learn it?" | Inversion of onboarding, user-as-trainer |
+What does this look like for a crisis user, a once-ever user, and a power user?
 
-Generate **3 provocations specific to the problem** (not from the list above). For each:
-1. State the absurd provocation
-2. Identify the useful tension underneath
-3. Channel that tension into a concept direction
+### 4. Change component grammar
 
----
+Can rows, tables, chips, diffs, or inline editors do what cards are doing badly?
 
-## Selection Guide
+### 5. Change responsive behavior
 
-Match techniques to problem characteristics:
+What is the mobile-native version instead of the desktop version amputated?
 
-| Problem type | Recommended techniques |
-|-------------|----------------------|
-| Well-understood problem, stale solutions | Assumption Reversal + Random domain connection |
-| Vague or emotional problem | Start from the emotion + SCAMPER |
-| Deeply technical problem | Different era or medium + What if… |
-| "How do we improve existing X?" | Worst Possible Idea + Assumption Reversal |
-| Crowded competitive space | Random domain connection + Different era or medium |
-| Internal tool / B2B | Persona lens (persona-lens.md) + What if… |
-| Consumer-facing | Start from the emotion + Random domain connection |
-| Platform / ecosystem problem | Random domain connection + What if… |
-| Behavior-change / habit problem | Start from the emotion + Worst Possible Idea |
-| Problem the user gave as a solution | SCAMPER (Eliminate + Reverse) + Worst Possible Idea |
+## Copy provocations
+
+### 1. Rewrite using only verbs
+
+Strip nouns that hide action. Make every label tell the user what happens.
+
+### 2. Rewrite for an anxious user
+
+Name safety, reversibility, and consequence.
+
+### 3. Rewrite for an expert who hates handholding
+
+Use terse labels, exact state, and no obvious instruction.
+
+### 4. Rewrite every CTA as an outcome
+
+Replace vague commands with the result of pressing the button.
+
+### 5. Rewrite every error as recovery
+
+Use: what happened, why, what now.
+
+### 6. Remove every tooltip
+
+Make the interface explain itself through labels, hierarchy, and visible state.
+
+### 7. Make copy shorter without losing consequence
+
+Cut filler, not meaning.
+
+### 8. Make copy more specific without making it longer
+
+Replace generic nouns with product objects and real actions.
+
+## Typography provocations
+
+### 1. Single-family discipline
+
+How far can hierarchy go using only size, weight, spacing, and case?
+
+### 2. Two-family contrast
+
+What changes if display and body roles separate?
+
+### 3. Data-dense typography
+
+What if numbers, statuses, and labels need faster scanning than prose?
+
+### 4. Editorial typography
+
+What if this surface is meant to be read slowly?
+
+### 5. Accessibility-first type
+
+What changes when text size increases?
+
+## Color provocations
+
+### 1. Semantic-only color
+
+What if every color must mean a state or action?
+
+### 2. One accent
+
+What if only one accent color is allowed?
+
+### 3. Status palette
+
+How do danger, warning, success, neutral, selected, disabled, and pending differ without color alone?
+
+### 4. Emotional temperature
+
+What palette supports calm, urgency, trust, or confidence?
+
+### 5. Monochrome first
+
+Does the screen work before color is added?
+
+## Motion provocations
+
+### 1. Motion explains state
+
+What changed, where did it go, what caused it?
+
+### 2. Motion gives feedback
+
+What does the user feel after click, drag, save, fail, undo?
+
+### 3. Motion reduces waiting pain
+
+How can loading explain progress instead of spinning meaninglessly?
+
+### 4. Motion respects seriousness
+
+Where should motion be absent?
+
+### 5. Reduced motion
+
+What is the non-motion equivalent?
+
+## Emotional design provocations
+
+### 1. Design for relief
+
+What makes the user exhale in 30 seconds?
+
+### 2. Design for mastery
+
+What shows the user they are getting better?
+
+### 3. Design for confidence
+
+What removes second-guessing?
+
+### 4. Design for urgency
+
+What turns panic into directed action?
+
+### 5. Design for trust
+
+What proof does the product show before asking belief?
+
+## Persuasive design provocations
+
+### 1. Motivation
+
+Why would the user care right now?
+
+### 2. Ability
+
+What friction stops them?
+
+### 3. Prompt
+
+What is the right moment to ask?
+
+### 4. Ethical check
+
+Would the user thank us for this nudge later?
+
+### 5. Anti-dark-pattern check
+
+Are we hiding cost, consequence, alternatives, or exit?

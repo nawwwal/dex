@@ -1,485 +1,193 @@
-# Diverge Picker Template
+# Diverge React Picker Template
 
-Vite + React app template for the divergence prototype. Renders a concept picker with per-concept prototype scenes and DialKit tuning controls.
+Use this when the user selects a React prototype. The picker compares layered directions and lets users tune design variables that affect product, UX, UI, copy, visual system, emotion, or handoff.
 
-## Vite Scaffolding
+## App sections
 
-Create the project directory and files in this order:
+- Direction navigation
+- Product model panel
+- State matrix panel
+- Screen anatomy panel
+- Copy panel
+- Layout panel
+- Interaction panel
+- Visual system panel
+- Emotional/persuasive rationale
+- Handoff panel
+- Layer controls
+- Prototype scene
 
-### 1. package.json
-```json
-{
-  "name": "diverge-prototype",
-  "private": true,
-  "version": "0.0.1",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^6.0.0"
-  }
-}
-```
+## Concept object
 
-### 2. vite.config.js
-```js
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-
-export default defineConfig({
-  plugins: [react()],
-  server: { port: 5199, open: false }
-})
-```
-
-### 3. index.html (at project root)
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Diverge Prototype</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
-</html>
-```
-
-### 4. src/main.jsx
-```jsx
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import './styles.css'
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-)
-```
-
-### 5. src/styles.css
-```css
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { -webkit-font-smoothing: antialiased; }
-body {
-  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-  background: #0a0a1a; color: #e2e8f0;
-  min-height: 100vh;
-}
-input[type="range"] { width: 100%; accent-color: #8b5cf6; }
-button { font-family: inherit; }
-```
-
-### 6. File structure
-```
-diverge-[problem-slug]/
-├── index.html
-├── package.json
-├── vite.config.js
-└── src/
-    ├── main.jsx
-    ├── App.jsx           ← DivergePicker root (below)
-    ├── styles.css
-    ├── concepts/
-    │   ├── index.js      ← re-exports all concepts as array
-    │   ├── concept-1.jsx
-    │   ├── concept-2.jsx
-    │   └── ...
-    └── components/
-        ├── ConceptNav.jsx
-        ├── ConceptMeta.jsx
-        └── DialKitPanel.jsx
-```
-
-After writing all files: `cd diverge-[slug] && npm install && npm run dev`
-
-## Architecture
-
-```
-App.jsx (DivergePicker root)
-├── ConceptNav          — segmented control / tabs to switch concepts
-├── ConceptScene        — renders the prototype scene for the active concept
-├── ConceptDialKit      — per-concept tuning controls (unique to each concept's mechanic)
-└── ConceptMeta         — name, premise, mechanic, tradeoff (collapsible)
-```
-
-## Concept File Format
-
-Each file in `src/concepts/` exports a single object:
+Each direction exports:
 
 ```jsx
-// src/concepts/ghost-agent.jsx
-const GhostAgentScene = ({ values }) => {
-  // Prototype scene that responds to DialKit values
-  return <div>...</div>;
+const DirectionScene = ({ values }) => {
+  return <div>{/* layered prototype scene */}</div>;
 };
 
-const concept = {
-  id: "ghost-agent",
-  name: "Ghost Agent",
-  premise: "The best interface is one you never see.",
-  modality: "Input: implicit signals (errors, anomalies, calendar events) → Output: a single ribbon at the top of the dashboard → Feedback: ribbon dismisses when acknowledged.",
-  structuralThesis: "Treats agents as a Quaker meeting because the Brief said this needs to feel calm not surveilled — silence is the default, only meaningful interruptions speak.",
-  anchor: "Outer Wilds knowledge-as-progression — the only thing that persists across the loop is what you now know.",
-  delight: "Quaker meeting silence — the agent only speaks when something genuinely needs your attention, otherwise the room is quiet.",
-  mechanic: "Background agent that acts silently, surfaces only on anomalies.",
-  sacrifices: "User has no visibility into what's happening. Trust required.",
-  axes: ["agency:agent-driven", "surface:off-screen", "density:minimal"],
-  controls: [
-    { label: "Autonomy Level", key: "autonomy", min: 0, max: 100, step: 5, default: 80, unit: "%" },
-    { label: "Surface Threshold", key: "threshold", min: 1, max: 10, step: 1, default: 7, unit: "/10" },
-    { label: "Explanation Depth", key: "explain", min: 0, max: 5, step: 1, default: 2, unit: "levels" },
+const direction = {
+  id: "agent-risk-board",
+  name: "Agent-risk board",
+  altitude: "Mixed",
+  productBet:
+    "Users should manage connector health by fixing agent-risk incidents, not by browsing connector inventory.",
+  layersChanged: {
+    productMechanics: "Connector-first -> agent-risk-first",
+    uxStructure: "Inventory -> triage board",
+    interaction: "Inspect -> diagnose and repair",
+    informationHierarchy: "Risk and next action above connector details",
+    copy: "State labels name impact and recovery",
+    layout: "Split pane with queue and repair inspector",
+    typography: "Tabular numbers for counts; terse labels",
+    color: "Semantic status with non-color backup",
+    motion: "State transition only when issue changes severity",
+    emotionalDesign: "Relief and control",
+    persuasiveBehavior: "Prompt repair only when impact is clear",
+    stateHandling: "Expired auth, API down, scope changed, schema mismatch",
+  },
+  productModel: {
+    user: "Operator",
+    job: "Know which connector issue threatens which agent and fix the urgent ones.",
+    objects: ["Agent", "Connector", "Workflow", "Credential", "Permission", "Issue"],
+    currentDecision: "What should I fix now?",
+  },
+  stateMatrix: [
+    {
+      state: "Expired auth",
+      userMeaning: "A user-owned credential must be renewed.",
+      severity: "High when active agents depend on it",
+      userAction: "Reconnect",
+      systemAction: "Pause affected syncs and show affected agents",
+      uiRepresentation: "Repair issue with reconnect CTA",
+      copyRequirement: "Name affected agents and data safety",
+    },
   ],
-  Scene: GhostAgentScene,
+  screenAnatomy: {
+    topRegion: "Blocked, at risk, degraded, healthy counts",
+    primaryRegion: "Affected agents sorted by impact",
+    secondaryRegion: "Connector dependency strip",
+    detailRegion: "Issue cause, evidence, action path",
+    persistentElements: ["Search", "Saved view", "Last checked"],
+    primaryCTA: "Reconnect Slack",
+    secondaryActions: ["Pause agent", "Assign owner", "Retry", "Ignore"],
+    hiddenByDefault: ["Raw logs", "Provider history"],
+    appearsAfterInteraction: ["Permission diff", "Schema mapping"],
+  },
+  copySystem: {
+    pageTitle: "Agent risks",
+    sectionHeading: "Needs action",
+    primaryCTA: "Reconnect Slack",
+    emptyState: "No connector issues are affecting agents right now.",
+    loadingState: "Checking connector dependencies...",
+    errorState: "We could not refresh connector status. Last checked 18 minutes ago.",
+    successState: "Slack reconnected. Refund Agent can resume syncing.",
+  },
+  layoutExecution: {
+    topology: "Queue with inspector",
+    density: "Power-dense",
+    responsiveBehavior: "Queue first, inspector opens as full-screen detail on mobile",
+  },
+  visualSystem: {
+    typography: "Single-family product system with tabular numbers",
+    color: "Neutral product palette with semantic status",
+    motion: "Minimal severity transitions; reduced-motion equivalent uses text change",
+  },
+  emotionalPersuasiveRationale: {
+    before: "Uncertain what is broken",
+    during: "Clear control over urgent issue",
+    after: "Relief that affected agents are safe",
+    desiredBehavior: "Fix user-actionable issues before browsing inventory",
+    ethicalBoundary: "Do not exaggerate risk to force action",
+  },
+  handoff: {
+    stateMachine: ["healthy", "atRisk", "blocked", "recovering", "resolved"],
+    events: ["connector_expired", "retry_started", "permission_approved"],
+    apiNeeds: ["dependency graph", "last sync", "fixability", "owner"],
+    analytics: ["issue_opened", "repair_clicked", "agent_paused"],
+    accessibility: ["No color-only state", "Keyboard queue navigation"],
+    localization: ["Avoid idioms in recovery copy"],
+    qaCases: ["API down disables reconnect", "Scope change requires approval"],
+  },
+  tradeoff:
+    "Less useful as a pure connector directory; stronger for reliability operations.",
+  prototypeSlice:
+    "One queue with three agents, three connector states, and one repair inspector.",
+  controls: [
+    { label: "Automation level", key: "automation", type: "range", min: 0, max: 100, step: 5, default: 40, unit: "%" },
+    { label: "Confidence threshold", key: "confidence", type: "range", min: 0, max: 100, step: 5, default: 75, unit: "%" },
+    { label: "Severity threshold", key: "severity", type: "range", min: 1, max: 10, step: 1, default: 7, unit: "/10" },
+    { label: "Grouping mode", key: "grouping", type: "select", options: ["agent", "issue", "owner"], default: "agent" },
+    { label: "Copy tone", key: "tone", type: "select", options: ["direct", "calm", "urgent", "expert"], default: "direct" },
+    { label: "Layout topology", key: "layout", type: "select", options: ["queue-inspector", "matrix", "timeline"], default: "queue-inspector" },
+  ],
+  Scene: DirectionScene,
 };
 
-export default concept;
+export default direction;
 ```
 
-```jsx
-// src/concepts/index.js
-import ghostAgent from './ghost-agent';
-import arcade from './arcade';
-// ...
-export default [ghostAgent, arcade, /* ... */];
-```
+## Good controls
 
-## Component Templates (adapt, do not copy verbatim)
+Product controls:
 
-```jsx
-// src/App.jsx
-import { useState, useCallback, useMemo } from "react";
-import CONCEPTS from "./concepts";
-import ConceptNav from "./components/ConceptNav";
-import ConceptMeta from "./components/ConceptMeta";
-import DialKitPanel from "./components/DialKitPanel";
+- Automation level
+- Confidence threshold
+- Severity threshold
+- Data freshness
+- Trust evidence depth
+- User/system agency
 
-// ═══════════════════════════════════════════════════════
-// ROOT COMPONENT
-// ═══════════════════════════════════════════════════════
+UX controls:
 
-export default function DivergePicker() {
-  const [activeId, setActiveId] = useState(CONCEPTS[0].id);
-  const [metaOpen, setMetaOpen] = useState(true);
+- Density
+- Disclosure depth
+- Grouping mode
+- Entry point
+- Sort priority
+- State severity
 
-  // Per-concept dial values — keyed by concept id
-  const [allValues, setAllValues] = useState(() => {
-    const init = {};
-    CONCEPTS.forEach((c) => {
-      init[c.id] = {};
-      c.controls.forEach((ctrl) => { init[c.id][ctrl.key] = ctrl.default; });
-    });
-    return init;
-  });
+UI controls:
 
-  const activeConcept = useMemo(
-    () => CONCEPTS.find((c) => c.id === activeId),
-    [activeId]
-  );
+- Layout topology
+- Hierarchy emphasis
+- Copy tone
+- Type strategy
+- Color strategy
+- Motion intensity
+- Explanation depth
 
-  const handleDialChange = useCallback((key, value) => {
-    setAllValues((prev) => ({
-      ...prev,
-      [activeId]: { ...prev[activeId], [key]: value },
-    }));
-  }, [activeId]);
+Bad controls:
 
-  const ActiveScene = activeConcept.Scene;
+- Random accent color
+- Border radius alone
+- Shadow strength alone
+- Animation speed alone
+- Decorative theme toggle
 
-  return (
-    <div style={{
-      minHeight: "100vh", background: "#0a0a1a", color: "#e2e8f0",
-      fontFamily: "system-ui, -apple-system, sans-serif",
-      display: "flex", flexDirection: "column",
-    }}>
-      {/* Header */}
-      <div style={{ padding: "20px 24px 12px" }}>
-        <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase",
-          letterSpacing: "0.12em", color: "#8b5cf6", marginBottom: 4 }}>
-          DIVERGE
-        </div>
-        <div style={{ fontSize: 20, fontWeight: 700 }}>
-          {/* Replace with problem statement */}
-          Problem Statement Here
-        </div>
-      </div>
+Unless those are the actual design question.
 
-      {/* Concept Picker */}
-      <div style={{ padding: "0 16px 12px" }}>
-        <ConceptNav concepts={CONCEPTS} activeId={activeId} onSelect={setActiveId} />
-      </div>
+## Component guidance
 
-      {/* Concept Meta */}
-      <div style={{ padding: "0 16px 12px" }}>
-        <ConceptMeta
-          concept={activeConcept}
-          isOpen={metaOpen}
-          onToggle={() => setMetaOpen(!metaOpen)}
-        />
-      </div>
+The picker should render:
 
-      {/* Prototype Scene */}
-      <div style={{
-        flex: 1, margin: "0 16px", background: "#12122a",
-        borderRadius: 12, border: "1px solid #1e1e3f",
-        minHeight: 300, overflow: "auto",
-      }}>
-        <ActiveScene values={allValues[activeId]} />
-      </div>
+- `LayerControls`: inputs grouped by product, UX, and UI.
+- `DirectionMeta`: altitude, product bet, layers changed, tradeoff.
+- `ProductModelPanel`
+- `StateMatrixPanel`
+- `CopyPanel`
+- `LayoutPanel`
+- `VisualSystemPanel`
+- `HandoffPanel`
 
-      {/* DialKit Controls */}
-      <div style={{ padding: 16 }}>
-        <DialKitPanel
-          controls={activeConcept.controls}
-          values={allValues[activeId]}
-          onChange={handleDialChange}
-        />
-      </div>
-    </div>
-  );
-}
-```
+Scenes must respond to controls and show real state changes, not just update descriptive text.
 
-## Component Files
+## Output bans
 
-### src/components/DialKitPanel.jsx
-```jsx
-export default function DialKitPanel({ controls, values, onChange }) {
-  return (
-    <div style={{
-      display: "flex", flexDirection: "column", gap: 12,
-      padding: 16, background: "#1a1a2e", borderRadius: 12,
-    }}>
-      <div style={{ fontSize: 11, fontWeight: 600, textTransform: "uppercase",
-        letterSpacing: "0.08em", color: "#7f8c9b", marginBottom: 4 }}>
-        Tuning Controls
-      </div>
-      {controls.map((ctrl) => (
-        <div key={ctrl.key} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#c4cdd5" }}>
-            <span>{ctrl.label}</span>
-            <span style={{ fontVariantNumeric: "tabular-nums", color: "#8b5cf6" }}>
-              {values[ctrl.key]}{ctrl.unit || ""}
-            </span>
-          </div>
-          <input
-            type="range"
-            min={ctrl.min} max={ctrl.max} step={ctrl.step}
-            value={values[ctrl.key]}
-            onChange={(e) => onChange(ctrl.key, Number(e.target.value))}
-          />
-          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 10, color: "#4a5568" }}>
-            <span>{ctrl.min}{ctrl.unit || ""}</span>
-            <span>{ctrl.max}{ctrl.unit || ""}</span>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-```
-
-### src/components/ConceptNav.jsx
-```jsx
-export default function ConceptNav({ concepts, activeId, onSelect }) {
-  return (
-    <div style={{
-      display: "flex", gap: 2, padding: 3, background: "#0f0f23",
-      borderRadius: 10, overflow: "hidden",
-    }}>
-      {concepts.map((c) => (
-        <button
-          key={c.id}
-          onClick={() => onSelect(c.id)}
-          style={{
-            flex: 1, padding: "10px 8px", border: "none", cursor: "pointer",
-            borderRadius: 8, fontSize: 12, fontWeight: 600,
-            transition: "all 0.2s ease",
-            background: activeId === c.id ? "#8b5cf6" : "transparent",
-            color: activeId === c.id ? "#fff" : "#7f8c9b",
-          }}
-        >
-          {c.name}
-        </button>
-      ))}
-    </div>
-  );
-}
-```
-
-### src/components/ConceptMeta.jsx
-```jsx
-export default function ConceptMeta({ concept, isOpen, onToggle }) {
-  return (
-    <div style={{
-      background: "#12122a", borderRadius: 10, overflow: "hidden",
-      border: "1px solid #1e1e3f",
-    }}>
-      <button onClick={onToggle} style={{
-        width: "100%", padding: "12px 16px", border: "none", cursor: "pointer",
-        background: "transparent", display: "flex", justifyContent: "space-between",
-        alignItems: "center", color: "#c4cdd5",
-      }}>
-        <span style={{ fontSize: 13, fontWeight: 600 }}>{concept.premise}</span>
-        <span style={{ fontSize: 18, transform: isOpen ? "rotate(180deg)" : "rotate(0)", transition: "0.2s" }}>▾</span>
-      </button>
-      {isOpen && (
-        <div style={{ padding: "0 16px 16px", fontSize: 12, lineHeight: 1.6, color: "#8892a0" }}>
-          {concept.structuralThesis && (
-            <div><strong style={{ color: "#60a5fa" }}>Thesis:</strong> {concept.structuralThesis}</div>
-          )}
-          {concept.modality && (
-            <div><strong style={{ color: "#a3a3a3" }}>Modality:</strong> {concept.modality}</div>
-          )}
-          <div><strong style={{ color: "#a78bfa" }}>Mechanic:</strong> {concept.mechanic}</div>
-          {concept.anchor && (
-            <div><strong style={{ color: "#34d399" }}>Anchor:</strong> {concept.anchor}</div>
-          )}
-          {concept.delight && (
-            <div><strong style={{ color: "#fbbf24" }}>Delight:</strong> {concept.delight}</div>
-          )}
-          <div><strong style={{ color: "#f87171" }}>Sacrifices:</strong> {concept.sacrifices}</div>
-          <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginTop: 8 }}>
-            {concept.axes.map((a) => (
-              <span key={a} style={{
-                padding: "2px 8px", background: "#1e1e3f", borderRadius: 4, fontSize: 10, color: "#7f8c9b",
-              }}>{a}</span>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-```
-
----
-
-## DialKit Control Design Guide
-
-Controls must reflect the concept's *mechanism*. Generic spacing/padding controls are banned in the diverge picker. Every slider should change the prototype's *behavior*.
-
-### Control Libraries by Concept Type
-
-**Agent-driven concepts:**
-- Autonomy level (0-100%) — how much the agent does without asking
-- Intervention frequency (1-20/day) — how often the agent surfaces
-- Confidence threshold (0-100%) — minimum confidence before agent acts
-- Explanation depth (0-5) — how much the agent explains its reasoning
-- Aggressiveness (0-100%) — how proactively the agent suggests
-
-**Game-like concepts:**
-- Difficulty (1-10) — challenge level
-- Reward frequency (1-20) — how often positive feedback appears
-- Time pressure (0-120s) — countdown duration, 0 = none
-- Streak sensitivity (1-7 days) — how quickly streaks break
-- Progress visibility (0-100%) — how visible progress indicators are
-
-**Ritual / habit concepts:**
-- Session length (1-30 min) — ideal session duration
-- Reminder cadence (1-48 hrs) — hours between prompts
-- Reflection depth (1-5) — how much reflection is asked for
-- Flexibility (0-100%) — how forgiving of missed sessions
-- Social visibility (0-100%) — how much others see your activity
-
-**Minimal / ambient concepts:**
-- Information density (1-10) — how much is shown at once
-- Update frequency (1-60 min) — how often display refreshes
-- Salience threshold (0-100%) — how important something must be to appear
-- Fade delay (1-30s) — how long info persists before fading
-- Urgency escalation (1-5) — steps before notification upgrades
-
-**Power tool / cockpit concepts:**
-- Information density (1-10) — data per screen
-- Shortcut depth (1-5 levels) — keyboard shortcut layers
-- Batch size (1-100) — items processed at once
-- Undo depth (1-50) — how many actions can be undone
-- Customization level (0-100%) — how much the user can reconfigure
-
-**Collaborative / social concepts:**
-- Visibility radius (1-100 people) — who sees your actions
-- Contribution threshold (0-100%) — minimum effort to participate
-- Consensus requirement (1-100%) — agreement needed for group decisions
-- Notification granularity (1-5) — detail level of social notifications
-- Anonymity level (0-100%) — how identifiable participants are
-
-**Inversion / prevention concepts:**
-- Strictness (0-100%) — how aggressively guardrails enforce
-- Warning lead time (0-48 hrs) — how far ahead warnings appear
-- Override friction (1-10) — how hard it is to override guardrails
-- Learning rate (0-100%) — how fast the system adapts to your patterns
-- False positive tolerance (0-100%) — sensitivity vs specificity
-
-### Naming Conventions
-
-- Use descriptive human labels: "Autonomy Level" not "param_a"
-- Include units where meaningful: "% ", "/day", "min", "items", "levels"
-- Default should represent the concept's sweet spot — the value that best demonstrates the concept
-- Min/max should represent the meaningful range, not arbitrary bounds
-
-## Output File Naming
-
-`diverge-[problem-slug].jsx`
-
-Example: `diverge-expense-tracking.jsx`, `diverge-onboarding-trust.jsx`
-
-## Scene Implementation Notes
-
-Each concept's Scene component should be a **functional mockup**, not a wireframe. It should:
-
-1. Respond to DialKit values in real-time (the whole point of the picker)
-2. Visualize the concept's core mechanic, not just describe it
-3. Use placeholder/mock data that makes the concept feel real
-4. Be self-contained (no external dependencies beyond React and standard libs)
-
-Scenes can use:
-- Inline styles (preferred for portability)
-- SVG for simple illustrations
-- CSS animations for interaction feel
-- Mock data arrays for realistic content
-
-Scenes should NOT:
-- Require external APIs
-- Use localStorage (use React state via parent)
-- Import external component libraries (keep self-contained)
-- Be layout-only wireframes with lorem ipsum
-
-## Prototype-output bans (taste guardrails)
-
-These bans apply to the actual rendered scenes. They prevent generic LLM AI-tells. Some are universal; some are conditional on the Brief's consistency contract.
-
-### Universal (always banned)
-
-- **Acme / Nexus / SmartFlow / similar startup-slop names** in mockups → use the actual product name from the Brief, or "Atlas Capital" / "Lumen Studio" style realistic names if the product is unnamed.
-- **John Doe / Sarah Chan / Jack Su / placeholder users** → use realistic names representative of the user's stated audience (Indian names for Razorpay merchants, mixed for global audiences).
-- **Fake round-number metrics** like 99.99%, 50%, 1234567 → use organic messy data (47.2%, +1 (312) 847-1928, ₹1,84,720).
-- **"Elevate / Seamless / Unleash / Next-Gen / Revolutionary"** copy → use concrete verbs ("track", "compare", "schedule").
-- **Three-equal-cards-in-a-row layouts** → use asymmetric grid, zig-zag, or horizontal scroll.
-- **AI-Purple gradient glows** (the default `from-purple-500 to-blue-500` cliché) → use desaturated singular accents.
-- **Pure black `#000000`** → use Zinc-950 (`#0a0a0a`) or Charcoal.
-- **Emoji as functional icons** → use SVG icons or skip the icon.
-
-### Conditional on Brief's consistency contract
-
-If the Brief's consistency contract names the user's design system (e.g., "Blade components", "Material 3", "shadcn/ui"), use those tokens. Otherwise:
-
-- **Inter** as a default font → only banned if the Brief's design system doesn't already use it. Inter is fine if the user's stack uses Inter; reach for Geist, Satoshi, Cabinet Grotesk, or Outfit only when the Brief says nothing.
-- **Color palette** → match the Brief's named palette. If unnamed, use a single high-contrast accent on a Zinc/Slate neutral base (no rainbow gradients).
-- **Component shapes** → if the Brief names a component library, use those shapes. If not, prefer borders + dividers over cards-everywhere.
-
-### What to do when violated
-
-The kill ledger flags concepts whose prototype scene would violate any universal ban. If a Scene component uses `from-purple-500 to-blue-500` or "John Doe" or "Acme Corp," the concept gets a Rewrite, not a Kill — the mechanic may still be sound, but the rendering needs to change.
+- No required reference card.
+- No required delight card.
+- No decorative lore.
+- No fake metrics.
+- No Acme/Nexus/SmartFlow names.
+- No decorative-only controls.
+- No dark mode by default just to look polished.

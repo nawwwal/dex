@@ -1,232 +1,355 @@
-# Concept Enrichment Techniques
+# Layered Concept Enrichment
 
-Loaded during Step 1 (break down the problem), Step 4 (kill ledger), Step 5 (how each concept dies), and Step 6 (hybrid combinations, narratives, simplicity pass, real-world states, picking what to prototype). Not all sections are used in every step. Follow the loading instructions in SKILL.md.
+Use this file to deepen directions without drifting into decorative lore.
 
----
+## Preserve from the old skill
 
-## Break down the problem
+- JTBD
+- Real constraint
+- Eliminate-the-problem thinking
+- Similar problems from other fields
+- Kill ledger
+- How each direction dies
+- Day-in-the-life narratives
+- Simplicity pass
+- Prototype selection
 
-Use at the start of Step 1, before generating any concepts.
+## Jobs to Be Done
 
-### 1. Jobs to Be Done
+State 3 JTBD statements:
 
-State 3 JTBD statements for the problem. Format: "When [situation], I want to [motivation], so I can [outcome]."
+- Obvious: functional job.
+- Emotional/social: anxiety, status, control, belonging, trust.
+- Surprising: the hidden job discovered by asking what this is really about.
 
-| Type | Purpose |
-|------|---------|
-| Obvious | The functional job everyone would state |
-| Emotional / social | The job the user wouldn't say out loud: status, anxiety reduction, belonging, control |
-| Surprising | A non-obvious job discovered by asking "what else is this really about?" |
+Format:
 
-The surprising JTBD often produces the most interesting concepts. Spend time on it.
-
-### 2. Constraint Identification
-
-What is the **real constraint** underneath the problem? Not "users need a better dashboard" but the actual bottleneck:
-
-| Constraint type | If this is the real constraint, solutions should... |
-|----------------|---------------------------------------------------|
-| Time | Compress, eliminate, or pre-compute |
-| Knowledge | Supply, infer, or bypass the need to know |
-| Access | Democratize, proxy, or circumvent the gate |
-| Trust | Build, prove, or replace with guarantees |
-| Motivation | Create, remove the need for, or make automatic |
-| Coordination | Synchronize, eliminate dependencies, or make async |
-| Attention | Reduce demand on, redirect, or automate monitoring |
-
-Identify the **primary constraint** and the **secondary constraint**. These directly shape which axes and provocations to prioritize.
-
-### 3. Eliminate the problem
-
-Not "solve it better." Make it not exist.
-
-Ask: **"What would make this problem disappear entirely?"** Three angles:
-
-- **Eliminate the cause:** What upstream change removes the problem?
-- **Automate around it:** What if the problem is handled without human involvement?
-- **Reframe it:** What if this isn't actually a problem, but a symptom of something else?
-
-Write one problem dissolution statement. This often produces the most radical concept in the set.
-
-### 4. Similar problems in other fields
-
-Who else solves a **structurally similar problem** in a completely different domain?
-
-A restaurant reservation system and a doctor's appointment system share structure. But "restaurant for doctors" isn't interesting. What IS interesting is how restaurants solved the no-show problem (deposits, waitlists, overbooking) and whether those mechanisms transfer.
-
-Identify **2 similar problems in other fields**. For each, name the mechanism they use that the user's domain hasn't tried.
-
----
-
-## Hybrid combinations
-
-Use during Step 5, after the user has selected concepts to prototype.
-
-### Process
-
-1. From the shortlisted concepts, pick the **3 most structurally different** ones.
-2. Create **2-3 hybrid pairs** by combining:
-   - Concept A's **mechanism** with Concept B's **interaction model**
-   - Or Concept A's **user posture** with Concept C's **system behavior**
-3. For each hybrid, write one sentence: "This is [Concept A]'s [mechanism] delivered through [Concept B]'s [interaction model]."
-4. **Evaluate:** Is the hybrid more interesting than the weakest shortlisted concept?
-5. If yes, propose the swap. If no, discard. Don't force it.
-
-### Quality Check
-
-A good hybrid has emergent properties: it produces something neither parent concept could produce alone. A bad hybrid is just Feature A + Feature B. If the hybrid is additive rather than emergent, discard it.
-
----
-
-## Day-in-the-Life Narratives
-
-Use during Step 5 for each shortlisted concept (typically 2-4 concepts).
-
-### Format
-
-Three paragraphs per concept:
-
-**Paragraph 1: The Trigger**
-What situation brings the user to this product? Be specific: time of day, emotional state, what just happened, what they were doing before. This is not "User opens app." This is "It's 4:47pm on Thursday. Priya just got out of a meeting where the CFO asked about Q3 projections and she didn't have the number. She's annoyed at herself."
-
-**Paragraph 2: The Interaction**
-Step by step, what happens? Not features. The felt experience. What does the user see, decide, feel? What surprised them? What was easier than expected? Where did they hesitate?
-
-**Paragraph 3: The Aftermath**
-What's different after using it? What did the user NOT have to do? How do they feel? What happens next in their day because of this interaction?
-
-### Quality Gates
-
-- If the narrative sounds like a press release or marketing copy, **rewrite it**. It should sound like a diary entry.
-- If the narrative could describe any of the other shortlisted concepts, it's not specific enough to the mechanism. **Rewrite it.**
-- If Paragraph 2 is longer than Paragraphs 1 and 3 combined, you're listing features. **Rewrite it.**
-
----
-
-## Kill ledger
-
-Use during Step 4, BEFORE the user sees the comparison table. Thin the set so only concepts worth comparing reach the user.
-
-The skill runs every generated concept through this ledger. For each concept, record one of:
-
-- **Keep** — concept stands as-is.
-- **Rewrite** — concept has a fixable flaw; one-line revision instruction.
-- **Kill** — concept is structurally weaker than another, redundant, or violates a foundation gate.
-
-### Kill criteria (any one is enough)
-
-1. **Interchangeable Structural thesis** — if two concepts' Structural thesis sentences can be swapped without changing meaning, kill the weaker. (Per doc.cc/syntax/concept: a layout variation is not a concept.)
-2. **Foundation veto** — concept requires impossible latency, trust, data quality, or autonomy that doesn't exist in the user's context. Kill or flag risky. (Per Stripe/Figma craft hierarchy of needs: foundations come before aesthetics.)
-3. **Anchor monoculture** — concept shares its bucket with 3+ other concepts after taste-profiling, and adds no orthogonal axis. Kill the weakest in the bucket.
-4. **Layout variation** — concept differs from another only in visual treatment, copy, or layout, not mechanism. Kill the weaker.
-5. **Off main thing** — concept doesn't serve the Main Thing from the Brief. Kill.
-6. **Anchor or Delight fails the Googleable gate** — Anchor or Delight references invented fluff. Rewrite with a real reference.
-7. **Conflicts with consistency contract** — concept breaks something the Brief said must stay familiar, without earning the conflict (no compelling reason to break consistency). Rewrite.
-
-### Output format
-
-```
-Kill ledger
-
-01. Mission Control Wallboard — KEEP
-02. Apple Home for Agents      — REWRITE  (fatal flaw: shares Structural thesis with #07; required revision: shift modality from glanceable to ritualized)
-03. Kitchen Pass (KDS)         — KEEP
-04. Razorville Citizens        — KILL     (fatal flaw: foundation veto — pixel-art layer adds delight surface but the underlying problem of agent visibility is unaddressed)
-05. Boring Wallboard           — KILL     (fatal flaw: layout variation of #01 with inverted density)
-...
-
-Killed: 3 concepts (Razorville Citizens, Boring Wallboard, Money Pulse).
+```md
+When <situation>, I want to <motivation>, so I can <outcome>.
 ```
 
-The user sees only Keep + Rewritten concepts in Step 5. The Killed list is shown as a one-line summary at the bottom; the user can ask to revive any of them.
+## Real constraint
 
-### No praise quota
+Identify the real bottleneck:
 
-Do NOT include "what works" bullets per concept. The kill ledger is doing one job: thinning the set. Praise is not the scarce resource here. Per doc.cc/syntax/critique: "necessary collisions" — adversarial thought to pressure-test, not a victory lap.
+- Time
+- Knowledge
+- Access
+- Trust
+- Motivation
+- Coordination
+- Attention
+- Permission
+- Data freshness
+- Reversibility
 
-### Honesty gate
+Name primary and secondary constraints. These determine which layers matter.
 
-On ordinary non-trivial runs, zero Kill/Rewrite requires explicit justification. The kill ledger must reason out loud why every concept passed. This prevents the gate from biting performatively (forcing a sacrificial kill) AND from being toothless (rubber-stamping all 10 concepts).
+## Eliminate the problem
 
----
+Ask:
 
-## How each concept dies
+- What upstream change removes the problem?
+- What can be automated safely?
+- What can be prevented instead of repaired?
+- What if the surface should not exist?
 
-Use during Step 5, as an additional column in the comparison table the user sees.
+Output one problem-elimination statement.
 
-### Format
+## Similar problems in other fields
 
-For each concept, state the **single most likely way it dies**:
+Use analogous problems only for transferable mechanisms. Do not transplant aesthetics.
 
-| Quality level | Example |
-|--------------|---------|
-| Too vague (rewrite) | "Users might not like it" |
-| Too vague (rewrite) | "Adoption could be low" |
-| Specific enough | "Users game the streak mechanic within 2 weeks and it becomes a guilt-producing chore" |
-| Specific enough | "The agent makes one wrong decision in month 1 and the user never trusts it again" |
-| Specific enough | "The ambient display becomes invisible wallpaper after the novelty wears off, around week 3" |
-| Specific enough | "Power users hit the ceiling of the simplified interface in the first session and feel patronized" |
+Format:
 
-The death scenario should name **who** is affected, **what** goes wrong, and **when** it happens.
+```md
+Other field:
+Equivalent problem:
+Mechanism:
+Product translation:
+Layer affected:
+```
 
----
+## Product model extraction
+
+Every run should extract:
+
+- Entities and product objects.
+- Properties.
+- States.
+- User actions.
+- System actions.
+- Dependencies.
+- Rules and permissions.
+- Data freshness.
+- Reversibility.
+
+## Layer Diagnosis
+
+Before generating, diagnose which layers are weak.
+
+```md
+| Layer | Current weakness | Evidence from prompt | Should diverge? | Why |
+|---|---|---|---|---|
+| Product mechanics | | | yes/no | |
+| UX flow | | | yes/no | |
+| Interaction | | | yes/no | |
+| Information hierarchy | | | yes/no | |
+| Copy | | | yes/no | |
+| Layout | | | yes/no | |
+| Typography | | | yes/no | |
+| Color | | | yes/no | |
+| Motion | | | yes/no | |
+| Emotional design | | | yes/no | |
+| Persuasion | | | yes/no | |
+| Education | | | yes/no | |
+| Accessibility | | | yes/no | |
+| Handoff | | | yes/no | |
+```
+
+Only diverge layers that matter.
+
+## State/action matrix
+
+Use this for software products:
+
+```md
+| State | User meaning | System meaning | Severity | User action | System action | UI representation | Copy requirement | Edge case |
+|---|---|---|---|---|---|---|---|---|
+```
+
+Use domain-specific states when available.
+
+## Enrichment passes
+
+Run only the passes relevant to the selected layers.
+
+### Copy pass
+
+- Page title
+- Section heading
+- CTAs
+- Empty, loading, error, success states
+- Confirmation copy
+- Tooltip/helper text only if necessary
+
+Quality check:
+Does copy tell the user what changed, what matters, what to do next, and what consequence follows?
+
+### Layout pass
+
+- Top, primary, secondary, detail regions
+- Persistent controls
+- CTA placement
+- Scroll behavior
+- Responsive transformation
+- Density
+
+Quality check:
+Can the user identify the primary action within 2 seconds?
+
+### Interaction pass
+
+- Trigger
+- Input
+- Feedback
+- Intermediate state
+- Completion
+- Undo/recovery
+- Failure
+- Accessibility
+- Power-user shortcut
+- First-time affordance
+
+Quality check:
+Does it handle latency, keyboard use, screen readers, and recovery?
+
+### Hierarchy pass
+
+Define:
+
+1. First read
+2. Second read
+3. Third read
+4. Persistent context
+5. Hidden detail
+6. Quiet metadata
+7. Removed content
+
+Squint test:
+With blurred vision, the user should first see X, then Y, then Z.
+
+### Typography pass
+
+Specify font strategy, scale, weight, line-height, line length, numeric style, and accessibility notes.
+
+### Color pass
+
+Specify palette role, semantic colors, accent usage, status usage, contrast requirements, and non-color backup signals.
+
+### Motion pass
+
+Specify state transitions, loading, success, error, hover/focus, and reduced-motion alternative.
+
+### Emotional design pass
+
+Specify before-use, during-use, and after-use emotional states plus visceral, behavioral, and reflective mechanisms.
+
+### Persuasive design pass
+
+Specify desired behavior, motivation, ability/friction, prompt, timing, ethical boundary, opt-out/escape, and failure mode.
+
+### Education pass
+
+First ask whether the UI can be made more obvious. Use education only when the UI cannot carry all meaning itself.
+
+### Accessibility pass
+
+Check color backup, contrast, target size, keyboard use, screen-reader legibility, reduced motion, and text scaling.
+
+### Handoff pass
+
+Translate the direction into:
+
+- Objects
+- States
+- Events
+- Components
+- Data dependencies
+- Permissions
+- Edge cases
+- Analytics
+- Accessibility
+- Localization
+- QA scenarios
+
+## Story mode
+
+For selected directions:
+
+```md
+- Trigger:
+- Moment of confusion or need:
+- Product response:
+- User action:
+- Aftermath:
+```
+
+## How each direction dies
+
+State the single most likely failure mode:
+
+```md
+<persona> cannot <required action/decision> because <specific assumption fails> after <time/context>.
+```
+
+Bad:
+"Users might not like it."
+
+Good:
+"Operators stop trusting risk ranking after one stale dependency graph marks the wrong agent as safe."
 
 ## Simplicity pass
 
-Use during Step 6 (deepen the picks), AFTER the day-in-the-life narrative for each shortlisted concept.
+Ask:
+What can be removed, combined, or hidden without killing the direction?
 
-### The question
+Output:
 
-> What can be removed, combined, or hidden without killing the concept?
-
-For each shortlisted concept, write a one-line before/after:
-
-```
-Mission Control Wallboard
-Original: Single dense panel with all 10 agents as rows of micro-cells, plus quick-action toolbar, plus filter chips, plus search bar.
-Simplified: Single dense panel with all 10 agents as rows. Search via cmd-K. No toolbar, no chips. Density is the feature.
+```md
+Original:
+Simplified:
+What stayed because it is load-bearing:
 ```
 
-### Quality gate
+If original and simplified are identical, the direction is probably bloated or under-specified.
 
-If the simplified version is identical to the original, the gate failed — you didn't run the pass honestly. Per doc.cc/syntax/simplicity: simplicity is repeatedly saying no before getting to a yes. If you can't say no to anything, the concept is too crowded to ship.
+## Prototype decision framework
 
-### Real-world states
+Rate 1-5:
 
-In the same step, for each shortlisted concept, describe how it handles the real-world states the Brief named (empty / error / loading / first-time / long-content). Quality gate: states must be **substantively different from the happy path**. "Loading shows a spinner" is not a state — that's a placeholder.
+- Signal strength: will the prototype teach something new?
+- Feasibility: can it be built quickly?
+- Risk of skipping: what insight is lost if skipped?
+- Team conviction: does the team care?
+- State coverage: does it test real states?
+- Handoff value: can implementation learn from it?
 
-Good real-world state lines:
-- *Empty: garden plot is bare soil, with one seed packet labeled "your first agent."*
-- *Error: agent's tile dims to grayscale and a small ribbon explains in plain language what failed.*
-- *First-time: garden starts as a single sprouted seedling; new agents bloom only after the user has used at least one.*
+## Kill ledger
 
----
+### Universal gates
 
-## Picking what to prototype
+Kill or rewrite if:
 
-Use after Step 6, before moving to building.
+1. Direction does not name altitude.
+2. Direction does not say which layers changed.
+3. Direction cannot be sketched.
+4. Direction cannot be prototyped.
+5. Direction does not handle real states.
+6. Direction has no clear user action.
+7. Direction uses metaphor without execution.
+8. Direction ignores constraints.
+9. Direction hides complexity users need.
+10. Direction is just a different visual treatment of the same mechanism but claims product-level divergence.
 
-The diverge skill is about NOT converging prematurely. But the output must be actionable. This step helps the user decide **what to prototype**, not what to ship.
+### Product gates
 
-### Decision Framework
+- Does the object model change?
+- Does the agency model change?
+- Does the automation boundary change?
+- Does the trust model change?
+- Does the data requirement exist?
+- Does it name the business/user tradeoff?
 
-For each shortlisted concept, rate 1-5:
+### UX gates
 
-| Factor | Question |
-|--------|----------|
-| Signal strength | Would a prototype of this teach us something genuinely new? |
-| Feasibility to prototype | Can we build a testable version in 1-2 days? |
-| Risk of skipping | If we DON'T explore this, do we miss a potentially important insight? |
-| Team conviction | Does the team find this genuinely interesting, not just intellectually novel? |
+- Does the decision flow change?
+- Does the IA change?
+- Does the interaction loop change?
+- Does the state handling change?
+- Does the entry point change?
+- Does the recovery path change?
 
-### Recommendation Format
+### UI gates
 
-Present as:
+- Does the layout hierarchy change?
+- Does copy become clearer or more purposeful?
+- Does typography improve hierarchy/readability?
+- Does color communicate meaning?
+- Does motion explain state?
+- Does density match use frequency?
 
-```
-Prototype first: [Concept X] — highest signal strength, feasible, teaches us [specific thing]
-Prototype second: [Concept Y] — riskier but if it works, changes our understanding of [specific aspect]
-Park for later: [Concept Z] — interesting but prototype won't teach us enough yet
-```
+### Copy gates
 
-Frame recommendations in terms of **learning**, not commitment. The goal of prototyping is to learn, not to ship.
+- Does every word earn its place?
+- Is the CTA specific?
+- Are consequences clear?
+- Is error copy useful?
+- Is empty state copy actionable?
+- Is tone appropriate?
+- Is cleverness hurting clarity?
+
+### Emotional gates
+
+- Is the target emotion named?
+- Is the UI mechanism that creates it named?
+- Is the emotion appropriate to the moment?
+- Does it improve the task?
+
+### Persuasion gates
+
+- Is motivation real?
+- Is ability improved?
+- Is prompt timing justified?
+- Is the nudge ethical?
+- Can users decline or undo?
+
+### Accessibility gates
+
+- Does color have non-color backup?
+- Is contrast sufficient?
+- Are targets large enough?
+- Is keyboard use possible?
+- Are states screen-reader legible?
+- Is reduced motion handled?
+- Does text scale?

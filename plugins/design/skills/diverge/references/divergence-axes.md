@@ -1,305 +1,493 @@
-# Divergence Axes Library
+# Layered Divergence Axes
 
-## Primary Axes
+Use these axes to select what changes. A direction must name its altitude and changed layers. If the layer does not change, mark it `unchanged`.
 
-Each axis represents a fundamental dimension along which two concepts can differ. Concepts that share fewer than 3 axes are **not divergent** — they are variations.
+## A. Product-level axes
 
-### 1. Who drives (user → system)
-Who drives the action?
+### 1. Organizing object
 
-| From | To |
-|--------|--------|
-| User-driven (manual, explicit) | Agent-driven (automatic, inferred) |
+Meaning:
+What primary object structures the experience?
 
-Sub-positions: user initiates → user confirms → system suggests → system acts → system acts silently
+Options:
+User-first, task-first, issue-first, object-first, timeline-first, workflow-first, business-impact-first, owner/team-first, risk-first, outcome-first.
 
-### 2. Where it lives (screen → off-screen)
-Where does the product live?
+What changes in UI:
+Navigation, page title, grouping, search, filters, empty states, default sort, object labels.
 
-| From | To |
-|--------|--------|
-| Screen-based (dashboard, app, page) | Off-screen (notification, ambient, hardware, voice, environment) |
+Example:
+Connector-first shows Slack, Gmail, Shopify. Agent-risk-first shows agents at risk because Slack auth expired.
 
-Sub-positions: full app → widget → notification → ambient display → no screen → physical object
+Avoid:
+Same card grid with a different sort order.
 
-### 3. When it happens (one moment → ongoing)
-When does interaction happen?
+### 2. User agency
 
-| From | To |
-|--------|--------|
-| Single moment (transaction, one-shot) | Ongoing system (continuous, background, longitudinal) |
+Meaning:
+Who initiates and controls the work?
 
-Sub-positions: one-shot → session → ritual → continuous background → event-driven
+Options:
+User initiates, system suggests, user confirms, system batches, system acts safely, system blocks risky action, system acts silently and reports.
 
-### 4. How info is structured (browse → filter)
-How is information structured?
+What changes in UI:
+CTA design, approval flows, audit logs, undo, confidence indicators, permission boundaries.
 
-| From | To |
-|--------|--------|
-| Browse/find (explore, discover) | Filter/eliminate (narrow, reduce) |
+Avoid:
+"AI does it" without trust, reversibility, or evidence.
 
-Sub-positions: open canvas → feed → ranked list → filtered view → single recommendation → zero-UI auto-pick
+### 3. Product posture
 
-### 5. How it feels (tool → toy)
-What does it feel like to use?
+Meaning:
+Is the product helping, preventing, repairing, teaching, monitoring, or deciding?
 
-| From | To |
-|--------|--------|
-| Serious professional tool | Playful mechanic / game / toy |
+Options:
+Assistive, preventive, repair-oriented, educational, monitoring, decision-support, autonomous, auditing.
 
-Sub-positions: Bloomberg terminal → Excel → consumer app → gamified → literal game → toy
+What changes in UI:
+Primary screens, timing, notifications, explanations, CTAs, empty states.
 
-### 6. How users express intent (form → invisible)
-How does the user express intent?
+Avoid:
+A dashboard that pretends to be all of these at once.
 
-| From | To |
-|--------|--------|
-| Explicit workflow (form fill, step-by-step) | Invisible defaults (system infers, user overrides) |
+### 4. Automation boundary
 
-Sub-positions: form → wizard → conversation → direct manipulation → gesture → invisible default
+Meaning:
+Where does the system stop and ask the human?
 
-### 7. Who's involved (solo → social)
-Who is involved?
+Options:
+Manual, recommended, semi-automated, auto-safe, auto-with-review, auto-blocking, fully autonomous.
 
-| From | To |
-|--------|--------|
-| Solo use (single user, private) | Collaborative / social (shared, multiplayer, community) |
+What changes in UI:
+Review queue, approvals, logs, confidence, undo, override, escalation.
 
-Sub-positions: solo private → shared state → collaborative → social feed → marketplace → community-governed
+Avoid:
+Invisible automation with no explanation.
 
-### 8. Direction (help do → eliminate need)
-Does it help do, or help avoid?
+### 5. Trust model
 
-| From | To |
-|--------|--------|
-| Assistance (help user do the thing) | Inversion (eliminate the need to do the thing) |
+Meaning:
+How does the product earn belief?
 
-Sub-positions: assist → accelerate → automate → delegate → prevent → eliminate the problem entirely
+Options:
+Evidence trail, before/after diff, simulation preview, human approval, audit log, confidence score, source citation, reversible action, role permission.
 
-### 9. Density (cockpit → single thing)
-How much information per unit of attention?
+What changes in UI:
+Detail panels, diff views, preview states, logs, footnotes, provenance.
 
-| From | To |
-|--------|--------|
-| High density (power user, data-rich) | Minimal (one thing at a time, progressive) |
+Avoid:
+Magic recommendations.
 
-Sub-positions: cockpit → dashboard → card → single metric → binary signal → no signal (absence = good)
+## B. UX-level axes
 
-### 10. What system behavior powers it
-The mechanism that makes the product work:
+### 6. Information architecture
 
-- Recommendation
-- Ranking
-- Batching
-- Auto-completion
-- Delegation
-- Progressive disclosure
-- Constraints / guardrails
-- Simulation / preview
-- Social proof
-- Urgency / scarcity
-- Pattern matching
-- Anomaly detection
-- Narration / journaling
-- Ritual / habit loop
-
-### 11. Real-world reference
-Which non-software domain does it borrow from?
-
-| Domain | Implies |
-|--------|---------|
-| Muji | Calm, invisible, material-honest |
-| Bloomberg Terminal | Dense, keyboard-driven, zero waste |
-| Nintendo | Surprise, delight, progressive mastery |
-| Duolingo | Streak, habit, micro-progress |
-| Luxury concierge | White-glove, anticipatory, invisible labor |
-| Cockpit | Mission-critical, instrumented, heads-up |
-| Library | Browse, serendipity, quiet focus |
-| Emergency room | Triage, severity, rapid action |
-| Garden | Tend, grow, patience, seasonal rhythm |
-| Air traffic control | Real-time multi-agent coordination, zero tolerance for error, radar/inference |
-| Jazz ensemble | Improvisation within structure, listening, riffing on shared themes |
-| Greenhouse | Controlled environment, nurturing growth, monitoring conditions, micro-climate |
-| Auction house | Revealed preferences, time pressure, competitive bidding, reserve price |
-| Triage nurse | Rapid assessment, ruthless prioritization, resource-constrained, severity-based |
-
-For a much wider set of named real-world references organized by category (video games, arts and installation, cinema and TV, literature, music, history and ritual, sport, architecture and craft, domestic and social, mythology and folklore), see `anchor-library.md`. The Anchor and Delight moment fields in Step 3 must draw from that library, biased away from software.
-
-### 12. Artificial constraint
-What artificial constraint reshapes the design?
-
-- Only one button
-- No text (icon/visual only)
-- Works offline first
-- Designed for repeat daily use without becoming annoying
-- Assumes users are impatient and distracted
-- Assumes users are anxious and need reassurance
-- Must feel premium without looking luxurious
-- Works on a watch / in a car / eyes-free
-
-### 13. Tone (tool → identity)
-What is the product's emotional register?
-
-| From | To |
-|--------|--------|
-| Functional / utilitarian (tool, no personality) | Emotionally resonant / identity-forming (users feel something, product reflects who they are) |
-
-Sub-positions: invisible utility → reliable tool → trusted companion → identity expression → emotional mirror → ritual/sacred object
-
-### 14. Adaptation (static → personalized)
-Does the product learn and change?
-
-| From | To |
-|--------|--------|
-| Static (same for everyone, every time) | Deeply personalized (learns, adapts, evolves per user) |
-
-Sub-positions: identical for all → configurable → preference-learning → behavior-predicting → context-aware → fully autonomous adaptation
-
----
-
-## Prompt Frames
-
-Use these frames to generate specific kinds of divergence. Select 1-2 frames that match the problem space.
-
-### Frame: Orthogonal Directions
-```
-Generate 10 prototype directions for [problem].
-They must be orthogonal, not adjacent.
-No two concepts should share the same primary interaction model.
-Spread across: automation, direct manipulation, conversational, feed-based, game-like, assistant-led, invisible/background, collaborative, ritualized/habit-forming, extreme minimal.
-Concepts that feel like different product species, not alternate screens from one app.
-```
-
-### Frame: Kill the Dashboard
-```
-Solve [problem] without using a dashboard, settings page, or standard list/detail layout.
-Start from first principles: what should happen automatically, what can be inferred, what can be deferred, what might not need a screen at all.
-7 prototypeable concepts.
-```
-
-### Frame: Interface Gradient (zero to full)
-```
-6 ways to solve [problem], ordered from least interface to most interface.
-Start with zero UI → ambient UI → one-tap UI → guided flow → power-user tool → full control surface.
-Conceptual range, not finish.
-```
-
-### Frame: Industry Transplant
-```
-Reimagine [problem] as if designed by:
-• Muji • Bloomberg Terminal • Nintendo • Duolingo
-• a luxury concierge • a cockpit system
-Same user goal, radically different product philosophy.
-Key interaction mechanic and a rough screen idea for each.
-```
-
-### Frame: Inversion
-```
-Users think they need help doing [task].
-5 concepts that instead help them avoid mistakes, reduce choices, delegate effort, or only intervene at the highest-leverage moment.
-Inversion, not assistance theater.
-```
-
-### Frame: Tradeoff Maximizer
-```
-8 concepts for [problem].
-Each aggressively optimizes one quality at the expense of another:
-speed / trust / delight / control / automation / learnability / memorability / differentiation
-Make tradeoffs visible. No safe middle-ground ideas.
-```
-
-### Frame: Product Behaviors First
-```
-Don't start with screens. Start with system behavior.
-For [problem], 8 different product behaviors, then translate each into the minimum prototype to express it.
-The prototype reveals the concept, not decorates it.
-```
-
-### Frame: Mechanism-First
-```
-Concepts built around different mechanisms:
-recommendation / ranking / batching / auto-completion / delegation / progressive disclosure / constraints / simulation / social proof / urgency
-Each mechanism leads to a distinctly different prototype direction.
-```
-
-### Frame: Dangerous Ideas
-```
-10 high-variance concepts for [problem].
-Some should feel slightly wrong, risky, or provocative.
-Explicitly exploring bold directions, not only sensible ones.
-Label which ones are likely brilliant vs likely terrible, and why.
-```
-
-### Frame: Unnatural Constraints
-```
-6 concepts for [problem], but:
-- one works with only one button
-- one works with almost no text
-- one must feel premium without looking luxurious
-- one assumes users are impatient and distracted
-- one assumes users are anxious and need reassurance
-- one is designed for repeat daily use without becoming annoying
-```
-
-### Frame: Extreme Users
-```
-Redesign [problem] for 4 radically different users:
-• a power user who does this 50 times a day (speed is everything)
-• a first-timer who will never learn the interface (it must be self-evident)
-• a user in a crisis with 10 seconds (triage mode)
-• a user who actively hates this product category (prove value before asking anything)
-Each user demands a fundamentally different mechanism, not just a different skin.
-See persona-lens.md for the full library.
-```
-
-### Frame: Emotion Targets
-```
-Design 6 concepts for [problem], each starting from a target emotion:
-• Relief: "the weight is lifted"
-• Mastery: "I'm getting better at this"
-• Surprise: "I didn't know that was possible"
-• Confidence: "I know I'm making the right choice"
-• Curiosity: "I want to explore more"
-• Calm: "everything is under control"
-Design backward: what product makes the user feel this within 30 seconds?
-See creative-provocations.md "Start from the emotion" for the full library.
-```
-
-### Frame: Eliminate the problem
-```
-What would make [problem] not exist?
-5 concepts that eliminate the problem rather than solve it.
-• 2 that remove the cause upstream
-• 2 that automate around it so no human is involved
-• 1 that reframes it as a symptom of something else entirely
-Some may not be software. That's fine.
-```
-
----
-
-## Banned Patterns (detect and replace)
-
-These indicate failure to diverge. If any concept matches, replace it.
-
-| Pattern | Why it's banned |
-|---------|----------------|
-| Dashboard with cards and charts | Default SaaS grammar. Unless the concept is specifically "cockpit density," ban it. |
-| List view + detail pane | The most common layout on earth. Not a concept. |
-| Settings page with toggles | Configuration ≠ interaction model. |
-| Wizard / stepper flow | This is a pattern, not a concept. Only allowed if the *mechanism within* the stepper is novel. |
-| "Clean, modern interface" | Aesthetic, not structural. Not a concept. |
-| Tab bar with 4-5 sections | Navigation ≠ concept. |
-| Chat interface without novel agent behavior | Putting a chat bubble on it is not innovation. |
-| Same concept with light/dark theme | Cosmetic, not structural. |
-| AI chatbot that answers questions about X | Putting a chat bubble on it is not innovation. Only allowed if the conversational mechanic is genuinely novel (e.g., negotiation, Socratic method, adversarial). |
-| Notification system that alerts when X | A notification is a delivery channel, not a concept. The concept is what happens after the alert. |
-
-## Duplicate detector
-
-Two concepts are duplicates if:
-1. They solve the same sub-problem
-2. Using the same core mechanic
-3. With the same level of user agency
-4. Differing only in visual treatment, copy, or layout
-
-**Test:** If you could merge them into one concept by adding a toggle, they were never two concepts.
+Meaning:
+How information is organized.
+
+Options:
+Inventory, queue, timeline, map, matrix, inspector, wizard, feed, command palette, exception inbox, canvas, report.
+
+What changes in UI:
+Navigation, page topology, grouping, breadcrumbs, tabs, panels.
+
+Avoid:
+Renaming tabs and pretending it is strategy.
+
+### 7. Primary decision
+
+Meaning:
+What decision does the surface optimize?
+
+Options:
+What matters, what changed, what should I fix, what should I ignore, what can I automate, what is safe, what is risky, what happens next, who owns this.
+
+What changes in UI:
+Above-the-fold content, CTA, ranking, severity, labels, explanatory copy.
+
+Avoid:
+Displaying everything equally.
+
+### 8. Disclosure model
+
+Meaning:
+When information appears.
+
+Options:
+Always visible, progressive disclosure, on hover/focus, on selection, on error, on threshold, on user maturity, on role permission.
+
+What changes in UI:
+Panels, drawers, tooltips, accordions, inspector, advanced mode.
+
+Avoid:
+Hiding information users need for trust.
+
+### 9. Flow structure
+
+Meaning:
+How the user moves through the task.
+
+Options:
+Single-screen action, step-by-step, branching flow, checklist, review-and-commit, compare-and-choose, diagnose-and-repair, draft-preview-publish, ask-approve-act.
+
+What changes in UI:
+Step order, progress, confirmation, backtracking, save states, validation.
+
+Avoid:
+Stepper because "flows need steppers."
+
+### 10. Education model
+
+Meaning:
+How users learn the interface.
+
+Options:
+Self-evident UI, inline hint, empty state education, progressive onboarding, targeted toast, learn-by-doing sandbox, social discovery, help center, keyboard shortcut reveal.
+
+What changes in UI:
+Tooltips, first-run state, empty states, shortcuts, contextual nudges.
+
+Avoid:
+Blocking popovers that point at obvious things.
+
+## C. Interaction-level axes
+
+### 11. Input model
+
+Meaning:
+How the user expresses intent.
+
+Options:
+Click/tap, drag, swipe, keyboard, command palette, natural language, voice, gesture, bulk select, inline edit, upload/import, constraint sliders.
+
+What changes in UI:
+Affordances, target sizes, shortcuts, focus states, mobile behavior.
+
+Avoid:
+Adding chat if the actual action model is still buttons.
+
+### 12. Feedback model
+
+Meaning:
+How the product responds.
+
+Options:
+Immediate inline feedback, toast, status chip, progress indicator, preview, simulation, activity log, undo snackbar, confirmation, haptic/audio, silent success.
+
+What changes in UI:
+Motion, copy, timing, persistence, state transitions.
+
+Avoid:
+Toast spam.
+
+### 13. Error and recovery model
+
+Meaning:
+How failure is handled.
+
+Options:
+Prevent, warn, block, explain, retry, roll back, escalate, degrade gracefully, assign owner, contact support, learn from failure.
+
+What changes in UI:
+Error copy, disabled states, retry buttons, logs, repair flows, fallback UI.
+
+Avoid:
+"Something went wrong."
+
+### 14. Power-user model
+
+Meaning:
+How repeated use gets faster.
+
+Options:
+Shortcuts, command palette, batch actions, saved views, templates, macros, defaults, recent actions, bulk edit, advanced filters.
+
+What changes in UI:
+Keyboard hints, density, table controls, saved configurations.
+
+Avoid:
+Designing only for first-time comprehension.
+
+## D. UI presentation axes
+
+### 15. Layout topology
+
+Meaning:
+The structural arrangement of the screen.
+
+Options:
+Single column, split pane, master/detail, table/detail, dashboard grid, timeline, kanban, matrix, canvas, map, inspector sidebar, command center, modal, bottom sheet, full-page flow.
+
+What changes in UI:
+Regions, scrolling, panel behavior, density, primary action placement.
+
+Avoid:
+Three equal cards by default.
+
+### 16. Information hierarchy
+
+Meaning:
+The order and emphasis of content.
+
+Options:
+Outcome-first, action-first, status-first, risk-first, timeline-first, comparison-first, explanation-first, data-first, recommendation-first.
+
+What changes in UI:
+Headlines, row structure, CTA prominence, labels, grouping, empty states.
+
+Avoid:
+Making everything equally visible.
+
+### 17. Density
+
+Meaning:
+How much information appears per unit of attention.
+
+Options:
+One thing, sparse, comfortable, dense, power-dense, progressive density, role-based density.
+
+What changes in UI:
+Spacing, row height, columns, text length, shortcuts, default disclosure.
+
+Avoid:
+Mistaking whitespace for clarity.
+
+### 18. Component grammar
+
+Meaning:
+Which components carry the experience.
+
+Options:
+Cards, rows, tables, chips, pills, forms, drawers, panels, inline editors, checklists, progress bars, diff views, charts, toasts, badges, accordions.
+
+What changes in UI:
+Affordance, scannability, action density, accessibility.
+
+Avoid:
+Cards around everything.
+
+### 19. Responsive behavior
+
+Meaning:
+How the surface adapts across screen sizes and contexts.
+
+Options:
+Stack, collapse, prioritize, transform into list, transform into carousel, move actions to bottom bar, keep table with horizontal scroll, summarize first/detail later, mobile-specific flow.
+
+What changes in UI:
+Breakpoints, navigation, density, action placement, hidden content.
+
+Avoid:
+Removing important functionality on mobile.
+
+## E. Copywriting axes
+
+### 20. Copy function
+
+Meaning:
+What the words are doing.
+
+Options:
+Orient, explain, label, instruct, warn, reassure, persuade, confirm, recover, celebrate, teach.
+
+What changes in UI:
+Headlines, CTAs, helper text, error messages, empty states, confirmations.
+
+Avoid:
+Decorative copy that does not help the user decide or act.
+
+### 21. Tone
+
+Meaning:
+The emotional posture of the words.
+
+Options:
+Clinical, warm, direct, calm, urgent, expert, friendly, dry, formal, plainspoken, celebratory, apologetic.
+
+What changes in UI:
+Verb choice, sentence length, pronouns, humor, reassurance, warning style.
+
+Avoid:
+Same tone for onboarding, errors, and destructive actions.
+
+### 22. CTA framing
+
+Meaning:
+How action is named.
+
+Options:
+Verb-first, outcome-first, risk-aware, time-bound, confirming consequence, reversible, commitment-heavy, low-friction.
+
+What changes in UI:
+Button labels, confirmation dialogs, destructive action copy.
+
+Examples:
+Bad: Submit. Better: Save changes. Better for billing: Charge $29 and subscribe. Better for destructive action: Delete 23 files.
+
+Avoid:
+OK, Submit, Continue when consequence matters.
+
+### 23. Error copy model
+
+Meaning:
+How failure is explained.
+
+Options:
+What happened, why it happened, who can fix it, what to do next, whether data is safe, whether retry helps, whether support is needed.
+
+What changes in UI:
+Error text, helper links, retry copy, severity labels.
+
+Avoid:
+Blaming the user.
+
+### 24. Empty state copy model
+
+Meaning:
+How absence is explained.
+
+Options:
+First-run orientation, no-results recovery, permission-limited absence, filtered-empty state, success-empty state, waiting-for-data state.
+
+What changes in UI:
+Message, CTA, secondary action, illustration, explanation.
+
+Avoid:
+"No data yet" with no next step.
+
+## F. Visual-system axes
+
+### 25. Typography strategy
+
+Meaning:
+How type creates hierarchy and personality.
+
+Options:
+Single tuned family, sans + mono, display + body, editorial serif + utility sans, condensed for density, variable font axis, numeric/tabular data style.
+
+What changes in UI:
+Type scale, font roles, line-height, weight, tracking, line length.
+
+Rules:
+Product UI usually benefits from one well-tuned family or a restrained sans + mono pairing. Brand/editorial surfaces can use more expressive pairings. Type must improve hierarchy and readability.
+
+Avoid:
+One font everywhere with no hierarchy or too many fonts that obscure hierarchy.
+
+### 26. Color strategy
+
+Meaning:
+How color communicates.
+
+Options:
+Semantic status, single accent, brand-led palette, neutral-first, risk-coded, role-coded, data-coded, emotional temperature, high-contrast utility, quiet monochrome.
+
+What changes in UI:
+Status chips, CTA, warnings, backgrounds, charts, selection states.
+
+Rules:
+Color must have consistent meaning. Never rely on color alone. Check contrast. Accent should carry action or meaning.
+
+Avoid:
+Purple-to-blue AI gradients. Red/yellow/green with no consequence model.
+
+### 27. Motion strategy
+
+Meaning:
+How movement explains state.
+
+Options:
+State transition, spatial continuity, progress, feedback, causality, attention shift, celebration, error recovery, loading, reduced-motion alternative.
+
+What changes in UI:
+Transitions, duration, easing, loading states, hover/focus, success/error feedback.
+
+Rules:
+Motion must explain what changed, where something went, or what action succeeded. Respect reduced-motion settings.
+
+Avoid:
+Motion as decoration.
+
+### 28. Shape and containment
+
+Meaning:
+How visual boundaries group information.
+
+Options:
+No containers, spacing only, dividers, cards, panels, tables, outlines, filled regions, elevation, layered surfaces, common regions.
+
+What changes in UI:
+Grouping, scan path, perceived depth, touch targets.
+
+Avoid:
+Nested cards.
+
+### 29. Icon / illustration strategy
+
+Meaning:
+How non-text visuals support meaning.
+
+Options:
+No icons, utility icons, status icons, product-specific symbols, diagrammatic illustration, character illustration, abstract visual system, data visualization.
+
+What changes in UI:
+Recognition, emotion, empty states, onboarding, errors.
+
+Avoid:
+Generic icon tiles above every heading.
+
+## G. Emotional and persuasive axes
+
+### 30. Emotional design layer
+
+Meaning:
+Which emotional layer is being designed.
+
+Options:
+Visceral first impression, behavioral ease/control, reflective pride/trust/memory after use.
+
+What changes in UI:
+Visual language, interaction smoothness, copy, success states, reminders, history, shareability.
+
+Avoid:
+"Make it delightful" without naming the emotional moment.
+
+### 31. Emotional target
+
+Meaning:
+The feeling the interface should create.
+
+Options:
+Relief, confidence, calm, urgency, safety, mastery, curiosity, pride, control, trust, momentum.
+
+What changes in UI:
+Hierarchy, tone, pacing, feedback, friction, confirmation, success moment.
+
+Example:
+Relief shows one clear next action, confirms data safety, reduces options, and lowers visual noise.
+
+### 32. Persuasive behavior model
+
+Meaning:
+How the design ethically encourages behavior.
+
+Use:
+Motivation, ability, prompt.
+
+For every persuasive direction, specify motivation, ability/friction, prompt timing, ethical boundary, and opt-out/undo.
+
+Avoid:
+Dark patterns, fake urgency, manipulative scarcity, guilt loops, addictive streaks for serious workflows.
+
+### 33. Memory model
+
+Meaning:
+What the user remembers after the interaction.
+
+Options:
+Peak moment, end state, first success, recovery from error, moment of trust, moment of control, moment of mastery.
+
+What changes in UI:
+Success message, final confirmation, summary, share state, audit log, milestone.
+
+Avoid:
+Celebrating trivial actions.
