@@ -17,7 +17,7 @@
 
 ## Edge Cases
 1. Table with 4 columns and 5 rows mentioned → Should proactively offer visual.md
-2. "analyze this Google Doc [URL]" → Should invoke prd-analyzer agent, not ops lens inline
+2. "analyze this Google Doc [URL]" → Should read the document if available, otherwise ask for pasted/exported content
 3. "slides for tomorrow's meeting" → Ambiguous; clarify whether new slides or convert PPT
 
 ## Quality Bar

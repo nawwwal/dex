@@ -22,11 +22,11 @@
 
 ## Edge Cases
 1. "full design review for X" → Chains: ui/review → ui/a11y
-2. "review" on a code file → Should invoke design-reviewer agent, not ui/review.md
+2. "review" on a code file → Should run ui/review.md directly against the file
 3. "a11y check" when no URL or file provided → Should ask "what would you like me to check?"
 4. "feels off" → Routes to ui/enhance.md (Polish), NOT ui/review.md
 5. Figma URL with no verb → Ask: "Implement as code, or review the design?"
 
 ## Quality Bar
-- A "good" /design review: captures screenshot, invokes design-reviewer agent, chains to a11y, produces scored report
-- A "poor" /design review: skips agent invocation, generic advice without checking code
+- A "good" /design review: captures screenshot when useful, checks code directly, chains to a11y, produces scored report
+- A "poor" /design review: gives generic advice without checking code

@@ -22,16 +22,7 @@ fi
 
 ## Mode A: Blade (Razorpay projects)
 
-**Dispatch to `blade-implementer` sub-agent for page/screen-level work.**
-
-Trigger blade-implementer agent when:
-- Figma node is a frame (full page or screen-level design)
-- Design has multiple interacting components
-- Expected output is >50 LOC
-
-**Run inline for component-level work** (single component, <50 LOC expected):
-
-### Inline Blade workflow:
+### Blade workflow:
 1. Parse Figma URL → extract fileKey + nodeId (convert `-` to `:`)
 2. Call `get_screenshot(fileKey, nodeId)` for visual reference
 3. Call `get_figma_to_code(fileKey, nodeId, currentProjectRootDirectory)` → get Blade code
@@ -85,14 +76,11 @@ If exit 0 (coverage ≥ 90%) → implementation is complete.
 
 Inspect the component file(s) just written. Find native HTML elements (`<div>`, `<span>`, `<p>`, `<button>`, `<input>`, etc.) that a Blade component could replace.
 
-### 3. Spawn improvement subagents
+### 3. Improve Blade coverage
 
-Spawn one `Agent` per distinct UI area needing improvement. Each subagent receives:
-- The component file(s) to fix
-- Current blade-score JSON (coverage, totalNodes, bladeNodes)
-- Task: replace non-Blade HTML elements with their Blade equivalents
+For each distinct UI area needing improvement, use the current blade-score JSON and component files to replace non-Blade HTML elements with their Blade equivalents.
 
-**Subagent workflow:**
+**Improvement workflow:**
 1. For each non-Blade element in scope, call `get_blade_component_docs([candidates])` to confirm the right Blade component and its props
 2. Call `get_blade_general_docs("box")` for any layout `<div>` (Box replaces most layout divs)
 3. Call `get_blade_pattern_docs` if the element is part of a known Blade pattern
@@ -101,7 +89,7 @@ Spawn one `Agent` per distinct UI area needing improvement. Each subagent receiv
 
 ### 4. Re-measure and loop
 
-After subagents complete, re-run the blade-score skill. Repeat steps 2–4 until:
+After changes, re-run the blade-score skill. Repeat steps 2–4 until:
 - Coverage ≥ 90% (exit 0), or
 - Two consecutive runs return the same score (no further Blade improvement possible — log final score and stop)
 

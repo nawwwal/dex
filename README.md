@@ -1,6 +1,6 @@
 # dex
 
-A vault system for Claude Code. Gives Claude persistent memory, design intelligence, quality agents, and smart onboarding. Built for the design team at Razorpay.
+A vault system for Claude Code and Codex. Gives assistants persistent memory, design intelligence, and smart onboarding. Built for the design team at Razorpay.
 
 ## Install
 
@@ -29,15 +29,11 @@ For local Codex development in this repo, use the repo marketplace at `.agents/p
 | Category | Skills |
 |---|---|
 | **Design** | `dashboard-design`, `critique-5f`, `design`, `diverge` |
-| **Thinking** | `council`, `codex`, `deep-research` |
-| **Development** | `tdd`, `react-doctor`, `agent-browser`, `agent-development` |
-| **Workflow** | `assistant`, `ops`, `today`, `switch-project` |
-| **Writing** | `writing-skills`, `beautiful-mermaid`, `generate-image` |
-| **Meta** | `dex`, `self-review-gather`, `reflect-others` |
-
-### Agents
-
-Specialized subagents Claude spawns automatically: code reviewer, design reviewer, blade implementer, standup writer, sprint planner, animation expert, Next.js expert, GLSL reviewer, and more.
+| **Thinking** | `council`, `codex`, `reflect` |
+| **Development** | `agent-browser`, `media-optimizer` |
+| **Workflow** | `communicate`, `ops` |
+| **Writing / Media** | `generate-image` |
+| **Meta** | `dex` |
 
 ## Memory system
 
@@ -61,9 +57,9 @@ Specialized subagents Claude spawns automatically: code reviewer, design reviewe
 
 ## Customizing
 
-Plugin files are managed by the plugin system. To customize a skill or agent:
+Plugin files are managed by the plugin system. To customize a skill:
 
-1. Copy it to `~/.claude/skills/` or `~/.claude/agents/`
+1. Copy it to `~/.claude/skills/`
 2. Edit the local copy
 3. The local copy takes precedence over the plugin version
 
@@ -74,7 +70,7 @@ Leave `~/.agents/` available for tools that manage their own installs there.
 
 ## For developers
 
-If you're developing dex (editing skills, agents, templates):
+If you're developing dex (editing skills or templates):
 
 **Working directory:** Always `~/dex/`.
 

@@ -12,7 +12,7 @@
 
 Memory lives in `~/.claude/memory/` (git-tracked). See Context Loading table below for when to load each file. Never load preemptively.
 
-Plugins in `~/.claude/plugins/` · Skills in `~/.claude/skills/` · Agents in `~/.claude/agents/` · Productivity memory always at `~/.claude/memory/`, tasks at `~/.claude/TASKS.md`.
+Plugins in `~/.claude/plugins/` · Skills in `~/.claude/skills/` · Productivity memory always at `~/.claude/memory/`, tasks at `~/.claude/TASKS.md`.
 
 For Proof collaboration: see `memory/proof-config.md`.
 
@@ -25,7 +25,6 @@ Use `qmd_vsearch` (semantic), `qmd_search` (keyword), or `qmd_query` (AI-ranked)
 - Use Next.js 16+, not older versions like 14
 - Use real content (logos, data, images) in designs and demos, not placeholders
 - Make meaningful commits — not after every single change, but after every meaningful change
-- When running repetitive batch operations with subagents, don't ask for permission on each iteration — batch aggressively
 - **Never schedule tasks, due dates, or milestones on weekends (Saturday/Sunday).** Always push to the next weekday. Working days are Mon–Fri only.
 - Never refer to Slack channels or users by ID — always use the human name. Look up the name if needed.
 - Google Docs formatting: use plain markdown, not API styling
@@ -33,7 +32,7 @@ Use `qmd_vsearch` (semantic), `qmd_search` (keyword), or `qmd_query` (AI-ranked)
 - **Frustration = stop**: When detecting frustration language (bullshit, what the, this is wrong, revert, start over, terrible, still wrong): stop. Explain what failed and why before proposing anything new. Mandatory format: **What failed / Why / One targeted fix.**
 - **Design feedback must be measurable**: Design feedback containing (visible/light/heavy/clipped/broken/off/wrong/too [anything]) WITHOUT a specific value: ask "What should the value be?" Required answer: a number, percentage, or component reference.
 - **Auto-apply ultrathink when**: (a) 3rd+ message about the same unsolved problem, (b) architecture with 3+ interdependent components, (c) planning prompt for work >1 day, (d) user expressed frustration in the last 2 turns.
-- **Run /simplify before committing**: Before calling /assistant done or making a git commit, run /simplify on files changed this session.
+- **Run /simplify before committing**: Before making a git commit, run /simplify on files changed this session.
 - **Web content reading priority**: (1) obsidian:defuddle — any article, blog post, docs page, (2) WebFetch — raw URL content, (3) WebSearch — finding pages, (4) Chrome DevTools MCP — ONLY for screenshots, forms, JS execution, UI testing, authenticated sessions. NEVER open Chrome DevTools just to read a URL.
 
 # Auto-Logging
@@ -68,8 +67,7 @@ Significant = choosing between approaches, selecting a component pattern, decidi
 - Prioritizing: read `memory/goals.md`
 
 ### End
-- `/assistant` — session lifecycle (done, eod, week, morning, plan)
-- `/reflect` — process queued learnings
+- `/reflect` — process queued learnings and surface patterns
 - **Compound step:** When session ends with a commit or meaningful work, ask: "What did you solve today? Any reusable pattern?" Save the answer as `~/.claude/learn/solutions/YYYY-MM-DD-{slug}.md` with frontmatter: `type: solution`, `date:`, `tags:`. Add to `learn/index.md` under the appropriate theme.
 
 ## Self-Improvement Loop
@@ -91,54 +89,46 @@ When session ends ("done", "wrapping up", natural endpoint): create `~/.claude/l
 
 ### Code Reviews
 **Trigger:** `git commit` OR "done with this feature" / "ready to review" / "ship this"
-→ Spawn `code-reviewer` agent (foreground). Report: "Code review: [N] issues."
+→ Review the changed files inline. Report findings first, ordered by severity, with file and line references.
 
 ### Communications
 When writing any Slack/email/DM/standup/async update as the user:
-→ Load `memory/voice.md` BEFORE drafting. Run Revision Checklist before showing. For standup: use `standup-writer` agent.
+→ Load `memory/voice.md` BEFORE drafting. Run Revision Checklist before showing.
 → When a draft is explicitly rejected by the user, append the rejected phrase + diagnosis to `memory/voice.md` Negative Examples — without asking.
 
 ### Research
-When asked to research/analyze competitors/investigate: use `research-assistant` agent. Present findings inline.
+When asked to research/analyze competitors/investigate: gather sources directly and present findings inline.
 
 ### Sprint Planning
 **Trigger:** "plan my sprint", "back from leave", "what should I work on this week", "prioritize these tasks".
-→ Spawn `sprint-planner` agent (foreground). Show prioritized plan immediately.
+→ Read relevant goals/projects/tasks context and show a prioritized plan immediately.
 
 ### PRD Analysis
 **Trigger:** User shares a PRD URL, product spec, or Google Doc AND asks to "analyze", "review this doc", or "understand this brief".
-→ Spawn `prd-analyzer` agent (foreground). Present findings inline.
+→ Read the source and present findings inline.
 
 ### Vault Synthesis
-**Trigger:** "vault sync", "emerge patterns", `/assistant emerge`, or "what's the big picture from this week".
-→ Spawn `vault-synthesizer` agent (foreground). Use instead of /assistant emerge for full weekly synthesis.
+**Trigger:** "vault sync", "emerge patterns", `/reflect emerge`, or "what's the big picture from this week".
+→ Invoke `/reflect emerge` for synthesis.
 
 ### Silent Model Updates
-**Trigger:** behavioral pattern contradicts `memory/nawal-model.md`, open question answered, something surprises you, after `/assistant emerge`, correction reveals how he thinks, he reveals something directly.
+**Trigger:** behavioral pattern contradicts `memory/nawal-model.md`, open question answered, something surprises you, after `/reflect emerge`, correction reveals how he thinks, he reveals something directly.
 → Silently edit `memory/nawal-model.md`. Add one Update Log line. Never announce unless asked.
 
 ### Specialty Reviews (file-type triggered)
 
-| File/trigger | Min size | Agent | Report |
+| File/trigger | Min size | Check | Report |
 |---|---|---|---|
-| `.tsx`, `.jsx`, `.html`, `.css` with JSX/Blade | 20+ lines | `design-reviewer` | "Design review: [N] issues." |
-| `.tsx/.jsx` with `motion.`, `AnimatePresence` | 10+ lines | `animation-expert` | "Animation review: [N] issues." |
-| `app/` dir, `"use server"/"use client"`, `generateMetadata` | any | `nextjs-expert` | "Next.js review: [finding]." |
-| `__tests__/` or `*.test.ts/tsx/*.spec.ts` | any | `test-runner` | Report immediately |
-| `.glsl`, `.frag`, `.vert`, `.glsl.ts` | 20+ lines | `glsl-reviewer` | "Shader review: [N] issues." |
+| `.tsx`, `.jsx`, `.html`, `.css` with JSX/Blade | 20+ lines | inline design review | "Design review: [N] issues." |
+| `.tsx/.jsx` with `motion.`, `AnimatePresence` | 10+ lines | inline animation review | "Animation review: [N] issues." |
+| `app/` dir, `"use server"/"use client"`, `generateMetadata` | any | inline Next.js review | "Next.js review: [finding]." |
+| `__tests__/` or `*.test.ts/tsx/*.spec.ts` | any | run or inspect tests | Report immediately |
+| `.glsl`, `.frag`, `.vert`, `.glsl.ts` | 20+ lines | inline shader review | "Shader review: [N] issues." |
 | Figma link/design image with "review"/"5F"/"B2B" | any | `critique-5f` | "5F review: [scores]." |
 
 ### Third-Person Capture
 **Trigger:** pasted content with signals about the user (score ≥ 3): "you did/your approach" (+3), "the user/Adi" (+3), "strengths:/areas to develop" (+2), "great ownership" (+1).
 → Invoke `/reflect-others`. Say "Extracting to nawal-through-others.md."
-
-### Promotion Case
-**Trigger:** `/assistant week` OR Friday AND career/gaps.md >7 days old OR "update my promotion case".
-→ Spawn `case-synthesizer` (foreground). NEVER touch case.md — writes to career/gaps.md only.
-
-### Personal Assistant
-**Trigger:** session from `~/` OR "what should I focus on", "morning", "hey", "tell X about Y", "dm X", "any follow-ups".
-→ Invoke `/assistant` skill.
 
 # Context Loading
 
@@ -157,7 +147,7 @@ Load ONLY when triggered. Never speculatively.
 | `memory/razorpay-context.md` | Need Razorpay setup info, Slack channel context, or repo access |
 | `memory/voice.md` | Drafting ANY Slack/email/DM/standup — or "write as me", "draft this for X" |
 | `memory/goals.md` | Prioritization, standup prep, "what should I focus on" |
-| `memory/nawal-model.md` | Open-ended asks, creative direction, inferring intent, before comms drafts, after `/assistant emerge` |
+| `memory/nawal-model.md` | Open-ended asks, creative direction, inferring intent, before comms drafts, after `/reflect emerge` |
 | `memory/reminders.md` | Future check, conditional reminder, or "remind me when X" |
 | `memory/nawal-through-others.md` | Self-review, calibrating self-perception, before promotion case work |
 | `memory/health.md` | Explaining a vault warning or running `/decisions:archive` |

@@ -3,7 +3,7 @@
 Analyzes a PRD or product document to extract design-relevant information.
 
 ## Step 1: Get the PRD
-- If a URL (Google Doc): note that prd-analyzer agent does deeper analysis. For inline analysis, proceed.
+- If a URL (Google Doc): read the document if available; otherwise ask for pasted content or exported text.
 - If pasted content: analyze directly.
 - If file path: read the file.
 

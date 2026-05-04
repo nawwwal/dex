@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-`dex` is a Claude/Codex plugin published as `nawwwal/dex` on the plugin marketplace. It ships three installable plugins — `core`, `design`, `tools` — each containing skills, agents, and templates that extend the assistants with persistent memory, onboarding, and design intelligence.
+`dex` is a Claude/Codex plugin published as `nawwwal/dex` on the plugin marketplace. It ships three installable plugins — `core`, `design`, `tools` — containing skills and templates that extend the assistants with persistent memory, onboarding, and design intelligence.
 
 ## Development
 
@@ -30,11 +30,9 @@ plugins/
 │   ├── .claude-plugin/plugin.json
 │   ├── .codex-plugin/plugin.json
 │   ├── skills/              # SKILL.md files (one dir per skill)
-│   ├── agents/              # Agent .md files
 │   └── templates/           # CLAUDE.md template + memory scaffolds
 ├── design/                  # Design critique, UI review, motion, divergence
-│   ├── skills/
-│   └── agents/
+│   └── skills/
 └── tools/                   # Research, dev tools, creative tools
     └── skills/
 ```
@@ -48,10 +46,6 @@ Each plugin ships separate Claude and Codex manifests. The root `.claude-plugin/
 3. Start a new session or run `/reload-plugins` — no other registration needed
 
 Skills support sub-files (e.g. `references/`, `templates/`) that the SKILL.md can reference as `${CLAUDE_PLUGIN_ROOT}/skills/{name}/references/...`.
-
-## Adding an agent
-
-Create `plugins/{plugin}/agents/{agent-name}.md` with frontmatter following the standard agent schema. No registration needed — agents are available by filename.
 
 ## Memory system (user-side, not in this repo)
 

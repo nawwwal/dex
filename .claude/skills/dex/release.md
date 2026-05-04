@@ -20,7 +20,7 @@ Supported plugins: `core`, `design`, `tools`
 | Bump | When |
 |------|------|
 | `patch` | Bug fixes, wording changes, small additions to existing skills that don't change their interface |
-| `minor` | New skills or agents added, existing skill behavior meaningfully changed, memory schema changes |
+| `minor` | New skills added, existing skill behavior meaningfully changed, memory schema changes |
 | `major` | Breaking changes: skills renamed/removed that users depend on, routing changes that require user action, memory files deleted |
 
 Default is `patch` when no bump is specified. When in doubt, prefer `minor` over `patch` if users will notice the change.
@@ -192,7 +192,7 @@ git log --oneline "$COMMIT_RANGE"
 ```
 
 Group changes into:
-- **New** — new skills, agents, commands added
+- **New** — new skills or commands added
 - **Changed** — behavior changes, routing changes, renames
 - **Removed** — deleted skills, files, memory artifacts
 - **Fixed** — bug fixes

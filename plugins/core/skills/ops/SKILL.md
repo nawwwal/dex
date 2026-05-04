@@ -17,7 +17,6 @@ Triggers: "prd", "requirements", "spec out", "product requirements", "write a PR
 ### PRD Analysis (Designer's POV)
 Triggers: "analyze this PRD", "review this PRD", "designer's POV", "what questions should I ask", "extract personas", "user stories from PRD"
 → Read `$CLAUDE_SKILL_DIR/lens.md`
-Note: For deep analysis of a Google Doc URL → invoke prd-analyzer agent instead
 
 ### Design Rationale
 Triggers: "rationale", "why did we design it this way", "document the decision", "explain this design choice"

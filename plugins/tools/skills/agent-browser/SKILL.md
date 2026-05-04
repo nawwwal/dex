@@ -31,7 +31,7 @@ agent-browser close             # Close browser
 |------|-----|
 | Simple form login (username+password) | `auth save` + `auth login` |
 | Google/OAuth/SSO login | `--headed` + manual sign-in + `state save` |
-| Complex SSO (magic links, popups) | `login-machine` agent |
+| Complex SSO (magic links, popups) | `--headed` + manual sign-in + `state save`, then replay with `state load` |
 | Import existing Chrome session | `--auto-connect state save` |
 | Persist auth across runs (same app) | `--profile ~/.agent-browser/myapp` |
 | One-off auth export / cross-machine | `state save` / `state load` |
@@ -83,7 +83,7 @@ Use `--profile` when you access the same app repeatedly. Use `state save/load` f
 
 ### Complex SSO / magic links / popup flows
 
-Delegate to the `login-machine` agent — it handles credential forms, OAuth redirects, loading screens, and popup blockers automatically. Use `auth save` + `auth login` only for simple static forms.
+Use a headed browser so the human can complete redirects, magic links, CAPTCHA, and popup approval. Save the completed state with `agent-browser state save ...`, then replay it in later runs with `agent-browser state load ...`. Use `auth save` + `auth login` only for simple static forms.
 
 ## Streaming (pair browsing)
 

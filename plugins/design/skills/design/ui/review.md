@@ -22,7 +22,7 @@ If reviewing a live page:
 ## Step 3: Code Review (if reviewing code files)
 
 For .tsx/.jsx files:
-- Invoke `design-reviewer` agent (it has a full review protocol)
+- Inspect the relevant files directly. Check hierarchy, density, spacing, state coverage, Blade usage, and accessibility basics.
 - In Blade mode: also run `/blade-score` skill for Blade compliance scoring
 - Check WCAG basics (chains to a11y.md automatically in Step 6)
 
