@@ -1,12 +1,14 @@
 ---
 name: blade
-description: "Use for Razorpay Blade design-system work: semantic component selection, Blade MCP lookup, Blade coverage scoring, drift audits, and PR gates. Triggers on blade, Blade MCP, Blade score, Blade coverage, using only Blade, design system adherence, custom CSS drift, dashboard nav, profile menu, test mode banner, setup steps, cards, tables, charts, menus, modals, drawers, tooltips, and alerts."
+description: "Use when working on Razorpay Blade design-system adherence: Blade MCP, Blade score, Blade coverage, using only Blade, agent-browser validation, browser validation, custom CSS drift, dashboard nav, profile menu, test mode banner, setup steps, cards, tables, charts, menus, modals, drawers, tooltips, and alerts."
 allowed-tools: Read, Grep, Glob, Bash
 ---
 
 # blade
 
 Blade operating workflow for Razorpay UI work. Use it before implementation to choose the right Blade primitive, during implementation to keep MCP docs in the loop, and after implementation to measure coverage and detect drift.
+
+Browser work in this skill uses `agent-browser`, not Playwright. For the detailed browser workflow, read `references/agent-browser.md`.
 
 ## Core workflow
 
@@ -18,7 +20,8 @@ Blade operating workflow for Razorpay UI work. Use it before implementation to c
    - Setup/tokens/icons: call `get_blade_general_docs`.
 4. Use Blade semantic components first. `Box` is layout glue, not a substitute for `Card`, `Alert`, `SideNav`, `Table`, `StepGroup`, `Menu`, charts, forms, or feedback components.
 5. If custom UI remains, record why Blade could not cover it and keep custom CSS local, minimal, and token-based.
-6. After implementation, run `blade gate` for final checks or `blade audit` for advisory diagnosis.
+6. For browser validation, open the page with `agent-browser`, inspect with `snapshot -i`, capture with `screenshot --annotate` when visual context matters, and use `diff` to prove interactions changed the page.
+7. After implementation, run `blade gate` for final checks or `blade audit` for advisory diagnosis.
 
 For exact MCP sequencing and failure recovery, read `references/mcp-workflow.md`.
 
@@ -49,11 +52,14 @@ node ${CLAUDE_SKILL_DIR}/scripts/blade.js gate http://localhost:3000 /path/to/ap
 | --- | --- | --- |
 | `--threshold <n>` | `95` in `gate`, none in `score` | Minimum coverage percentage. |
 | `--no-navbars` | off | Exclude Blade `sidenav` and `top-nav` nodes from runtime coverage. |
-| `--headed` | off | Show browser window for auth/debugging. |
+| `--headed` | off | Pass headed mode to `agent-browser` for auth/debugging. |
 | `--json` | off | Emit machine-readable output. |
-| `--storage-state <path>` | none | Playwright auth state file. |
-| `--settle-ms <n>` | `1000` | Wait after `domcontentloaded` before measuring. |
-| `--timeout-ms <n>` | `30000` | Navigation timeout. |
+| `--state <path>` | none | Pass an Agent Browser state file for authenticated pages. |
+| `--profile <name-or-path>` | none | Reuse a Chrome profile snapshot or persistent profile path. |
+| `--session <name>` | generated | Reuse a named Agent Browser session. Generated sessions close automatically. |
+| `--keep-open` | off | Keep a generated session open for inspection after scoring. |
+| `--settle-ms <n>` | `1000` | Run `agent-browser wait <n>` after navigation before measuring. |
+| `--timeout-ms <n>` | `30000` | Sets `AGENT_BROWSER_DEFAULT_TIMEOUT` for score/gate commands. |
 
 ## Exit codes
 
@@ -67,10 +73,12 @@ node ${CLAUDE_SKILL_DIR}/scripts/blade.js gate http://localhost:3000 /path/to/ap
 
 ## Prerequisites
 
-Playwright must be available in the consumer project or globally for `score` and `gate`:
+Agent Browser must be available for `score`, `gate`, and browser validation:
 
 ```bash
-npm install playwright && npx playwright install chromium
+npm install -g agent-browser
+agent-browser install
+agent-browser doctor --offline --quick
 ```
 
-The script resolves `playwright` from `process.cwd()/node_modules` first, so projects with Playwright already installed work without a Dex-local dependency.
+Use `--state`, `--profile`, or `--session` for authenticated dashboards. Do not add Playwright dependencies for this skill.

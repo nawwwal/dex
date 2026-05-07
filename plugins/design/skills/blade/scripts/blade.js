@@ -9,6 +9,7 @@
 
 'use strict';
 
+const childProcess = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
@@ -279,28 +280,11 @@ const SEMANTIC_IMPORT_RULES = [
   },
 ];
 
-function resolveDep(name) {
-  const searchBases = [
-    process.cwd(),
-    path.join(__dirname, '..', '..', '..', '..', '..', '..'),
-  ];
-  for (const base of searchBases) {
-    try {
-      return require(path.join(base, 'node_modules', name));
-    } catch (_) {}
-  }
-  try {
-    return require(name);
-  } catch (_) {
-    return null;
-  }
-}
-
 function printUsage() {
   console.error(`Usage:
-  node blade.js score <url> [--threshold 95] [--no-navbars] [--headed] [--json] [--storage-state path] [--settle-ms 1000] [--timeout-ms 30000]
+  node blade.js score <url> [--threshold 95] [--no-navbars] [--headed] [--json] [--state path] [--profile name-or-path] [--session name] [--settle-ms 1000] [--timeout-ms 30000]
   node blade.js audit [path] [--json]
-  node blade.js gate <url> [path] [--threshold 95] [--no-navbars] [--headed] [--json] [--storage-state path] [--settle-ms 1000] [--timeout-ms 30000]`);
+  node blade.js gate <url> [path] [--threshold 95] [--no-navbars] [--headed] [--json] [--state path] [--profile name-or-path] [--session name] [--settle-ms 1000] [--timeout-ms 30000]`);
 }
 
 function parseArgs(argv) {
@@ -325,7 +309,11 @@ function parseArgs(argv) {
     includeNavbars: true,
     headed: false,
     jsonOutput: false,
-    storageState: null,
+    state: null,
+    profile: null,
+    session: null,
+    keepOpen: false,
+    agentBrowserBin: 'agent-browser',
     settleMs: 1000,
     timeoutMs: 30000,
   };
@@ -342,8 +330,16 @@ function parseArgs(argv) {
       options.headed = true;
     } else if (arg === '--json') {
       options.jsonOutput = true;
-    } else if (arg === '--storage-state') {
-      options.storageState = args[++i];
+    } else if (arg === '--agent-browser-bin') {
+      options.agentBrowserBin = args[++i];
+    } else if (arg === '--session') {
+      options.session = args[++i];
+    } else if (arg === '--profile') {
+      options.profile = args[++i];
+    } else if (arg === '--state') {
+      options.state = args[++i];
+    } else if (arg === '--keep-open') {
+      options.keepOpen = true;
     } else if (arg === '--settle-ms') {
       options.settleMs = parseInt(args[++i], 10);
     } else if (arg === '--timeout-ms') {
@@ -492,38 +488,38 @@ function auditPath(root) {
 }
 
 async function runScore(options) {
-  const playwright = resolveDep('playwright');
-  if (!playwright) {
-    const error = 'Error: playwright not found in project or globally.\nRun: npm install playwright && npx playwright install chromium';
-    return { exitCode: EXIT.SETUP_FAIL, error };
-  }
-
-  const { chromium } = playwright;
-  let browser;
+  const session = options.session || `blade-${process.pid}-${Date.now()}`;
+  const env = {
+    ...process.env,
+    AGENT_BROWSER_DEFAULT_TIMEOUT: String(options.timeoutMs),
+  };
 
   try {
-    browser = await chromium.launch({ headless: !options.headed });
-    const contextOpts = options.storageState ? { storageState: options.storageState } : {};
-    const context = await browser.newContext(contextOpts);
-    const page = await context.newPage();
-
-    try {
-      await page.goto(options.url, { waitUntil: 'domcontentloaded', timeout: options.timeoutMs });
-    } catch (err) {
-      await browser.close();
-      return { exitCode: EXIT.NAVIGATION_FAIL, error: `Navigation failed: ${err.message}` };
-    }
+    runAgentBrowser(options, ['--session', session, ...browserLaunchFlags(options), 'open', options.url], {
+      env,
+    });
 
     if (options.settleMs > 0) {
-      await new Promise((resolve) => setTimeout(resolve, options.settleMs));
+      runAgentBrowser(options, ['--session', session, 'wait', String(options.settleMs)], { env });
     }
 
-    const script = BLADE_COVERAGE_FN.replace(
-      '__INCLUDE_NAVBARS__',
-      options.includeNavbars ? 'true' : 'false',
+    const script = BLADE_COVERAGE_FN.replace('__INCLUDE_NAVBARS__', options.includeNavbars ? 'true' : 'false');
+    const evalOutput = runAgentBrowser(
+      options,
+      ['--session', session, 'eval', '--stdin', '--json'],
+      {
+        env,
+        input: script,
+      },
     );
-    const result = await page.evaluate(script);
-    await browser.close();
+    const parsed = JSON.parse(evalOutput);
+    if (!parsed.success) {
+      throw new Error(parsed.error || 'agent-browser eval failed');
+    }
+    const result = parsed.data && parsed.data.result;
+    if (!result || typeof result.bladeCoverage !== 'number') {
+      throw new Error('agent-browser eval did not return Blade coverage data');
+    }
 
     const pass = options.threshold === null || result.bladeCoverage >= options.threshold;
     return {
@@ -536,9 +532,52 @@ async function runScore(options) {
       },
     };
   } catch (err) {
-    if (browser) await browser.close().catch(() => {});
-    return { exitCode: EXIT.SETUP_FAIL, error: `Error: ${err.message}` };
+    const message = err.message || String(err);
+    const exitCode = /not found|ENOENT|command not found/i.test(message) ? EXIT.SETUP_FAIL : EXIT.NAVIGATION_FAIL;
+    return { exitCode, error: `agent-browser failed: ${message}` };
+  } finally {
+    if (!options.keepOpen && !options.session) {
+      closeAgentBrowserSession(options, session, env);
+    }
   }
+}
+
+function browserLaunchFlags(options) {
+  const flags = [];
+  if (options.headed) flags.push('--headed');
+  if (options.state) flags.push('--state', options.state);
+  if (options.profile) flags.push('--profile', options.profile);
+  return flags;
+}
+
+function runAgentBrowser(options, args, commandOptions = {}) {
+  const result = childProcess.spawnSync(options.agentBrowserBin, args, {
+    cwd: process.cwd(),
+    encoding: 'utf8',
+    input: commandOptions.input,
+    env: commandOptions.env || process.env,
+    maxBuffer: 10 * 1024 * 1024,
+  });
+
+  if (result.error) {
+    throw result.error;
+  }
+  if (result.status !== 0) {
+    const output = [result.stderr, result.stdout].filter(Boolean).join('\n').trim();
+    throw new Error(output || `${options.agentBrowserBin} ${args.join(' ')} exited ${result.status}`);
+  }
+  return result.stdout.trim();
+}
+
+function closeAgentBrowserSession(options, session, env) {
+  try {
+    childProcess.spawnSync(options.agentBrowserBin, ['--session', session, 'close'], {
+      cwd: process.cwd(),
+      encoding: 'utf8',
+      env,
+      maxBuffer: 1024 * 1024,
+    });
+  } catch (_) {}
 }
 
 function printAudit(audit) {
