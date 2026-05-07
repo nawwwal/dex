@@ -58,27 +58,27 @@ fi
 - No hardcoded hex colors, pixel spacing, or magic numbers
 - Remove unused imports before reporting done
 
-## Blade Score Gate (Mode A — always run after implementation)
+## Blade Gate (Mode A — always run after implementation)
 
-After all Blade implementation work is done, check coverage and iterate until ≥ 90%.
+After all Blade implementation work is done, check coverage and drift. Final target is ≥ 95% unless the user explicitly sets a different threshold for prototype work.
 
 ### 1. Measure
 
-Invoke the `blade-score` skill with the dev server URL:
+Invoke the `blade` skill with the dev server URL:
 
 ```
-Skill("blade-score", "<dev-server-url-for-this-page> --json --threshold 90")
+Skill("blade", "gate <dev-server-url-for-this-page> <project-root> --json --threshold 95")
 ```
 
-If exit 0 (coverage ≥ 90%) → implementation is complete.
+If exit 0 (coverage ≥ 95% and no high-risk drift) → implementation is complete.
 
-### 2. Identify gaps (if below 90%)
+### 2. Identify gaps (if gate fails)
 
-Inspect the component file(s) just written. Find native HTML elements (`<div>`, `<span>`, `<p>`, `<button>`, `<input>`, etc.) that a Blade component could replace.
+Inspect the `blade gate` JSON and the component file(s) just written. Find native HTML elements (`<div>`, `<span>`, `<p>`, `<button>`, `<input>`, etc.), custom CSS surfaces, and missing likely imports that a Blade component could replace.
 
 ### 3. Improve Blade coverage
 
-For each distinct UI area needing improvement, use the current blade-score JSON and component files to replace non-Blade HTML elements with their Blade equivalents.
+For each distinct UI area needing improvement, use the current `blade gate` JSON and component files to replace non-Blade HTML elements with their Blade equivalents.
 
 **Improvement workflow:**
 1. For each non-Blade element in scope, call `get_blade_component_docs([candidates])` to confirm the right Blade component and its props
@@ -89,9 +89,9 @@ For each distinct UI area needing improvement, use the current blade-score JSON 
 
 ### 4. Re-measure and loop
 
-After changes, re-run the blade-score skill. Repeat steps 2–4 until:
-- Coverage ≥ 90% (exit 0), or
-- Two consecutive runs return the same score (no further Blade improvement possible — log final score and stop)
+After changes, re-run the `blade` skill. Repeat steps 2–4 until:
+- Coverage ≥ 95% and no high-risk drift (exit 0), or
+- Two consecutive runs return the same score and same high-risk findings (no further Blade improvement possible — log final result and stop)
 
 ---
 
@@ -117,6 +117,7 @@ Mode: Blade / Generic
 - [x] Typography correct
 - [ ] Loading state — not in Figma, scaffolded with Spinner
 
-### Blade Score (Mode A)
-- Final coverage: 93.4% (PASS ≥ 90%)
+### Blade Gate (Mode A)
+- Final coverage: 95.4% (PASS ≥ 95%)
+- Static drift: 0 high-risk findings
 ```

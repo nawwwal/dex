@@ -28,7 +28,7 @@ For local Codex development in this repo, use the repo marketplace at `.agents/p
 
 | Category | Skills |
 |---|---|
-| **Design** | `dashboard-design`, `critique-5f`, `design`, `diverge` |
+| **Design** | `blade`, `dashboard-design`, `critique-5f`, `design`, `diverge` |
 | **Thinking** | `council`, `codex`, `reflect` |
 | **Development** | `agent-browser`, `media-optimizer` |
 | **Workflow** | `communicate`, `ops` |

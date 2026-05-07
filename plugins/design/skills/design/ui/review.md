@@ -23,7 +23,7 @@ If reviewing a live page:
 
 For .tsx/.jsx files:
 - Inspect the relevant files directly. Check hierarchy, density, spacing, state coverage, Blade usage, and accessibility basics.
-- In Blade mode: also run `/blade-score` skill for Blade compliance scoring
+- In Blade mode: also run the `blade` skill for Blade compliance scoring and drift checks
 - Check WCAG basics (chains to a11y.md automatically in Step 6)
 
 ## Step 4: Animation Craft Review
