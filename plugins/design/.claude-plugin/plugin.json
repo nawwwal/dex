@@ -1,7 +1,7 @@
 {
   "name": "design",
   "description": "Design routing, Blade adherence, dashboard workflows, UI review, first-principles questioning, visual handoffs, shaders, and divergence",
-  "version": "3.1.1",
+  "version": "4.0.0",
   "author": {
     "name": "Aditya Nawal"
   }
