@@ -1,15 +1,15 @@
 {
   "name": "design",
   "version": "5.0.0",
-  "description": "Design thinking, 5F review, crux finding, presentation narrative, visual handoffs, and divergence",
+  "description": "Design thinking, crux finding, presentation narrative, visual handoffs, and divergence",
   "author": {
     "name": "Aditya Nawal"
   },
   "skills": "./skills/",
   "interface": {
     "displayName": "Dex Design",
-    "shortDescription": "5F review, crux finding, presentation narrative, visual handoffs, and divergence",
-    "longDescription": "Dex design workflows for Razorpay 5F reviews, crux finding, presentation narrative, visual handoffs, visual explanations, and divergent concept exploration.",
+    "shortDescription": "Crux finding, presentation narrative, visual handoffs, and divergence",
+    "longDescription": "Dex design workflows for crux finding, presentation narrative, visual handoffs, visual explanations, and divergent concept exploration.",
     "developerName": "Aditya Nawal",
     "category": "Design"
   }

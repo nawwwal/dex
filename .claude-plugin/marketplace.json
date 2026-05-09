@@ -16,7 +16,7 @@
     {
       "name": "design",
       "source": "./plugins/design",
-      "description": "Design thinking, 5F review, crux finding, presentation narrative, visual handoffs, and divergence",
+      "description": "Design thinking, crux finding, presentation narrative, visual handoffs, and divergence",
       "version": "5.0.0"
     },
     {

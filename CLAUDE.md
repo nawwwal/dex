@@ -32,7 +32,7 @@ plugins/
 │   ├── .codex-plugin/plugin.json
 │   ├── skills/              # SKILL.md files (one dir per skill)
 │   └── templates/           # Minimal AGENTS.md + memory README templates
-├── design/                  # Crux, divergence, 5F review, presentation, visual handoffs
+├── design/                  # Crux, divergence, presentation, visual handoffs
 │   └── skills/
 ├── dev/                     # Blade, dashboard implementation, UI hardening, shaders, sound
 │   └── skills/
