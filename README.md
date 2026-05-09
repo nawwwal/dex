@@ -226,7 +226,7 @@ Examples:
 
 ```text
 /dex release dev
-/dex release design minor
+/dex release design
 /dex release tools minor
 ```
 
@@ -242,12 +242,12 @@ Version policy:
 
 | Bump | Use it when |
 |---|---|
-| `patch` | Bug fix, wording change, metadata-only update, or behavior-preserving edit |
-| `minor` | New skill, moved skill with a replacement path, renamed skill with an obvious successor, noticeable behavior change |
-| `major` | Rare. Existing installs cannot keep working without manual migration |
+| `patch` | Default: skill edits/removals, prompt rewrites, metadata fixes, docs updates, stale/private content removal |
+| `minor` | Meaningful new public capability: new plugin, new skill family, new setup command, new integration path |
+| `major` | Rare: plugin/marketplace/install contract changed |
 | `initial` | First release of a newly added plugin |
 
-Major is not a cleanup prize. If there is no explicit migration step for users, use `minor`.
+Skills are package contents, not library APIs. Skill edits and removals are patch releases. Major is only for marketplace/install-contract changes.
 
 ## Update
 

@@ -10,7 +10,7 @@ The repo is both the Claude marketplace and the Codex marketplace:
 ## Usage
 
 `/dex release core` - patch bump `core`
-`/dex release design minor` - minor bump `design`
+`/dex release design` - patch bump `design`
 `/dex release dev` - patch bump `dev`
 `/dex release dev initial` - publish the current `dev` version as its first release
 `/dex release tools minor` - minor bump `tools`
@@ -21,14 +21,14 @@ Supported plugins: `core`, `design`, `dev`, `tools`
 
 | Bump | When |
 |------|------|
-| `patch` | Bug fixes, wording changes, metadata-only updates, or small behavior-preserving edits |
-| `minor` | New skills, moved skills with a replacement route, renamed skills with an obvious successor, noticeable behavior changes, or backward-compatible memory/schema changes |
-| `major` | Rare. Use only when existing installs cannot keep working without a manual migration: plugin source/manifest shape changes that require reinstall, command contracts removed with no replacement, persistent data formats made unreadable, or an entire plugin discontinued |
+| `patch` | Default. Skill edits, skill removals, prompt rewrites, metadata fixes, docs updates, stale/private content removal, and behavior fixes inside an existing plugin |
+| `minor` | A meaningful new public capability: new plugin, new skill family, new setup command, new integration path, or additive marketplace expansion |
+| `major` | Rare. Marketplace or install-contract changes: plugin renamed/removed, marketplace name/source model changed, install/update commands changed, runtime support dropped, or `~/.agents` layout changed in a way `/dex setup` cannot repair |
 | `initial` | First release of a newly added plugin; keep the current manifest version and create its first tag |
 
-Default is `patch` when no bump is specified. When in doubt between `patch` and `minor`, use `minor` if users will notice the change. When in doubt between `minor` and `major`, use `minor`.
+Default is `patch` when no bump is specified. Skill inventory changes are package-content changes, not library API compatibility breaks. When in doubt, use `patch`.
 
-Major releases are opt-in, not inferred from cleanup alone. Skill moves, router deletions, renamed skills, or removed duplicate docs are usually `minor` when users have a clear replacement path. A `major` release must name the migration reason before running the release commands.
+Major releases are opt-in and only about the plugin marketplace contract. Skill moves, router deletions, renamed skills, removed skills, edited prompts, and removed duplicate docs do not trigger `major`.
 
 ## Steps
 
@@ -49,8 +49,8 @@ case "$PLUGIN" in
 esac
 
 if [ "$BUMP" = "major" ] && [ -z "${DEX_MAJOR_REASON:-}" ]; then
-  echo "ERROR: Major releases require DEX_MAJOR_REASON explaining the manual migration."
-  echo "If users have a replacement path, use minor instead."
+  echo "ERROR: Major releases require DEX_MAJOR_REASON explaining the marketplace/install-contract change."
+  echo "Skill edits or removals are patch releases in Dex."
   exit 1
 fi
 
@@ -219,11 +219,11 @@ Group changes into:
 - **Changed** — behavior changes, routing changes, renames
 - **Removed** — deleted skills, files, memory artifacts
 - **Fixed** — bug fixes
-- **Migration** — required user action; include this only for `major` releases
+- **Contract change** — plugin/marketplace/install-contract change; include this only for `major` releases
 
 Omit groups with no entries. Omit internal-only changes (version bumps, lint, formatting) unless they affect behavior.
 
-For `major` releases, the release notes must include a **Migration** section with the exact user action. If there is no migration step, downgrade to `minor`.
+For `major` releases, the release notes must include a **Contract change** section naming the exact plugin or marketplace contract that changed. If only skills changed, downgrade to `patch`.
 
 Then create the release:
 
