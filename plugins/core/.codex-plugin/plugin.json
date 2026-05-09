@@ -1,15 +1,15 @@
 {
   "name": "core",
   "version": "3.0.0",
-  "description": "Memory scaffolding, core workflow, and onboarding",
+  "description": "Agent environment setup, core workflow, and memory-aware skills",
   "author": {
     "name": "Aditya Nawal"
   },
   "skills": "./skills/",
   "interface": {
     "displayName": "Dex Core",
-    "shortDescription": "Memory scaffolding, core workflow, and onboarding",
-    "longDescription": "Core dex workflows for memory scaffolding, onboarding, and project guidance.",
+    "shortDescription": "Agent setup, core workflow, and memory-aware skills",
+    "longDescription": "Core Dex workflows for agent environment setup, memory-aware reflection, communication, and project guidance.",
     "developerName": "Aditya Nawal",
     "category": "Productivity"
   }

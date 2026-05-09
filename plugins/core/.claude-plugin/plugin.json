@@ -1,6 +1,6 @@
 {
   "name": "core",
-  "description": "Memory scaffolding, core workflow, and onboarding",
+  "description": "Agent environment setup, core workflow, and memory-aware skills",
   "version": "3.0.0",
   "author": {
     "name": "Aditya Nawal"

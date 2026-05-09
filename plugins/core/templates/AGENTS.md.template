@@ -1,0 +1,45 @@
+# AGENTS.md
+
+## Scope
+
+This is the global agent instruction index for this machine.
+
+Use `~/.agents/` as the canonical folder for agent configuration. Runtime-specific paths such as `~/.claude/` are compatibility aliases, not separate sources of truth.
+
+## Directory Roles
+
+| Path | Purpose |
+|---|---|
+| `~/.agents/AGENTS.md` | Global instruction index |
+| `~/.agents/instructions/` | Operating rules loaded when relevant |
+| `~/.agents/references/` | Tool and domain references |
+| `~/.agents/memory/` | Trigger-loaded context |
+| `~/.agents/skills/` | Installed skills |
+| `~/.agents/plugins/` | Plugin and marketplace state |
+| `~/.agents/state.json` | Setup state |
+
+Do not put global workflow rules in `memory/`. Do not put remembered facts or historical notes in `instructions/`.
+
+## Memory
+
+Memory is trigger-loaded context. It is split by function:
+
+| Folder | Purpose |
+|---|---|
+| `memory/preferences/` | User behavior, voice, learned patterns, and modeling context |
+| `memory/reference/` | Lookup facts and directories |
+| `memory/records/` | Append-only logs, health reports, decisions, and message records |
+
+Load memory only when the task calls for it.
+
+## Compatibility Links
+
+Expected Claude compatibility links:
+
+```text
+~/.claude/CLAUDE.md -> ~/.agents/AGENTS.md
+~/.claude/memory -> ~/.agents/memory
+~/.claude/skills -> ~/.agents/skills
+```
+
+Keep Dex setup narrow: bootstrap the current topology, verify links, and report drift. Do not personalize the user's memory or migrate old vault files unless explicitly requested.
