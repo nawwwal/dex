@@ -34,6 +34,45 @@ Major releases are opt-in and only about the plugin marketplace contract. Skill 
 
 Run these as bash commands from the repo root. Stop on any failure.
 
+### 0. README and release-doc gate
+
+Before the release bump, verify that the user-facing docs already reflect the change being released. The release commit should only carry version metadata; feature commits must carry their own README/doc updates.
+
+Run this after choosing `PLUGIN` and before committing or tagging:
+
+```bash
+PLUGIN="${1:-}"
+case "$PLUGIN" in
+  core|design|dev|tools) ;;
+  *) echo "ERROR: First arg must be one of: core, design, dev, tools"; exit 1 ;;
+esac
+
+PREV_TAG=$(git tag --sort=-version:refname | grep "^$PLUGIN-v" | head -1)
+if [ -n "$PREV_TAG" ]; then
+  DOC_BASE="$PREV_TAG"
+else
+  DOC_BASE="$(git merge-base HEAD origin/main)"
+fi
+
+if git diff --name-only "$DOC_BASE"..HEAD | grep -Eq "^plugins/$PLUGIN/skills/|^plugins/$PLUGIN/.claude-plugin/plugin.json|^plugins/$PLUGIN/.codex-plugin/plugin.json|^.agents/plugins/marketplace.json|^.claude-plugin/marketplace.json"; then
+  if ! git diff --name-only "$DOC_BASE"..HEAD | grep -Eq "^README.md$|^.agents/skills/dex/release.md$|^.claude/skills/dex/release.md$"; then
+    echo "ERROR: User-facing plugin change detected without README/release-doc update."
+    echo "Update README.md when skill inventory, plugin boundaries, install/update behavior, or visible plugin metadata changes."
+    echo "Update the dex release skill when this checklist misses a release requirement."
+    exit 1
+  fi
+fi
+```
+
+Also inspect the selected plugin skill list against the README table:
+
+```bash
+find "plugins/$PLUGIN/skills" -mindepth 2 -maxdepth 2 -name SKILL.md -print | sort
+rg -n "### ${PLUGIN^}|\\`.*\\` \\|" README.md
+```
+
+If a skill was added, removed, renamed, or meaningfully repositioned, the README should change in the same feature commit. If the README does not need a change, state why in the release notes draft before creating the GitHub Release.
+
 ### 1. Preflight checks
 
 ```bash

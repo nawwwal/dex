@@ -11,7 +11,7 @@ Dex ships four marketplace plugins.
 | Plugin | Owns | Does not own |
 |---|---|---|
 | `core` | Agent setup, council-style investigation, communication, reflection, DevRev, session logs | Design implementation, browser tooling, media utilities |
-| `design` | Product thinking, divergence, presentation narrative, visual handoffs | Blade, shaders, sound, generic code hardening, private review frameworks |
+| `design` | Product thinking, content design, divergence, presentation narrative, visual handoffs | Blade, shaders, sound, generic code hardening, private review frameworks |
 | `dev` | Design engineering: Blade, dashboard implementation, hardening, shaders, sound | Product strategy, presentation coaching, third-party browser tools |
 | `tools` | Utility tools: Codex review, image generation, media optimization, mymind | Core setup, design critique, implementation doctrine |
 
@@ -75,6 +75,7 @@ Optional integrations depend on the skill you use: Figma MCP for Figma work, Dev
 
 | Skill | Use it for |
 |---|---|
+| `content-design` | Product copy, UX writing, voice systems, in-product marketing, Razorpay-style marketing copy, errors, empty states, onboarding, accessibility labels, localization checks, and copy audits |
 | `crux` | Compressing vague claims, PRDs, opinions, or product problems down to the load-bearing issue |
 | `diverge` | Brainstorms, alternatives, product directions, interaction concepts, different approaches |
 | `present` | Design review narrative, stakeholder framing, rehearsal, explaining tradeoffs to a room |
@@ -233,10 +234,11 @@ Examples:
 The release skill:
 
 1. Checks that the repo is on `main` and clean.
-2. Bumps the selected plugin's Claude and Codex manifests.
-3. Updates the Claude marketplace metadata.
-4. Validates the Codex marketplace shape.
-5. Commits, tags, pushes, and creates a GitHub Release.
+2. Requires README and release-doc review when plugin topology, skill inventory, marketplace metadata, or user-facing behavior changed.
+3. Bumps the selected plugin's Claude and Codex manifests.
+4. Updates the Claude marketplace metadata.
+5. Validates the Codex marketplace shape.
+6. Commits, tags, pushes, and creates a GitHub Release.
 
 Version policy:
 
