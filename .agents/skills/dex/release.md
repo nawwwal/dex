@@ -13,7 +13,7 @@ The repo is both the Claude marketplace and the Codex marketplace:
 `/dex release design minor` - minor bump `design`
 `/dex release dev` - patch bump `dev`
 `/dex release dev initial` - publish the current `dev` version as its first release
-`/dex release tools major` - major bump `tools`
+`/dex release tools minor` - minor bump `tools`
 
 Supported plugins: `core`, `design`, `dev`, `tools`
 
@@ -21,12 +21,14 @@ Supported plugins: `core`, `design`, `dev`, `tools`
 
 | Bump | When |
 |------|------|
-| `patch` | Bug fixes, wording changes, small additions to existing skills that don't change their interface |
-| `minor` | New skills added, existing skill behavior meaningfully changed, memory schema changes |
-| `major` | Breaking changes: skills renamed/removed that users depend on, routing changes that require user action, memory files deleted |
+| `patch` | Bug fixes, wording changes, metadata-only updates, or small behavior-preserving edits |
+| `minor` | New skills, moved skills with a replacement route, renamed skills with an obvious successor, noticeable behavior changes, or backward-compatible memory/schema changes |
+| `major` | Rare. Use only when existing installs cannot keep working without a manual migration: plugin source/manifest shape changes that require reinstall, command contracts removed with no replacement, persistent data formats made unreadable, or an entire plugin discontinued |
 | `initial` | First release of a newly added plugin; keep the current manifest version and create its first tag |
 
-Default is `patch` when no bump is specified. When in doubt, prefer `minor` over `patch` if users will notice the change.
+Default is `patch` when no bump is specified. When in doubt between `patch` and `minor`, use `minor` if users will notice the change. When in doubt between `minor` and `major`, use `minor`.
+
+Major releases are opt-in, not inferred from cleanup alone. Skill moves, router deletions, renamed skills, or removed duplicate docs are usually `minor` when users have a clear replacement path. A `major` release must name the migration reason before running the release commands.
 
 ## Steps
 
@@ -45,6 +47,12 @@ case "$PLUGIN" in
   core|design|dev|tools) ;;
   *) echo "ERROR: First arg must be one of: core, design, dev, tools"; exit 1 ;;
 esac
+
+if [ "$BUMP" = "major" ] && [ -z "${DEX_MAJOR_REASON:-}" ]; then
+  echo "ERROR: Major releases require DEX_MAJOR_REASON explaining the manual migration."
+  echo "If users have a replacement path, use minor instead."
+  exit 1
+fi
 
 BRANCH=$(git branch --show-current)
 if [ "$BRANCH" != "main" ]; then
@@ -211,8 +219,11 @@ Group changes into:
 - **Changed** — behavior changes, routing changes, renames
 - **Removed** — deleted skills, files, memory artifacts
 - **Fixed** — bug fixes
+- **Migration** — required user action; include this only for `major` releases
 
 Omit groups with no entries. Omit internal-only changes (version bumps, lint, formatting) unless they affect behavior.
+
+For `major` releases, the release notes must include a **Migration** section with the exact user action. If there is no migration step, downgrade to `minor`.
 
 Then create the release:
 

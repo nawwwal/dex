@@ -18,10 +18,10 @@ This file provides guidance to Codex (Codex.ai/code) when working with code in t
 /dex release core
 /dex release design minor
 /dex release dev minor
-/dex release tools major
+/dex release tools minor
 ```
 
-The release skill bumps the selected plugin version across the plugin's Claude and Codex manifests plus the Claude marketplace metadata, then commits, tags, and pushes. Must be on `main` with a clean worktree.
+The release skill bumps the selected plugin version across the plugin's Claude and Codex manifests plus the Claude marketplace metadata, then commits, tags, and pushes. Must be on `main` with a clean worktree. Major releases are reserved for changes that require a manual user migration.
 
 ## Plugin architecture
 

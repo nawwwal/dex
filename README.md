@@ -1,46 +1,120 @@
 # dex
 
-An agent environment toolkit for Claude Code and Codex. It ships setup checks, memory-aware workflows, design thinking, development workflows, and creative tooling.
+Dex is a small agent toolkit for the work that keeps repeating: setting up an agent environment, finding the crux of a product problem, checking design quality, shipping Blade-heavy dashboard work, reviewing plans with another model, and turning media or memory into something usable.
+
+It is not a giant prompt pack. The point is to keep the sharp workflows close, named plainly, and split by ownership so an agent can load the right behavior without dragging half the repo into context.
+
+## The Shape
+
+Dex ships four marketplace plugins.
+
+| Plugin | Owns | Does not own |
+|---|---|---|
+| `core` | Agent setup, council-style investigation, communication, reflection, DevRev, session logs | Design implementation, browser tooling, media utilities |
+| `design` | Product thinking, divergence, presentation narrative, 5F design review, visual handoffs | Blade, shaders, sound, generic code hardening |
+| `dev` | Design engineering: Blade, dashboard implementation, hardening, shaders, sound | Product strategy, presentation coaching, third-party browser tools |
+| `tools` | Utility tools: Codex review, image generation, media optimization, mymind | Core setup, design critique, implementation doctrine |
+
+This split is the product. When a workflow starts to sprawl, move it to the plugin that owns the actual behavior instead of making a router that knows too much.
 
 ## Install
 
-```
+Add the marketplace once:
+
+```text
 /plugin marketplace add nawwwal/dex
-/plugin install core@nawwwal-dex       # setup, memory-aware workflow
-/plugin install design@nawwwal-dex     # crux, divergence, 5F review, presentation, visuals
-/plugin install dev@nawwwal-dex        # Blade, dashboard implementation, hardening, shaders, sound
-/plugin install tools@nawwwal-dex      # research, Codex review, media, mymind
+```
+
+Install only what you need:
+
+```text
+/plugin install core@nawwwal-dex
+/plugin install design@nawwwal-dex
+/plugin install dev@nawwwal-dex
+/plugin install tools@nawwwal-dex
+```
+
+Then bootstrap the shared agent home:
+
+```text
 /dex setup
 ```
 
-Add the marketplace once, then install the plugins you need. `/dex setup` bootstraps and verifies the current `~/.agents/` structure plus Claude/Codex compatibility links. It does not read external services or personalize memory.
+`/dex setup` creates and verifies the current `~/.agents/` structure, then wires Claude/Codex compatibility links. It does not read Slack, DevRev, Drive, Figma, or any external service. Setup should make the machine usable, not pretend to know the person.
 
-For local Codex development in this repo, use the repo marketplace at `.agents/plugins/marketplace.json` and restart Codex after changing plugin files.
+Required local binaries:
 
-## Prerequisites
-
-- **python3**, **jq**, **node** - required by setup and local scripts
-- **Figma MCP** - optional, enables Figma-backed design workflows
-
-## What you get
-
-### Skills
-
-| Category | Skills |
-|---|---|
-| **Design** | `crux`, `diverge`, `present`, `reviewing-designs-5f`, `visual` |
-| **Dev** | `blade`, `dashboard-design`, `harden`, `shader`, `create-sound` |
-| **Thinking** | `council`, `codex`, `reflect` |
-| **Development** | `media-optimizer` |
-| **Workflow** | `communicate` |
-| **Writing / Media** | `generate-image`, `mymind` |
-| **Meta** | `dex` |
-
-## Memory system
-
-`/dex setup` creates the minimal current structure outside the plugin:
-
+```text
+python3
+jq
+node
 ```
+
+Optional integrations depend on the skill you use: Figma MCP for Figma work, DevRev MCP for DevRev workflows, Slack MCP for message workflows, `mymind` for mymind search, and `agent-browser` for skills that explicitly call it as an external browser tool. Dex does not package `agent-browser`.
+
+## What Each Plugin Gives You
+
+### Core
+
+`core` is the control plane. It should stay boring in the best way: setup, routing to durable records, and workflows that help agents reason across context.
+
+| Skill | Use it for |
+|---|---|
+| `dex` | Fresh setup, doctor checks, `.agents` bootstrap, Claude/Codex compatibility links, project design-context capture |
+| `council` | Parallel research, code audits, expert lenses, blind-spot passes, architecture investigations |
+| `communicate` | Drafting or sending Slack messages in the user's voice |
+| `reflect` | Surfacing patterns from sessions, finding leverage, noticing drift |
+| `devrev` | Sprint routines, grooming, enrichment, DevRev issue/enhancement work |
+| `log` | Task-scoped session journals after real work is done |
+
+`council` lives here because it is a thinking primitive, not a misc tool.
+
+### Design
+
+`design` is for deciding what something should be and how to explain it. It should not own implementation-specific systems.
+
+| Skill | Use it for |
+|---|---|
+| `crux` | Compressing vague claims, PRDs, opinions, or product problems down to the load-bearing issue |
+| `diverge` | Brainstorms, alternatives, product directions, interaction concepts, different approaches |
+| `present` | Design review narrative, stakeholder framing, rehearsal, explaining tradeoffs to a room |
+| `reviewing-designs-5f` | Razorpay UX research team's 5F review framework for B2B SaaS design critique |
+| `visual` | Diagrams, system flows, dense explanations, visual handoffs, component/state/screen breakdowns |
+
+Design has no catch-all router now. If the user wants Blade, go to `dev`. If the user wants browser automation, use the relevant external browser tool. If the user wants generic critique, pick the concrete review skill instead of launching a manifesto.
+
+### Dev
+
+`dev` is where design becomes code and production behavior.
+
+| Skill | Use it for |
+|---|---|
+| `blade` | Razorpay Blade adherence, Blade score, component selection, design-system drift |
+| `dashboard-design` | Razorpay dashboard feature workflows: create, build, share, PR, ship |
+| `harden` | A11y, density, hierarchy, typography, state coverage, production UI checks |
+| `shader` | GLSL, Shadertoy, SDFs, procedural visuals, fragment shader effects |
+| `create-sound` | Sound definitions, audio feedback, reverse-engineering samples, rendering previews |
+
+This plugin exists because coding agents need different instructions than design agents. A design critique can be exploratory. A code change needs evidence, file refs, constraints, and verification.
+
+### Tools
+
+`tools` is for utilities that help other work happen.
+
+| Skill | Use it for |
+|---|---|
+| `codex` | Cross-model plan review through the Codex CLI |
+| `generate-image` | Image generation and editing through local scripts |
+| `media-optimizer` | Compressing, converting, resizing images and video |
+| `mymind` | Searching, saving, organizing, and inspecting mymind |
+
+Tools should stay tools. If a tool grows taste, policy, or product judgment, it probably belongs somewhere else.
+
+## The Agent Home
+
+Dex uses `~/.agents` as the shared source of truth.
+
+```text
 ~/.agents/
 ├── AGENTS.md
 ├── instructions/
@@ -54,61 +128,154 @@ For local Codex development in this repo, use the repo marketplace at `.agents/p
 └── state.json
 ```
 
-`~/.claude/CLAUDE.md`, `~/.claude/memory`, and `~/.claude/skills` are compatibility links back to `~/.agents/`.
+Claude compatibility links point back into that tree:
 
-## Customizing
-
-Plugin files are managed by the plugin system. To customize a skill:
-
-1. Copy it to `~/.agents/skills/`
-2. Edit the local copy
-3. The local copy takes precedence over the plugin version
-
-Your customizations are never overwritten by plugin updates.
-
-Dex does not create `~/.agents/agents`. The old plugin-agent surface has been removed.
-
-## For developers
-
-If you're developing dex (editing skills or templates):
-
-**Working directory:** Always `~/dex/`.
-
-**After editing:** Start a new Claude session or run `/reload-plugins`. Changes are live.
-
-## Releasing
-
-Release maintenance is project-local, not part of the shipped plugin.
-
-- The installed plugin owns the user-facing `/dex setup` environment workflow.
-- Repo-maintainer workflows like release operations live only in `.claude/skills/dex/` and `.agents/skills/dex/`.
-- This keeps the shipped plugin focused on usable end-user skills while leaving project maintenance local to this repository.
-
-When you're ready to push updates to teammates:
-
-```
-/dex release dev              # patch bump dev
-/dex release tools minor      # minor bump tools
-/dex release tools major      # major bump tools
+```text
+~/.claude/CLAUDE.md -> ~/.agents/AGENTS.md
+~/.claude/memory    -> ~/.agents/memory
+~/.claude/skills    -> ~/.agents/skills
 ```
 
-The project-level release skill bumps the selected plugin version, updates marketplace metadata, commits, tags, pushes, and creates a GitHub Release with changelog notes. Teammates update with:
+The rule is simple: one control plane, compatibility links where needed. Do not create parallel homes and then ask agents to guess which one matters.
 
-```
-/plugin update dex@nawwwal-dex
+## Custom Skills
+
+Plugin files are managed by the plugin system. Personal overrides belong in `~/.agents/skills`.
+
+```text
+~/.agents/skills/my-skill/SKILL.md
 ```
 
-## Updating
+Local skills take precedence over plugin skills. That is where experiments, personal workflows, and private edits should live. The plugin should carry reusable behavior, not every local preference.
 
+## Repo Development
+
+There is no build step. This repo is Markdown, JSON, shell, and small scripts.
+
+Edit under:
+
+```text
+plugins/
 ```
+
+Each plugin has both runtime manifests:
+
+```text
+plugins/<plugin>/.claude-plugin/plugin.json
+plugins/<plugin>/.codex-plugin/plugin.json
+```
+
+The root marketplace files expose those plugins:
+
+```text
+.claude-plugin/marketplace.json
+.agents/plugins/marketplace.json
+```
+
+For local Codex development, the repo marketplace lives at:
+
+```text
+.agents/plugins/marketplace.json
+```
+
+After editing plugin files, start a new session or run:
+
+```text
+/reload-plugins
+```
+
+## Adding a Skill
+
+Create:
+
+```text
+plugins/<plugin>/skills/<one-word-name>/SKILL.md
+```
+
+Use frontmatter:
+
+```md
+---
+name: one-word-name
+description: "Use when..."
+---
+```
+
+Skill names should be short routing tokens, not sentence fragments or fake departments. The description is routing surface, not marketing copy. It should say when the skill should load and what it owns.
+
+Before adding a skill, ask:
+
+- Is this a reusable behavior or just a note?
+- Which plugin owns the outcome?
+- What evidence should an agent inspect?
+- What tools should it call or avoid?
+- What should it return?
+- How does the agent know it is done?
+
+If those answers are vague, the skill is not ready.
+
+## Release Workflow
+
+Release maintenance is project-local. The shipped `core` plugin owns user-facing `/dex setup`; repo-maintainer release logic lives in:
+
+```text
+.agents/skills/dex/
+.claude/skills/dex/
+```
+
+Examples:
+
+```text
+/dex release dev
+/dex release design minor
+/dex release tools minor
+```
+
+The release skill:
+
+1. Checks that the repo is on `main` and clean.
+2. Bumps the selected plugin's Claude and Codex manifests.
+3. Updates the Claude marketplace metadata.
+4. Validates the Codex marketplace shape.
+5. Commits, tags, pushes, and creates a GitHub Release.
+
+Version policy:
+
+| Bump | Use it when |
+|---|---|
+| `patch` | Bug fix, wording change, metadata-only update, or behavior-preserving edit |
+| `minor` | New skill, moved skill with a replacement path, renamed skill with an obvious successor, noticeable behavior change |
+| `major` | Rare. Existing installs cannot keep working without manual migration |
+| `initial` | First release of a newly added plugin |
+
+Major is not a cleanup prize. If there is no explicit migration step for users, use `minor`.
+
+## Update
+
+Update installed plugins:
+
+```text
 /plugin update core@nawwwal-dex
 /plugin update design@nawwwal-dex
 /plugin update dev@nawwwal-dex
 /plugin update tools@nawwwal-dex
 ```
 
-Or reload plugins in an active session:
+Or reload active sessions:
 
-```
+```text
 /reload-plugins
 ```
+
+For Codex tracked marketplace installs, committed and pushed changes are what matter. Local uncommitted source edits do not magically appear in the tracked install.
+
+## Maintenance Rules
+
+- Keep plugin boundaries sharper than the prose. If a skill owns Blade, it belongs in `dev`, not `design`.
+- Do not recreate third-party tools as Dex skills. Route to them or document the dependency.
+- Do not add broad routers unless routing is the product. Prefer a skill that owns one outcome.
+- Do not hide implementation detail in beautiful language. A skill should change agent behavior predictably.
+- Keep examples current or delete them. Stale examples are worse than no examples.
+- Update README, manifests, marketplace metadata, and release docs in the same pass when topology changes.
+
+Dex should feel like a set of well-labeled cupboards on a messy workbench: open the right one, do the work, close it, move on.
