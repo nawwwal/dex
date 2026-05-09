@@ -4,19 +4,19 @@
     "name": "Aditya Nawal"
   },
   "metadata": {
-    "description": "Vault system for R1 Design team"
+    "description": "Agent workflow, design intelligence, first-principles questioning, and creative tooling"
   },
   "plugins": [
     {
       "name": "core",
       "source": "./plugins/core",
-      "description": "Memory scaffolding, core workflow, and onboarding",
+      "description": "Agent environment setup, core workflow, and memory-aware skills",
       "version": "3.0.0"
     },
     {
       "name": "design",
       "source": "./plugins/design",
-      "description": "Design critique, dashboard patterns, UI review, motion, divergence",
+      "description": "Design routing, Blade adherence, dashboard workflows, UI review, first-principles questioning, visual handoffs, shaders, and divergence",
       "version": "3.1.1"
     },
     {

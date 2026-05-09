@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-`dex` is a Claude/Codex plugin published as `nawwwal/dex` on the plugin marketplace. It ships three installable plugins — `core`, `design`, `tools` — containing skills and templates that extend the assistants with persistent memory, onboarding, and design intelligence.
+`dex` is a Claude/Codex plugin published as `nawwwal/dex` on the plugin marketplace. It ships three installable plugins: `core`, `design`, and `tools`. These contain skills and templates for agent environment setup, memory-aware workflows, design intelligence, and creative tooling.
 
 ## Development
 
@@ -26,11 +26,11 @@ The release skill bumps the selected plugin version across the plugin's Claude a
 
 ```
 plugins/
-├── core/                    # Memory scaffolding, core skills, templates
+├── core/                    # Agent setup, core skills, templates
 │   ├── .claude-plugin/plugin.json
 │   ├── .codex-plugin/plugin.json
 │   ├── skills/              # SKILL.md files (one dir per skill)
-│   └── templates/           # CLAUDE.md template + memory scaffolds
+│   └── templates/           # Minimal AGENTS.md + memory README templates
 ├── design/                  # Design critique, UI review, motion, divergence
 │   └── skills/
 └── tools/                   # Research, dev tools, creative tools
@@ -49,4 +49,4 @@ Skills support sub-files (e.g. `references/`, `templates/`) that the SKILL.md ca
 
 ## Memory system (user-side, not in this repo)
 
-The vault lives at `~/.claude/` and is scaffolded by `/dex setup`. Template files for memory scaffolds are in `plugins/core/templates/memory-scaffolds/`.
+User-side agent configuration lives under `~/.agents/`. `/dex setup` creates the minimal current folder structure and Claude/Codex compatibility links. Templates live in `plugins/core/templates/`.
