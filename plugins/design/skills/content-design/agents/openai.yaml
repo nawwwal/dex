@@ -1,0 +1,4 @@
+interface:
+  display_name: "Content Design"
+  short_description: "Write product copy with voice and trust"
+  default_prompt: "Use $content-design to write or audit product UI copy with the right voice, risk level, and source grounding."
