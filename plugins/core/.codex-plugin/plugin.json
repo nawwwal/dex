@@ -1,6 +1,6 @@
 {
   "name": "core",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "Agent environment setup, core workflow, and memory-aware skills",
   "author": {
     "name": "Aditya Nawal"
