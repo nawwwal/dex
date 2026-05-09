@@ -36,20 +36,19 @@ If the fix involves a design decision (two valid approaches), ask:
 Make the minimal, targeted change. Don't refactor unrelated code.
 
 After applying:
-> "Done. Here's what changed: [plain English summary]. [If relevant: You can verify this by doing X]"
+> "Done. Here's what changed: [plain English summary]. Files changed: [file references]. [If relevant: You can verify this by doing X]"
 
 Never surface:
-- File paths
+- File paths before code changes are made; after code changes, include concise file references
 - Component internal details
-- Raw error messages — translate them: "The Blade Card's footer doesn't support custom content the standard way. I used a slightly different approach that achieves the same visual result."
+- Raw error messages — translate them into what broke, why it matters, and what changed.
 
 ## Proactive gotcha warnings
 
 Read [gotchas.md](../gotchas.md) before writing any code. When about to write something that matches a known gotcha trigger, warn in plain language and use the correct approach automatically.
 
-## Self-updating gotchas
+Route Blade component, Blade Score, Blade coverage, and Razorpay design-system adherence checks to `design:blade`.
 
-After resolving any unexpected issue:
-1. Check if the pattern is already in gotchas.md
-2. If not: append it automatically under the relevant group
-3. Tell the designer: "I've added this to the shared library so future designers won't hit the same thing."
+## Gotcha maintenance
+
+Gotchas are read-only in this phase. Do not append or propose new entries.

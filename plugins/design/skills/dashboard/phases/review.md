@@ -8,14 +8,15 @@ Before generating the PR description, silently check:
 1. Are there any obvious issues in the code? (dev-only component left in, wrong header injection)
 2. Is placeholder data mode off everywhere?
 3. Are any developer log statements still in production paths?
+4. Route Blade Score, Blade coverage, Blade components, and Razorpay design-system adherence checks to `design:blade`.
 
-If issues found, fix them silently or ask the designer first depending on severity.
+If issues are trivial cleanup from the current change, fix them. Ask before any nontrivial behavior or layout change.
 
 ## Step 2: Collect PR info from the designer
 
 Ask only what you can't determine automatically:
 
-1. **Blade Score:** "What's your Blade Score? Run the Blade Coverage extension on devstack and tell me the % — it's shown in the extension panel."
+1. **Blade Score:** use the `design:blade` result. Do not ask the designer to run the extension unless the Blade skill/tooling is unavailable.
 2. **Change summary:** "Describe what changed in 2 sentences — what it does and why it matters."
 3. **Screenshots:** "Do you have before/after screenshots? You can paste images here, describe the changes visually, or I can note 'screenshots to follow'."
 
@@ -25,6 +26,7 @@ Everything else (branch name, files changed, testing steps) Claude determines au
 
 Write the PR description with:
 - Summary (2-3 sentences from what designer told you)
+- File references for code changes
 - What reviewers should check (based on what changed)
 - Testing steps (how to verify the feature on devstack — step by step)
 - Blade Score

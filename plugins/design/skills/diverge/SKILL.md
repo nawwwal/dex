@@ -1,11 +1,33 @@
 ---
 name: diverge
-description: Layered divergence system for product designers. Use when exploring different ways a software product, surface, flow, page, modal, dashboard, component, interaction, state, copy system, visual language, or product direction could work across product mechanics, UX structure, UI presentation, copy, interaction, states, emotion, persuasion, education, accessibility, and implementation handoff.
+description: Use when exploring divergence, brainstorms, alternatives, alternate concepts, different directions, or different approaches for a software product, surface, flow, page, modal, dashboard, component, interaction, state, copy system, visual language, or product direction.
 ---
 
 # /diverge - Layered Product Design Divergence
 
 Generate design directions that differ by observable design layers, not by decorative names. The skill supports divergence across product mechanics, UX structure, interaction behavior, information hierarchy, copywriting, layout, visual language, typography, color, motion, emotional design, persuasive design, education, states, accessibility, and implementation handoff.
+
+## Trigger Language
+
+Use this skill for prompts containing: divergence, diverge, brainstorm, alternatives, alternate concepts, concepts, different directions, different approaches, product directions, UI directions, other ways to solve this, or "give me options."
+
+## Default Depth
+
+Compact mode is the default. Most brainstorm, alternatives, concept, and different-direction requests should return a fast set of usable directions, not the full layered framework.
+
+Use deep mode only when the user explicitly asks for deep, full, comprehensive, council, exhaustive, layered divergence, or a full handoff blueprint.
+
+Compact output:
+1. Assumptions, only if needed.
+2. Obvious baseline.
+3. 4-6 directions.
+4. For each direction: product bet, layers changed, visible execution, main interaction/state behavior, tradeoff, prototype slice.
+5. Recommendation.
+
+Deep output:
+- Use the full workflow below.
+- Load the relevant reference files.
+- Include the product model, state/action matrix, layer diagnosis, comparison, prototype slices, and handoff blueprint.
 
 Replace:
 
@@ -453,7 +475,7 @@ Smallest screen or flow that proves the direction.
 
 ### Mode 1: Full layered divergence
 
-Use for broad prompts.
+Use only for explicit deep/full/comprehensive/council/layered prompts.
 
 Output:
 1. Product model
@@ -583,7 +605,7 @@ For every run, ask:
 
 If the obvious baseline wins, say so.
 
-## Default Output Structure
+## Deep Mode Output Structure
 
 ```md
 # Diverge: <surface/problem>

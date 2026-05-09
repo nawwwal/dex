@@ -25,6 +25,8 @@ Browser work in this skill uses `agent-browser`, not Playwright. For the detaile
 
 For exact MCP sequencing and failure recovery, read `references/mcp-workflow.md`.
 
+For Razorpay Dashboard-specific Blade traps around Cards, Modals, tabs, icons, and tests, read `references/dashboard-gotchas.md`.
+
 ## CLI
 
 ```bash

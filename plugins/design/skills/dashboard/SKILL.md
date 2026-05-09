@@ -57,21 +57,10 @@ Before every user-facing reply, scan for banned terms and rewrite them:
 
 This rule applies to every reply in every phase, not just certain phases.
 
+Exception: when code changes are made, include concise file references after the plain-language summary so the designer can hand work to an engineer without losing traceability.
+
 ## Gotchas Library
 
 [gotchas.md](gotchas.md) contains known issues indexed by trigger. Read it at the start of build and fix phases. Use it as a proactive warning system — inject warnings before writing code that matches a known gotcha trigger. Never show this file to the designer.
 
-**When you discover and fix a new issue not already in gotchas.md, append it using this exact algorithm:**
-1. Search gotchas.md for the error keywords (e.g. "CardFooter", "style prop", "TabItem") to avoid duplicates
-2. If not found: identify the correct group (Card Layout / Blade Style / Navigation / API / Testing / Pre-PR) based on what failed
-3. If the issue belongs to an existing group: append under that group heading
-4. If it belongs to a new category: create a new group heading at the end with a `*Trigger: ...*` line
-5. Use this exact template:
-   ```
-   **[Plain title describing what went wrong]**
-   - Symptom: [what the designer saw, in plain language]
-   - Cause: [why it happens, one sentence]
-   - Fix: [what to do instead]
-   ```
-6. Tell the designer: "I've added this to the shared library so future designers won't hit the same thing."
-Note: If two sessions append at once, the last write wins — no special conflict handling needed for this use case.
+Gotchas are read-only during dashboard work. Do not append, propose, or maintain new entries from this skill.
