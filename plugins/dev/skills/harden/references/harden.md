@@ -5,7 +5,7 @@ Review production readiness for interface edge cases.
 ## Route Out First
 
 - Razorpay Blade edge-state components, coverage, or component replacement: route to `design:blade`.
-- Performance prefetching, routing architecture, or data-fetching strategy: route to the relevant engineering skill, not interface review.
+- Performance prefetching, routing architecture, or data-fetching strategy: route to the relevant engineering skill, not this skill.
 
 ## Checklist
 

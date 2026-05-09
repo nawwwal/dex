@@ -33,6 +33,20 @@
       "category": "Design"
     },
     {
+      "name": "dev",
+      "source": {
+        "source": "git-subdir",
+        "url": "https://github.com/nawwwal/dex.git",
+        "ref": "main",
+        "path": "./plugins/dev"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
       "name": "tools",
       "source": {
         "source": "git-subdir",

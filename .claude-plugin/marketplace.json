@@ -4,25 +4,31 @@
     "name": "Aditya Nawal"
   },
   "metadata": {
-    "description": "Agent workflow, design intelligence, first-principles questioning, and creative tooling"
+    "description": "Agent workflow, design intelligence, development workflows, and creative tooling"
   },
   "plugins": [
     {
       "name": "core",
       "source": "./plugins/core",
-      "description": "Agent environment setup, core workflow, and memory-aware skills",
+      "description": "Agent environment setup, council, communication, reflection, DevRev, and logging",
       "version": "4.0.0"
     },
     {
       "name": "design",
       "source": "./plugins/design",
-      "description": "Design routing, Blade adherence, dashboard workflows, UI review, first-principles questioning, visual handoffs, shaders, and divergence",
+      "description": "Design thinking, 5F review, crux finding, presentation narrative, visual handoffs, and divergence",
       "version": "4.0.0"
+    },
+    {
+      "name": "dev",
+      "source": "./plugins/dev",
+      "description": "Design engineering workflows for Blade, dashboard implementation, UI hardening, shaders, and sound",
+      "version": "1.0.0"
     },
     {
       "name": "tools",
       "source": "./plugins/tools",
-      "description": "Research, dev tools, creative tools, writing",
+      "description": "Codex review, media tools, image generation, and mymind",
       "version": "3.0.0"
     }
   ]

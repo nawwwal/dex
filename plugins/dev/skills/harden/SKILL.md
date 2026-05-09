@@ -1,14 +1,14 @@
 ---
-name: interface-review
-description: "Focused UI review skill for product interfaces. Use for read-only critique, accessibility, density, hierarchy, typography, hardening, state coverage, and anti-pattern checks. Routes Blade compliance to design:blade and browser automation to agent-browser."
+name: harden
+description: "Use when checking product interfaces for accessibility, density, hierarchy, typography, production hardening, state coverage, copy clarity, design-system normalization, or anti-patterns."
 ---
 
-# Interface Review
+# Harden
 
-Review interface quality. Default to read-only critique unless the user explicitly asks for implementation.
+Check interface quality. Default to read-only critique unless the user explicitly asks for implementation.
 
 Use this skill for:
-- UI review and critique
+- UI quality checks and critique
 - Accessibility and WCAG checks
 - Density, spacing, hierarchy, and typography
 - Production hardening: overflow, loading, empty, error, disabled, and permission states
@@ -29,7 +29,7 @@ Do not use this skill for:
 
 Start with the user's artifact: screenshot, file path, diff, URL, Figma frame, or product description.
 
-If the target is a URL and the review needs live inspection, stop and route capture to `agent-browser`; then review the captured output.
+If the target is a URL and the check needs live inspection, stop and route capture to `agent-browser`; then inspect the captured output.
 
 If the project uses Razorpay Blade and the request is about Blade adherence, scoring, or component replacement, stop and route to `design:blade`.
 
@@ -37,7 +37,7 @@ If the project uses Razorpay Blade and the request is about Blade adherence, sco
 
 Load only the reference needed for the request:
 
-- Overall UI review: `references/review.md`
+- Overall UI quality: `references/review.md`
 - Accessibility: `references/a11y.md`
 - Anti-patterns: `references/anti-patterns.md`
 - Layout and spacing: `references/arrange.md`

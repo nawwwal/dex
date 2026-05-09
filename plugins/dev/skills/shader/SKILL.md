@@ -1,6 +1,6 @@
 ---
 name: shader
-description: "Focused shader skill for GLSL, Shadertoy, signed distance functions, procedural visuals, and fragment shader effects. Use only for shader work; generic UI review should not load this skill."
+description: "Focused shader skill for GLSL, Shadertoy, signed distance functions, procedural visuals, and fragment shader effects. Use only for shader work; generic UI hardening should not load this skill."
 ---
 
 # Shader
@@ -12,7 +12,7 @@ Use this skill only for shader-specific work:
 - Procedural visual systems
 - Shader effects such as glow, bloom, chromatic aberration, film grain, glass, distortion, and raymarching
 
-Do not load this skill for generic UI review, web layout critique, Blade adherence, accessibility, or dashboard polish unless the user explicitly asks about shader code or procedural visuals.
+Do not load this skill for generic UI hardening, web layout critique, Blade adherence, accessibility, or dashboard polish unless the user explicitly asks about shader code or procedural visuals.
 
 ## Reference Map
 

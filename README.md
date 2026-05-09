@@ -1,14 +1,15 @@
 # dex
 
-An agent environment toolkit for Claude Code and Codex. It ships setup checks, memory-aware workflows, design intelligence, and creative tooling.
+An agent environment toolkit for Claude Code and Codex. It ships setup checks, memory-aware workflows, design thinking, development workflows, and creative tooling.
 
 ## Install
 
 ```
 /plugin marketplace add nawwwal/dex
 /plugin install core@nawwwal-dex       # setup, memory-aware workflow
-/plugin install design@nawwwal-dex     # dashboard, UI review, first-principles questioning, visuals
-/plugin install tools@nawwwal-dex      # research, dev, creative tools
+/plugin install design@nawwwal-dex     # crux, divergence, 5F review, presentation, visuals
+/plugin install dev@nawwwal-dex        # Blade, dashboard implementation, hardening, shaders, sound
+/plugin install tools@nawwwal-dex      # research, Codex review, media, mymind
 /dex setup
 ```
 
@@ -27,11 +28,12 @@ For local Codex development in this repo, use the repo marketplace at `.agents/p
 
 | Category | Skills |
 |---|---|
-| **Design** | `blade`, `dashboard-design`, `design`, `diverge`, `first-principles-questioning`, `interface-review`, `shader`, `visual` |
+| **Design** | `crux`, `diverge`, `present`, `reviewing-designs-5f`, `visual` |
+| **Dev** | `blade`, `dashboard-design`, `harden`, `shader`, `create-sound` |
 | **Thinking** | `council`, `codex`, `reflect` |
-| **Development** | `agent-browser`, `media-optimizer` |
+| **Development** | `media-optimizer` |
 | **Workflow** | `communicate` |
-| **Writing / Media** | `generate-image` |
+| **Writing / Media** | `generate-image`, `mymind` |
 | **Meta** | `dex` |
 
 ## Memory system
@@ -85,7 +87,7 @@ Release maintenance is project-local, not part of the shipped plugin.
 When you're ready to push updates to teammates:
 
 ```
-/dex release tools            # patch bump tools
+/dex release dev              # patch bump dev
 /dex release tools minor      # minor bump tools
 /dex release tools major      # major bump tools
 ```
@@ -101,6 +103,7 @@ The project-level release skill bumps the selected plugin version, updates marke
 ```
 /plugin update core@nawwwal-dex
 /plugin update design@nawwwal-dex
+/plugin update dev@nawwwal-dex
 /plugin update tools@nawwwal-dex
 ```
 

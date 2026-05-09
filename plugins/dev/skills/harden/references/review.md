@@ -24,7 +24,7 @@ Read-only interface critique for static artifacts: screenshots, diffs, local fil
 Lead with the biggest flaw and name the weak joint.
 
 ```text
-## Interface Review: {target}
+## Harden: {target}
 
 ### Critical
 - [area/file] Problem: what breaks. Mechanic: why it breaks. Fix: exact change.

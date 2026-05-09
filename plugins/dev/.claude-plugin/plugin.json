@@ -1,0 +1,8 @@
+{
+  "name": "dev",
+  "description": "Design engineering workflows for Blade, dashboard implementation, UI hardening, shaders, and sound",
+  "version": "1.0.0",
+  "author": {
+    "name": "Aditya Nawal"
+  }
+}

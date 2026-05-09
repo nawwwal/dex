@@ -1,0 +1,16 @@
+{
+  "name": "dev",
+  "version": "1.0.0",
+  "description": "Design engineering workflows for Blade, dashboard implementation, UI hardening, shaders, and sound",
+  "author": {
+    "name": "Aditya Nawal"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Dex Dev",
+    "shortDescription": "Blade, dashboard implementation, UI hardening, shaders, and sound",
+    "longDescription": "Dex development workflows for Razorpay Blade adherence, dashboard feature work, UI hardening, shader work, and sound generation.",
+    "developerName": "Aditya Nawal",
+    "category": "Developer Tools"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "name": "core",
-  "description": "Agent environment setup, core workflow, and memory-aware skills",
+  "description": "Agent environment setup, council, communication, reflection, DevRev, and logging",
   "version": "4.0.0",
   "author": {
     "name": "Aditya Nawal"

@@ -1,10 +1,10 @@
 ---
-name: first-principles-questioning
+name: crux
 description: Use when interrogating a topic, opinion, PRD, product problem, strategy, design direction, vague claim, or problem statement to find the real crux before deciding what to build, say, or believe.
 allowed-tools: Read, Grep, Glob
 ---
 
-# First-Principles Questioning
+# Crux
 
 Use this to compress messy thinking into the smallest set of claims that must be true.
 

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-`dex` is a Claude/Codex plugin published as `nawwwal/dex` on the plugin marketplace. It ships three installable plugins: `core`, `design`, and `tools`. These contain skills and templates for agent environment setup, memory-aware workflows, design intelligence, and creative tooling.
+`dex` is a Claude/Codex plugin published as `nawwwal/dex` on the plugin marketplace. It ships four installable plugins: `core`, `design`, `dev`, and `tools`. These contain skills and templates for agent environment setup, memory-aware workflows, design intelligence, development workflows, and creative tooling.
 
 ## Development
 
@@ -17,6 +17,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```text
 /dex release core
 /dex release design minor
+/dex release dev minor
 /dex release tools major
 ```
 
@@ -31,9 +32,11 @@ plugins/
 │   ├── .codex-plugin/plugin.json
 │   ├── skills/              # SKILL.md files (one dir per skill)
 │   └── templates/           # Minimal AGENTS.md + memory README templates
-├── design/                  # Design critique, UI review, motion, divergence
+├── design/                  # Crux, divergence, 5F review, presentation, visual handoffs
 │   └── skills/
-└── tools/                   # Research, dev tools, creative tools
+├── dev/                     # Blade, dashboard implementation, UI hardening, shaders, sound
+│   └── skills/
+└── tools/                   # Codex review, image/media tools, mymind
     └── skills/
 ```
 

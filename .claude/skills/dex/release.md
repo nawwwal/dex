@@ -11,9 +11,11 @@ The repo is both the Claude marketplace and the Codex marketplace:
 
 `/dex release core` - patch bump `core`
 `/dex release design minor` - minor bump `design`
+`/dex release dev` - patch bump `dev`
+`/dex release dev initial` - publish the current `dev` version as its first release
 `/dex release tools major` - major bump `tools`
 
-Supported plugins: `core`, `design`, `tools`
+Supported plugins: `core`, `design`, `dev`, `tools`
 
 ## Version bump rules
 
@@ -22,6 +24,7 @@ Supported plugins: `core`, `design`, `tools`
 | `patch` | Bug fixes, wording changes, small additions to existing skills that don't change their interface |
 | `minor` | New skills added, existing skill behavior meaningfully changed, memory schema changes |
 | `major` | Breaking changes: skills renamed/removed that users depend on, routing changes that require user action, memory files deleted |
+| `initial` | First release of a newly added plugin; keep the current manifest version and create its first tag |
 
 Default is `patch` when no bump is specified. When in doubt, prefer `minor` over `patch` if users will notice the change.
 
@@ -39,8 +42,8 @@ PLUGIN="${1:-}"
 BUMP="${2:-patch}"
 
 case "$PLUGIN" in
-  core|design|tools) ;;
-  *) echo "ERROR: First arg must be one of: core, design, tools"; exit 1 ;;
+  core|design|dev|tools) ;;
+  *) echo "ERROR: First arg must be one of: core, design, dev, tools"; exit 1 ;;
 esac
 
 BRANCH=$(git branch --show-current)
@@ -78,10 +81,11 @@ CURRENT=$(python3 -c "import json; print(json.load(open('$CLAUDE_PLUGIN_JSON'))[
 IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
 
 case "$BUMP" in
+  initial) ;;
   major) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
   minor) MINOR=$((MINOR + 1)); PATCH=0 ;;
   patch) PATCH=$((PATCH + 1)) ;;
-  *) echo "ERROR: Invalid bump type: $BUMP (use patch, minor, or major)"; exit 1 ;;
+  *) echo "ERROR: Invalid bump type: $BUMP (use patch, minor, major, or initial)"; exit 1 ;;
 esac
 
 NEW_VERSION="$MAJOR.$MINOR.$PATCH"
@@ -133,7 +137,7 @@ with open("$CODEX_MARKETPLACE_JSON") as fh:
 if codex_marketplace.get("name") != "nawwwal-dex":
     raise SystemExit("Codex marketplace name must be nawwwal-dex")
 
-expected_plugins = {"core", "design", "tools"}
+expected_plugins = {"core", "design", "dev", "tools"}
 seen_plugins = set()
 for entry in codex_marketplace.get("plugins", []):
     name = entry.get("name")
@@ -164,7 +168,18 @@ git add \
   "$CODEX_PLUGIN_JSON" \
   "$CLAUDE_MARKETPLACE_JSON" \
   "$CODEX_MARKETPLACE_JSON"
-git commit -m "release($PLUGIN): v$NEW_VERSION"
+
+if git diff --cached --quiet; then
+  if [ "$BUMP" = "initial" ]; then
+    echo "No version bump for initial release; tagging current HEAD"
+  else
+    echo "ERROR: No version files changed"
+    exit 1
+  fi
+else
+  git commit -m "release($PLUGIN): v$NEW_VERSION"
+fi
+
 git tag "$TAG"
 git push origin HEAD
 git push origin "$TAG"
@@ -177,7 +192,7 @@ Use GitHub Releases as the changelog surface, not tags alone.
 First, get the previous tag to scope the commit range:
 
 ```bash
-PREV_TAG=$(git tag --sort=-version:refname | grep "^$PLUGIN-v" | head -1)
+PREV_TAG=$(git tag --sort=-version:refname | grep "^$PLUGIN-v" | grep -v "^$TAG$" | head -1)
 if [ -n "$PREV_TAG" ]; then
   COMMIT_RANGE="$PREV_TAG..HEAD"
 else

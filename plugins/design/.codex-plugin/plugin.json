@@ -1,15 +1,15 @@
 {
   "name": "design",
   "version": "4.0.0",
-  "description": "Design routing, Blade adherence, dashboard workflows, UI review, first-principles questioning, visual handoffs, shaders, and divergence",
+  "description": "Design thinking, 5F review, crux finding, presentation narrative, visual handoffs, and divergence",
   "author": {
     "name": "Aditya Nawal"
   },
   "skills": "./skills/",
   "interface": {
     "displayName": "Dex Design",
-    "shortDescription": "Design routing, Blade adherence, dashboard workflows, UI review, first-principles questioning, visual handoffs, shaders, and divergence",
-    "longDescription": "Dex design workflows for routing focused design tasks, Blade adherence, dashboard work, interface review, first-principles questioning, visual handoffs, visual explanations, shader work, and divergent concept exploration.",
+    "shortDescription": "5F review, crux finding, presentation narrative, visual handoffs, and divergence",
+    "longDescription": "Dex design workflows for Razorpay 5F reviews, crux finding, presentation narrative, visual handoffs, visual explanations, and divergent concept exploration.",
     "developerName": "Aditya Nawal",
     "category": "Design"
   }

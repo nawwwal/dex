@@ -1,4 +1,4 @@
-# First-Principles Questioning Eval Cases
+# Crux Eval Cases
 
 These cases verify the skill behaves like a crux machine, not a generic advice generator.
 
