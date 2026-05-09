@@ -11,13 +11,13 @@
       "name": "core",
       "source": "./plugins/core",
       "description": "Agent environment setup, council, communication, reflection, DevRev, and logging",
-      "version": "4.1.0"
+      "version": "1.0.0"
     },
     {
       "name": "design",
       "source": "./plugins/design",
       "description": "Design thinking, crux finding, presentation narrative, visual handoffs, and divergence",
-      "version": "5.0.1"
+      "version": "1.0.0"
     },
     {
       "name": "dev",
@@ -29,7 +29,7 @@
       "name": "tools",
       "source": "./plugins/tools",
       "description": "Codex review, media tools, image generation, and mymind",
-      "version": "4.0.0"
+      "version": "1.0.0"
     }
   ]
 }
