@@ -5,8 +5,8 @@ Read-only interface critique for static artifacts: screenshots, diffs, local fil
 ## Route Out First
 
 - Live URL, localhost, screenshots, clicking, page state, or authenticated capture: route to `agent-browser`.
-- Razorpay Blade score, Blade coverage, Blade component choice, or Blade migration: route to `design:blade`.
-- Motion timing, easing, transitions, or animation implementation: route to `web-animation-design`.
+- Razorpay Blade score, Blade coverage, Blade component choice, or Blade migration: route to `blade`.
+- In Blade projects, motion timing, easing, transitions, hover/focus/tap, or animation implementation: route to `blade` first so Blade MCP and Blade-native motion own the API. Use generic motion guidance only after Blade proves a gap.
 - General "make it feel better" polish: route to `make-interfaces-feel-better`.
 
 ## Review Checks

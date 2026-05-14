@@ -4,7 +4,7 @@ Review typography for hierarchy, readability, rendering, and data alignment.
 
 ## Route Out First
 
-- Razorpay Blade typography components or tokens: route to `design:blade`.
+- Razorpay Blade typography components or tokens: route to `blade`.
 
 ## Checks
 

@@ -31,4 +31,4 @@ Every handoff artifact must include:
 - Do not produce a prose-only spec when the user asked for a handoff.
 - Do not invent component props, design tokens, or motion-library APIs. Inspect or ask.
 - Do not impose a reference-image palette. The sample images define breakdown structure only.
-- If Blade mapping is requested, route to `design:blade` first, then include its result in the visual handoff.
+- If Blade mapping is requested, or the target app uses Razorpay Blade and the handoff includes product UI motion, route to `blade` first. Blade MCP must own component, token, pattern, and Blade-native motion API before the visual handoff blesses an implementation.

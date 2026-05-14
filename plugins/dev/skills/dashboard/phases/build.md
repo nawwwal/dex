@@ -14,8 +14,8 @@ If a close match exists:
 
 Only ask this if the match is genuinely usable. If no close match: just proceed.
 
-**2. Route Blade checks to design:blade**
-Before writing any UI element, use `design:blade` for Blade component choice, Blade coverage, Blade Score, and Razorpay design-system adherence. Tell the designer in plain terms what you chose and proceed — only pause to ask when there are genuinely two valid UX directions that the designer should decide between:
+**2. Route Blade checks to blade**
+Before writing any UI element, use `blade` for Blade component choice, known Blade pattern recreation, Blade-native motion/interaction quality, Blade coverage, Blade Score, and Razorpay design-system adherence. If the request matches a known Blade pattern such as Dashboard, ListView, CreationView, DetailedView, FormGroup, Settings, Confirmation, or SparkAnimation, run the Blade pattern workflow before adapting a nearby app implementation. Tell the designer in plain terms what you chose and proceed — only pause to ask when there are genuinely two valid UX directions that the designer should decide between:
 > "I'm using a Blade [component name] for this — [plain description]. Proceeding."
 
 Only ask "Want me to proceed?" when the Blade component choice requires a real design decision (e.g., card vs. list layout, modal vs. drawer). Don't ask for every routine component selection.

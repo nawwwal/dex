@@ -17,7 +17,8 @@ Use this skill for:
 - UX copy clarity
 
 Do not use this skill for:
-- Blade scoring or Blade-specific migration work. Route to `design:blade`.
+- Blade scoring or Blade-specific migration work. Route to `blade`.
+- Blade-project interaction feel, motion, transitions, component normalization, or design-system replacement. Route to `blade` first so MCP owns the API and Blade-native motion.
 - Dialkit, interaction primitives, or interface craft work. Route to `interface-craft`.
 - Agentation toolbar, annotations, pending feedback, or self-driving critique. Route to `agentation`.
 - Browser automation, screenshots, clicking, or authenticated page capture. Route to `agent-browser`.
@@ -31,7 +32,7 @@ Start with the user's artifact: screenshot, file path, diff, URL, Figma frame, o
 
 If the target is a URL and the check needs live inspection, stop and route capture to `agent-browser`; then inspect the captured output.
 
-If the project uses Razorpay Blade and the request is about Blade adherence, scoring, or component replacement, stop and route to `design:blade`.
+If the project uses Razorpay Blade and the request is about Blade adherence, scoring, component replacement, product-surface ownership, motion, hover/focus/tap, transition polish, or known Blade pattern recreation, stop and route to `blade`.
 
 ## Reference Map
 

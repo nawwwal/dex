@@ -4,7 +4,7 @@ Scan for interface debt and AI-slop patterns. Output severity-ranked file or are
 
 ## Route Out First
 
-- Razorpay Blade token/component violations: route to `design:blade`.
+- Razorpay Blade token/component violations: route to `blade`.
 - Animation easing/timing problems: route to `web-animation-design`.
 
 ## Critical

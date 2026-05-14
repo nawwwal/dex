@@ -89,7 +89,7 @@ Design has no catch-all router now. If the user wants Blade, go to `dev`. If the
 
 | Skill | Use it for |
 |---|---|
-| `blade` | Razorpay Blade adherence, Blade score, component selection, motion primitives, design-system drift |
+| `blade` | Razorpay Blade adherence, Blade MCP workflow, known pattern recreation, component ownership, interaction quality, motion primitives, Blade-only constraints, Blade score, design-system drift |
 | `dashboard-design` | Razorpay dashboard feature workflows: create, build, share, PR, ship |
 | `harden` | A11y, density, hierarchy, typography, state coverage, production UI checks |
 | `shader` | GLSL, Shadertoy, SDFs, procedural visuals, fragment shader effects |

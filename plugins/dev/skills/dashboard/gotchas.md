@@ -2,7 +2,7 @@
 
 Internal reference for dashboard workflows. Loaded at the start of build and fix phases.
 
-Use this as a trigger-based warning system for non-Blade dashboard issues. Anything about Blade components, Blade Score, Blade coverage, Blade tokens, or Blade implementation quirks must route to `design:blade`.
+Use this as a trigger-based warning system for non-Blade dashboard issues. Anything about Blade components, known Blade patterns, Blade-native motion/interaction quality, Blade Score, Blade coverage, Blade tokens, or Blade implementation quirks must route to `blade`.
 
 This file is read-only during dashboard work. Do not append, propose, or maintain new entries from the dashboard skill.
 

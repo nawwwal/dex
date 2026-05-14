@@ -47,7 +47,7 @@ Never surface:
 
 Read [gotchas.md](../gotchas.md) before writing any code. When about to write something that matches a known gotcha trigger, warn in plain language and use the correct approach automatically.
 
-Route Blade component, Blade Score, Blade coverage, and Razorpay design-system adherence checks to `design:blade`.
+Route Blade component, known Blade pattern recreation, Blade-native motion/interaction quality, Blade Score, Blade coverage, and Razorpay design-system adherence checks to `blade`.
 
 ## Gotcha maintenance
 

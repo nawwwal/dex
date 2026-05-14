@@ -4,8 +4,8 @@ Review layout, spacing, visual rhythm, and alignment.
 
 ## Route Out First
 
-- Razorpay Blade spacing props or token replacement: route to `design:blade`.
-- Large interaction/motion feel changes: route to `make-interfaces-feel-better` or `web-animation-design`.
+- Razorpay Blade spacing props or token replacement: route to `blade`.
+- In Blade projects, large interaction/motion feel changes, transition mapping, hover/focus/tap, or Blade-owned surfaces: route to `blade` first. Generic feel/motion skills can critique the mechanic after Blade MCP proves the allowed Blade path.
 
 ## Checks
 

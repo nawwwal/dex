@@ -27,8 +27,9 @@ Read these files to understand the project:
 ### Blade mode
 Call Blade MCP tools:
 1. `hi_blade` — confirm version and availability
-2. `get_blade_pattern_docs("Dashboard,ListView,DetailedView,FormGroup,Settings,CreationView,Confirmation")` — available page patterns
-3. `get_blade_general_docs("Usage")` — setup and token reference
+2. `get_blade_pattern_docs({ currentProjectRootDirectory: "<absolute project root>", patternsList: "Dashboard,ListView,DetailedView,FormGroup,Settings,CreationView,Confirmation,SparkAnimation", clientName: "cursor" })` — available page patterns
+3. `get_blade_general_docs({ currentProjectRootDirectory: "<absolute project root>", topicsList: "Usage,AvailableIcons", clientName: "cursor" })` — setup, icons, and token reference
+4. For motion-heavy projects, `get_blade_component_docs({ currentProjectRootDirectory: "<absolute project root>", componentsList: "AnimateInteractions,Fade,Move,Slide,Scale,Morph,Stagger,Elevate,RazorSense,RazorSenseGradient", clientName: "cursor" })`
 
 ### Generic mode
 - Grep for CSS custom properties (`:root { --color-* }`)
@@ -52,6 +53,8 @@ Generated: [date]
 - Version: [x.x.x]
 - Available Patterns: Dashboard, ListView, DetailedView, FormGroup, Settings, CreationView, Confirmation
 - Key components: Box, Text, Heading, Button, TextInput, Amount, Table, ...
+- Pattern recreation rule: for Dashboard, ListView, CreationView, DetailedView, FormGroup, Settings, Confirmation, or SparkAnimation, use Blade pattern docs before adapting local near-match code.
+- Motion rule: use Blade motion primitives and MCP-documented dependencies; do not add custom CSS transitions, keyframes, timers, or undocumented Framer wrappers.
 
 ## Color Tokens (sample)
 - Primary action: surface.action.background.primary.intense
@@ -91,8 +94,8 @@ If `.agents/AGENTS.md` exists and does not already reference `DESIGN.md`, append
 ## Design Context captured
 
 Generated: .agents/DESIGN.md
-Blade version: 12.76.0
-Available patterns: Dashboard, ListView, DetailedView, FormGroup, Settings, CreationView, Confirmation
+Blade version: [detected from MCP/package.json]
+Available patterns: [detected from MCP]
 
 Added reference to .agents/AGENTS.md: yes / already present
 

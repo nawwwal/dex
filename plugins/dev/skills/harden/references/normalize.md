@@ -4,7 +4,7 @@ Review whether a UI uses its local design system instead of ad-hoc values.
 
 ## Route Out First
 
-- Razorpay Blade component, token, score, or coverage work: route to `design:blade`.
+- Razorpay Blade component, token, score, or coverage work: route to `blade`.
 
 ## Process
 

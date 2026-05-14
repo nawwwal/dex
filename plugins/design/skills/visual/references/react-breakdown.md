@@ -22,7 +22,7 @@ Use this when the output medium is code and the source is a React app or React c
 
 ## Motion Libraries
 
-If the app uses Framer Motion, React Spring, GSAP, Motion One, or another motion library, build the handoff inside the app so timing and easing can be inspected from the real implementation. Do not flatten motion into self-contained HTML unless the motion is plain CSS and can be recreated faithfully.
+If the target app uses Razorpay Blade, route product UI motion to `blade` before approving Framer Motion, React Spring, GSAP, Motion One, CSS transitions, or another motion library. If the app is not Blade-owned, build the handoff inside the app so timing and easing can be inspected from the real implementation. Do not flatten motion into self-contained HTML unless the motion is plain CSS and can be recreated faithfully.
 
 ## Source Fidelity Rules
 
