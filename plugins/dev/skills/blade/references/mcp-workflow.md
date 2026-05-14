@@ -40,6 +40,8 @@ If `get_blade_component_docs` returns a project setup error such as missing Curs
 | Setup accordion or step flow | `get_blade_component_docs("StepGroup,Accordion,ProgressBar")` |
 | Payment overview cards | `get_blade_component_docs("Card,Amount,Badge,Skeleton,EmptyState")` |
 | Payment split chart | `get_blade_component_docs("DonutChart")` and `get_blade_general_docs("ChartColorSystem")` |
+| Motion primitives | `get_blade_component_docs("AnimateInteractions,Fade,Move,Slide,Scale,Morph,Stagger,Elevate")` |
+| Branded success/loading animation | `get_blade_pattern_docs("SparkAnimation")`, then `get_blade_component_docs("RazorSense,RazorSenseGradient")` |
 
 ## Rejection log
 

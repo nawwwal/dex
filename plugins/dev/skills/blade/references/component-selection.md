@@ -21,6 +21,12 @@ Use this map before querying Blade MCP. It translates product language into Blad
 | Forms, labels, hints, validation | `FormGroup` pattern, `TextInput`, `SelectInput`, `Checkbox`, `Radio`, `Switch`, `FormLabel`, `FormHint`, `FormError` | The user provides input or reviews validation. | Native inputs or manually assembled label/error markup. |
 | Tabs, segmented navigation, page sections | `Tabs`, `TabNav` | The user switches peer views or top-level product areas. | Button groups pretending to be tabs. |
 | Toast, transient success/error | `Toast` | Feedback is temporary and follows an action. | Alert for short-lived action confirmation. |
+| Fade in/out, route surface appearing, loading-to-content reveal | `Fade`, sometimes `Move` | The content should appear without changing spatial meaning. Use `Move` when a slight y-position shift helps establish arrival. | CSS opacity classes, ad hoc `transition: opacity`, wrapping every child in Framer Motion. |
+| Drawer-like screen/page shift, full-panel entrance, mobile bottom entry | `Slide`, existing `Drawer`, `Modal`, `BottomSheet` first | The surface enters from an edge or from outside the viewport. Prefer semantic overlay components when the interaction is actually an overlay. | Translating fixed-position divs, CSS keyframes for panels Blade already owns. |
+| Hover/focus/tap feedback on cards or clickable blocks | `AnimateInteractions`, `Elevate`, `Scale`, `Move`, `Fade` | A parent interaction should reveal, lift, scale, or move child affordances. Include focus when hover is used. | Hover-only CSS, clickable `Box` without focus behavior, styling Blade internals. |
+| Sequential reveal of repeated cards, rows, or setup steps | `Stagger` with `Fade` or `Move` children | Sibling items should enter one after another to show order or progressive disclosure. | Manually increasing CSS delays on repeated elements. |
+| Shared element or layout continuity between two states | `Morph` | The same conceptual object changes size, position, or component form across state. Use with matching `layoutId` and `AnimatePresence`. | Morphing unrelated objects or using it to hide ordinary conditional rendering. |
+| Branded success, loading, or hero animation | `SparkAnimation` pattern, `RazorSense`, `RazorSenseGradient` | The moment benefits from Blade's WebGL brand treatment and assets can be preloaded before mount. | Heavy custom canvas/WebGL work, unpreloaded animated backgrounds, decorative motion in dense dashboard workflows. |
 
 ## Operating rule
 

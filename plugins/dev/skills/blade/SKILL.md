@@ -1,6 +1,6 @@
 ---
 name: blade
-description: "Use when working on Razorpay Blade design-system adherence: Blade MCP, Blade score, Blade coverage, using only Blade, agent-browser validation, browser validation, custom CSS drift, dashboard nav, profile menu, test mode banner, setup steps, cards, tables, charts, menus, modals, drawers, tooltips, and alerts."
+description: "Use when working on Razorpay Blade design-system adherence: Blade MCP, Blade score, Blade coverage, using only Blade, Blade motion primitives, animation guidance, agent-browser validation, browser validation, custom CSS drift, dashboard nav, profile menu, test mode banner, setup steps, cards, tables, charts, menus, modals, drawers, tooltips, and alerts."
 allowed-tools: Read, Grep, Glob, Bash
 ---
 
@@ -18,12 +18,15 @@ Browser work in this skill uses `agent-browser`, not Playwright. For the detaile
    - Pattern-level surfaces: call `get_blade_pattern_docs` first.
    - Component-level surfaces: call `get_blade_component_docs` for the candidates.
    - Setup/tokens/icons: call `get_blade_general_docs`.
-4. Use Blade semantic components first. `Box` is layout glue, not a substitute for `Card`, `Alert`, `SideNav`, `Table`, `StepGroup`, `Menu`, charts, forms, or feedback components.
-5. If custom UI remains, record why Blade could not cover it and keep custom CSS local, minimal, and token-based.
-6. For browser validation, open the page with `agent-browser`, inspect with `snapshot -i`, capture with `screenshot --annotate` when visual context matters, and use `diff` to prove interactions changed the page.
-7. After implementation, run `blade gate` for final checks or `blade audit` for advisory diagnosis.
+4. For motion or animated state changes, read `references/motion.md` before adding CSS transitions, Framer Motion wrappers, timers, or custom keyframes. Blade already ships motion primitives for most UI motion.
+5. Use Blade semantic components first. `Box` is layout glue, not a substitute for `Card`, `Alert`, `SideNav`, `Table`, `StepGroup`, `Menu`, charts, forms, feedback components, or motion primitives.
+6. If custom UI remains, record why Blade could not cover it and keep custom CSS local, minimal, and token-based.
+7. For browser validation, open the page with `agent-browser`, inspect with `snapshot -i`, capture with `screenshot --annotate` when visual context matters, and use `diff` to prove interactions changed the page.
+8. After implementation, run `blade gate` for final checks or `blade audit` for advisory diagnosis.
 
 For exact MCP sequencing and failure recovery, read `references/mcp-workflow.md`.
+
+For motion component choice, trigger semantics, and custom-motion rejection rules, read `references/motion.md`.
 
 For Razorpay Dashboard-specific Blade traps around Cards, Modals, tabs, icons, and tests, read `references/dashboard-gotchas.md`.
 
