@@ -19,15 +19,17 @@ Use deep mode only when the user explicitly asks for deep, full, comprehensive, 
 
 Compact output:
 1. Assumptions, only if needed.
-2. Obvious baseline.
-3. 4-6 directions.
-4. For each direction: product bet, layers changed, visible execution, main interaction/state behavior, tradeoff, prototype slice.
-5. Recommendation.
+2. Companion routing, only when a companion skill is used or clearly relevant.
+3. Obvious baseline.
+4. 4-6 directions.
+5. For each direction: product bet, layers changed, visible execution, main interaction/state behavior, copy/content implication when relevant, tradeoff, prototype slice.
+6. Recommendation.
 
 Deep output:
 - Use the full workflow below.
 - Load the relevant reference files.
-- Include the product model, state/action matrix, layer diagnosis, comparison, prototype slices, and handoff blueprint.
+- Load `references/companion-skill-routing.md` when the prompt includes weak premise, copy-heavy work, critique/selection pressure, or implementation-quality risk.
+- Include companion routing, product model, state/action matrix, layer diagnosis, comparison, prototype slices, and handoff blueprint.
 
 Replace:
 
@@ -67,6 +69,7 @@ Load only the references needed for the selected altitude:
 
 - `references/divergence-axes.md` - layered axes across product, UX, interaction, UI, copy, visual system, emotional, and persuasive layers.
 - `references/concept-enrichment.md` - JTBD, constraints, product model, layer diagnosis, state/action matrix, enrichment passes, kill ledger, narratives, simplicity, and prototype selection.
+- `references/companion-skill-routing.md` - companion-skill routing for `crux`, `content-design`, 5F critique, and execution hardening.
 - `references/creative-provocations.md` - layer-specific provocations.
 - `references/persona-lens.md` - persona effects on density, copy, hierarchy, interaction, education, error handling, accessibility, and emotion.
 - `references/anchor-library.md` - optional reference-handling rules.
@@ -160,6 +163,29 @@ Risk:
 ```
 
 Do not stall unless a missing fact would make the output unsafe or meaningless.
+
+### Companion Skill Routing Gate
+
+Load `references/companion-skill-routing.md` when the prompt suggests weak premise, copy-heavy work, critique/selection pressure, or execution-hardening risk.
+
+If any route below matches, the response must include `### Companion Routing` before the obvious baseline or directions. Mentioning routing only in a self-check does not count.
+
+```md
+### Companion Routing
+
+- crux: used/skipped because ...
+- content-design: used/skipped because ...
+- 5F review: used/skipped because ...
+- execution hardening: used/skipped because ...
+```
+
+Rules:
+
+- Use `crux` before divergence when the premise, user job, or success criterion is unclear. For weak-premise prompts, do a compact crux pass before ideation: hidden premise, standard of judgment, weak joint, and crux question or crude test.
+- Use `content-design` when copy changes behavior, trust, risk, conversion, accessibility, or localization, including API keys, secrets, credentials, tokens, permissions, irreversible actions, and other save/recovery moments. For copy-heavy or risk-sensitive prompts, include the content-design minimum: user state, system state, risk level, required next action, and one concrete copy implication.
+- Use 5F-style review after directions exist when critique, selection, B2B SaaS quality, or design review is central. For review/selection prompts with existing concepts, include the 5F lens before recommendation.
+- Use execution hardening after a direction is selected when polish, accessibility, density, typography, motion, or implementation readiness is the core risk.
+- For clear direct layout/options prompts, explicitly skip companion routing in one line or omit it if no route is relevant. Avoid over-routing.
 
 ### 3. Divergence Altitude
 
@@ -478,15 +504,16 @@ Smallest screen or flow that proves the direction.
 Use only for explicit deep/full/comprehensive/council/layered prompts.
 
 Output:
-1. Product model
-2. State/action matrix
-3. Banned obvious bad directions
-4. Obvious baseline
-5. 5-7 layered directions
-6. Comparison table
-7. Recommendation
-8. Prototype slices
-9. Handoff blueprint
+1. Companion routing
+2. Product model
+3. State/action matrix
+4. Banned obvious bad directions
+5. Obvious baseline
+6. 5-7 layered directions
+7. Comparison table
+8. Recommendation
+9. Prototype slices
+10. Handoff blueprint
 
 ### Mode 2: Product mechanics divergence
 
@@ -629,29 +656,35 @@ Assumed:
 Unknown:
 Risk:
 
-## 3. Product Model
+## 3. Companion Routing
+- crux:
+- content-design:
+- 5F review:
+- execution hardening:
+
+## 4. Product Model
 Core objects:
 State/action matrix:
 Current decision:
 Current surface assumption:
 Product-design tension:
 
-## 4. Layer Diagnosis
+## 5. Layer Diagnosis
 <table>
 
-## 5. Obvious Baseline
+## 6. Obvious Baseline
 
-## 6. Banned Bad Directions
+## 7. Banned Bad Directions
 
-## 7. Divergence Strategy
+## 8. Divergence Strategy
 
-## 8. Directions
+## 9. Directions
 <5-7 layered directions>
 
-## 9. Comparison
+## 10. Comparison
 | Direction | Altitude | Best for | What changes | Biggest tradeoff | Data needed | Prototype value | How it dies |
 
-## 10. Recommendation
+## 11. Recommendation
 - Prototype first:
 - Prototype second:
 - Keep as UI treatment:
@@ -659,7 +692,7 @@ Product-design tension:
 - Kill:
 - Obvious baseline verdict:
 
-## 11. Prototype slices
+## 12. Prototype slices
 - Screen/flow:
 - States:
 - Interactions:
@@ -668,7 +701,7 @@ Product-design tension:
 - Data:
 - Success signal:
 
-## 12. Handoff Blueprint
+## 13. Handoff Blueprint
 - Components:
 - State machine:
 - Events:
@@ -695,6 +728,10 @@ Universal kill/rewrite triggers:
 8. Direction ignores constraints.
 9. Direction hides complexity users need.
 10. Direction is only a different visual treatment but claims product-level divergence.
+11. Copy-heavy direction does not define the user's state, system state, next action, and risk level.
+12. Risk-sensitive copy is invented without a recovery path or source of truth.
+13. Direction selection relies on taste alone when Fast, Focused, Fun, Fluent, or Fair tradeoffs are visible.
+14. Weak premise proceeds into ideation without a crux question or crude test.
 
 ## Reference Handling
 
