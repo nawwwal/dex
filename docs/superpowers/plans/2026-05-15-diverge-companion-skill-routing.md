@@ -14,15 +14,15 @@
 
 Modify:
 
-- `plugins/design/skills/diverge/SKILL.md`  
+- `plugins/design/skills/diverge/SKILL.md`
   Add companion-skill routing, update compact/deep output expectations, and add quality gates for copy, critique, and premise checks.
 
 Create:
 
-- `plugins/design/skills/diverge/references/companion-skill-routing.md`  
+- `plugins/design/skills/diverge/references/companion-skill-routing.md`
   The actual routing contract: when to use `crux`, `content-design`, 5F critique, visual/design-hardening lenses, and when not to route.
 
-- `plugins/design/skills/diverge/evals/companion-skill-routing.md`  
+- `plugins/design/skills/diverge/evals/companion-skill-routing.md`
   Regression-style examples for missed trigger and over-trigger cases.
 
 Do not create:
