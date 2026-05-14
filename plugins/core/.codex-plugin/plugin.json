@@ -11,6 +11,9 @@
     "shortDescription": "Setup, council, communication, reflection, DevRev, and logging",
     "longDescription": "Core Dex workflows for agent environment setup, multi-agent council analysis, communication, memory-aware reflection, DevRev workflows, and logging.",
     "developerName": "Aditya Nawal",
-    "category": "Productivity"
+    "category": "Productivity",
+    "composerIcon": "./assets/logo.png",
+    "logo": "./assets/logo.png",
+    "screenshots": []
   }
 }

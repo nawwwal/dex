@@ -11,6 +11,9 @@
     "shortDescription": "Blade, dashboard implementation, UI hardening, shaders, and sound",
     "longDescription": "Dex development workflows for Razorpay Blade adherence, dashboard feature work, UI hardening, shader work, and sound generation.",
     "developerName": "Aditya Nawal",
-    "category": "Developer Tools"
+    "category": "Developer Tools",
+    "composerIcon": "./assets/logo.png",
+    "logo": "./assets/logo.png",
+    "screenshots": []
   }
 }

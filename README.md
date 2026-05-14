@@ -165,6 +165,8 @@ plugins/<plugin>/.claude-plugin/plugin.json
 plugins/<plugin>/.codex-plugin/plugin.json
 ```
 
+Codex UI metadata, including plugin logos and composer icons, lives in each plugin's `.codex-plugin/plugin.json` and points at files under `plugins/<plugin>/assets/`.
+
 The root marketplace files expose those plugins:
 
 ```text

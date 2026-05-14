@@ -11,6 +11,9 @@
     "shortDescription": "Codex review, image generation, media optimization, and mymind",
     "longDescription": "Dex tools for cross-model Codex review, image generation, media optimization, and mymind workflows.",
     "developerName": "Aditya Nawal",
-    "category": "Productivity"
+    "category": "Productivity",
+    "composerIcon": "./assets/logo.png",
+    "logo": "./assets/logo.png",
+    "screenshots": []
   }
 }

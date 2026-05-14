@@ -11,6 +11,9 @@
     "shortDescription": "Content design, crux finding, presentation narrative, visual handoffs, and divergence",
     "longDescription": "Dex design workflows for content design, crux finding, presentation narrative, visual handoffs, visual explanations, and divergent concept exploration.",
     "developerName": "Aditya Nawal",
-    "category": "Design"
+    "category": "Design",
+    "composerIcon": "./assets/logo.png",
+    "logo": "./assets/logo.png",
+    "screenshots": []
   }
 }
