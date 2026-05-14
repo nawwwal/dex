@@ -1,8 +1,18 @@
 # Dashboard Blade Gotchas
 
-Use when `design:blade` is handling Razorpay Dashboard surfaces. These are implementation traps observed in dashboard apps; keep them inside Blade so other skills route here instead of duplicating Blade rules.
+Use when `blade` is handling Razorpay Dashboard surfaces. These are implementation traps observed in dashboard apps; keep them inside Blade so other skills route here instead of duplicating Blade rules. For general polish and motion fit, read `interaction-quality.md`.
 
 ## Card Layout
+
+**Card hover scale feels too large**
+- Symptom: A carousel or dashboard card is Blade-compliant but the hover motion makes the whole rail feel jumpy or banner-like.
+- Cause: `Card shouldScaleOnHover` and `Scale` do not expose intensity. The fixed scale can be too much for wide cards.
+- Fix: Do not use `shouldScaleOnHover` by default. Query MCP for `Scale`, `Elevate`, `AnimateInteractions`, and `Carousel`; keep `Card` as the surface; use `Elevate` for hover/focus where possible. If product asks for slight hover growth and stronger press compression that Blade cannot tune, document the limitation and choose the nearest Blade-native behavior instead of adding local scale CSS.
+
+**Nested Scale wrappers cause React ref warnings**
+- Symptom: Console warns that a function component cannot be given a ref after composing hover and tap scale wrappers.
+- Cause: Motion wrappers need a child that can carry the motion/ref contract; stacking them directly can break ref forwarding.
+- Fix: Prefer one motion owner. If coordination is needed, insert a DOM-capable `Box display="block"` boundary or collapse to `AnimateInteractions` plus one child motion primitive.
 
 **Cards in a grid are different heights**
 - Symptom: Cards in a grid do not match height; content inside jumps around.
@@ -29,7 +39,7 @@ Use when `design:blade` is handling Razorpay Dashboard surfaces. These are imple
 **Inline styles on a Blade Box have no visible effect**
 - Symptom: `style={{ background: 'linear-gradient(...)' }}` on a Blade `Box` does not render.
 - Cause: Blade `Box` does not forward the React `style` prop to the DOM element.
-- Fix: Use Blade props when possible. For CSS values Blade cannot express, use a plain DOM element locally and keep the custom CSS minimal.
+- Fix: Use Blade props and tokens. If Blade cannot express the visual value, document the limitation and choose the closest Blade-supported treatment; do not style Blade internals.
 
 **CheckCircleIcon causes an import error or is missing at runtime**
 - Symptom: Import fails or the icon does not render.
