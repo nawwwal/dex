@@ -180,6 +180,8 @@ For local Codex development, the repo marketplace lives at:
 .agents/plugins/marketplace.json
 ```
 
+Codex marketplace entries use `local` sources, with paths relative to the marketplace checkout. The marketplace itself is Git-tracked; individual plugin entries should not use Git source fields.
+
 After editing plugin files, start a new session or run:
 
 ```text

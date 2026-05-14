@@ -7,9 +7,7 @@
     {
       "name": "core",
       "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/nawwwal/dex.git",
-        "ref": "main",
+        "source": "local",
         "path": "./plugins/core"
       },
       "policy": {
@@ -21,9 +19,7 @@
     {
       "name": "design",
       "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/nawwwal/dex.git",
-        "ref": "main",
+        "source": "local",
         "path": "./plugins/design"
       },
       "policy": {
@@ -35,9 +31,7 @@
     {
       "name": "dev",
       "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/nawwwal/dex.git",
-        "ref": "main",
+        "source": "local",
         "path": "./plugins/dev"
       },
       "policy": {
@@ -49,9 +43,7 @@
     {
       "name": "tools",
       "source": {
-        "source": "git-subdir",
-        "url": "https://github.com/nawwwal/dex.git",
-        "ref": "main",
+        "source": "local",
         "path": "./plugins/tools"
       },
       "policy": {

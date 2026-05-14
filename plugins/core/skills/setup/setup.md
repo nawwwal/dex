@@ -94,6 +94,7 @@ Do not create `~/.agents/agents`. The plugin no longer ships agent folders.
 For Codex, check:
 
 - `~/.agents/plugins/marketplace.json` includes `nawwwal-dex`
+- marketplace plugin sources resolve to real `.codex-plugin/plugin.json` files
 - `~/.codex/config.toml` enables the desired Dex plugins
 - installed cache versions match the expected plugin manifests when available
 
