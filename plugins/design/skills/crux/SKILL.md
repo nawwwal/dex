@@ -1,6 +1,6 @@
 ---
 name: crux
-description: Use when interrogating a topic, opinion, PRD, product problem, strategy, design direction, vague claim, or problem statement to find the real crux before deciding what to build, say, or believe.
+description: Use when interrogating a topic, opinion, PRD, product problem, strategy, design direction, vague claim, source artifact, repo-backed plan, or problem statement to find the real crux before deciding what to build, say, or believe.
 allowed-tools: Read, Grep, Glob
 ---
 
@@ -41,6 +41,31 @@ Keep the first response lean. Load references only when the task needs that dept
 
 Do not expose reference names unless useful. The output should be plain-language pressure, not method theater.
 
+## Source-Backed Crux
+
+When the user provides a repo, file path, doc, screen, PRD, issue, codebase, or artifact, inspect it before forming questions.
+
+Do not ask for information that can be read from the artifact.
+
+Check for:
+
+- project vocabulary: names, glossary terms, UI labels, domain objects, API names, issue language
+- existing decisions: ADRs, README claims, specs, strategy docs, roadmap notes
+- implementation truth: code paths, state models, event names, schemas, tests, feature flags
+- artifact behavior: what the screen, prototype, document, or workflow actually does
+
+If user language conflicts with the artifact, make the contradiction the weak joint. Treat docs and code as evidence, not final truth: use the existing evidence taxonomy and name whether the source is perception, testimony, inference, memory, or assumption.
+
+Use this shape only when the contradiction matters:
+
+```text
+source pressure:
+- user term:
+- artifact term:
+- contradiction:
+- crux pressure:
+```
+
 ## Internal Loop
 
 Before answering:
@@ -52,9 +77,19 @@ Before answering:
 5. Check the hidden module list: must-be-true, nice-to-be-true, unknowns, contradictions, riskiest assumption, evidence needed, confidence, what would change my mind.
 6. If a recurring thinking error appears, surface a compact memory candidate: `pattern`, `recurring assumption`, `blind spot`, `question that helped`. Do not persist it unless the user explicitly asks.
 
+## Scenario Wedge
+
+When a claim depends on fuzzy boundaries, create one concrete edge scenario that forces the distinction.
+
+Use scenarios to test who owns the decision, what happens when the happy path breaks, whether two user types are actually different, whether the feature is solving need, trust, status, speed, control, or legibility, and whether the proposed qi contradicts the dao.
+
+Keep it to one scenario unless the user asks for deeper interrogation.
+
 ## Question Gate
 
 Ask at most two supporting questions plus one final crux question unless the user explicitly asks for a deeper interrogation.
+
+Before asking, remove any question answerable from provided artifacts. Replace it with the observed fact and pressure the contradiction or missing evidence.
 
 The question set must include:
 
@@ -156,6 +191,7 @@ crux question:
 - Do not treat testimony as behavior.
 - Do not confuse taste with evidence.
 - This skill is read-only by default. If the user wants a written artifact or memory update, hand off to the appropriate writing/editing workflow.
+- This skill may identify missing or conflicting documentation, but it does not edit docs by default. If a term, decision, or invariant should be captured, say `documentation debt: [term/decision/invariant] should be captured because [reason].`
 
 ## Minimum Correct Example
 
