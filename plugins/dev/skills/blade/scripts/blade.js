@@ -196,7 +196,7 @@ const DRIFT_RULES = [
     severity: 'high',
     file: /\.(css|scss|sass|less|tsx?|jsx?)$/,
     regex: /(?:className=|class=|\.)(["'`]?[-_a-zA-Z0-9 ]*)\b(sidebar|sidenav|side-nav|nav|navigation)[-_a-zA-Z0-9 ]*\b/g,
-    message: 'Custom navigation surface. Check Blade SideNav, TopNav, Tabs, or TabNav before keeping this.',
+    message: 'Custom navigation surface. Check Blade SideNav, TopNav, or Tabs before keeping this.',
   },
   {
     id: 'custom-menu-dropdown',
@@ -233,6 +233,34 @@ const DRIFT_RULES = [
     regex: /<h[1-6]\b/g,
     message: 'Raw heading element. Use Blade Heading unless this is outside Blade mode.',
   },
+  {
+    id: 'undocumented-framer-motion',
+    severity: 'high',
+    file: /\.(tsx?|jsx?)$/,
+    regex: /from\s+['"]framer-motion['"]|<motion\.[A-Za-z]+|\bAnimatePresence\b/g,
+    message: 'Framer Motion in Blade UI. Use Blade motion primitives unless MCP docs explicitly require this dependency.',
+  },
+  {
+    id: 'custom-css-transition',
+    severity: 'high',
+    file: /\.(css|scss|sass|less|tsx?|jsx?)$/,
+    regex: /\btransition(?:Property|Duration|TimingFunction)?\s*[=:]|transition\s*:/g,
+    message: 'Custom transition. Check Blade motion primitives before keeping CSS or inline transition logic.',
+  },
+  {
+    id: 'custom-keyframes',
+    severity: 'high',
+    file: /\.(css|scss|sass|less|tsx?|jsx?)$/,
+    regex: /@keyframes\b|animation(?:Name|Duration|TimingFunction|Delay)?\s*[=:]|animation\s*:/g,
+    message: 'Custom keyframes/animation. Use Blade motion primitives or a documented Blade pattern.',
+  },
+  {
+    id: 'timer-driven-motion',
+    severity: 'medium',
+    file: /\.(tsx?|jsx?)$/,
+    regex: /\b(setTimeout|setInterval)\s*\(/g,
+    message: 'Timer-driven UI state. Verify this is not recreating motion, staged reveal, or toast/loading behavior Blade should own.',
+  },
 ];
 
 const SEMANTIC_IMPORT_RULES = [
@@ -255,7 +283,7 @@ const SEMANTIC_IMPORT_RULES = [
     severity: 'medium',
     terms: /\b(sidebar|side nav|sidenav|navigation|nav item)\b/i,
     imports: ['SideNav'],
-    message: 'Navigation language found. Check Blade SideNav/TopNav/TabNav before custom nav.',
+    message: 'Navigation language found. Check Blade SideNav/TopNav/Tabs before custom nav.',
   },
   {
     id: 'missing-stepgroup-import',
