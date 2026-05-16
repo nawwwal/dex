@@ -1,0 +1,34 @@
+{
+  "deck": "Inferno",
+  "target": {
+    "average_win_rate": 0.5,
+    "acceptable_band": [0.47, 0.53]
+  },
+  "heroes": [
+    {
+      "name": "Ember Warden",
+      "role": "control",
+      "cost": 4,
+      "damage": 2,
+      "cooldown": 1,
+      "burn_chance": 0.35
+    },
+    {
+      "name": "Ash Runner",
+      "role": "tempo",
+      "cost": 2,
+      "damage": 1,
+      "cooldown": 0,
+      "burn_chance": 0.2
+    },
+    {
+      "name": "Solar Brute",
+      "role": "finisher",
+      "cost": 6,
+      "damage": 5,
+      "cooldown": 2,
+      "burn_chance": 0.5
+    }
+  ],
+  "known_issue": "Solar Brute ends games too quickly when paired with two Ember Wardens."
+}

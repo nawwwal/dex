@@ -1,0 +1,197 @@
+{
+  "skill_name": "playground",
+  "version": 1,
+  "notes": "Small regression set for skill invocation, routing, artifact contract, and output quality. Run each case in a clean workspace with and without the skill when comparing versions.",
+  "evals": [
+    {
+      "id": "artifact-editor-question-tool",
+      "category": "positive",
+      "should_trigger": true,
+      "prompt": "Use design:playground to explore layout changes to the question tool described in evals/files/question-tool.md.",
+      "files": ["evals/files/question-tool.md"],
+      "expected_output": "A standalone artifact editor playground with live preview, meaningful presets, stateful controls, inspector, export prompt, and source assumptions.",
+      "assertions": [
+        "Chooses artifact editor as the primary interaction model and explains why.",
+        "Includes live preview, presets, direct controls, reset, and export/paste-back output.",
+        "Uses the source fixture and labels source assumptions instead of inventing the question tool.",
+        "Uses topic-specific visual language tied to question layout, answer choices, confidence, and decision state.",
+        "Does not present three unrelated visual concepts unless the user asks for options.",
+        "Does not route to production frontend implementation."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["artifact editor"], ["live preview"], ["export", "paste-back"], ["reset"], ["source assumptions", "assumptions"]],
+        "must_not_include_any": [["design:diverge"], ["production UI"], ["frontend-design"]]
+      }
+    },
+    {
+      "id": "codebase-node-comments",
+      "category": "positive",
+      "should_trigger": true,
+      "prompt": "Use design:playground to show how the email agent in evals/files/email-agent-source.md works and let me comment on nodes.",
+      "files": ["evals/files/email-agent-source.md"],
+      "expected_output": "A canvas/node map playground with source-grounded modules, click-to-comment, filters, node inspector, source notes, and export feedback.",
+      "assertions": [
+        "Chooses canvas/node map as the primary interaction model and explains why.",
+        "Uses the provided source fixture instead of inventing a codebase.",
+        "Includes click-to-comment or select-node-to-comment behavior.",
+        "Includes node filters, inspector/details panel, source assumptions, and export feedback.",
+        "Avoids generic dashboard styling and static-only diagrams."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["canvas", "node map"], ["comment"], ["filter"], ["inspector"], ["source"]],
+        "must_not_include_any": [["static only"], ["fake metrics"], ["purple gradient"]]
+      }
+    },
+    {
+      "id": "skill-review-surface",
+      "category": "positive",
+      "should_trigger": true,
+      "prompt": "Use design:playground to review evals/files/sample-skill.md and give inline suggestions I can approve, reject, or comment on. Do not create files.",
+      "files": ["evals/files/sample-skill.md"],
+      "expected_output": "A read-only review surface response with anchored suggestions, approve/reject/comment states, review export shape, and no artifact file creation.",
+      "assertions": [
+        "Does not create files because the prompt says not to.",
+        "Chooses review surface as the primary interaction model and explains why.",
+        "Includes anchored suggestions tied to the sample skill.",
+        "Uses the sample skill source and names source assumptions.",
+        "Includes approve, reject, and comment states.",
+        "Defines export output containing only approved suggestions, with rejected items labeled separately."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["review surface"], ["approve", "reject", "comment"], ["anchored"], ["approved suggestions"], ["rejected"]],
+        "must_not_include_any": [["created at"], ["output_path"], ["wrote", ".html"]]
+      }
+    },
+    {
+      "id": "inferno-balance-simulator",
+      "category": "positive",
+      "should_trigger": true,
+      "prompt": "Use design:playground to help me balance the Inferno hero deck in evals/files/inferno-hero-deck.json.",
+      "files": ["evals/files/inferno-hero-deck.json"],
+      "expected_output": "A simulator playground with coupled variables, derived metrics, warnings, balance assumptions, and recommended patch output.",
+      "assertions": [
+        "Chooses simulator as the primary interaction model and explains why.",
+        "Includes coupled variables, scenario switches or presets, derived metrics, and warnings.",
+        "Distinguishes real fixture stats from inferred balance assumptions.",
+        "Exports a recommended patch prompt.",
+        "Does not treat deck as a presentation unless the source indicates a slide deck."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["simulator"], ["derived metrics"], ["warnings"], ["assumptions"], ["patch"]],
+        "must_not_include_any": [["design:present"], ["narrative walkthrough"]]
+      }
+    },
+    {
+      "id": "presentation-walkthrough-routing",
+      "category": "companion-routing",
+      "should_trigger": true,
+      "prompt": "Use design:playground to turn the design review narrative in evals/files/design-review-narrative.md into interactive HTML.",
+      "files": ["evals/files/design-review-narrative.md"],
+      "expected_output": "Routes through design:present first, then proposes a narrative walkthrough playground with objection drawer, decision checkpoints, appendix, and exportable meeting script.",
+      "assertions": [
+        "Routes through design:present before building the walkthrough.",
+        "Chooses narrative walkthrough as the primary interaction model and explains why.",
+        "Uses the source narrative and labels source assumptions.",
+        "Includes section rail, objection drawer, decision checkpoints, appendix, and export output.",
+        "Does not clone a static deck.",
+        "Does not route to harden or production frontend implementation."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["design:present"], ["narrative walkthrough"], ["objection"], ["decision checkpoint"], ["export"]],
+        "must_not_include_any": [["harden"], ["production UI"]]
+      }
+    },
+    {
+      "id": "content-state-routing",
+      "category": "companion-routing",
+      "should_trigger": true,
+      "prompt": "Use design:playground to make the copy in evals/files/copy-states.md sharper and show it as an interactive state explorer.",
+      "files": ["evals/files/copy-states.md"],
+      "expected_output": "Routes through design:content-design first, then proposes a copy/state explorer with state variants, risk/tone notes, comments, and approved-copy export.",
+      "assertions": [
+        "Routes through design:content-design before the playground.",
+        "Chooses review surface or lens explorer as the interaction model for copy/state exploration and explains why.",
+        "Uses the copy-state source fixture and labels source assumptions.",
+        "Includes user state, system state, risk, tone, CTA, and state variants.",
+        "Includes approve/reject/comment or selected-copy export.",
+        "Does not treat copy as decorative labels."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["design:content-design"], ["state"], ["tone"], ["CTA"], ["export"]],
+        "must_not_include_any": [["decorative"], ["fake metrics"]]
+      }
+    },
+    {
+      "id": "image-seed-architecture",
+      "category": "companion-routing",
+      "should_trigger": true,
+      "prompt": "Use design:playground to generate visual inspiration first for an architecture playground based on evals/files/email-agent-source.md.",
+      "files": ["evals/files/email-agent-source.md"],
+      "expected_output": "Routes through imagegen for one inspiration seed, extracts visual grammar, and rebuilds the semantics in HTML/SVG/canvas instead of using wallpaper.",
+      "assertions": [
+        "Routes through imagegen because the user explicitly asked for visual inspiration first.",
+        "Chooses a source-grounded architecture interaction model after image seeding.",
+        "Uses one inspiration seed rather than multiple visual directions.",
+        "Extracts composition, depth, texture, lighting, rhythm, density, material, or spatial metaphor.",
+        "Keeps essential controls, labels, state, and export outside the bitmap.",
+        "Does not use generated image as wallpaper."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["imagegen"], ["inspiration seed"], ["visual grammar"], ["HTML", "SVG"], ["not", "wallpaper"]],
+        "must_not_include_any": [["multiple directions"], ["three concepts"]]
+      }
+    },
+    {
+      "id": "static-api-diagram",
+      "category": "boundary",
+      "should_trigger": true,
+      "prompt": "Use design:playground to create a static diagram of the API flow in evals/files/api-flow.md.",
+      "files": ["evals/files/api-flow.md"],
+      "expected_output": "A static API-flow artifact is allowed only with explicit justification that interaction adds no understanding, plus source notes, legend, assumptions, and export summary.",
+      "assertions": [
+        "States why static output is sufficient for this API-flow request.",
+        "Considers interaction and explains why it would not add understanding for the static diagram request.",
+        "Uses the API-flow source instead of inventing endpoints.",
+        "Includes actors, services, request/response order, branches, and trust boundaries.",
+        "Includes source notes, assumptions, legend, and export/paste-back output.",
+        "Does not omit the artifact contract just because output is static."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["static"], ["why"], ["source"], ["assumptions"], ["export"]],
+        "must_not_include_any": [["invented"], ["fake endpoint"]]
+      }
+    },
+    {
+      "id": "diverge-negative-control",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Show three different visual concepts for the onboarding dashboard.",
+      "expected_output": "Routes to design:diverge instead of playground.",
+      "assertions": [
+        "Does not use playground as the primary skill.",
+        "Routes to design:diverge because the user asked for multiple concepts.",
+        "Does not build an artifact before direction selection."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["design:diverge"], ["multiple"], ["concepts"]],
+        "must_not_include_any": [["artifact path"], ["playground-"]]
+      }
+    },
+    {
+      "id": "production-ui-negative-control",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Build this as production UI in the app route.",
+      "expected_output": "Routes to frontend-design or the app-specific implementation skill instead of playground.",
+      "assertions": [
+        "Does not use playground as the primary skill.",
+        "Routes to frontend-design or an app-specific development skill.",
+        "Does not create a standalone playground as the final production implementation."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["frontend-design"], ["app-specific"], ["production"]],
+        "must_not_include_any": [["standalone HTML"], ["playground-"]]
+      }
+    }
+  ]
+}
