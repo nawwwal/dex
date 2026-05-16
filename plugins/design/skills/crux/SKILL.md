@@ -44,6 +44,12 @@ Keep the first response lean. Load references only when the task needs that dept
 
 Do not expose reference names unless useful. The output should be plain-language pressure, not method theater.
 
+## Strategy Frame Gate
+
+Treat inputs like `wide vs deep`, `platform vs point solution`, `horizontal vs vertical`, `CAC vs LTV`, category debates, and strategic binaries as non-trivial crux work. Before answering, load `references/layered-pipeline.md`; load `references/examples.md` when output calibration is needed.
+
+Do not choose one side of the binary as the first move. First name what reality the frame avoids, move one level down into customer, moment, capability, behavior, proof, and tradeoff, then synthesize.
+
 ## Source-Backed Crux
 
 When the user provides a repo, file path, doc, screen, PRD, issue, codebase, or artifact, inspect it before forming questions.
