@@ -28,7 +28,7 @@ Send the current implementation plan to OpenAI Codex for **collaborative debate*
 
 ### Step 1: Initialize Session
 
-Extract MODEL from `$ARGUMENTS`: if ARGUMENTS matches `^[A-Za-z0-9._-]+$` (looks like a model name), use it. Otherwise default to `gpt-5.4`.
+Extract MODEL from `$ARGUMENTS`: if ARGUMENTS matches `^[A-Za-z0-9._-]+$` (looks like a model name), use it. Otherwise default to `gpt-5.5`.
 
 Create a session temp directory and set up guaranteed cleanup:
 
@@ -39,7 +39,7 @@ trap 'rm -rf "$SESSION_DIR"' EXIT
 PLAN_FILE="$SESSION_DIR/plan.md"
 CONTEXT_FILE="$SESSION_DIR/history.txt"
 STATE_FILE="$SESSION_DIR/state.tsv"
-MODEL="gpt-5.4"   # override from $ARGUMENTS if it matches ^[A-Za-z0-9._-]+$
+MODEL="gpt-5.5"   # override from $ARGUMENTS if it matches ^[A-Za-z0-9._-]+$
 
 ROUND=1
 # STATE_FILE schema (TSV): concern_id TAB round_first_seen TAB status TAB consecutive_contested TAB summary
@@ -62,7 +62,7 @@ printf '%s\n' 'test' > "$PREFLIGHT_IN"
 
 if ! codex exec \
   -m "$MODEL" \
-  --config reasoning_effort=high \
+  -c 'model_reasoning_effort="high"' \
   -s read-only \
   --ephemeral \
   --skip-git-repo-check \
@@ -160,7 +160,7 @@ fi
 
 if ! codex exec \
   -m "$MODEL" \
-  --config reasoning_effort=high \
+  -c 'model_reasoning_effort="high"' \
   -s read-only \
   --ephemeral \
   --skip-git-repo-check \
