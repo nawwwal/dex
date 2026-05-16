@@ -205,11 +205,11 @@ Never include every item by default. Select the moves that make this case cleare
 Input: "I want to build an AI writing assistant for designers."
 
 ```text
-claim: Designers have a recurring writing problem severe enough to justify a dedicated assistant.
-weak joint: The solution is named before the painful writing moment is proven.
-questions:
-1. Does "writing assistant" mean grammar, clarity, persuasion, stakeholder translation, confidence, or risk reduction?
-2. When did a designer last spend real effort fixing a message before sending it?
-crude test: Interview 10 designers about their last high-stakes message; collect draft, final, time spent, stakes, and workaround.
-crux question: Would this still matter if ChatGPT already wrote clean English perfectly?
+The weak joint is that the solution is named before the painful writing moment is proven.
+
+The core is not whether designers need cleaner sentences. It is whether designers repeatedly face writing moments where quality changes a real outcome: stakeholder trust, approval speed, reputation, alignment, or confidence to send.
+
+The smallest useful test is to interview 10 designers about their last high-stakes message. Collect the draft, final version, time spent, stakes, and workaround.
+
+Crux question: Would this still matter if ChatGPT already wrote clean English perfectly?
 ```
