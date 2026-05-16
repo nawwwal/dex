@@ -26,6 +26,7 @@ stats-cache.json
 # Session data (never commit)
 sessions/
 learnings-queue.json*
+.dex/evals/
 
 # Deep research local state
 skills/deep-research/.env

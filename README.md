@@ -220,7 +220,7 @@ If those answers are vague, the skill is not ready.
 
 ## Release Workflow
 
-Release maintenance is project-local. The shipped `core` plugin owns user-facing `/dex setup`; repo-maintainer release logic lives in:
+Release and skill-eval maintenance are project-local. The shipped `core` plugin owns user-facing `/dex setup`; repo-maintainer release and eval logic lives in:
 
 ```text
 .agents/skills/dex/
@@ -233,6 +233,7 @@ Examples:
 /dex release dev
 /dex release design
 /dex release tools minor
+/dex eval plugins/design/skills/crux
 ```
 
 The release skill:
@@ -254,6 +255,8 @@ Version policy:
 | `initial` | First release of a newly added plugin |
 
 Skills are package contents, not library APIs. Skill edits and removals are patch releases. Major is only for marketplace/install-contract changes.
+
+The eval skill is for testing and improving Dex skills before release. It uses `skill-creator` and runs repeated eval-and-repair rounds: snapshot the current skill, run clean-context trigger and quality evals, grade deterministic and rubric checks, diagnose failures, repair the skill or evals, then re-run. Local run artifacts belong under `.dex/evals/`; commit only durable skill changes, eval fixtures, validators, and docs.
 
 ## Update
 
