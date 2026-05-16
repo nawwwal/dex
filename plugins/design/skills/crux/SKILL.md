@@ -50,6 +50,8 @@ Treat inputs like `wide vs deep`, `platform vs point solution`, `horizontal vs v
 
 Do not choose one side of the binary as the first move. First name what reality the frame avoids, move one level down into customer, moment, capability, behavior, proof, and tradeoff, then synthesize.
 
+Do not answer a strategic binary with product shape as the main move: `go wide`, `go deep`, and `narrow-deep` are consequences, not bets. Mention shape only after naming the specific customer, moment, capability, behavior, or proof bet that earns it.
+
 ## Source-Backed Crux
 
 When the user provides a repo, file path, doc, screen, PRD, issue, codebase, or artifact, inspect it before forming questions.
