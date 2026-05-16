@@ -1,6 +1,6 @@
 # Layered Pipeline
 
-Use this for non-trivial crux work: strategy, product framing, PRDs, design direction, source artifacts, repo-backed plans, loaded language, emotionally charged claims, or any problem where one quick question would miss the structure.
+Use this when SKILL.md selects Layered Pipeline Mode for substantial crux work that needs fixed method ordering, method-agent fan-out, collation, adaptive rendering, or idea expansion.
 
 The pipeline is fixed. The visible answer is adaptive.
 
