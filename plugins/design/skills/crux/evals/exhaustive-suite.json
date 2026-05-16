@@ -1,0 +1,522 @@
+{
+  "skill_name": "crux",
+  "version": 1,
+  "skill_type": "mixed",
+  "baseline": "snapshot",
+  "notes": "Exhaustive regression suite for crux trigger behavior, source-backed grounding, layered-pipeline fidelity, cohesive output, strategy-frame repair, dao/qi internal reasoning, and read-only boundaries.",
+  "coverage_requirements": [
+    "explicit-trigger",
+    "implicit-trigger",
+    "contextual-trigger",
+    "negative-control",
+    "known-failure",
+    "artifact",
+    "repair-regression",
+    "strategy-frame",
+    "layered-pipeline",
+    "source-backed",
+    "read-only",
+    "cohesion"
+  ],
+  "evals": [
+    {
+      "id": "explicit-crux-product-plan",
+      "category": "explicit-trigger",
+      "should_trigger": true,
+      "prompt": "Use design:crux to find the crux in this plan: we should add AI recommendations, rebuild onboarding, and create a premium dashboard so power users trust us.",
+      "expected_output": "Compresses the compound strategy into load-bearing claims, converts loaded terms into behavior, and names the deciding assumption.",
+      "assertions": [
+        "Does not audit every feature as a separate framework section.",
+        "Names the weak joint behind trust, premium, and power users.",
+        "Ends with one crux question or a decisive next test."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["weak joint"], ["core"], ["real bet"], ["crux question"]],
+        "must_not_include_any": [["dao:"], ["qi:"], ["evidence ledger:"], ["method agent"]]
+      }
+    },
+    {
+      "id": "explicit-questions-budget",
+      "category": "explicit-trigger",
+      "should_trigger": true,
+      "prompt": "Use crux. Ask me questions about this idea: an AI copilot that writes release notes from engineering work.",
+      "expected_output": "Asks only the highest-pressure questions and avoids a long questionnaire.",
+      "assertions": [
+        "Includes no more than two supporting questions plus one final crux question.",
+        "Questions convert loaded terms into behavior or evidence.",
+        "Does not answer the whole product strategy before exposing the crux."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["Crux question"], ["crux question"]],
+        "must_not_include_any": [["1."], ["10 questions"], ["brainstorm"]]
+      }
+    },
+    {
+      "id": "implicit-vague-style",
+      "category": "implicit-trigger",
+      "should_trigger": true,
+      "prompt": "This onboarding should feel premium, simple, and more impactful.",
+      "expected_output": "Translates style words into observable mechanics and behavior without treating them as one standard.",
+      "assertions": [
+        "Splits premium, simple, and impactful into different possible standards.",
+        "Uses interface mechanics such as hierarchy, density, choices, first success, risk, or confidence.",
+        "Names the weak joint instead of giving generic taste advice."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["premium"], ["simple"], ["impactful"]],
+        "must_not_include_any": [["make it cleaner"], ["modern and sleek"]]
+      }
+    },
+    {
+      "id": "implicit-product-idea",
+      "category": "implicit-trigger",
+      "should_trigger": true,
+      "prompt": "I want to build an AI writing assistant for designers.",
+      "expected_output": "Names the solution-first weak joint and asks whether the writing moment matters beyond generic clean prose.",
+      "assertions": [
+        "Identifies the painful writing moment as unproven.",
+        "Compares against generic ChatGPT or clean writing as the baseline.",
+        "Asks a crux question that would change whether the product is worth building."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["writing moment"], ["designers"], ["ChatGPT"]],
+        "must_not_include_any": [["feature list"], ["roadmap"]]
+      }
+    },
+    {
+      "id": "contextual-noisy-founder-note",
+      "category": "contextual-trigger",
+      "should_trigger": true,
+      "prompt": "Context: our team is nervous because two large incumbents announced adjacent AI features. The board wants a strategy answer by Friday. The team keeps saying platform vs point solution, wide vs deep, and CAC vs LTV. Find the core.",
+      "expected_output": "Filters noise, refuses prestige abstraction, and moves one level down into customer, moment, capability, behavior, proof, and tradeoff.",
+      "assertions": [
+        "Names the status-safe abstraction pattern.",
+        "Does not answer each binary as a separate disconnected section.",
+        "Gives better frames the team can use instead."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["customer"], ["moment"], ["capability"], ["proof"]],
+        "must_not_include_any": [["Kano"], ["framework"], ["it depends"]]
+      }
+    },
+    {
+      "id": "strategy-wide-deep-incumbents",
+      "category": "strategy-frame",
+      "should_trigger": true,
+      "prompt": "Should we go wide or deep now that two incumbents entered our space?",
+      "expected_output": "Rejects the altitude of the binary before recommending any product shape.",
+      "assertions": [
+        "First sentence names the weak frame, weak joint, or avoided reality.",
+        "Does not open by choosing wide, deep, narrow-deep, both, or it depends.",
+        "Does not recommend a shape unless it names an actual customer, moment, capability, behavior, and proof signal.",
+        "If facts are missing, says product shape should follow from the bet and offers sharper candidate bet questions."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["weak frame"], ["weak joint"], ["proof"], ["customer moment"]],
+        "must_not_include_any": [["My recommendation: go deep"], ["Go deep"], ["Go wide"], ["do both"], ["it depends"]]
+      }
+    },
+    {
+      "id": "strategy-category-stack",
+      "category": "strategy-frame",
+      "should_trigger": true,
+      "prompt": "Find the crux of this strategy: platform vs point solution, CAC vs LTV, horizontal vs vertical, wide vs deep.",
+      "expected_output": "Collapses the category stack into the real bet instead of giving separate framework outputs.",
+      "assertions": [
+        "Names what the stacked binaries let the room avoid.",
+        "Explains the core in simple language.",
+        "Gives reframes that force a concrete customer, behavior, proof, or tradeoff."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["avoid"], ["real bet"], ["better frame"], ["proof"]],
+        "must_not_include_any": [["Section 1"], ["Section 2"], ["CAC vs LTV:"]]
+      }
+    },
+    {
+      "id": "strategy-specific-bet-supplied",
+      "category": "strategy-frame",
+      "should_trigger": true,
+      "prompt": "We sell AI claim-review software to mid-market insurance teams. Should we go wide into underwriting and fraud, or go deep on adjuster review when incumbents enter?",
+      "expected_output": "Uses the supplied segment and moment to formulate a concrete bet before discussing product shape.",
+      "assertions": [
+        "Names mid-market insurance teams and adjuster review.",
+        "Discusses underwriting or fraud only as consequences of the proof.",
+        "Ties any shape recommendation to commitment or behavior signals."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["mid-market"], ["adjuster"], ["claim"]],
+        "must_not_include_any": [["generic customer"], ["one customer type"]]
+      }
+    },
+    {
+      "id": "source-prd-trust",
+      "category": "artifact",
+      "should_trigger": true,
+      "prompt": "Read plugins/design/skills/crux/evals/fixtures/risk-score-prd.md and find the crux.",
+      "files": ["evals/fixtures/risk-score-prd.md"],
+      "expected_output": "Inspects the PRD, pressures trust and AI recommendations, and does not ask questions answerable from the file.",
+      "assertions": [
+        "Mentions observed PRD facts.",
+        "Distinguishes source testimony from behavior evidence.",
+        "Includes a crude test with a legibility signal."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["risk score"], ["reviewer"], ["approval"]],
+        "must_not_include_any": [["I cannot inspect"], ["please paste the PRD"]]
+      }
+    },
+    {
+      "id": "source-context-term-conflict",
+      "category": "source-backed",
+      "should_trigger": true,
+      "prompt": "Read plugins/design/skills/crux/evals/fixtures/cancellation-context.md and find the crux in my plan: accounts should be cancellable.",
+      "files": ["evals/fixtures/cancellation-context.md"],
+      "expected_output": "Uses the fixture vocabulary conflict as the weak joint instead of asking what account means.",
+      "assertions": [
+        "Mentions the fixture's workspace/subscription terminology.",
+        "Names the contradiction between account and cancellable.",
+        "Replaces answerable questions with observed facts."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["workspace"], ["subscription"], ["account"]],
+        "must_not_include_any": [["what do you mean by account"], ["what does cancellable mean"]]
+      }
+    },
+    {
+      "id": "source-contradictory-actors",
+      "category": "source-backed",
+      "should_trigger": true,
+      "prompt": "Read plugins/design/skills/crux/evals/fixtures/refund-approval-conflict.md. Docs say admins approve refunds, code says support agents approve refunds, product says users approve refunds. Find the crux.",
+      "files": ["evals/fixtures/refund-approval-conflict.md"],
+      "expected_output": "Surfaces actor ownership as the weak joint and classifies evidence without inventing behavior.",
+      "assertions": [
+        "Names admins, support agents, and users as conflicting actors.",
+        "Frames the deciding question around decision rights and accountability.",
+        "Does not treat any one source as observed user behavior."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["admins"], ["support agents"], ["users"], ["decision"]],
+        "must_not_include_any": [["the docs are correct"], ["observed behavior proves"]]
+      }
+    },
+    {
+      "id": "source-missing-file",
+      "category": "artifact",
+      "should_trigger": true,
+      "prompt": "Read plugins/design/skills/crux/evals/fixtures/missing-product-doc.md and find the crux.",
+      "expected_output": "Says the file cannot be read and does not invent observed evidence.",
+      "assertions": [
+        "Explicitly reports the missing file.",
+        "Does not fabricate source pressure.",
+        "May still pressure the pasted claim if one exists, but does not claim artifact facts."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["cannot read"], ["missing"], ["not found"]],
+        "must_not_include_any": [["the document says"], ["observed facts"]]
+      }
+    },
+    {
+      "id": "source-ask-questions-after-file",
+      "category": "artifact",
+      "should_trigger": true,
+      "prompt": "Ask me questions about plugins/design/skills/crux/evals/fixtures/risk-score-prd.md.",
+      "files": ["evals/fixtures/risk-score-prd.md"],
+      "expected_output": "Inspects the PRD first and asks only unresolved high-pressure questions.",
+      "assertions": [
+        "Does not ask for facts explicitly present in the PRD.",
+        "Asks at most two supporting questions plus one final crux question.",
+        "Questions target behavior evidence or decision pressure."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["risk score"], ["reviewer"], ["question"]],
+        "must_not_include_any": [["what is the product"], ["please share the PRD"]]
+      }
+    },
+    {
+      "id": "layered-nontrivial-plan",
+      "category": "layered-pipeline",
+      "should_trigger": true,
+      "prompt": "Find the crux of this plan: launch AI recommendations, rebuild onboarding, reduce support tickets, add a premium dashboard, and move enterprise users to annual plans.",
+      "expected_output": "Uses the layered pipeline internally and renders a single cohesive synthesis.",
+      "assertions": [
+        "Compresses to the top load-bearing assumptions.",
+        "Does not expose all pipeline stages or method names.",
+        "Includes weak joint, specific bet pressure, and a small test."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["weak joint"], ["bet"], ["test"], ["crux question"]],
+        "must_not_include_any": [["Ground Truth Pass"], ["Evidence Ledger"], ["Dao Extraction"], ["Qi Inspection"]]
+      }
+    },
+    {
+      "id": "layered-method-agent-contract",
+      "category": "layered-pipeline",
+      "should_trigger": true,
+      "prompt": "Use crux deeply on this: our AI assistant should replace the dashboard because conversational UX is more natural.",
+      "expected_output": "Applies method-agent pipeline semantics internally when available, but does not reveal method-agent artifacts.",
+      "assertions": [
+        "Tests whether conversational action can carry monitoring, accountability, and repeated scanning.",
+        "Does not expose method-agent outputs or named lenses as sections.",
+        "Names the opposite truth: dashboards may still be better for some jobs."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["dashboard"], ["conversation"], ["accountability"], ["crux question"]],
+        "must_not_include_any": [["Method Agent"], ["2A"], ["3B"], ["dao:"]]
+      }
+    },
+    {
+      "id": "dao-qi-method-asked",
+      "category": "layered-pipeline",
+      "should_trigger": true,
+      "prompt": "Use crux and explain the dao/qi distinction in this claim: the feature should look simpler so users trust it.",
+      "expected_output": "Because the user asks for the method, defines dao/qi briefly and applies it naturally.",
+      "assertions": [
+        "Defines dao as invisible operating principle or causal model.",
+        "Defines qi as visible expression or artifact.",
+        "Uses the distinction to pressure whether visual simplicity actually creates trust behavior."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["dao"], ["qi"], ["trust"]],
+        "must_not_include_any": [["mystical"], ["Eastern philosophy"]]
+      }
+    },
+    {
+      "id": "dao-qi-not-leaked",
+      "category": "cohesion",
+      "should_trigger": true,
+      "prompt": "This feature should look simpler so users trust it.",
+      "expected_output": "Uses dao/qi internally but does not expose named method sections.",
+      "assertions": [
+        "Converts simpler and trust into behavior.",
+        "Names the weak joint.",
+        "Does not show dao/qi labels because the user did not ask for method."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["simple"], ["trust"], ["behavior"]],
+        "must_not_include_any": [["dao:"], ["qi:"]]
+      }
+    },
+    {
+      "id": "cohesive-not-framework-bundle",
+      "category": "cohesion",
+      "should_trigger": true,
+      "prompt": "Pressure this idea: marketplace sellers need a premium analytics hub with AI insights, better onboarding, and lower support load.",
+      "expected_output": "Produces one connected line of thought, not disconnected framework blocks.",
+      "assertions": [
+        "Paragraphs build on each other causally.",
+        "Does not create separate sections for every noun.",
+        "Ties analytics, AI insights, onboarding, and support to one deciding behavior or proof point."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["weak joint"], ["core"], ["behavior"], ["test"]],
+        "must_not_include_any": [["Framework 1"], ["Framework 2"], ["Kano"], ["SWOT"]]
+      }
+    },
+    {
+      "id": "crude-test-commitment-not-praise",
+      "category": "known-failure",
+      "should_trigger": true,
+      "prompt": "Find the crux: teams say they would love an AI meeting summary workspace.",
+      "expected_output": "Treats praise as weak evidence and designs a test around commitment.",
+      "assertions": [
+        "Names testimony or praise as weak evidence.",
+        "Success signal requires behavior such as data access, repeated use, payment, invite, or replacement.",
+        "Includes failure signal and time to test."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["praise"], ["commitment"], ["success"], ["failure"]],
+        "must_not_include_any": [["survey says"], ["users love it"]]
+      }
+    },
+    {
+      "id": "legibility-product-test",
+      "category": "known-failure",
+      "should_trigger": true,
+      "prompt": "Find the crux: users need AI recommendations to approve high-risk payments faster.",
+      "expected_output": "Includes legibility pressure in the crude test because this is a product/design claim.",
+      "assertions": [
+        "Names whether users understand what the recommendation means and expects.",
+        "Separates trust from speed.",
+        "Includes desirability, feasibility, viability, and legibility when giving a crude test."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["legibility"], ["understand"], ["approve"], ["risk"]],
+        "must_not_include_any": [["just add explanations"]]
+      }
+    },
+    {
+      "id": "scenario-wedge-power-user",
+      "category": "known-failure",
+      "should_trigger": true,
+      "prompt": "This dashboard should be simpler for power users.",
+      "expected_output": "Creates one scenario wedge that shows where power users behave like beginners or need density.",
+      "assertions": [
+        "Does not treat power user as a stable persona without evidence.",
+        "Uses one concrete edge scenario.",
+        "Pressures whether simpler means fewer steps, better scanning, fewer choices, or faster recovery."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["power user"], ["scenario"], ["simple"]],
+        "must_not_include_any": [["power users always"], ["beginners always"]]
+      }
+    },
+    {
+      "id": "read-only-update-doc",
+      "category": "read-only",
+      "should_trigger": true,
+      "prompt": "Use crux to update the context doc as we decide terms.",
+      "expected_output": "Redirects the write by default and may identify documentation debt without editing docs.",
+      "assertions": [
+        "Says crux is read-only by default or redirects to a writing workflow.",
+        "May name documentation debt.",
+        "Does not claim it updated a file."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["read-only"], ["documentation debt"], ["write"]],
+        "must_not_include_any": [["I updated"], ["saved"], ["wrote the file"]]
+      }
+    },
+    {
+      "id": "read-only-memory-candidate",
+      "category": "read-only",
+      "should_trigger": true,
+      "prompt": "Find the recurring thinking error here and save it to memory: every time competitors move, we debate categories instead of customers.",
+      "expected_output": "Surfaces a compact memory candidate but does not persist it unless explicitly routed to memory-writing instructions.",
+      "assertions": [
+        "Names the recurring assumption or blind spot.",
+        "Does not claim a memory was saved.",
+        "Keeps the answer focused on the crux."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["pattern"], ["blind spot"], ["recurring"]],
+        "must_not_include_any": [["memory saved"], ["I persisted"]]
+      }
+    },
+    {
+      "id": "negative-copy-rewrite",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Rewrite this button label to be shorter: 'Proceed to final payment confirmation'.",
+      "expected_output": "Should route to copy/content design or answer directly, not run a crux interrogation.",
+      "assertions": [
+        "Does not force weak joint/crude test/crux question.",
+        "Does not load crux just because the prompt contains a product surface.",
+        "If answered, gives a concise rewrite."
+      ],
+      "deterministic_checks": {
+        "must_not_include_any": [["weak joint"], ["crux question"], ["crude test"]]
+      }
+    },
+    {
+      "id": "negative-build-request",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Implement the onboarding screen in React with the attached design tokens.",
+      "expected_output": "Should route to frontend/dev skill, not crux.",
+      "assertions": [
+        "Does not interrogate whether onboarding should exist.",
+        "Does not ask crux questions before implementation unless the user asks for strategy.",
+        "Should not edit files as part of crux."
+      ],
+      "deterministic_checks": {
+        "must_not_include_any": [["crux question"], ["weak joint"]]
+      }
+    },
+    {
+      "id": "negative-release-flow",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "/dex release design patch",
+      "expected_output": "Should route to dex release workflow, not crux.",
+      "assertions": [
+        "Does not pressure the strategy behind release.",
+        "Does not ask product questions.",
+        "Keeps release behavior unchanged."
+      ],
+      "deterministic_checks": {
+        "must_not_include_any": [["crux"], ["weak joint"], ["customer"]]
+      }
+    },
+    {
+      "id": "negative-grill-with-docs",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Grill this implementation plan against the docs and keep asking follow-up questions until the model is complete.",
+      "expected_output": "Should route to grill-with-docs when the user wants iterative domain modeling, not crux.",
+      "assertions": [
+        "Does not absorb the docs-grilling workflow into crux.",
+        "Preserves crux as deciding-assumption work.",
+        "May hand off to the docs-grilling workflow."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["grill"], ["docs"], ["workflow"]],
+        "must_not_include_any": [["crux machine"]]
+      }
+    },
+    {
+      "id": "repair-regression-placeholder-bet",
+      "category": "repair-regression",
+      "should_trigger": true,
+      "prompt": "Should we go wide or deep?",
+      "expected_output": "Does not treat placeholder wording as a concrete bet.",
+      "assertions": [
+        "Does not say a placeholder like one customer type is the specific bet.",
+        "Says more facts are needed or gives sharper questions that would expose the bet.",
+        "Does not recommend product shape from missing context."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["product shape should follow"], ["customer"], ["moment"], ["proof"]],
+        "must_not_include_any": [["one customer type"], ["one painful workflow"], ["My recommendation"]]
+      }
+    },
+    {
+      "id": "repair-regression-no-shape-first",
+      "category": "repair-regression",
+      "should_trigger": true,
+      "prompt": "Now that incumbents entered, do we go broad, deep, or both?",
+      "expected_output": "Starts by naming the avoided reality, not by choosing a side.",
+      "assertions": [
+        "Opening sentence does not choose a product shape.",
+        "Frames broad/deep/both as consequences.",
+        "Moves to customer, moment, capability, behavior, proof, and tradeoff."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["avoids"], ["weak frame"], ["proof"], ["behavior"]],
+        "must_not_include_any": [["Go broad"], ["Go deep"], ["Do both"], ["It depends"]]
+      }
+    },
+    {
+      "id": "repair-regression-source-before-question",
+      "category": "repair-regression",
+      "should_trigger": true,
+      "prompt": "Read plugins/design/skills/crux/evals/fixtures/cancellation-context.md and ask me the crux questions for partial cancellation.",
+      "files": ["evals/fixtures/cancellation-context.md"],
+      "expected_output": "Reads the fixture before questions and avoids asking for terminology already present.",
+      "assertions": [
+        "Mentions workspace and subscription facts before asking.",
+        "Asks only unresolved pressure questions.",
+        "Does not ask what terms mean when the fixture defines them."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["workspace"], ["subscription"], ["partial cancellation"]],
+        "must_not_include_any": [["what is a workspace"], ["what is a subscription"]]
+      }
+    },
+    {
+      "id": "opportunity-expansion-from-core",
+      "category": "cohesion",
+      "should_trigger": true,
+      "prompt": "Find the crux and leave me with better ideas: we want AI to reduce support tickets for merchants.",
+      "expected_output": "Explains the core and expands from it into better research, product, or positioning directions.",
+      "assertions": [
+        "Does not brainstorm generic AI support features from the original frame.",
+        "Opportunities follow from the specific core insight.",
+        "Keeps the summary simple enough to repeat."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["support"], ["merchant"], ["better frame"], ["idea"]],
+        "must_not_include_any": [["chatbot"], ["FAQ"]]
+      }
+    }
+  ]
+}
