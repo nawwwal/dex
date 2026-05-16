@@ -20,6 +20,8 @@ REQUIRED_REGRESSION_IDS = {
     "repair-regression-placeholder-bet",
     "repair-regression-no-shape-first",
     "repair-regression-source-before-question",
+    "repair-regression-dashboard-accountability",
+    "repair-regression-read-only-update",
 }
 
 STRATEGY_BANNED_OPENINGS = {

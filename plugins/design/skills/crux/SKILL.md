@@ -81,6 +81,8 @@ source pressure:
 - crux pressure:
 ```
 
+If the user asks crux to write, update, save, or persist a document, memory, or file, state that crux is read-only by default. Then identify the crux or documentation debt, and hand off to the right writing/editing workflow or ask for explicit confirmation before any mutation.
+
 ## Layered Pipeline Mode
 
 For non-trivial crux work, load `references/layered-pipeline.md` and use the fixed method DAG. This applies especially to explicit deep interrogation, multi-source or source-backed plans, high-stakes strategy/product/design calls, or work needing fixed method ordering, fan-out, collation, adaptive rendering, reframing, or opportunity expansion.
@@ -177,6 +179,7 @@ Choose the answer shape that best serves the topic:
 - Naming or copy: give sharper language, explain what behavior it creates, and show what old framing it replaces.
 - PRD or source-backed plan: show observed source pressure, contradiction, deciding assumption, test, and crux question.
 - Vague style request: convert words like "impactful", "premium", "simple", "bold", or "dynamic" into hierarchy, contrast, density, motion, copy, interaction, or behavior.
+- Dashboard, assistant, or interface-replacement claim: pressure whether the new form can preserve monitoring, comparison, auditability, decision rights, accountability, and recovery, not just whether it feels more natural.
 
 Use sections only when they improve scanning. The answer can be detailed, but it must read as one line of thought.
 
@@ -210,6 +213,7 @@ Never include every item by default. Select the moves that make this case cleare
 - Do not treat testimony as behavior.
 - Do not confuse taste with evidence.
 - This skill is read-only by default. If the user wants a written artifact or memory update, hand off to the appropriate writing/editing workflow.
+- For write/update/save/persist requests, do not answer "yes" as if crux will mutate the artifact. Say crux is read-only by default, name the deciding pressure, then route the mutation to the appropriate workflow or ask for confirmation.
 - This skill may identify missing or conflicting documentation, but it does not edit docs by default. If a term, decision, or invariant should be captured, say `documentation debt: [term/decision/invariant] should be captured because [reason].`
 
 ## Minimum Correct Example

@@ -372,7 +372,7 @@
         "Does not claim it updated a file."
       ],
       "deterministic_checks": {
-        "must_include_any": [["read-only"], ["documentation debt"], ["write"]],
+        "must_include_any": [["read-only"]],
         "must_not_include_any": [["I updated"], ["saved"], ["wrote the file"]]
       }
     },
@@ -500,6 +500,38 @@
       "deterministic_checks": {
         "must_include_any": [["workspace"], ["subscription"], ["partial cancellation"]],
         "must_not_include_any": [["what is a workspace"], ["what is a subscription"]]
+      }
+    },
+    {
+      "id": "repair-regression-dashboard-accountability",
+      "category": "repair-regression",
+      "should_trigger": true,
+      "prompt": "Use crux deeply on this: our AI assistant should replace the dashboard because conversational UX is more natural.",
+      "expected_output": "Pressures whether conversational UX can preserve accountability, decision rights, monitoring, comparison, auditability, and recovery.",
+      "assertions": [
+        "Names accountability or decision rights explicitly.",
+        "Does not treat natural conversation as enough evidence.",
+        "Includes the opposite truth that dashboards remain better for some scanning or accountability jobs."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["accountability"], ["decision rights"]],
+        "must_not_include_any": [["conversation is more natural, so"], ["replace dashboards by default"]]
+      }
+    },
+    {
+      "id": "repair-regression-read-only-update",
+      "category": "repair-regression",
+      "should_trigger": true,
+      "prompt": "Use crux to update the context doc as we decide terms.",
+      "expected_output": "Makes the read-only boundary visible before identifying documentation debt or routing to a writing workflow.",
+      "assertions": [
+        "Says crux is read-only by default.",
+        "Does not claim the document was updated.",
+        "Names the deciding pressure or documentation debt."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["read-only"]],
+        "must_not_include_any": [["I updated"], ["saved"], ["wrote the file"]]
       }
     },
     {
