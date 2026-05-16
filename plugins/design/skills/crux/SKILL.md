@@ -37,8 +37,8 @@ End most responses with the crux question, not a conclusion.
 Keep the first response lean. Load references only when the task needs that depth:
 
 - `references/principles.md` - load when the user asks about the method, philosophical machinery, dao/qi, or why a question works.
-- `references/protocol.md` - load for any non-trivial claim, PRD, long doc, strategy, complex product problem, or multi-claim input.
-- `references/layered-pipeline.md` - load for non-trivial crux work that needs the fixed method pipeline, method-agent fan-out, collation, adaptive rendering, or deeper product/strategy/design pressure.
+- `references/protocol.md` - default single-pass deep pressure method for non-trivial claims, PRDs, strategy docs, product problems, long claims, or multi-claim inputs.
+- `references/layered-pipeline.md` - load for explicit deep interrogation, multi-source or source-backed plans, high-stakes strategy/product/design calls, or cases needing method-agent fan-out, collation, adaptive rendering, reframing, or opportunity expansion.
 - `references/evidence-and-tests.md` - load when designing validation, experiments, user research, success criteria, or evidence audits.
 - `references/examples.md` - load when output calibration is unclear or a bad/good contrast would prevent generic questioning.
 
@@ -71,9 +71,9 @@ source pressure:
 
 ## Layered Pipeline Mode
 
-For non-trivial crux work, load `references/layered-pipeline.md` and use the fixed method DAG.
+For explicit deep interrogation, multi-source or source-backed plans, high-stakes strategy/product/design calls, or work needing fan-out, collation, adaptive rendering, reframing, or opportunity expansion, load `references/layered-pipeline.md` and use the fixed method DAG.
 
-Use method subagents when they are available and permitted by the active environment. Assign each subagent one method group, pass only the prior-stage artifact it needs, and ask it for an intermediate artifact, not user-facing prose. If subagents are unavailable, run the same stages internally in one thread.
+Use method subagents only when a real subagent or Task tool is available and permitted by the active environment. Assign each subagent one method group, pass only the prior-stage artifact it needs, and ask it for an intermediate artifact, not user-facing prose. If no real subagent or Task tool is available, run the same fixed DAG internally in one thread.
 
 The pipeline is fixed:
 
@@ -97,7 +97,7 @@ Before answering:
 
 1. Inspect evidence when the user provides a path, artifact, data, screen, source, or document; revise the claim after observing it.
 2. Split compound vague claims. "Premium and simple" is not one standard; it may mean status signal, lower cognitive load, fewer steps, faster first success, lower visual density, or fewer choices.
-3. For non-trivial inputs, run the layered pipeline: ground truth first, parallel naming/evidence/context pressure, dao/qi/reversal, collation, weak-joint selection, specific-bet formulation, crude test, final question, essence, reframing, opportunity expansion, and cohesion.
+3. For non-trivial inputs, use `references/protocol.md` as the default single-pass deep pressure method. Escalate to Layered Pipeline Mode only for explicit deep interrogation, multi-source or source-backed plans, high-stakes strategy/product/design calls, or cases needing method-agent fan-out, collation, adaptive rendering, reframing, or opportunity expansion.
 4. Discard anything generic, clever without pressure, disconnected from evidence, or answerable without changing the work.
 5. Check the hidden module list: must-be-true, nice-to-be-true, unknowns, contradictions, riskiest assumption, evidence needed, confidence, what would change my mind.
 6. If a recurring thinking error appears, surface a compact memory candidate: `pattern`, `recurring assumption`, `blind spot`, `question that helped`. Do not persist it unless the user explicitly asks.
