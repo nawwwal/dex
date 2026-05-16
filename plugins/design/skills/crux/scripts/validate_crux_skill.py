@@ -22,6 +22,7 @@ REQUIRED_REGRESSION_IDS = {
     "repair-regression-source-before-question",
     "repair-regression-dashboard-accountability",
     "repair-regression-read-only-update",
+    "repair-regression-source-prd-legibility",
 }
 
 STRATEGY_BANNED_OPENINGS = {

@@ -81,7 +81,9 @@ source pressure:
 - crux pressure:
 ```
 
-If the user asks crux to write, update, save, or persist a document, memory, or file, state that crux is read-only by default. Then identify the crux or documentation debt, and hand off to the right writing/editing workflow or ask for explicit confirmation before any mutation.
+If the user asks crux to write, update, save, or persist a document, memory, or file, the visible answer must say: `crux is read-only by default`. Then identify the crux or documentation debt, and hand off to the right writing/editing workflow or ask for explicit confirmation before any mutation.
+
+For PRD or product artifacts involving trust, AI recommendations, risk, approval, reviewer behavior, or score interpretation, any crude test must name legibility explicitly: whether the user understands what changed, what the recommendation means, what action is expected, and what would invalidate it.
 
 ## Layered Pipeline Mode
 
@@ -213,7 +215,7 @@ Never include every item by default. Select the moves that make this case cleare
 - Do not treat testimony as behavior.
 - Do not confuse taste with evidence.
 - This skill is read-only by default. If the user wants a written artifact or memory update, hand off to the appropriate writing/editing workflow.
-- For write/update/save/persist requests, do not answer "yes" as if crux will mutate the artifact. Say crux is read-only by default, name the deciding pressure, then route the mutation to the appropriate workflow or ask for confirmation.
+- For write/update/save/persist requests, do not answer "yes" as if crux will mutate the artifact. Use the phrase `crux is read-only by default`, name the deciding pressure, then route the mutation to the appropriate workflow or ask for confirmation.
 - This skill may identify missing or conflicting documentation, but it does not edit docs by default. If a term, decision, or invariant should be captured, say `documentation debt: [term/decision/invariant] should be captured because [reason].`
 
 ## Minimum Correct Example

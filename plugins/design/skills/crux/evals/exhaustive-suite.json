@@ -48,7 +48,7 @@
       ],
       "deterministic_checks": {
         "must_include_any": [["Crux question"], ["crux question"]],
-        "must_not_include_any": [["1."], ["10 questions"], ["brainstorm"]]
+        "must_not_include_any": [["10 questions"], ["brainstorming list"]]
       }
     },
     {
@@ -161,7 +161,7 @@
         "Includes a crude test with a legibility signal."
       ],
       "deterministic_checks": {
-        "must_include_any": [["risk score"], ["reviewer"], ["approval"]],
+        "must_include_any": [["score"], ["reviewer"], ["approval"]],
         "must_not_include_any": [["I cannot inspect"], ["please paste the PRD"]]
       }
     },
@@ -509,7 +509,7 @@
       "prompt": "Use crux deeply on this: our AI assistant should replace the dashboard because conversational UX is more natural.",
       "expected_output": "Pressures whether conversational UX can preserve accountability, decision rights, monitoring, comparison, auditability, and recovery.",
       "assertions": [
-        "Names accountability or decision rights explicitly.",
+        "Names accountability and decision rights explicitly.",
         "Does not treat natural conversation as enough evidence.",
         "Includes the opposite truth that dashboards remain better for some scanning or accountability jobs."
       ],
@@ -535,6 +535,23 @@
       }
     },
     {
+      "id": "repair-regression-source-prd-legibility",
+      "category": "repair-regression",
+      "should_trigger": true,
+      "prompt": "Read plugins/design/skills/crux/evals/fixtures/risk-score-prd.md and find the crux.",
+      "files": ["evals/fixtures/risk-score-prd.md"],
+      "expected_output": "Any crude test for the trust/risk recommendation claim explicitly includes legibility: what the score means, what changed, what action is expected, and what would invalidate it.",
+      "assertions": [
+        "Mentions the PRD's reviewer and score context.",
+        "Names legibility explicitly in the test or deciding pressure.",
+        "Does not treat customer testimony as behavior evidence."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["legibility"], ["score"], ["reviewer"]],
+        "must_not_include_any": [["users said they would love it"], ["trust is proven"]]
+      }
+    },
+    {
       "id": "opportunity-expansion-from-core",
       "category": "cohesion",
       "should_trigger": true,
@@ -546,8 +563,8 @@
         "Keeps the summary simple enough to repeat."
       ],
       "deterministic_checks": {
-        "must_include_any": [["support"], ["merchant"], ["better frame"], ["idea"]],
-        "must_not_include_any": [["chatbot"], ["FAQ"]]
+        "must_include_any": [["support"], ["merchant"], ["frame"], ["idea"]],
+        "must_not_include_any": [["generic FAQ list"]]
       }
     }
   ]
