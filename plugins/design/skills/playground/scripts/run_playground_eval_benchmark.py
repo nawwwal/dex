@@ -27,6 +27,20 @@ def term_present(text: str, terms: list[str]) -> bool:
     return all(term.lower() in lowered for term in terms)
 
 
+def forbidden_present(text: str, terms: list[str]) -> bool:
+    lowered_lines = text.lower().splitlines()
+    negators = ("not", "no ", "avoid", "without", "route away", "do not", "don't")
+    for line in lowered_lines:
+        if all(term.lower() in line for term in terms):
+            term_positions = [line.find(term.lower()) for term in terms]
+            start = min(position for position in term_positions if position >= 0)
+            prefix = line[max(0, start - 40) : start]
+            if any(negator in prefix for negator in negators):
+                continue
+            return True
+    return False
+
+
 def grade_output(case: dict[str, Any], output: str) -> dict[str, Any]:
     checks = case["deterministic_checks"]
     results = []
@@ -42,7 +56,7 @@ def grade_output(case: dict[str, Any], output: str) -> dict[str, Any]:
         )
 
     for group in checks.get("must_not_include_any", []):
-        passed = not term_present(output, group)
+        passed = not forbidden_present(output, group)
         results.append(
             {
                 "text": "exclude " + " + ".join(group),
