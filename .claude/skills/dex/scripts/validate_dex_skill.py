@@ -81,19 +81,27 @@ def validate_mirrored_docs() -> None:
         r"Fresh subagents or `codex exec` runs own evaluation",
         r"Do not create a separate `skill-eval-rubric` skill",
         r"Do not require a persistent custom eval agent by default",
+        r"Design eval suite",
+        r"Inspect existing evals, scripts, fixtures, and known failure notes before running anything",
+        r"Write or update the relevant eval cases before touching the target skill",
+        r"Run the designed eval suite, not an improvised prompt set",
         r"Repair with skill-creator",
         r"Re-run the same evals",
+        r"a relevant eval suite was designed or refreshed before target-skill repair",
         r"If round 3 still has critical failures",
     ):
         require(eval_md, pattern, ".agents/skills/dex/eval.md")
 
     framework = read(AGENTS / "eval-framework.md")
     for pattern in (
+        r"Design the relevant eval suite before repairing the skill",
         r"explicit trigger",
         r"implicit trigger",
         r"contextual trigger",
         r"negative-control",
         r"known failure",
+        r"Eval Design Gate",
+        r"Do not let repair discovery become the eval design method",
         r"Execution Surfaces",
         r"Custom eval agent",
         r"ordinary fresh subagents already provide independent evaluation",
@@ -127,6 +135,7 @@ def validate_repo_docs() -> None:
     readme = read(REPO / "README.md")
     require(readme, r"/dex eval plugins/design/skills/crux", "README.md")
     require(readme, r"skill-creator", "README.md")
+    require(readme, r"design or refresh the relevant eval suite before touching the target skill", "README.md")
     require(readme, r"\.dex/evals/", "README.md")
 
     gitignore = read(REPO / ".gitignore")

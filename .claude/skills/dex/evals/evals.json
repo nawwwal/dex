@@ -34,13 +34,42 @@
       "category": "positive",
       "should_trigger": true,
       "prompt": "Use the dex skill to eval plugins/design/skills/crux rounds=2 baseline=previous.",
-      "expected_output": "The agent reads eval.md, loads skill-creator before repair, snapshots the target skill, runs clean-context evals, grades, diagnoses, repairs, and reruns.",
+      "expected_output": "The agent reads eval.md, loads skill-creator before repair, snapshots the target skill, designs or refreshes the relevant eval suite, runs clean-context evals, grades, diagnoses, repairs, and reruns.",
       "assertions": [
         "Routes to ./eval.md rather than ./release.md.",
         "Mentions skill-creator as the repair method.",
+        "Designs or refreshes relevant eval cases before touching the target skill.",
         "Includes clean-context evals through fresh subagents or codex exec.",
         "Records artifacts under .dex/evals/<skill-name>/<timestamp>/round-N/."
       ]
+    },
+    {
+      "id": "eval-design-happens-before-repair",
+      "category": "known-failure",
+      "should_trigger": true,
+      "prompt": "Use the dex skill to eval plugins/dev/skills/blade because the last Blade change may have weakened audit quality. Repair anything that fails.",
+      "expected_output": "The agent first snapshots the target, then inspects or writes the eval suite that will judge Blade audit quality before editing Blade skill files.",
+      "assertions": [
+        "Names eval-suite design as its own phase before Evaluate or Repair.",
+        "Inspects existing evals, fixtures, scripts, and known failures before running or repairing.",
+        "Adds or updates concrete cases for missing Blade audit coverage before touching the target skill.",
+        "Does not discover the eval criteria only after making the repair."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          [
+            "Design eval suite"
+          ],
+          [
+            "design or refresh the relevant eval suite"
+          ]
+        ],
+        "must_not_include_any": [
+          [
+            "run a quick eval first, then decide what to test"
+          ]
+        ]
+      }
     },
     {
       "id": "benchmark-repair-intent-routes-to-eval",
