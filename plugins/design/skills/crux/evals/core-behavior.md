@@ -14,8 +14,8 @@ These cases verify the skill behaves like a crux machine, not a generic advice g
 - Final move is usually the crux question, but may be a decisive recommendation, rewrite, or next test when that better serves the user.
 - No named-lens leakage unless the user asks for the method.
 - Evidence type is not inflated; inference and assumption are named plainly when relevant.
+- When a crude test is used, it defines what success and failure look like, checks desirability, feasibility, viability, and legibility for product/design claims, names the time needed to learn, and states what the result teaches.
 - Crude tests measure commitment, not praise.
-- Product or design claims include legibility pressure when relevant.
 - If the user provides a file/path/artifact, the agent inspects it before questioning it.
 - If artifacts contain relevant terminology, output distinguishes user language from artifact language.
 - If artifact truth contradicts user framing, the contradiction becomes the weak joint.
@@ -64,18 +64,10 @@ Fail reasons:
 - no crude test
 - no final crux question
 
-Good skeleton:
+Good answer moves:
 
 ```text
-The weak joint is [where the claim protects itself].
+A passing answer can be a paragraph, a short list, or a hybrid, but it should feel like one line of thought rather than a fixed worksheet. It names the weak joint: where the claim protects itself from reality. It explains the core in plain language, then moves one level down to the real bet: which customer, moment, capability, behavior, and proof would make the idea true. It may offer Better frames when the user's framing is too abstract, using frames that change the decision rather than restating it. It usually ends on the crux question: the question whose answer would change direction.
 
-The core is [plain explanation of what is really at stake].
-
-One level down, the real bet is [customer / moment / capability / behavior / proof].
-
-Better frames:
-- [more concrete way to ask the question]
-- [more useful decision frame]
-
-Crux question: [what would change the direction]
+For example: "The weak joint is not whether AI recommendations sound useful; it is whether a risk owner would trust a score more because the system explains what changed, what to do next, and what would invalidate the recommendation. The real bet is that legible reasoning at the review moment changes approval behavior, not just confidence in a demo. Better frames: 'What explanation would make a reviewer override their current habit?' or 'Which decision gets faster without making accountability fuzzier?' Crux question: what evidence would prove the recommendation changes a real risk decision rather than earning polite agreement?"
 ```
