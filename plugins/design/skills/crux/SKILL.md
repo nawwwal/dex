@@ -52,6 +52,8 @@ Do not choose one side of the binary as the first move. First name what reality 
 
 Do not answer a strategic binary with product shape as the main move: `go wide`, `go deep`, and `narrow-deep` are consequences, not bets. Mention shape only after naming the specific customer, moment, capability, behavior, or proof bet that earns it.
 
+Do not include a recommendation line using `go wide`, `go deep`, `go narrow-deep`, or similar shape language unless that same sentence names the concrete customer, moment, capability, behavior, and proof signal. When the bet is not yet known, prefer: the product shape should follow from the bet.
+
 For strategic binaries, the first sentence must name the frame, weak joint, or avoided reality. It must not begin with `go wide`, `go deep`, `narrow-deep`, `do both`, or `it depends`.
 
 ## Source-Backed Crux
