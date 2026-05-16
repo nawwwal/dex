@@ -47,7 +47,8 @@ def validate_skill_md() -> None:
         require(text, r"description:.*plugin releases", label)
         require(text, r"description:.*skill evals", label)
         require(text, r"description:.*multi-round skill repair", label)
-        require(text, r"argument-hint:.*release.*eval", label)
+        require(text, r"`release <core\|design\|dev\|tools> \[patch\|minor\|major\|initial\]`", label)
+        require(text, r"`eval <skill-path-or-plugin-skill> \[rounds=N\] \[baseline=previous\|none\|snapshot\]`", label)
         require(text, r"\*\*release\*\*\s*->\s*Read `\./release\.md`", label)
         require(text, r"\*\*eval\*\*\s*->\s*Read `\./eval\.md`", label)
         require(text, r"\*\*skill eval / benchmark / repair intent\*\*\s*->\s*Read `\./eval\.md`", label)
@@ -58,6 +59,14 @@ def validate_skill_md() -> None:
 
 def validate_mirrored_docs() -> None:
     for name in ("release.md", "eval.md", "eval-framework.md"):
+        agents_text = read(AGENTS / name)
+        claude_text = read(CLAUDE / name)
+        if agents_text != claude_text:
+            fail(f"{name} differs between .agents and .claude dex skills")
+
+    for name in ("evals/evals.json",):
+        require_file(AGENTS / name)
+        require_file(CLAUDE / name)
         agents_text = read(AGENTS / name)
         claude_text = read(CLAUDE / name)
         if agents_text != claude_text:

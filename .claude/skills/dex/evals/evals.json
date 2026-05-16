@@ -1,0 +1,94 @@
+{
+  "skill_name": "dex",
+  "version": 1,
+  "notes": "Regression suite for dex maintainer routing, schema hygiene, release gates, and eval orchestration.",
+  "evals": [
+    {
+      "id": "codex-frontmatter-is-valid",
+      "category": "known-failure",
+      "should_trigger": false,
+      "prompt": "Validate the Codex dex skill folder with the system skill-creator quick validator.",
+      "files": [
+        ".agents/skills/dex/SKILL.md"
+      ],
+      "expected_output": "The Codex skill frontmatter uses only supported metadata and the usage syntax lives in the body.",
+      "assertions": [
+        "System quick_validate.py passes for .agents/skills/dex.",
+        "SKILL.md keeps release and eval syntax visible outside frontmatter.",
+        "No argument-hint frontmatter key remains in the Codex skill."
+      ],
+      "deterministic_checks": {
+        "commands": [
+          "python3 /Users/aditya.nawal/.agents/skills/.system/skill-creator/scripts/quick_validate.py .agents/skills/dex",
+          "python3 .agents/skills/dex/scripts/validate_dex_skill.py"
+        ],
+        "must_not_include_any": [
+          [
+            "argument-hint:"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "explicit-eval-routes-to-eval-workflow",
+      "category": "positive",
+      "should_trigger": true,
+      "prompt": "Use the dex skill to eval plugins/design/skills/crux rounds=2 baseline=previous.",
+      "expected_output": "The agent reads eval.md, loads skill-creator before repair, snapshots the target skill, runs clean-context evals, grades, diagnoses, repairs, and reruns.",
+      "assertions": [
+        "Routes to ./eval.md rather than ./release.md.",
+        "Mentions skill-creator as the repair method.",
+        "Includes clean-context evals through fresh subagents or codex exec.",
+        "Records artifacts under .dex/evals/<skill-name>/<timestamp>/round-N/."
+      ]
+    },
+    {
+      "id": "benchmark-repair-intent-routes-to-eval",
+      "category": "contextual",
+      "should_trigger": true,
+      "prompt": "The Blade skill feels weaker after the last change. Benchmark it against the prior version and repair whatever fails.",
+      "expected_output": "The agent treats benchmark and repair language as dex eval intent, not as a release.",
+      "assertions": [
+        "Routes benchmark/repair intent to ./eval.md.",
+        "Uses baseline=previous for an existing skill unless overridden.",
+        "Does not propose a plugin release before eval evidence exists."
+      ]
+    },
+    {
+      "id": "release-routes-to-release-workflow",
+      "category": "positive",
+      "should_trigger": true,
+      "prompt": "Use the dex skill to release dev minor.",
+      "expected_output": "The agent reads release.md and starts with README/release-doc and preflight gates before any version bump.",
+      "assertions": [
+        "Routes to ./release.md rather than ./eval.md.",
+        "Checks main branch and clean worktree before release mutation.",
+        "Runs README/release-doc parity gate before tagging."
+      ]
+    },
+    {
+      "id": "no-argument-asks-mode",
+      "category": "boundary",
+      "should_trigger": true,
+      "prompt": "Use the dex skill.",
+      "expected_output": "The agent asks whether to run a plugin release or a skill eval.",
+      "assertions": [
+        "Does not assume release.",
+        "Does not assume eval.",
+        "Asks for the missing mode."
+      ]
+    },
+    {
+      "id": "normal-plugin-readme-edit-does-not-trigger-dex-eval",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Rewrite the README paragraph for the design plugin so it is shorter and clearer.",
+      "expected_output": "The dex eval workflow should not be invoked unless the user asks for release, skill eval, benchmarking, or repair.",
+      "assertions": [
+        "Does not route to ./eval.md.",
+        "Does not create .dex/evals artifacts.",
+        "Uses ordinary writing/editing workflow unless release intent appears."
+      ]
+    }
+  ]
+}

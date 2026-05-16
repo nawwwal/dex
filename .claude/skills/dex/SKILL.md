@@ -2,10 +2,14 @@
 name: dex
 description: "Project-local dex maintainer workflow. Use when maintaining nawwwal/dex itself, especially for plugin releases, version bumps, tags, pushes, GitHub Releases, skill evals, benchmarking, and multi-round skill repair with skill-creator."
 disable-model-invocation: true
-argument-hint: "[release <core|design|dev|tools> [patch|minor|major|initial] | eval <skill-path-or-plugin-skill> [rounds=N] [baseline=previous|none|snapshot]]"
 ---
 
 # /dex - Project Maintainer Workflow
+
+## Usage
+
+`release <core|design|dev|tools> [patch|minor|major|initial]`
+`eval <skill-path-or-plugin-skill> [rounds=N] [baseline=previous|none|snapshot]`
 
 ## Dispatch
 
