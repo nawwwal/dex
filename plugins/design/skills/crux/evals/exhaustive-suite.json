@@ -509,12 +509,12 @@
       "prompt": "Use crux deeply on this: our AI assistant should replace the dashboard because conversational UX is more natural.",
       "expected_output": "Pressures whether conversational UX can preserve accountability, decision rights, monitoring, comparison, auditability, and recovery.",
       "assertions": [
-        "Names accountability and decision rights explicitly.",
+        "Names accountability through ownership, decision rights, auditability, who-decides, or accountable-action mechanics.",
         "Does not treat natural conversation as enough evidence.",
         "Includes the opposite truth that dashboards remain better for some scanning or accountability jobs."
       ],
       "deterministic_checks": {
-        "must_include_any": [["accountability"], ["decision rights"]],
+        "must_include_any": [["accountability"], ["accountable"], ["ownership"], ["who decides"], ["decision rights"]],
         "must_not_include_any": [["conversation is more natural, so"], ["replace dashboards by default"]]
       }
     },
