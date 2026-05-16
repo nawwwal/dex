@@ -11,6 +11,7 @@ Read-only interface critique for static artifacts: screenshots, diffs, local fil
 
 ## Review Checks
 
+- Frontend substrate: native elements, CSS flow, cascade cost, and runtime weight support the interface before polish. Load `references/frontend-foundations.md` when the artifact includes HTML, CSS, JS, or component code.
 - Hierarchy: primary action, dominant content, secondary actions, and de-emphasized metadata are visually distinct.
 - Density: dashboard/table/form surfaces preserve scan speed; marketing/editorial surfaces can use larger rhythm.
 - State coverage: empty, loading, error, disabled, permission, partial-data, and long-content states are represented.
@@ -18,6 +19,7 @@ Read-only interface critique for static artifacts: screenshots, diffs, local fil
 - Typography: scale, line length, line-height, wrapping, and numeric alignment support the surface.
 - Copy: labels, errors, empty states, and CTAs tell the user what happened and what to do next.
 - Accessibility: run `references/a11y.md` for WCAG floors.
+- Style terms: translate vague words such as `premium`, `clean`, or `modern` into `Term -> meaning -> execution -> avoid`; lead with structural, responsive, or cascade issues before color and decorative finish.
 
 ## Output
 

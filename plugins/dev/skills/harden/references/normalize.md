@@ -8,10 +8,10 @@ Review whether a UI uses its local design system instead of ad-hoc values.
 
 ## Process
 
-1. Discover hardcoded colors, spacing, font sizes, shadows, radii, durations, and custom components.
+1. Discover hardcoded colors, spacing, font sizes, shadows, radii, durations, high-specificity selectors, inline styles, and custom components.
 2. Identify the project's existing tokens, CSS variables, theme files, or component primitives.
 3. Map repeated ad-hoc values to existing system values.
-4. Flag values that need a design decision instead of inventing new tokens.
+4. Flag overrides that fight the system instead of using its token, prop, class, or primitive.
 5. Recommend replacements. Only edit if the user explicitly asks to apply/fix.
 
 ## Checks
@@ -21,6 +21,7 @@ Review whether a UI uses its local design system instead of ad-hoc values.
 - Typography uses existing text components or CSS variables.
 - Component primitives are reused before custom controls are created.
 - Inline styles are removed when a class, token, prop, or primitive exists.
+- `!important`, ID selectors, and deep descendant overrides are treated as design-system drift unless the project explicitly requires them.
 - New tokens are recommended only when the same value appears repeatedly and has a stable semantic role.
 
 ## Output

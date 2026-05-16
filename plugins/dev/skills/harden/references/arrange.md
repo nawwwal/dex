@@ -24,8 +24,11 @@ Review layout, spacing, visual rhythm, and alignment.
 ### Layout
 - Prefer `gap` over margin chains.
 - Use Flexbox for one-dimensional layouts and Grid for two-dimensional layouts.
+- Keep elements in normal document flow unless overlay behavior requires otherwise.
 - Add responsive constraints for fixed-format elements: `minmax`, `max-width`, `aspect-ratio`, or container queries.
+- Use `min-width: 0` on flex children that contain long text, tables, URLs, or IDs.
 - Avoid arbitrary one-off values such as 37px or 13px unless there is a measured optical reason.
+- Avoid `position: absolute`, negative margins, and transform offsets as primary layout tools.
 
 ### Alignment
 - Use leading alignment for scannable lists, tables, and forms.
