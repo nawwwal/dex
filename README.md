@@ -34,6 +34,17 @@ Install only what you need:
 /plugin install tools@nawwwal-dex
 ```
 
+Current released versions:
+
+<!-- dex-current-versions:start -->
+| Plugin | Version |
+|---|---:|
+| `core` | `1.1.0` |
+| `design` | `1.2.0` |
+| `dev` | `1.0.4` |
+| `tools` | `1.0.2` |
+<!-- dex-current-versions:end -->
+
 Then bootstrap the shared agent home:
 
 ```text

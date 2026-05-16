@@ -36,7 +36,7 @@ Run these as bash commands from the repo root. Stop on any failure.
 
 ### 0. README and release-doc gate
 
-Before the release bump, verify that the user-facing docs already reflect the change being released. The release commit should only carry version metadata; feature commits must carry their own README/doc updates.
+Before the release bump, verify that the user-facing docs already reflect the change being released. Feature commits must carry their own README/doc updates. Release commits must also update the README current-version table when plugin versions change.
 
 Run this after choosing `PLUGIN` and before committing or tagging:
 
@@ -72,6 +72,13 @@ rg -n "### ${PLUGIN^}|\\`.*\\` \\|" README.md
 ```
 
 If a skill was added, removed, renamed, or meaningfully repositioned, the README should change in the same feature commit. If the README does not need a change, state why in the release notes draft before creating the GitHub Release.
+
+Also verify README has the current-version block before any release:
+
+```bash
+grep -q "<!-- dex-current-versions:start -->" README.md
+grep -q "<!-- dex-current-versions:end -->" README.md
+```
 
 ### 1. Preflight checks
 
@@ -150,11 +157,12 @@ if git tag -l "$TAG" | grep -q .; then
 fi
 ```
 
-### 4. Update version files
+### 4. Update version files and README current versions
 
 ```bash
 python3 - <<PY
 import json
+import re
 
 plugin = "$PLUGIN"
 new_version = "$NEW_VERSION"
@@ -200,17 +208,47 @@ for entry in codex_marketplace.get("plugins", []):
 missing = expected_plugins - seen_plugins
 if missing:
     raise SystemExit(f"Codex marketplace missing plugins: {', '.join(sorted(missing))}")
+
+versions = {}
+for name in ["core", "design", "dev", "tools"]:
+    with open(f"plugins/{name}/.claude-plugin/plugin.json") as fh:
+        versions[name] = json.load(fh)["version"]
+
+readme_path = "README.md"
+with open(readme_path) as fh:
+    readme = fh.read()
+
+table = "\n".join([
+    "<!-- dex-current-versions:start -->",
+    "| Plugin | Version |",
+    "|---|---:|",
+    *[f"| `{name}` | `{versions[name]}` |" for name in ["core", "design", "dev", "tools"]],
+    "<!-- dex-current-versions:end -->",
+])
+
+pattern = r"<!-- dex-current-versions:start -->.*?<!-- dex-current-versions:end -->"
+if not re.search(pattern, readme, flags=re.S):
+    raise SystemExit("README.md missing dex-current-versions block")
+readme = re.sub(pattern, table, readme, flags=re.S)
+with open(readme_path, "w") as fh:
+    fh.write(readme)
 PY
 ```
 
 ### 5. Commit, tag, and push
 
 ```bash
+if ! grep -Fq "| \`$PLUGIN\` | \`$NEW_VERSION\` |" README.md; then
+  echo "ERROR: README.md does not list $PLUGIN v$NEW_VERSION in the current-version table."
+  exit 1
+fi
+
 git add \
   "$CLAUDE_PLUGIN_JSON" \
   "$CODEX_PLUGIN_JSON" \
   "$CLAUDE_MARKETPLACE_JSON" \
-  "$CODEX_MARKETPLACE_JSON"
+  "$CODEX_MARKETPLACE_JSON" \
+  README.md
 
 if git diff --cached --quiet; then
   if [ "$BUMP" = "initial" ]; then

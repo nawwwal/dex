@@ -104,6 +104,17 @@ def validate_mirrored_docs() -> None:
     ):
         require(eval_md, pattern, ".agents/skills/dex/eval.md")
 
+    release_md = read(AGENTS / "release.md")
+    for pattern in (
+        r"Release commits must also update the README current-version table",
+        r"dex-current-versions:start",
+        r"Update version files and README current versions",
+        r"README\.md missing dex-current-versions block",
+        r"README\.md does not list \$PLUGIN v\$NEW_VERSION",
+        r"git add[\s\\]+.*README\.md",
+    ):
+        require(release_md, pattern, ".agents/skills/dex/release.md")
+
     framework = read(AGENTS / "eval-framework.md")
     for pattern in (
         r"Design the relevant eval suite before repairing the skill",
@@ -195,6 +206,7 @@ def validate_eval_suite() -> None:
         "bad-eval-suite-repaired-before-skill",
         "release-this-multi-plugin-diff-splits-releases",
         "release-dirty-worktree-blocks-version-bump",
+        "release-updates-readme-current-version-table",
         "normal-skill-doc-edit-does-not-trigger-maintainer-eval",
     }
     require_contains(ids, required_ids, "eval ids")
@@ -217,6 +229,16 @@ def validate_repo_docs() -> None:
     require(readme, r"skill-creator", "README.md")
     require(readme, r"design or refresh the relevant eval suite before touching the target skill", "README.md")
     require(readme, r"\.dex/evals/", "README.md")
+    require(readme, r"<!-- dex-current-versions:start -->", "README.md")
+    require(readme, r"<!-- dex-current-versions:end -->", "README.md")
+
+    for plugin in ("core", "design", "dev", "tools"):
+        claude_manifest = json.loads(read(REPO / "plugins" / plugin / ".claude-plugin" / "plugin.json"))
+        codex_manifest = json.loads(read(REPO / "plugins" / plugin / ".codex-plugin" / "plugin.json"))
+        if claude_manifest["version"] != codex_manifest["version"]:
+            fail(f"{plugin} Claude/Codex manifest versions differ")
+        version = re.escape(claude_manifest["version"])
+        require(readme, rf"\| `{plugin}` \| `{version}` \|", "README.md")
 
     gitignore = read(REPO / ".gitignore")
     require(gitignore, r"^\.dex/evals/$", ".gitignore")

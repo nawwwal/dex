@@ -320,6 +320,56 @@
       ]
     },
     {
+      "id": "release-updates-readme-current-version-table",
+      "category": "known-failure",
+      "coverage": [
+        "release gate",
+        "repair regression"
+      ],
+      "should_trigger": true,
+      "run_mode": "deterministic-or-clean-context",
+      "prompt": "Use the dex skill to release core minor after the plugin manifests move from 1.0.2 to 1.1.0. README.md has a current-version table.",
+      "expected_output": "The agent updates the selected plugin's Claude and Codex manifests, the Claude marketplace metadata, and README.md's current-version table in the release commit before tagging.",
+      "assertions": [
+        "Treats README current-version parity as part of the release mutation, not a separate optional follow-up.",
+        "Updates the README row for the released plugin to the new version.",
+        "Asserts the selected plugin README row before tagging.",
+        "Stages README.md with the manifest and marketplace version files.",
+        "Does not tag or publish while README.md still shows the previous plugin version."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          [
+            "README.md"
+          ],
+          [
+            "dex-current-versions"
+          ],
+          [
+            "current-version table"
+          ],
+          [
+            "git add"
+          ]
+        ],
+        "must_not_include_any": [
+          [
+            "README can be updated later"
+          ],
+          [
+            "version metadata only"
+          ]
+        ]
+      },
+      "required_evidence": [
+        "README current-version table diff",
+        "selected README row assertion before tag",
+        "manifest and marketplace version diff",
+        "README.md staged with release files",
+        "no tag before README parity passes"
+      ]
+    },
+    {
       "id": "no-argument-asks-mode",
       "category": "boundary",
       "coverage": [
