@@ -4,6 +4,7 @@ Use this reference when `/dex eval` is improving a Dex skill. It turns skill tes
 
 ## Source Principles
 
+- Design the relevant eval suite before repairing the skill.
 - Start small: 10-20 focused prompts are enough to catch regressions early.
 - Test triggering as well as output quality.
 - Use positive, contextual, boundary, and negative-control cases.
@@ -91,6 +92,19 @@ Every non-trivial eval suite should include:
 - known failure: a real miss, regression, or edge case from usage
 - artifact case: path/file input when the skill claims source-backed behavior
 - repair regression: new case added after a failure is fixed
+
+## Eval Design Gate
+
+Before running or repairing, create or refresh the suite that will judge the work:
+
+- Inspect existing evals and known failures.
+- Map the skill type to what the evals must prove.
+- Write concrete prompts and fixtures for missing coverage before target-skill edits.
+- Add deterministic checks for schema, file, command, routing, or source-backed claims when possible.
+- Add judge criteria only for qualities that cannot be checked deterministically.
+- Mark expensive, auth-dependent, or destructive cases with their run condition instead of deleting them.
+
+Do not let repair discovery become the eval design method. If the first failed run reveals that the suite was missing the real behavior, fix the eval suite first, then rerun before editing the target skill.
 
 ## Judge Rubric
 

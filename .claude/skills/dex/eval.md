@@ -60,28 +60,35 @@ Each round must run the same loop:
    - Classify the skill as capability uplift, encoded preference, or mixed.
    - Record the comparison target: previous version, no-skill baseline, or snapshot.
 
-2. **Evaluate**
+2. **Design eval suite**
+   - Inspect existing evals, scripts, fixtures, and known failure notes before running anything.
+   - Write or update the relevant eval cases before touching the target skill.
+   - Cover explicit trigger, implicit trigger, contextual trigger, negative-control, known-failure, artifact, and repair-regression placeholders.
+   - Prefer concrete user-like prompts, source files, deterministic checks, and judge criteria over broad quality notes.
+   - If an eval would be expensive or unsafe to run, still write the case and mark the run condition.
+
+3. **Evaluate**
    - Run clean-context evals with minimum leaked context.
    - Use fresh subagents or `codex exec` runs as the isolation boundary.
-   - Include explicit trigger, implicit trigger, contextual trigger, negative-control, and known-failure cases.
+   - Run the designed eval suite, not an improvised prompt set.
    - Use raw artifacts and prompts, not your diagnosis or expected fix.
 
-3. **Grade**
+4. **Grade**
    - Use deterministic checks for objective claims.
    - Use rubric or judge checks for subjective quality.
    - Record pass rate, routing accuracy, time, token cost, turns or commands, and failure notes.
 
-4. **Diagnose**
+5. **Diagnose**
    - Sort failures into instruction gap, trigger/description problem, missing fixture or bad eval, model/tool limitation, and overfitted or unverifiable assertion.
    - Fix bad evals before blaming the skill.
 
-5. **Repair with skill-creator**
+6. **Repair with skill-creator**
    - Return to the main thread for repair; do not let the evaluator rewrite the skill unless explicitly asked.
    - Revise `SKILL.md`, references, scripts, evals, or metadata based on observed failures.
    - Keep the skill concise and source-backed.
    - Avoid leaking expected answers into the skill.
 
-6. **Re-run**
+7. **Re-run**
    - Re-run the same evals after repair.
    - Add one regression case for every real failure fixed.
    - Continue until the configured rounds complete or the stop criteria pass.
@@ -100,6 +107,7 @@ If round 3 still has critical failures, do not declare the skill improved. Retur
 
 The eval workflow is done only when:
 
+- a relevant eval suite was designed or refreshed before target-skill repair
 - required eval cases pass or the remaining failures are explicitly accepted as non-blocking
 - routing false positives and false negatives are named
 - benchmark delta is recorded
