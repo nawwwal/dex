@@ -14,6 +14,7 @@ These cases verify the skill behaves like a crux machine, not a generic advice g
 - Final move is usually the crux question, but may be a decisive recommendation, rewrite, or next test when that better serves the user.
 - No named-lens leakage unless the user asks for the method.
 - Evidence type is not inflated; inference and assumption are named plainly when relevant.
+- Product or design claims include legibility pressure when relevant.
 - When a crude test is used, it defines what success and failure look like, checks desirability, feasibility, viability, and legibility for product/design claims, names the time needed to learn, and states what the result teaches.
 - Crude tests measure commitment, not praise.
 - If the user provides a file/path/artifact, the agent inspects it before questioning it.
