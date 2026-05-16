@@ -39,6 +39,18 @@ Use `skill-creator` as the repair method after each eval round. Do not treat eva
 
 Then read `./eval-framework.md` for the eval case format, grading rules, benchmark shape, and stop/escalation criteria.
 
+## Execution Architecture
+
+Keep the roles separate:
+
+- `/dex eval` owns orchestration: rounds, baselines, artifacts, stop criteria, and release recommendation.
+- Fresh subagents or `codex exec` runs own evaluation: with-skill attempts, baseline attempts, judge checks, comparison, and failure analysis.
+- `skill-creator` owns repair: revise the target skill, references, scripts, evals, validators, or metadata based on observed failures.
+
+Do not create a separate `skill-eval-rubric` skill for this workflow. Keep the rubric in `./eval-framework.md` unless the user explicitly asks for a reusable cross-repo rubric skill.
+
+Do not require a persistent custom eval agent by default. Use ordinary fresh subagents or `codex exec` for clean-context evals. Create a custom eval agent only when repeated evaluator configuration becomes valuable across repos, such as a stable model, sandbox, tool allowlist, or developer-instruction profile that would otherwise be copied into every eval prompt.
+
 ## Round Loop
 
 Each round must run the same loop:
@@ -50,6 +62,7 @@ Each round must run the same loop:
 
 2. **Evaluate**
    - Run clean-context evals with minimum leaked context.
+   - Use fresh subagents or `codex exec` runs as the isolation boundary.
    - Include explicit trigger, implicit trigger, contextual trigger, negative-control, and known-failure cases.
    - Use raw artifacts and prompts, not your diagnosis or expected fix.
 
@@ -63,6 +76,7 @@ Each round must run the same loop:
    - Fix bad evals before blaming the skill.
 
 5. **Repair with skill-creator**
+   - Return to the main thread for repair; do not let the evaluator rewrite the skill unless explicitly asked.
    - Revise `SKILL.md`, references, scripts, evals, or metadata based on observed failures.
    - Keep the skill concise and source-backed.
    - Avoid leaking expected answers into the skill.

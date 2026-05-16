@@ -13,6 +13,20 @@ Use this reference when `/dex eval` is improving a Dex skill. It turns skill tes
 - Track cost: time, tokens, turns, command count, and repair rounds.
 - Keep eval artifacts local unless they are durable fixtures or validators.
 
+## Execution Surfaces
+
+Use the smallest isolation boundary that preserves eval integrity:
+
+| Surface | Use for | Do not use for |
+|---|---|---|
+| `/dex eval` skill | Orchestrating rounds, baselines, artifacts, stop criteria, and release recommendation. | Pretending the orchestrator is an independent judge of its own repair. |
+| Fresh subagent | Independent with-skill attempts, baseline attempts, qualitative judging, comparator passes, and analyzer passes. | Persistent evaluator identity or repo-wide policy that must be reused across many workflows. |
+| `codex exec` | Repeatable clean-context runs, scriptable benchmarks, JSONL traces, and artifact capture. | Interactive repair or hidden manual judgment. |
+| `skill-creator` | Repairing the target skill after failures are observed. | Grading its own repair without clean eval evidence. |
+| Custom eval agent | Stable cross-repo evaluator config: fixed model, reasoning effort, sandbox, tool allowlist, or developer instructions. | The default `/dex eval` path; ordinary fresh subagents already provide independent evaluation. |
+
+The default architecture is `/dex eval` plus clean subagents or `codex exec` plus `skill-creator`. Do not introduce a separate `skill-eval-rubric` skill. Keep the rubric here unless the user explicitly asks to package it for reuse outside Dex.
+
 ## Skill Type
 
 Classify the target before writing evals:
