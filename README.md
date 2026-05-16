@@ -11,7 +11,7 @@ Dex ships four marketplace plugins.
 | Plugin | Owns | Does not own |
 |---|---|---|
 | `core` | Agent setup, council-style investigation, communication, reflection, DevRev, session logs | Design implementation, browser tooling, media utilities |
-| `design` | Product thinking, content design, divergence, presentation narrative, visual handoffs | Blade, shaders, sound, generic code hardening, private review frameworks |
+| `design` | Product thinking, content design, divergence, presentation narrative, interactive playground artifacts | Blade, shaders, sound, generic code hardening, private review frameworks |
 | `dev` | Design engineering: Blade, dashboard implementation, hardening, shaders, sound | Product strategy, presentation coaching, third-party browser tools |
 | `tools` | Utility tools: Codex review, image generation, media optimization, mymind | Core setup, design critique, implementation doctrine |
 
@@ -79,7 +79,7 @@ Optional integrations depend on the skill you use: Figma MCP for Figma work, Dev
 | `crux` | Compressing vague claims, PRDs, opinions, or product problems down to the load-bearing issue |
 | `diverge` | Brainstorms, alternatives, product directions, interaction concepts, different approaches |
 | `present` | Design review narrative, stakeholder framing, rehearsal, explaining tradeoffs to a room |
-| `visual` | Diagrams, system flows, dense explanations, visual handoffs, component/state/screen breakdowns |
+| `playground` | Interactive, visually distinctive playgrounds for exploring topics, systems, code, data, design, copy, motion, reviews, and handoffs. |
 
 Design has no catch-all router now. If the user wants Blade, go to `dev`. If the user wants browser automation, use the relevant external browser tool. If the user wants critique from a private review framework, keep that framework as a local skill outside Dex.
 
