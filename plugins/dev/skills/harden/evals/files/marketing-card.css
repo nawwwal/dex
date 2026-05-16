@@ -1,0 +1,24 @@
+.pricing-card {
+  width: 780px;
+  padding: 42px 37px 60px 37px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f8f6ff, #ede7ff);
+}
+
+.pricing-card .content .title {
+  font-size: 48px !important;
+  letter-spacing: -0.06em;
+}
+
+.pricing-card .content .subtitle {
+  width: 620px;
+  color: #807f91;
+}
+
+.pricing-card .floating-badge {
+  position: absolute;
+  right: -24px;
+  top: 18px;
+  transform: rotate(8deg);
+}

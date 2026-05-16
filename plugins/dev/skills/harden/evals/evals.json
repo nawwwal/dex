@@ -1,0 +1,134 @@
+{
+  "skill_name": "harden",
+  "evals": [
+    {
+      "id": "frontend-substrate-review",
+      "prompt": "Use $harden to review evals/files/brittle-settings-panel.tsx for production interface risks. Focus on the biggest weak joints first.",
+      "expected_output": "A severity-ranked critique that leads with semantic HTML, layout flow, cascade cost, and runtime/dependency risk before visual polish.",
+      "files": [
+        "evals/files/brittle-settings-panel.tsx"
+      ],
+      "assertions": [
+        "The output names the clickable non-control or button/link semantic problem as a high-priority issue.",
+        "The output flags fixed width, absolute positioning, or hidden overflow as a layout-flow/responsive risk.",
+        "The output flags `!important`, deep selectors, inline styles, or magic numbers as cascade or design-system drift.",
+        "The output flags unnecessary dependency weight or render/runtime cost before visual polish.",
+        "The output includes concrete fixes, not only generic advice."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["clickable non-control", "clickable div", "clickable `div`", "div with onclick", "div click targets", "interactive controls are `div`s", "interactive affordances are clickable", "settings__link"],
+          ["button", "link", "semantic"],
+          ["fixed width", "920", "absolute", "overflow"],
+          ["!important", "specificity", "cascade", "deep selector"],
+          ["lodash", "dependency", "runtime", "bundle", "import", "debounced handler", "debounce"],
+          ["fix", "replace", "use"]
+        ],
+        "must_not_include_any": [
+          ["looks premium"],
+          ["looks good"]
+        ]
+      }
+    },
+    {
+      "id": "state-and-form-hardening",
+      "prompt": "Use $harden to review evals/files/payment-filter-form.tsx. This is a merchant dashboard form used on narrow screens and slow networks.",
+      "expected_output": "A production hardening review that catches form semantics, validation placement, disabled/loading behavior, text overflow, and narrow-screen failure modes.",
+      "files": [
+        "evals/files/payment-filter-form.tsx"
+      ],
+      "assertions": [
+        "The output flags missing labels or weak form semantics.",
+        "The output flags submit/loading/disabled behavior or double-submit risk.",
+        "The output flags narrow-screen or long-content overflow risk.",
+        "The output flags inline validation or recovery behavior, not just visual styling.",
+        "The output keeps recommendations specific to the supplied form."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["label", "labels", "accessible name"],
+          ["disabled", "loading", "double-submit", "in flight"],
+          ["narrow", "overflow", "long-content", "wrap"],
+          ["validation", "error", "inline"],
+          ["form", "input", "select"]
+        ],
+        "must_not_include_any": [
+          ["only visual"],
+          ["just add spacing"]
+        ]
+      }
+    },
+    {
+      "id": "browser-route-out",
+      "prompt": "Use $harden to check http://localhost:8704/settings for overflow, loading states, and accessibility. I need a live page inspection.",
+      "expected_output": "The skill should not pretend to inspect the live URL. It should route capture to agent-browser before making page-specific claims.",
+      "files": [],
+      "assertions": [
+        "The output routes live URL capture or inspection to `agent-browser`.",
+        "The output does not claim observed page findings without captured evidence.",
+        "The output explains what evidence is needed before a harden critique."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["agent-browser"],
+          ["capture", "live inspection", "screenshot", "browser"],
+          ["evidence", "cannot inspect", "need"]
+        ],
+        "must_not_include_any": [
+          ["I inspected"],
+          ["the page has"]
+        ]
+      }
+    },
+    {
+      "id": "blade-route-out",
+      "prompt": "Use $harden to score whether this Razorpay Blade page uses the right Card, Box, Scale, hover, and focus behavior.",
+      "expected_output": "The skill should route Blade scoring, component choice, and interaction behavior to the Blade skill instead of doing a generic harden review.",
+      "files": [],
+      "assertions": [
+        "The output routes Blade scoring or component adherence to `blade`.",
+        "The output does not produce a generic Blade score from memory.",
+        "The output preserves harden only for non-Blade generic interface issues after the Blade gate."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["blade"],
+          ["route", "routing", "use"],
+          ["score", "component", "card", "box", "scale"],
+          ["harden", "generic", "after"]
+        ],
+        "must_not_include_any": [
+          ["95/100"],
+          ["Blade score:"]
+        ]
+      }
+    },
+    {
+      "id": "visual-polish-secondary",
+      "prompt": "Use $harden to review evals/files/marketing-card.css. The stakeholder says it needs to look more premium.",
+      "expected_output": "A critique that translates vague style language into mechanics and still prioritizes substrate issues such as cascade cost and responsive behavior over decorative polish.",
+      "files": [
+        "evals/files/marketing-card.css"
+      ],
+      "assertions": [
+        "The output explains `premium` through observable mechanics instead of using it as a vague style word.",
+        "The output flags cascade cost or override fragility before decorative recommendations.",
+        "The output flags responsive or flow risks if present.",
+        "The output gives a concrete visual recommendation only after structural issues."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["premium"],
+          ["mechanic", "observable", "means", "weak joint"],
+          ["!important", "cascade", "specificity", "override"],
+          ["width", "responsive", "flow", "overflow"],
+          ["after", "before", "structural", "structure", "weak joint", "fixed widths", "fixed width", "brittle", "layout", "container"]
+        ],
+        "must_not_include_any": [
+          ["make it premium"],
+          ["looks good"]
+        ]
+      }
+    }
+  ]
+}
