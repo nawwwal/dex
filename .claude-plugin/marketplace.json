@@ -10,7 +10,7 @@
     {
       "name": "core",
       "source": "./plugins/core",
-      "description": "Agent environment setup, council, communication, reflection, DevRev, and logging",
+      "description": "Agent environment setup, council, communication, reflection, DevRev, session wrap-up, and logging",
       "version": "1.0.2"
     },
     {
