@@ -1,0 +1,4 @@
+interface:
+  display_name: "Crux"
+  short_description: "Find the core bet behind a claim"
+  default_prompt: "Use $crux to pressure this claim, find the weak joint, and reframe it around the core bet."
