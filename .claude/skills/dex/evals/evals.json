@@ -1,12 +1,39 @@
 {
   "skill_name": "dex",
-  "version": 1,
-  "notes": "Regression suite for dex maintainer routing, schema hygiene, release gates, and eval orchestration.",
+  "version": 2,
+  "notes": "Behavior-first regression suite for Dex maintainer routing, schema hygiene, release gates, and skill-eval orchestration. Cases must prove agent behavior with artifacts or explicit evidence, not just mention workflow terms.",
+  "standards": {
+    "required_coverage": [
+      "explicit trigger",
+      "implicit trigger",
+      "contextual trigger",
+      "negative-control",
+      "known failure",
+      "artifact case",
+      "eval suite health",
+      "repair regression",
+      "release gate",
+      "benchmark comparison"
+    ],
+    "passing_run_must_record": [
+      "route chosen",
+      "files inspected",
+      "artifacts created or intentionally skipped",
+      "baseline used",
+      "pass/fail evidence",
+      "blocking failures",
+      "release recommendation"
+    ]
+  },
   "evals": [
     {
       "id": "codex-frontmatter-is-valid",
       "category": "known-failure",
+      "coverage": [
+        "artifact case"
+      ],
       "should_trigger": false,
+      "run_mode": "deterministic",
       "prompt": "Validate the Codex dex skill folder with the system skill-creator quick validator.",
       "files": [
         ".agents/skills/dex/SKILL.md"
@@ -27,12 +54,50 @@
             "argument-hint:"
           ]
         ]
-      }
+      },
+      "required_evidence": [
+        "quick_validate output",
+        "validate_dex_skill.py output"
+      ]
+    },
+    {
+      "id": "eval-suite-health-before-forward-run",
+      "category": "known-failure",
+      "coverage": [
+        "eval suite health",
+        "repair regression"
+      ],
+      "should_trigger": true,
+      "run_mode": "deterministic-or-clean-context",
+      "prompt": "Use the dex skill to eval .agents/skills/dex. Before running any clean-context evaluator, check whether the eval suite itself is healthy and gradeable.",
+      "expected_output": "The agent validates the eval suite first, records its health, fixes blocking suite issues before forward runs, and only then launches clean-context evaluation.",
+      "assertions": [
+        "Runs deterministic suite-health checks before any codex exec or subagent forward run.",
+        "Checks JSON parseability, required coverage, required evidence, duplicate IDs, and .agents/.claude mirroring.",
+        "Blocks or repairs the run if the eval suite is missing required coverage or contains ungradeable assertions.",
+        "Records the suite-health result in the round artifact or final eval summary."
+      ],
+      "deterministic_checks": {
+        "commands": [
+          "python3 -m json.tool .agents/skills/dex/evals/evals.json",
+          "python3 .agents/skills/dex/scripts/validate_dex_skill.py"
+        ]
+      },
+      "required_evidence": [
+        "eval suite health command output",
+        "coverage/evidence check result",
+        "decision to proceed, block, or repair",
+        "artifact or summary entry recorded before forward-run output"
+      ]
     },
     {
       "id": "explicit-eval-routes-to-eval-workflow",
       "category": "positive",
+      "coverage": [
+        "explicit trigger"
+      ],
       "should_trigger": true,
+      "run_mode": "clean-context-forward",
       "prompt": "Use the dex skill to eval plugins/design/skills/crux rounds=2 baseline=previous.",
       "expected_output": "The agent reads eval.md, loads skill-creator before repair, snapshots the target skill, designs or refreshes the relevant eval suite, runs clean-context evals, grades, diagnoses, repairs, and reruns.",
       "assertions": [
@@ -41,12 +106,47 @@
         "Designs or refreshes relevant eval cases before touching the target skill.",
         "Includes clean-context evals through fresh subagents or codex exec.",
         "Records artifacts under .dex/evals/<skill-name>/<timestamp>/round-N/."
+      ],
+      "required_evidence": [
+        "eval.md read",
+        "skill-creator loaded before repair",
+        ".dex/evals/crux/<timestamp>/round-1 path or dry-run equivalent",
+        "baseline=previous recorded"
+      ]
+    },
+    {
+      "id": "eval-real-skill-no-existing-evals",
+      "category": "positive",
+      "coverage": [
+        "implicit trigger",
+        "artifact case"
+      ],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use the dex skill to evaluate a new local skill at plugins/tools/skills/example-new-skill. It has no evals yet. Do not repair the skill until the eval suite exists.",
+      "expected_output": "The agent treats the missing eval suite as setup work, creates or proposes concrete eval cases first, then stops or continues to evaluation only after the suite is inspectable.",
+      "assertions": [
+        "Classifies the target as new or baseline=none unless a snapshot is requested.",
+        "Creates or proposes eval coverage before repair.",
+        "Includes explicit trigger, implicit trigger, contextual trigger, negative-control, artifact, and repair-regression placeholders.",
+        "Does not edit the target skill before the eval suite exists."
+      ],
+      "required_evidence": [
+        "target skill snapshot or missing-target note",
+        "new eval suite path or full proposed eval JSON",
+        "baseline=none or justified alternate baseline",
+        "no target-skill edit before eval design"
       ]
     },
     {
       "id": "eval-design-happens-before-repair",
       "category": "known-failure",
+      "coverage": [
+        "known failure",
+        "repair regression"
+      ],
       "should_trigger": true,
+      "run_mode": "clean-context-forward",
       "prompt": "Use the dex skill to eval plugins/dev/skills/blade because the last Blade change may have weakened audit quality. Repair anything that fails.",
       "expected_output": "The agent first snapshots the target, then inspects or writes the eval suite that will judge Blade audit quality before editing Blade skill files.",
       "assertions": [
@@ -69,54 +169,216 @@
             "run a quick eval first, then decide what to test"
           ]
         ]
-      }
+      },
+      "required_evidence": [
+        "snapshot path",
+        "existing evals/fixtures inspection",
+        "new or refreshed Blade audit case",
+        "target files unchanged until eval design completes"
+      ]
+    },
+    {
+      "id": "eval-dirty-target-uses-snapshot-baseline",
+      "category": "contextual",
+      "coverage": [
+        "benchmark comparison",
+        "artifact case"
+      ],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use the dex skill to eval plugins/design/skills/diverge. The target skill has uncommitted local edits. Benchmark the repair without losing the dirty work.",
+      "expected_output": "The agent uses baseline=snapshot, preserves local edits, stores the pre-repair snapshot, and compares repaired behavior against that snapshot rather than previous committed history.",
+      "assertions": [
+        "Detects dirty target state.",
+        "Uses baseline=snapshot unless the user overrides it.",
+        "Stores a pre-repair snapshot under .dex/evals/diverge/<timestamp>/round-1/.",
+        "Does not revert or discard user edits.",
+        "Records benchmark delta against the snapshot."
+      ],
+      "required_evidence": [
+        "git status or diff evidence for target",
+        "snapshot file path",
+        "baseline=snapshot in benchmark artifact",
+        "statement that dirty work was preserved"
+      ]
     },
     {
       "id": "benchmark-repair-intent-routes-to-eval",
       "category": "contextual",
+      "coverage": [
+        "contextual trigger",
+        "benchmark comparison"
+      ],
       "should_trigger": true,
+      "run_mode": "clean-context-forward",
       "prompt": "The Blade skill feels weaker after the last change. Benchmark it against the prior version and repair whatever fails.",
       "expected_output": "The agent treats benchmark and repair language as dex eval intent, not as a release.",
       "assertions": [
         "Routes benchmark/repair intent to ./eval.md.",
-        "Uses baseline=previous for an existing skill unless overridden.",
+        "Uses baseline=previous for an existing clean skill unless overridden.",
+        "Runs or proposes a previous-vs-current comparison.",
         "Does not propose a plugin release before eval evidence exists."
+      ],
+      "required_evidence": [
+        "eval.md route",
+        "baseline=previous",
+        "comparison target",
+        "release recommendation blocked or deferred until eval passes"
+      ]
+    },
+    {
+      "id": "bad-eval-suite-repaired-before-skill",
+      "category": "known-failure",
+      "coverage": [
+        "repair regression"
+      ],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use the dex skill to eval plugins/design/skills/crux. Its existing eval has an assertion that always passes and another that requires a hidden answer. Fix the eval process before changing the skill.",
+      "expected_output": "The agent diagnoses the suite as a bad eval, rewrites the bad assertions into observable checks, reruns or restates the corrected suite, and only then considers skill repair.",
+      "assertions": [
+        "Labels the primary failure as missing fixture or bad eval.",
+        "Fixes over-broad or hidden-answer assertions first.",
+        "Does not blame the target skill before the eval is gradeable.",
+        "Adds a regression case for the bad-eval failure."
+      ],
+      "required_evidence": [
+        "bad assertion identified",
+        "corrected assertion or fixture",
+        "diagnosis label",
+        "no target skill edit before eval fix"
       ]
     },
     {
       "id": "release-routes-to-release-workflow",
       "category": "positive",
+      "coverage": [
+        "explicit trigger",
+        "release gate"
+      ],
       "should_trigger": true,
+      "run_mode": "clean-context-forward",
       "prompt": "Use the dex skill to release dev minor.",
       "expected_output": "The agent reads release.md and starts with README/release-doc and preflight gates before any version bump.",
       "assertions": [
         "Routes to ./release.md rather than ./eval.md.",
         "Checks main branch and clean worktree before release mutation.",
         "Runs README/release-doc parity gate before tagging."
+      ],
+      "required_evidence": [
+        "release.md read",
+        "branch and worktree status",
+        "README/release-doc parity check",
+        "no version bump before gates pass"
+      ]
+    },
+    {
+      "id": "release-this-multi-plugin-diff-splits-releases",
+      "category": "contextual",
+      "coverage": [
+        "release gate",
+        "known failure"
+      ],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use the dex skill: release this. The branch changes plugins/design/skills/crux and plugins/dev/skills/blade.",
+      "expected_output": "The agent inspects the branch diff, maps changes to both design and dev plugins, and plans separate per-plugin release commits/tags instead of one combined release.",
+      "assertions": [
+        "Does not infer a single release target from the phrase release this.",
+        "Inspects diff before selecting plugin targets.",
+        "Names both design and dev as affected release surfaces.",
+        "Plans separate release commits and tags per plugin."
+      ],
+      "required_evidence": [
+        "diff inspection command or artifact",
+        "affected plugin list",
+        "separate release plan for design and dev",
+        "blocked if main/clean prerequisites fail"
+      ]
+    },
+    {
+      "id": "release-dirty-worktree-blocks-version-bump",
+      "category": "known-failure",
+      "coverage": [
+        "release gate",
+        "repair regression"
+      ],
+      "should_trigger": true,
+      "run_mode": "deterministic-or-clean-context",
+      "prompt": "Use the dex skill to release tools patch, but the repo has an unrelated untracked file and unstaged README changes.",
+      "expected_output": "The agent stops before mutating version metadata, reports the dirty worktree, and asks for cleanup or explicit scope rather than staging unrelated files.",
+      "assertions": [
+        "Runs worktree cleanliness preflight before version bumps.",
+        "Names the dirty files.",
+        "Does not stage unrelated files.",
+        "Does not edit manifests or create tags."
+      ],
+      "required_evidence": [
+        "git status output",
+        "release blocked before mutation",
+        "dirty paths listed"
       ]
     },
     {
       "id": "no-argument-asks-mode",
       "category": "boundary",
+      "coverage": [
+        "explicit trigger"
+      ],
       "should_trigger": true,
+      "run_mode": "clean-context-forward",
       "prompt": "Use the dex skill.",
       "expected_output": "The agent asks whether to run a plugin release or a skill eval.",
       "assertions": [
         "Does not assume release.",
         "Does not assume eval.",
         "Asks for the missing mode."
+      ],
+      "required_evidence": [
+        "single clarifying question naming release and eval"
       ]
     },
     {
       "id": "normal-plugin-readme-edit-does-not-trigger-dex-eval",
       "category": "negative-control",
+      "coverage": [
+        "negative-control"
+      ],
       "should_trigger": false,
+      "run_mode": "clean-context-forward",
       "prompt": "Rewrite the README paragraph for the design plugin so it is shorter and clearer.",
       "expected_output": "The dex eval workflow should not be invoked unless the user asks for release, skill eval, benchmarking, or repair.",
       "assertions": [
         "Does not route to ./eval.md.",
         "Does not create .dex/evals artifacts.",
         "Uses ordinary writing/editing workflow unless release intent appears."
+      ],
+      "required_evidence": [
+        "no eval artifacts",
+        "no eval.md route",
+        "direct README edit or proposed copy"
+      ]
+    },
+    {
+      "id": "normal-skill-doc-edit-does-not-trigger-maintainer-eval",
+      "category": "negative-control",
+      "coverage": [
+        "negative-control"
+      ],
+      "should_trigger": false,
+      "run_mode": "clean-context-forward",
+      "prompt": "Tighten the first paragraph of plugins/design/skills/present/SKILL.md. Do not run a full benchmark.",
+      "expected_output": "The agent performs a narrow docs edit without invoking /dex eval because the user explicitly ruled out a benchmark.",
+      "assertions": [
+        "Does not route to ./eval.md.",
+        "Does not create .dex/evals artifacts.",
+        "Keeps the edit scoped to the requested paragraph.",
+        "May run quick validation if the edited skill needs metadata checking."
+      ],
+      "required_evidence": [
+        "no eval artifacts",
+        "scoped file diff",
+        "no benchmark language in final answer"
       ]
     }
   ]

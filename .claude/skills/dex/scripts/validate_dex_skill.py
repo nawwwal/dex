@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import os
+import json
 import re
 import sys
 from pathlib import Path
@@ -33,6 +34,12 @@ def require(text: str, pattern: str, label: str) -> None:
 def require_file(path: Path) -> None:
     if not path.exists():
         fail(f"missing {path.relative_to(REPO)}")
+
+
+def require_contains(values: set[str], expected: set[str], label: str) -> None:
+    missing = expected - values
+    if missing:
+        fail(f"{label} missing: {', '.join(sorted(missing))}")
 
 
 def validate_skill_md() -> None:
@@ -71,6 +78,11 @@ def validate_mirrored_docs() -> None:
         claude_text = read(CLAUDE / name)
         if agents_text != claude_text:
             fail(f"{name} differs between .agents and .claude dex skills")
+
+    agents_script = read(AGENTS / "scripts" / "validate_dex_skill.py")
+    claude_script = read(CLAUDE / "scripts" / "validate_dex_skill.py")
+    if agents_script != claude_script:
+        fail("scripts/validate_dex_skill.py differs between .agents and .claude dex skills")
 
     eval_md = read(AGENTS / "eval.md")
     for pattern in (
@@ -120,6 +132,74 @@ def validate_mirrored_docs() -> None:
         require(framework, pattern, ".agents/skills/dex/eval-framework.md")
 
 
+def validate_eval_suite() -> None:
+    suite = json.loads(read(AGENTS / "evals" / "evals.json"))
+    if suite.get("skill_name") != "dex":
+        fail("evals/evals.json skill_name must be dex")
+    if suite.get("version", 0) < 2:
+        fail("evals/evals.json must use behavior-first version 2 or newer")
+
+    evals = suite.get("evals")
+    if not isinstance(evals, list) or len(evals) < 12:
+        fail("evals/evals.json must contain at least 12 behavior/regression cases")
+
+    required_coverage = {
+        "explicit trigger",
+        "implicit trigger",
+        "contextual trigger",
+        "negative-control",
+        "known failure",
+        "artifact case",
+        "eval suite health",
+        "repair regression",
+        "release gate",
+        "benchmark comparison",
+    }
+    standards = suite.get("standards", {})
+    require_contains(set(standards.get("required_coverage", [])), required_coverage, "standards.required_coverage")
+
+    ids = set()
+    coverage = set()
+    categories = set()
+    run_modes = set()
+    for case in evals:
+        case_id = case.get("id")
+        if not case_id:
+            fail("eval case missing id")
+        if case_id in ids:
+            fail(f"duplicate eval id: {case_id}")
+        ids.add(case_id)
+
+        for key in ("category", "should_trigger", "run_mode", "prompt", "expected_output", "assertions", "required_evidence"):
+            if key not in case:
+                fail(f"{case_id} missing {key}")
+        if len(case.get("assertions", [])) < 3:
+            fail(f"{case_id} must have at least three assertions")
+        if len(case.get("required_evidence", [])) < 1:
+            fail(f"{case_id} must name evidence required for a pass")
+        if not isinstance(case.get("coverage"), list) or not case["coverage"]:
+            fail(f"{case_id} must declare coverage")
+
+        categories.add(case["category"])
+        run_modes.add(case["run_mode"])
+        coverage.update(case["coverage"])
+
+    require_contains(coverage, required_coverage, "eval case coverage")
+    require_contains(categories, {"positive", "contextual", "known-failure", "negative-control", "boundary"}, "eval categories")
+    require_contains(run_modes, {"clean-context-forward", "deterministic"}, "eval run modes")
+
+    required_ids = {
+        "eval-suite-health-before-forward-run",
+        "eval-real-skill-no-existing-evals",
+        "eval-dirty-target-uses-snapshot-baseline",
+        "bad-eval-suite-repaired-before-skill",
+        "release-this-multi-plugin-diff-splits-releases",
+        "release-dirty-worktree-blocks-version-bump",
+        "normal-skill-doc-edit-does-not-trigger-maintainer-eval",
+    }
+    require_contains(ids, required_ids, "eval ids")
+
+
 def validate_scripts_and_link() -> None:
     require_file(AGENTS / "scripts" / "validate_dex_skill.py")
     require_file(CLAUDE / "scripts" / "validate_dex_skill.py")
@@ -145,6 +225,7 @@ def validate_repo_docs() -> None:
 def main() -> int:
     validate_skill_md()
     validate_mirrored_docs()
+    validate_eval_suite()
     validate_scripts_and_link()
     validate_repo_docs()
     print("PASS: dex skill eval workflow is valid")
