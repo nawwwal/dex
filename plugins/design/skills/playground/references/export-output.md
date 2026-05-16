@@ -17,6 +17,7 @@ The export is the bridge from playground interaction back to agent action. Natur
 - Include enough context to act without seeing the playground.
 - Raw JSON is available as secondary export, not the only output.
 - Rejected items must not leak into the action prompt unless clearly labeled as rejected context.
+- Review-mode exports must include approved suggestions, rejected suggestions labeled separately, unresolved comments, anchors or target line references, and source assumptions.
 - Include source notes and assumptions when factual claims, measurements, or inferred behavior are used.
 
 ## Output Shape

@@ -24,4 +24,4 @@ Map source material into an artifact structure before choosing a visual treatmen
 
 ## Stop Rule
 
-Do not start with style. If the topic model is vague, use `design:crux` or ask for the missing source material before building.
+Do not start with style. If source material is missing, ask for it or inspect the repo first. Use `design:crux` only when the premise, weak joint, or standard of judgment is unclear.

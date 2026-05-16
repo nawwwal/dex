@@ -22,6 +22,7 @@ Extract objects, relationships, time, states, tensions, variables, decisions, ri
 - Use `design:content-design` before copy, state, tone, or CTA review playgrounds.
 - Use `design:crux` when the premise or weak joint is unclear.
 - Use `frontend-design` or app-specific dev skills only for production frontend implementation.
+- For pure skill, document, or code review surfaces, stay in `playground` unless the user asks for strategy, copy, presentation, production UI, or premise critique.
 - Do not route generation work to `harden`; hardening is for final implemented UI.
 
 3. Choose the interaction model.
@@ -34,7 +35,9 @@ Derive composition, material, motion, density, color semantics, typographic beha
 Default to one self-contained HTML file with inline CSS/JS, no remote scripts, instant interaction, export/paste-back output, browser inspection, keyboard access, reduced-motion support, and mobile handling.
 
 6. Return the result.
-Return the artifact path, open method, what it proves, what it does not prove, and how to export feedback back into the agent.
+Return the artifact path, open method, selected visual grammar, what it proves, what it does not prove, and how to export feedback back into the agent.
+
+If the user explicitly asks for read-only review, inline suggestions, or no file/artifact creation, do not build a file. Return anchored suggestions in chat and include the same interaction model, visual grammar, source assumptions, and export shape the artifact would have used.
 
 ## References
 
