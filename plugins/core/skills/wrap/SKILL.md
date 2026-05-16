@@ -1,13 +1,13 @@
 ---
 name: wrap
-description: "Use when the user explicitly invokes /wrap or asks to wrap up and commit a coding session: summarize how the work started, what problem appeared, how it was fixed, what changed, what was verified, what remains, create meaningful micro-commits from the current diff, and run the log skill when a durable handoff is needed. For recap-only requests, summarize but ask before committing."
+description: "Use when the user explicitly invokes /wrap or asks to wrap up, close out, checkpoint, finalize, or commit a coding session: summarize how the work started, what problem appeared, how it was fixed, what changed, what was verified, what remains, create meaningful micro-commits from the current diff, and run the log skill when a durable handoff is needed. For coding-session recap-only requests, summarize but ask before committing."
 ---
 
 # Wrap
 
 End the current work session with a grounded recap, clean commit history, and a durable journal when the work is worth carrying forward.
 
-`/wrap` means the user has authorized direct commit creation for the current task. If this skill loads for a recap-only request without explicit commit intent, produce the recap and ask before committing. It does not mean push, deploy, release, or history rewrite unless the user explicitly asked for those.
+`/wrap` means the user has authorized direct commit creation for the current task. Treat "close out this session", "checkpoint and commit", and "finalize the work" as wrap intent only when the user is talking about coding-session work. If this skill loads for a coding-session recap-only request without explicit commit intent, produce the recap and ask before committing. It does not mean push, deploy, release, or history rewrite unless the user explicitly asked for those.
 
 ## Evidence
 
@@ -48,6 +48,7 @@ Do not invent chronology. If the evidence cannot prove how something started or 
    - Do not sweep unrelated files into a commit because they are already dirty.
 
 5. Create meaningful micro-commits.
+   - If the diff is empty, do not create an empty commit.
    - Stage by exact path or hunk.
    - Use readable conventional messages tied to the concern, such as `feat:`, `fix:`, `docs:`, `test:`, `refactor:`, or `chore:`.
    - Prefer the smallest commit sequence that makes review easier.
