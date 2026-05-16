@@ -2,6 +2,8 @@
 
 Use this for transition, animation, microinteraction, timeline, scrubber, or motion-spec requests.
 
+Motion handoffs are playgrounds. They must make time inspectable, not just describe animation in prose.
+
 ## Motion Contract
 
 Capture each motion segment:
@@ -17,7 +19,7 @@ Capture each motion segment:
 
 ## Output By Medium
 
-- Code: include a scrubber that can move through the timeline. Show current time, active segment, property values, and rendered frame.
+- Code: include a timeline scrubber, play/pause, speed control, keyframe/state markers, reduced-motion alternative, and exportable motion spec. Show current time, active segment, property values, and rendered frame.
 - React app: use the app's real motion library when present.
 - HTML: use CSS or Web Animations only when faithful to the source.
 - Paper/Figma: show keyframes on a time ruler with annotated property deltas. These outputs are static unless the target tool provides a real interaction surface.
@@ -26,5 +28,8 @@ Capture each motion segment:
 
 - Motion explains causality, feedback, continuity, or attention shift.
 - Timing values are inspectable.
+- Play, pause, scrub, step, and speed controls work when the output medium supports interaction.
+- Keyframes and state markers are visible on the timeline.
 - Reduced-motion behavior is specified.
+- The export includes a motion spec with trigger, timing, easing/spring, properties, interruption behavior, and reduced-motion behavior.
 - The artifact shows the whole time frame, not just before/after screenshots.

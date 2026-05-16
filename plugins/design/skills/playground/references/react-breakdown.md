@@ -2,6 +2,8 @@
 
 Use this when the output medium is code and the source is a React app or React component library.
 
+If real app components are required, use a React route/page and import actual components. If the goal is exploratory interaction detached from production code, use standalone playground HTML.
+
 ## Required Flow
 
 1. Inspect the project structure and identify the router/framework before editing.
@@ -9,6 +11,7 @@ Use this when the output medium is code and the source is a React app or React c
 3. Import and render actual selected source components whenever possible.
 4. Add a handoff index around the real components; do not replace them with static drawings unless the source cannot run.
 5. Capture style facts from real DOM/computed styles when feasible.
+6. If the user is exploring a concept rather than documenting real components, stop and use standalone HTML instead.
 
 ## Handoff Page Sections
 

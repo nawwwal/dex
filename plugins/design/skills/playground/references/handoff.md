@@ -1,6 +1,8 @@
-# Visual Handoff
+# Handoff Playground
 
 Use this when the user asks for a handoff, engineer handoff, implementation spec, component inventory, screen inventory, state inventory, visual breakdown, or motion handoff.
+
+A handoff is one playground mode. It is source-faithful, technical, and focused on layers, states, properties, motion, responsive behavior, and implementation decisions. Make it interactive only when controls, scrubbers, annotations, state comparison, or inspection panels improve the handoff.
 
 ## Intake
 
@@ -25,6 +27,13 @@ Every handoff artifact must include:
 - Screen map when more than one screen is selected.
 - Accessibility notes: focus order, target size, contrast, screen-reader label, keyboard behavior, reduced-motion alternative.
 - Open questions: only unresolved facts needed by engineers.
+
+## Interaction Rules
+
+- Use controls when the handoff needs state switching, viewport comparison, layer toggles, or token/property inspection.
+- Use annotations when the user or engineer needs to comment on specific layers, states, or measurements.
+- Use a scrubber for motion; do not reduce transitions to before/after frames.
+- Keep source fidelity above visual flourish. The handoff can look plain if plainness helps the engineer verify exact styling.
 
 ## Stop Rules
 

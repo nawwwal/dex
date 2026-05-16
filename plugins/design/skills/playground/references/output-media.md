@@ -1,15 +1,17 @@
 # Output Media
 
-Use this when the user specifies code, Paper, or Figma.
+Use this when the user specifies code, Paper, Figma, or a React/app route.
 
 ## Code
 
 Default medium. Choose the smallest faithful code surface:
 
 - React route/page when the source is a React app, real components are needed, or motion uses a JavaScript motion library.
-- Self-contained HTML/SVG when the source is static, CSS-only, or a faithful standalone recreation is feasible.
+- Self-contained HTML/SVG when the source is static, exploratory, CSS-only, or a faithful standalone playground is feasible.
 
 For React output, ask for the target route/path before writing files.
+
+Do not create a React/app route for exploratory interaction detached from production code. Use standalone HTML for that.
 
 ## Paper
 
@@ -28,3 +30,7 @@ Figma output should create editable frames/objects, not flattened images, unless
 - Add visible comment pins/callout labels for review discussion.
 
 Do not claim native Figma comment threads were created unless the available MCP exposes a comment-thread API.
+
+## React/App Route
+
+React/app route output is only for source-faithful app integration: real components, real props, app routing, or real motion/runtime behavior. It is not the default playground substrate.
