@@ -1,0 +1,277 @@
+{
+  "skill_name": "teach",
+  "version": 1,
+  "notes": "Dex eval suite for Teach. Cases judge routing, source-backed explanation, response look and feel, concept memory, and hook-backed SQLite indexing. Passing output must feel like useful teaching, not a generic framework dump.",
+  "standards": {
+    "required_coverage": [
+      "explicit trigger",
+      "implicit trigger",
+      "contextual trigger",
+      "negative-control",
+      "known failure",
+      "artifact case",
+      "eval suite health",
+      "repair regression",
+      "benchmark comparison",
+      "response quality",
+      "hook behavior",
+      "frontend-personalized teaching",
+      "over-teaching regression",
+      "execution-gate regression"
+    ],
+    "response_quality": [
+      "Builds a mental model before details.",
+      "Uses the active context or artifact instead of generic explanation.",
+      "Uses the learner profile to choose frontend or design-to-code examples when that helps.",
+      "Defines unfamiliar terms once and then uses them naturally.",
+      "Explains alternatives through when they win and fail.",
+      "States tradeoffs as benefit, cost, and risk.",
+      "Names concepts used by clever code or abstractions.",
+      "Gives focused read-next topics.",
+      "Asks one grounding question before execution.",
+      "Avoids over-teaching when a compact answer is enough.",
+      "Does not claim the user has learned a concept without confirmation or observed use."
+    ],
+    "passing_run_must_record": [
+      "route chosen",
+      "files or artifacts inspected",
+      "whether execution was gated",
+      "concepts taught",
+      "memory files written or intentionally skipped",
+      "index or hook evidence",
+      "response-quality score",
+      "blocking failures"
+    ]
+  },
+  "evals": [
+    {
+      "id": "eval-suite-health-before-forward-run",
+      "category": "known-failure",
+      "coverage": ["eval suite health", "repair regression"],
+      "should_trigger": true,
+      "run_mode": "deterministic-or-clean-context",
+      "prompt": "Use the dex skill to eval plugins/core/skills/teach. Before any clean-context evaluator runs, validate that the Teach eval suite is healthy and gradeable.",
+      "expected_output": "The agent validates eval JSON and Teach-specific coverage first, fixes suite blockers before forward runs, and records suite-health evidence.",
+      "assertions": [
+        "Runs `python3 -m json.tool plugins/core/skills/teach/evals/evals.json` before clean-context forward runs.",
+        "Runs `python3 plugins/core/skills/teach/scripts/validate_teach_evals.py` before clean-context forward runs.",
+        "Blocks or repairs the run if response-quality, hook, or benchmark coverage is missing.",
+        "Records suite-health evidence in the eval summary or round artifact."
+      ],
+      "deterministic_checks": {
+        "commands": [
+          "python3 -m json.tool plugins/core/skills/teach/evals/evals.json",
+          "python3 plugins/core/skills/teach/scripts/validate_teach_evals.py"
+        ]
+      },
+      "required_evidence": ["json validation output", "coverage validator output", "proceed/block/repair decision"]
+    },
+    {
+      "id": "explicit-teach-unfamiliar-context",
+      "category": "positive",
+      "coverage": ["explicit trigger", "response quality", "execution-gate regression"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $teach to explain how SQLite FTS indexing works before implementing anything.",
+      "expected_output": "The agent teaches SQLite FTS with a mental model, alternatives, tradeoffs, read-next topics, and one grounding question before implementation.",
+      "assertions": [
+        "Builds a mental model before implementation details.",
+        "Defines SQLite FTS5 and distinguishes lexical search from semantic embedding search.",
+        "Compares grep, SQLite LIKE, FTS5, and vector embeddings through when they win and fail.",
+        "Explains tradeoffs as benefit, cost, and risk.",
+        "Asks one grounding question before doing implementation work."
+      ],
+      "quality_rubric": {
+        "mental_model": 2,
+        "context_grounding": 1,
+        "alternatives_tradeoffs": 2,
+        "read_next": 1,
+        "execution_gate": 2
+      },
+      "required_evidence": ["trigger route", "response-quality score", "grounding question"]
+    },
+    {
+      "id": "implicit-explain-trigger",
+      "category": "positive",
+      "coverage": ["implicit trigger", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "I don't understand this parser function. Walk me through what concepts it uses before changing it.",
+      "expected_output": "The agent implicitly routes to Teach, explains parser concepts before edits, and asks whether to proceed before changing code.",
+      "assertions": [
+        "Routes as teach behavior even without explicit $teach.",
+        "Names parser-related concepts such as tokenization, grammar, syntax tree, state, or validation only when relevant to the given function.",
+        "Explains concepts through the function's actual behavior rather than abstract textbook prose.",
+        "Does not edit code before a grounding question or user confirmation."
+      ],
+      "quality_rubric": {
+        "implicit_routing": 2,
+        "artifact_grounding": 2,
+        "concept_clarity": 2,
+        "execution_gate": 2
+      },
+      "required_evidence": ["implicit route", "concept list", "no pre-confirmation edit"]
+    },
+    {
+      "id": "clever-function-explanation",
+      "category": "positive",
+      "coverage": ["contextual trigger", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Write a compact ranking function for search results and explain the clever parts.",
+      "expected_output": "The answer includes code plus a plain explanation of concepts, why the function has that shape, and what to read to understand the choice.",
+      "assertions": [
+        "Includes `Concepts Used`, `Why This Shape`, and `To Understand This Choice` sections or equivalent headings.",
+        "Explains ranking concepts such as weighting, normalization, token match, or BM25 only if the code uses them.",
+        "States the simpler alternative and why the chosen shape wins or fails.",
+        "Does not hide cleverness behind unexplained terse code."
+      ],
+      "quality_rubric": {
+        "code_explanation": 2,
+        "design_choice": 2,
+        "read_next": 1,
+        "no_unexplained_cleverness": 2
+      },
+      "required_evidence": ["concepts used", "design-choice explanation", "read-next topics"]
+    },
+    {
+      "id": "artifact-backed-script-teaching",
+      "category": "positive",
+      "coverage": ["artifact case", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $teach to explain /Users/aditya.nawal/projects/dex/plugins/core/skills/teach/scripts/teach_memory.py to me like I have never seen frontmatter parsing or SQLite FTS before.",
+      "expected_output": "The agent inspects the script, teaches from the actual file, explains frontmatter parsing and SQLite FTS, and avoids generic database advice disconnected from the code.",
+      "assertions": [
+        "Inspects the target file before explaining it.",
+        "Uses concrete functions or flow from the script in the explanation.",
+        "Explains frontmatter parsing and FTS indexing in plain language.",
+        "Names alternatives and tradeoffs from this script's design.",
+        "Asks one grounding question before proposing changes."
+      ],
+      "quality_rubric": {
+        "source_grounding": 3,
+        "concept_clarity": 2,
+        "alternatives_tradeoffs": 2,
+        "execution_gate": 1
+      },
+      "required_evidence": ["file inspected", "source-grounded explanation", "quality score"]
+    },
+    {
+      "id": "markdown-memory-and-hook-index",
+      "category": "positive",
+      "coverage": ["hook behavior", "artifact case"],
+      "should_trigger": true,
+      "run_mode": "deterministic-or-clean-context",
+      "prompt": "Teach me the concept of inverted indexes and save it to my teach memory using /tmp/dex-teach-eval-memory. The SQLite index should be refreshed by the hook path, not by assuming manual indexing is enough.",
+      "expected_output": "The agent writes a Markdown concept note with frontmatter, runs or validates the hook reindex path against the temp memory dir, and searches the SQLite index.",
+      "assertions": [
+        "Writes a concept note under the requested memory directory.",
+        "Uses Markdown frontmatter with title, aliases, tags, learned_at, source_context, confidence, and related_concepts.",
+        "Runs `plugins/core/hooks/reindex_teach_memory.py` or records why plugin hooks are unavailable and validates the hook script directly.",
+        "Searches the generated SQLite index and finds the concept.",
+        "Does not use the old deeply nested memory path."
+      ],
+      "deterministic_checks": {
+        "commands": [
+          "python3 plugins/core/skills/teach/scripts/validate_teach_memory.py",
+          "CLAUDE_PLUGIN_ROOT=\"$PWD/plugins/core\" python3 plugins/core/hooks/reindex_teach_memory.py --memory-dir /tmp/dex-teach-eval-memory --force"
+        ],
+        "must_not_include_any": [
+          ["old deeply nested teach concept path"],
+          ["old nested records memory path"]
+        ]
+      },
+      "quality_rubric": {
+        "memory_shape": 2,
+        "hook_evidence": 3,
+        "search_evidence": 2
+      },
+      "required_evidence": ["concept note path", "frontmatter", "hook command output", "search result"]
+    },
+    {
+      "id": "response-feel-not-lecture",
+      "category": "known-failure",
+      "coverage": ["known failure", "response quality", "repair regression", "over-teaching regression", "execution-gate regression"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Before fixing this small shell command, explain why it failed: `python3 script.py --path foo` says `unrecognized arguments: --path`.",
+      "expected_output": "The answer teaches argparse basics compactly, uses the exact error, names the likely mismatch, gives one alternative, and avoids a long unrelated Python CLI lecture.",
+      "assertions": [
+        "Starts from the actual error message.",
+        "Explains the concept of CLI argument definitions and parser mismatch.",
+        "Keeps the response compact enough for a small error.",
+        "Does not include a broad tutorial on argparse internals.",
+        "Asks one grounding or proceed question before changing code."
+      ],
+      "quality_rubric": {
+        "right_sized_depth": 3,
+        "source_grounding": 2,
+        "concept_clarity": 2,
+        "execution_gate": 1
+      },
+      "required_evidence": ["right-sized response", "actual error referenced", "no broad lecture"]
+    },
+    {
+      "id": "frontend-personalized-teaching",
+      "category": "positive",
+      "coverage": ["response quality", "artifact case", "frontend-personalized teaching"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $teach to explain why this React component has layout shift and hydration warnings. Assume the learner profile says the user is a designer becoming a design engineer and wants frontend intricacies.",
+      "expected_output": "The answer explains the issue through design-to-code mechanics: user-visible behavior, HTML structure, CSS layout constraints, JavaScript/React rendering, TypeScript or prop invariants when relevant, and design-engineering tradeoffs.",
+      "assertions": [
+        "Uses the designer-to-design-engineer profile as the teaching lens.",
+        "Explains frontend mechanics in detail instead of defaulting to backend or database examples.",
+        "Connects React behavior to HTML, CSS, browser rendering, and user-visible UI behavior.",
+        "Names tradeoffs such as accessibility, performance, maintainability, and design-system fit.",
+        "Gives focused read-next topics across HTML, CSS, JavaScript, TypeScript, or React."
+      ],
+      "quality_rubric": {
+        "profile_use": 3,
+        "frontend_mechanics": 3,
+        "design_to_code_bridge": 2,
+        "read_next": 1
+      },
+      "required_evidence": ["learner profile used", "frontend mechanics", "design-to-code bridge", "read-next topics"]
+    },
+    {
+      "id": "negative-control-direct-implementation",
+      "category": "negative-control",
+      "coverage": ["negative-control"],
+      "should_trigger": false,
+      "run_mode": "clean-context-forward",
+      "prompt": "Add a missing comma in plugins/core/.codex-plugin/plugin.json. Do not explain anything unless needed.",
+      "expected_output": "The Teach workflow should not take over. The agent should perform the narrow edit and maybe mention validation, without a concept lesson.",
+      "assertions": [
+        "Does not route to Teach.",
+        "Does not produce a teaching scaffold.",
+        "Keeps the edit narrow.",
+        "Runs JSON validation if the file changed."
+      ],
+      "required_evidence": ["no teach route", "scoped edit", "json validation"]
+    },
+    {
+      "id": "benchmark-against-no-skill-baseline",
+      "category": "benchmark",
+      "coverage": ["benchmark comparison", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Benchmark Teach against a no-skill baseline for explaining a compact parser function. Record whether Teach improves mental model, tradeoffs, read-next guidance, and execution gating.",
+      "expected_output": "The eval records a no-skill baseline, a Teach run, and a response-quality delta across the named dimensions.",
+      "assertions": [
+        "Uses baseline=none for the new skill unless comparing against a snapshot.",
+        "Records both baseline and with-skill outputs or summaries.",
+        "Scores mental model, tradeoffs, read-next guidance, and execution gate.",
+        "Names any quality regression instead of only reporting pass/fail."
+      ],
+      "quality_rubric": {
+        "baseline_recorded": 2,
+        "with_skill_recorded": 2,
+        "delta_quality": 3,
+        "failure_notes": 1
+      },
+      "required_evidence": ["baseline output", "with-skill output", "quality delta", "release recommendation"]
+    }
+  ]
+}
