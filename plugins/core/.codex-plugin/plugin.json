@@ -1,15 +1,16 @@
 {
   "name": "core",
   "version": "1.1.0",
-  "description": "Agent environment setup, council, communication, reflection, DevRev, session wrap-up, and logging",
+  "description": "Agent environment setup, teaching, council, communication, reflection, DevRev, session wrap-up, and logging",
   "author": {
     "name": "Aditya Nawal"
   },
   "skills": "./skills/",
+  "hooks": "./hooks/hooks.json",
   "interface": {
     "displayName": "Dex Core",
-    "shortDescription": "Setup, council, communication, reflection, DevRev, wrap-up, and logging",
-    "longDescription": "Core Dex workflows for agent environment setup, multi-agent council analysis, communication, memory-aware reflection, DevRev workflows, end-of-session wrap-up, meaningful micro-commits, and logging.",
+    "shortDescription": "Setup, teaching, council, reflection, DevRev, wrap-up, and logging",
+    "longDescription": "Core Dex workflows for agent environment setup, teaching unfamiliar concepts before execution, multi-agent council analysis, communication, memory-aware reflection, DevRev workflows, end-of-session wrap-up, meaningful micro-commits, and logging.",
     "developerName": "Aditya Nawal",
     "category": "Productivity",
     "composerIcon": "./assets/logo.png",

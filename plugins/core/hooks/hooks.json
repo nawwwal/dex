@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/python3 \"${CLAUDE_PLUGIN_ROOT}/hooks/reindex_teach_memory.py\"",
+            "timeout": 30,
+            "statusMessage": "Checking Teach memory index"
+          }
+        ]
+      }
+    ]
+  }
+}
