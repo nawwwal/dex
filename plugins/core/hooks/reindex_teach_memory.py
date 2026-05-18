@@ -71,7 +71,11 @@ def emit_continue() -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Rebuild stale Teach concept index.")
-    parser.add_argument("--memory-dir", type=Path, default=DEFAULT_MEMORY_DIR)
+    parser.add_argument(
+        "--memory-dir",
+        type=Path,
+        default=Path(os.environ.get("TEACH_MEMORY_DIR", DEFAULT_MEMORY_DIR)),
+    )
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
 

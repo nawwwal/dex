@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+import json
+import os
 import shutil
 import sqlite3
 import subprocess
@@ -15,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "teach_memory.py"
 PLUGIN_ROOT = ROOT.parents[1]
 HOOK = PLUGIN_ROOT / "hooks" / "reindex_teach_memory.py"
+HOOKS_JSON = PLUGIN_ROOT / "hooks" / "hooks.json"
 
 
 def run(*args: str, input_text: str | None = None) -> subprocess.CompletedProcess[str]:
@@ -47,11 +50,48 @@ def run_hook(memory_dir: Path) -> subprocess.CompletedProcess[str]:
     return result
 
 
+def hook_command() -> str:
+    data = json.loads(HOOKS_JSON.read_text(encoding="utf-8"))
+    return data["hooks"]["Stop"][0]["hooks"][0]["command"]
+
+
+def run_configured_hook(memory_dir: Path, include_plugin_root: bool) -> subprocess.CompletedProcess[str]:
+    env = {
+        "PATH": os.environ.get("PATH", ""),
+        "HOME": str(Path.home()),
+        "TEACH_MEMORY_DIR": str(memory_dir),
+    }
+    if include_plugin_root:
+        env["CLAUDE_PLUGIN_ROOT"] = str(PLUGIN_ROOT)
+    result = subprocess.run(
+        hook_command(),
+        text=True,
+        capture_output=True,
+        check=False,
+        shell=True,
+        env=env,
+    )
+    if result.returncode != 0:
+        raise AssertionError(
+            f"configured hook failed\nstdout:\n{result.stdout}\nstderr:\n{result.stderr}"
+        )
+    try:
+        payload = json.loads(result.stdout.strip())
+    except json.JSONDecodeError as exc:
+        raise AssertionError(f"configured hook did not emit JSON: {result.stdout!r}") from exc
+    if payload.get("continue") is not True:
+        raise AssertionError(f"configured hook must continue, got {payload}")
+    return result
+
+
 def main() -> int:
     tmp_root = Path(tempfile.mkdtemp(prefix="dex-teach-memory-"))
     memory_dir = tmp_root / "teach"
     try:
         run("validate", "--memory-dir", str(memory_dir))
+        missing_root_result = run_configured_hook(memory_dir, include_plugin_root=False)
+        if "plugin root env missing" not in missing_root_result.stdout:
+            raise AssertionError("configured hook without plugin root must skip safely with a system message")
         run(
             "note",
             "Inverted Index",
@@ -108,6 +148,10 @@ def main() -> int:
                 raise AssertionError("hook must remove deleted concept notes from the index")
             if indexed_paths != {"inverted-index.md"}:
                 raise AssertionError(f"expected only inverted-index.md after hook, got {indexed_paths}")
+
+        configured_result = run_configured_hook(memory_dir, include_plugin_root=True)
+        if not configured_result.stdout.strip().startswith("{"):
+            raise AssertionError(f"configured hook must emit JSON, got {configured_result.stdout!r}")
 
         print("teach memory validator passed")
         return 0
