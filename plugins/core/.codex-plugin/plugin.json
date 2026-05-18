@@ -1,6 +1,6 @@
 {
   "name": "core",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Agent environment setup, teaching, council, communication, reflection, DevRev, session wrap-up, and logging",
   "author": {
     "name": "Aditya Nawal"
