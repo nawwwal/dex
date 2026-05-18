@@ -7,7 +7,7 @@ description: "Use when the user explicitly invokes teach or asks to learn, under
 
 Turn unfamiliar territory into a clear learning pass before execution.
 
-Assume the active context is unfamiliar to the user. Teach the concepts, mechanics, alternatives, and tradeoffs first. Move to the requested task only after the user has a workable grasp or explicitly asks you to proceed.
+Assume the active context is unfamiliar to the user. Teach the concepts, mechanics, alternatives, and tradeoffs first. Move to repo edits, commands, migrations, external writes, or other persistent actions only after the user has a workable grasp or explicitly asks you to proceed.
 
 ## Core Workflow
 
@@ -17,13 +17,26 @@ Assume the active context is unfamiliar to the user. Teach the concepts, mechani
 4. Name the important concepts involved.
 5. Compare alternatives and tradeoffs.
 6. Tell the user what to read next to understand the design choices.
-7. Ask one grounding question or confirmation before execution:
+7. Ask one grounding question or confirmation before persistent execution:
    - "Should I slow down on any concept before I do the task?"
    - "Does this mental model work well enough for me to proceed?"
    - "Which part should I unpack further before I change the code?"
 8. After the user confirms or shows understanding, perform the original task if it was part of the request.
-9. Record learned concepts in `~/.agents/memory/teach/` when the concept is durable enough to matter later.
+9. Record learned concepts in `~/.agents/memory/teach/` only when the user explicitly asks to save, remember, or add the concept to Teach memory.
 10. Let the bundled Codex hook rebuild the SQLite index after concept notes change. If hooks are disabled or the user asks for an immediate search, run the index command manually.
+
+## Execution Gates
+
+Use the smallest gate that protects the user from premature action:
+
+| Request shape | Teach first | Proceed immediately? |
+|---|---:|---:|
+| Explanation-only, debugging explanation, or conceptual walkthrough | yes | yes, answer the learning need |
+| Self-contained code snippet or example the user explicitly requested | yes | yes, include the teaching trail with the snippet |
+| Repo edit, shell command, migration, network action, persistent config change, or external write | yes | no, ask one grounding/proceed question first |
+| Memory write | yes | only when explicit save/remember/add-to-memory intent is already present |
+
+If the user says "before changing it", do not edit yet. If they ask for a compact example function, write the example and explain the concepts used.
 
 ## Learner Profile
 
@@ -33,7 +46,7 @@ Personalization lives in:
 ~/.agents/memory/teach/profile.md
 ```
 
-If the file exists, read it before choosing examples or depth. If it does not exist and the user provides learning context, create it. Do not index `profile.md` as a concept note.
+If the file exists, read it before choosing examples or depth. If the prompt itself provides learner context, use that context for the current answer. Create or update `profile.md` only when the user explicitly asks to remember that profile context. Do not index `profile.md` as a concept note.
 
 Seed this user's profile with:
 
@@ -80,6 +93,10 @@ Use this shape when it helps scanning:
 
 Do not turn every answer into a lecture. Compress when the user only needs a quick explanation.
 
+For a small error message or single-command failure, use 3-6 sentences by default: start from the exact error, name the likely mismatch, define one concept, give one likely fix path or alternative, and ask one compact proceed question only if code or commands would change. Skip read-next unless the user asks.
+
+If the user references "this file", "this component", "this parser", or "this error" but no source artifact is available, state that the exact cause needs the missing artifact. You may teach the diagnostic model, but do not invent a concrete root cause.
+
 ## Frontend Teaching Lane
 
 When the concept touches frontend work, prefer this ladder:
@@ -116,6 +133,8 @@ When you write or propose a clever function, abstraction, parser, index, state m
 
 Do this even if the user did not ask, because clever code without a learning trail becomes future confusion.
 
+Do not import Teach's own SQLite, FTS, or BM25 examples into unrelated answers. Explain only the mechanisms actually used by the requested code or artifact.
+
 ## Memory Contract
 
 Canonical concept memory lives in:
@@ -124,7 +143,7 @@ Canonical concept memory lives in:
 ~/.agents/memory/teach/
 ```
 
-Use one Markdown file per concept:
+Use one Markdown file per concept, only after explicit save intent:
 
 ```text
 ~/.agents/memory/teach/<slug>.md

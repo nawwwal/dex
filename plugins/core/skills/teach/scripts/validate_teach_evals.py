@@ -4,11 +4,13 @@
 from __future__ import annotations
 
 import json
+import shlex
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
 EVALS = ROOT / "evals" / "evals.json"
+REPO_ROOT = ROOT.parents[3]
 REQUIRED_COVERAGE = {
     "explicit trigger",
     "implicit trigger",
@@ -24,6 +26,8 @@ REQUIRED_COVERAGE = {
     "frontend-personalized teaching",
     "over-teaching regression",
     "execution-gate regression",
+    "no-memory-write regression",
+    "concept-leakage regression",
 }
 REQUIRED_QUALITY = {
     "Builds a mental model before details.",
@@ -38,10 +42,50 @@ REQUIRED_QUALITY = {
     "Avoids over-teaching when a compact answer is enough.",
     "Does not claim the user has learned a concept without confirmation or observed use.",
 }
+ALLOWED_RUN_MODES = {"clean-context-forward", "deterministic-or-clean-context"}
+ALLOWED_DETERMINISTIC_KEYS = {
+    "commands",
+    "must_include_any",
+    "must_not_include_any",
+    "expected_index_path",
+    "expected_search_title",
+}
+QUALITY_MINIMUMS = {"pass_threshold", "scale", "evidence_rule"}
+BENCHMARK_FIELDS = {
+    "baseline",
+    "runs",
+    "score_dimensions",
+    "must_record",
+}
+BENCHMARK_MUST_RECORD = {
+    "pass_rate",
+    "routing_accuracy",
+    "time_seconds",
+    "tokens_or_unknown",
+    "turns_or_commands",
+    "quality_delta",
+    "accepted_cost_tradeoff",
+}
 
 
 def fail(message: str) -> None:
     raise SystemExit(f"teach eval validation failed: {message}")
+
+
+def resolve_fixture(path_text: str) -> Path:
+    path = Path(path_text)
+    if path.is_absolute():
+        return path
+    if path.parts and path.parts[0] == "evals":
+        return ROOT / path
+    return ROOT / "evals" / path
+
+
+def command_paths_exist(case_id: str, command: str) -> None:
+    for token in shlex.split(command):
+        if token.endswith(".py") and token.startswith("plugins/"):
+            if not (REPO_ROOT / token).exists():
+                fail(f"{case_id} deterministic command references missing script {token}")
 
 
 def main() -> int:
@@ -62,6 +106,19 @@ def main() -> int:
     missing_quality = REQUIRED_QUALITY - quality
     if missing_quality:
         fail(f"standards.response_quality missing {sorted(missing_quality)}")
+    quality_grading = standards.get("quality_grading")
+    if not isinstance(quality_grading, dict) or not QUALITY_MINIMUMS <= set(quality_grading):
+        fail("standards.quality_grading must define scale, pass_threshold, and evidence_rule")
+    threshold = quality_grading.get("pass_threshold")
+    if not isinstance(threshold, (int, float)) or not 0 < threshold <= 1:
+        fail("standards.quality_grading.pass_threshold must be between 0 and 1")
+
+    benchmark_requirements = standards.get("benchmark_requirements")
+    if not isinstance(benchmark_requirements, dict):
+        fail("standards.benchmark_requirements must be an object")
+    missing_benchmark_record = BENCHMARK_MUST_RECORD - set(benchmark_requirements.get("must_record", []))
+    if missing_benchmark_record:
+        fail(f"standards.benchmark_requirements.must_record missing {sorted(missing_benchmark_record)}")
 
     ids: set[str] = set()
     coverage_seen: set[str] = set()
@@ -85,18 +142,71 @@ def main() -> int:
         ):
             if key not in case:
                 fail(f"{case_id} missing {key}")
+        if not isinstance(case["should_trigger"], bool):
+            fail(f"{case_id} should_trigger must be boolean")
+        if case["run_mode"] not in ALLOWED_RUN_MODES:
+            fail(f"{case_id} run_mode must be one of {sorted(ALLOWED_RUN_MODES)}")
         if not isinstance(case["assertions"], list) or len(case["assertions"]) < 3:
             fail(f"{case_id} needs at least three assertions")
         if not isinstance(case["required_evidence"], list) or not case["required_evidence"]:
             fail(f"{case_id} needs required evidence")
+        files = case.get("files", [])
+        if files:
+            if not isinstance(files, list):
+                fail(f"{case_id} files must be a list")
+            for file_name in files:
+                if not isinstance(file_name, str):
+                    fail(f"{case_id} file entries must be strings")
+                if not resolve_fixture(file_name).exists():
+                    fail(f"{case_id} fixture missing: {file_name}")
         coverage = case["coverage"]
         if not isinstance(coverage, list) or not coverage:
             fail(f"{case_id} coverage must be a non-empty list")
         coverage_seen.update(coverage)
+        if "artifact case" in coverage and case["run_mode"] == "clean-context-forward":
+            prompt_has_existing_absolute_path = any(
+                Path(token.strip("`.,")).is_absolute() and Path(token.strip("`.,")).exists()
+                for token in str(case["prompt"]).split()
+            )
+            if not files and not prompt_has_existing_absolute_path:
+                fail(f"{case_id} artifact case needs files or an existing absolute path in prompt")
         if "response quality" in coverage:
             if "quality_rubric" not in case:
                 fail(f"{case_id} covers response quality but has no quality_rubric")
+            rubric = case["quality_rubric"]
+            if not isinstance(rubric, dict) or not rubric:
+                fail(f"{case_id} quality_rubric must be a non-empty object")
+            for dimension, weight in rubric.items():
+                if not isinstance(dimension, str) or not isinstance(weight, int) or not 1 <= weight <= 3:
+                    fail(f"{case_id} quality_rubric values must be integer weights 1-3")
             rubric_count += 1
+        if "deterministic_checks" in case:
+            deterministic = case["deterministic_checks"]
+            if not isinstance(deterministic, dict):
+                fail(f"{case_id} deterministic_checks must be an object")
+            unknown_keys = set(deterministic) - ALLOWED_DETERMINISTIC_KEYS
+            if unknown_keys:
+                fail(f"{case_id} deterministic_checks has unknown keys {sorted(unknown_keys)}")
+            commands = deterministic.get("commands", [])
+            if commands:
+                if not isinstance(commands, list) or not all(isinstance(command, str) for command in commands):
+                    fail(f"{case_id} deterministic commands must be strings")
+                for command in commands:
+                    command_paths_exist(case_id, command)
+            for key in ("must_include_any", "must_not_include_any"):
+                if key in deterministic and not isinstance(deterministic[key], list):
+                    fail(f"{case_id} {key} must be a list")
+        if case["category"] == "known-failure":
+            for key in ("known_failure_source", "before_failure_signal", "fixed_by"):
+                if key not in case and case_id != "eval-suite-health-before-forward-run":
+                    fail(f"{case_id} missing {key}")
+        if "benchmark comparison" in coverage:
+            benchmark = case.get("benchmark")
+            if not isinstance(benchmark, dict) or not BENCHMARK_FIELDS <= set(benchmark):
+                fail(f"{case_id} benchmark case must define {sorted(BENCHMARK_FIELDS)}")
+            missing_record = BENCHMARK_MUST_RECORD - set(benchmark.get("must_record", []))
+            if missing_record:
+                fail(f"{case_id} benchmark.must_record missing {sorted(missing_record)}")
 
     missing_cases = REQUIRED_COVERAGE - coverage_seen
     if missing_cases:

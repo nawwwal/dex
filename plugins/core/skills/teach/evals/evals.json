@@ -17,7 +17,9 @@
       "hook behavior",
       "frontend-personalized teaching",
       "over-teaching regression",
-      "execution-gate regression"
+      "execution-gate regression",
+      "no-memory-write regression",
+      "concept-leakage regression"
     ],
     "response_quality": [
       "Builds a mental model before details.",
@@ -41,7 +43,17 @@
       "index or hook evidence",
       "response-quality score",
       "blocking failures"
-    ]
+    ],
+    "quality_grading": {
+      "scale": "Each quality_rubric dimension is a weight from 1 to 3. Judges score each dimension 0 to weight and cite output evidence for every non-zero score.",
+      "pass_threshold": 0.75,
+      "evidence_rule": "A pass requires concrete evidence snippets from the output or generated artifact, not only evaluator opinion."
+    },
+    "benchmark_requirements": {
+      "baseline": "none",
+      "runs": ["no-skill baseline", "with Teach skill"],
+      "must_record": ["pass_rate", "routing_accuracy", "time_seconds", "tokens_or_unknown", "turns_or_commands", "quality_delta", "accepted_cost_tradeoff"]
+    }
   },
   "evals": [
     {
@@ -96,12 +108,14 @@
       "coverage": ["implicit trigger", "response quality"],
       "should_trigger": true,
       "run_mode": "clean-context-forward",
-      "prompt": "I don't understand this parser function. Walk me through what concepts it uses before changing it.",
+      "prompt": "I don't understand this parser function in plugins/core/skills/teach/evals/fixtures/parser_function.py. Walk me through what concepts it uses before changing it.",
+      "files": ["evals/fixtures/parser_function.py"],
       "expected_output": "The agent implicitly routes to Teach, explains parser concepts before edits, and asks whether to proceed before changing code.",
       "assertions": [
         "Routes as teach behavior even without explicit $teach.",
         "Names parser-related concepts such as tokenization, grammar, syntax tree, state, or validation only when relevant to the given function.",
         "Explains concepts through the function's actual behavior rather than abstract textbook prose.",
+        "Quotes or names at least one concrete line, function, or branch from the fixture.",
         "Does not edit code before a grounding question or user confirmation."
       ],
       "quality_rubric": {
@@ -110,7 +124,7 @@
         "concept_clarity": 2,
         "execution_gate": 2
       },
-      "required_evidence": ["implicit route", "concept list", "no pre-confirmation edit"]
+      "required_evidence": ["implicit route", "fixture inspected", "concept list", "no pre-confirmation edit"]
     },
     {
       "id": "clever-function-explanation",
@@ -133,6 +147,40 @@
         "no_unexplained_cleverness": 2
       },
       "required_evidence": ["concepts used", "design-choice explanation", "read-next topics"]
+    },
+    {
+      "id": "unrelated-clever-function-no-bm25-leakage",
+      "category": "known-failure",
+      "coverage": ["response quality", "repair regression", "concept-leakage regression"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Write a compact debounce helper for UI input events and explain the clever parts.",
+      "known_failure_source": "Round 2 Teach behavior review: Teach's SQLite/FTS/BM25 examples need a regression case proving they do not leak into unrelated clever-function explanations.",
+      "before_failure_signal": "Mentions SQLite, FTS, BM25, lexical search, or inverted indexes while explaining a debounce helper.",
+      "fixed_by": "Clever Function Rule now says not to import Teach memory/index examples into unrelated answers.",
+      "expected_output": "The answer includes a debounce helper plus concepts actually used by debounce logic, such as timers, closures, event frequency, cancellation, and latency tradeoffs.",
+      "assertions": [
+        "Includes a self-contained debounce helper or clearly described implementation.",
+        "Explains only mechanisms used by debounce logic.",
+        "Does not mention SQLite, FTS, BM25, inverted indexes, or lexical search.",
+        "States the simpler alternative and the latency/responsiveness tradeoff."
+      ],
+      "deterministic_checks": {
+        "must_not_include_any": [
+          ["SQLite"],
+          ["FTS"],
+          ["BM25"],
+          ["inverted index"],
+          ["lexical search"]
+        ]
+      },
+      "quality_rubric": {
+        "code_explanation": 2,
+        "concept_relevance": 3,
+        "design_choice": 2,
+        "no_unrelated_search_leakage": 3
+      },
+      "required_evidence": ["concepts used", "no search-index leakage", "latency tradeoff"]
     },
     {
       "id": "artifact-backed-script-teaching",
@@ -175,8 +223,11 @@
       "deterministic_checks": {
         "commands": [
           "python3 plugins/core/skills/teach/scripts/validate_teach_memory.py",
-          "CLAUDE_PLUGIN_ROOT=\"$PWD/plugins/core\" python3 plugins/core/hooks/reindex_teach_memory.py --memory-dir /tmp/dex-teach-eval-memory --force"
+          "CLAUDE_PLUGIN_ROOT=\"$PWD/plugins/core\" TEACH_MEMORY_DIR=/tmp/dex-teach-eval-memory python3 plugins/core/hooks/reindex_teach_memory.py --force",
+          "python3 plugins/core/skills/teach/scripts/teach_memory.py search inverted --memory-dir /tmp/dex-teach-eval-memory"
         ],
+        "expected_index_path": "/tmp/dex-teach-eval-memory/index.sqlite3",
+        "expected_search_title": "Inverted Index",
         "must_not_include_any": [
           ["old deeply nested teach concept path"],
           ["old nested records memory path"]
@@ -196,6 +247,9 @@
       "should_trigger": true,
       "run_mode": "clean-context-forward",
       "prompt": "Before fixing this small shell command, explain why it failed: `python3 script.py --path foo` says `unrecognized arguments: --path`.",
+      "known_failure_source": "Round 1 Teach response-feel review: small command failures can turn into broad argparse lectures.",
+      "before_failure_signal": "Explains argparse internals broadly, includes unrelated read-next material, or asks for confirmation before giving the compact explanation.",
+      "fixed_by": "Right-size rule and execution-gate matrix in SKILL.md.",
       "expected_output": "The answer teaches argparse basics compactly, uses the exact error, names the likely mismatch, gives one alternative, and avoids a long unrelated Python CLI lecture.",
       "assertions": [
         "Starts from the actual error message.",
@@ -215,17 +269,20 @@
     {
       "id": "frontend-personalized-teaching",
       "category": "positive",
-      "coverage": ["response quality", "artifact case", "frontend-personalized teaching"],
+      "coverage": ["response quality", "artifact case", "frontend-personalized teaching", "no-memory-write regression"],
       "should_trigger": true,
       "run_mode": "clean-context-forward",
-      "prompt": "Use $teach to explain why this React component has layout shift and hydration warnings. Assume the learner profile says the user is a designer becoming a design engineer and wants frontend intricacies.",
+      "prompt": "Use $teach to explain why the React component in plugins/core/skills/teach/evals/fixtures/layout_shift_component.tsx has layout shift and hydration warnings. Assume the learner profile says the user is a designer becoming a design engineer and wants frontend intricacies.",
+      "files": ["evals/fixtures/layout_shift_component.tsx"],
       "expected_output": "The answer explains the issue through design-to-code mechanics: user-visible behavior, HTML structure, CSS layout constraints, JavaScript/React rendering, TypeScript or prop invariants when relevant, and design-engineering tradeoffs.",
       "assertions": [
         "Uses the designer-to-design-engineer profile as the teaching lens.",
+        "Inspects the fixture and grounds the explanation in `mounted`, conditional `<p>`, or the unsized image.",
         "Explains frontend mechanics in detail instead of defaulting to backend or database examples.",
         "Connects React behavior to HTML, CSS, browser rendering, and user-visible UI behavior.",
         "Names tradeoffs such as accessibility, performance, maintainability, and design-system fit.",
-        "Gives focused read-next topics across HTML, CSS, JavaScript, TypeScript, or React."
+        "Gives focused read-next topics across HTML, CSS, JavaScript, TypeScript, or React.",
+        "Does not create or update `profile.md` or concept notes because the learner profile was prompt-provided, not explicit remember intent."
       ],
       "quality_rubric": {
         "profile_use": 3,
@@ -233,7 +290,7 @@
         "design_to_code_bridge": 2,
         "read_next": 1
       },
-      "required_evidence": ["learner profile used", "frontend mechanics", "design-to-code bridge", "read-next topics"]
+      "required_evidence": ["learner profile used", "fixture inspected", "frontend mechanics", "design-to-code bridge", "read-next topics", "memory intentionally skipped"]
     },
     {
       "id": "negative-control-direct-implementation",
@@ -241,15 +298,16 @@
       "coverage": ["negative-control"],
       "should_trigger": false,
       "run_mode": "clean-context-forward",
-      "prompt": "Add a missing comma in plugins/core/.codex-plugin/plugin.json. Do not explain anything unless needed.",
-      "expected_output": "The Teach workflow should not take over. The agent should perform the narrow edit and maybe mention validation, without a concept lesson.",
+      "prompt": "For plugins/core/skills/teach/evals/fixtures/broken-plugin.json, state the smallest patch that would make the JSON valid. Do not explain anything unless needed.",
+      "files": ["evals/fixtures/broken-plugin.json"],
+      "expected_output": "The Teach workflow should not take over. The agent should provide the narrow patch or answer and maybe mention JSON validation, without a concept lesson.",
       "assertions": [
         "Does not route to Teach.",
         "Does not produce a teaching scaffold.",
-        "Keeps the edit narrow.",
-        "Runs JSON validation if the file changed."
+        "Keeps the answer narrow.",
+        "Does not modify live plugin manifests."
       ],
-      "required_evidence": ["no teach route", "scoped edit", "json validation"]
+      "required_evidence": ["no teach route", "scoped answer", "fixture used"]
     },
     {
       "id": "benchmark-against-no-skill-baseline",
@@ -257,7 +315,14 @@
       "coverage": ["benchmark comparison", "response quality"],
       "should_trigger": true,
       "run_mode": "clean-context-forward",
-      "prompt": "Benchmark Teach against a no-skill baseline for explaining a compact parser function. Record whether Teach improves mental model, tradeoffs, read-next guidance, and execution gating.",
+      "prompt": "Benchmark Teach against a no-skill baseline for explaining plugins/core/skills/teach/evals/fixtures/parser_function.py. Record whether Teach improves mental model, tradeoffs, read-next guidance, and execution gating.",
+      "files": ["evals/fixtures/parser_function.py"],
+      "benchmark": {
+        "baseline": "none",
+        "runs": ["no-skill baseline", "with Teach skill"],
+        "score_dimensions": ["mental_model", "tradeoffs", "read_next", "execution_gate", "source_grounding"],
+        "must_record": ["pass_rate", "routing_accuracy", "time_seconds", "tokens_or_unknown", "turns_or_commands", "quality_delta", "accepted_cost_tradeoff"]
+      },
       "expected_output": "The eval records a no-skill baseline, a Teach run, and a response-quality delta across the named dimensions.",
       "assertions": [
         "Uses baseline=none for the new skill unless comparing against a snapshot.",
