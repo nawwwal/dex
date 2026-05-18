@@ -1,0 +1,4 @@
+interface:
+  display_name: "Teach"
+  short_description: "Explain concepts before execution"
+  default_prompt: "Use $teach to explain this unfamiliar code or context before doing the task."
