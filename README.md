@@ -1,6 +1,6 @@
 # dex
 
-Dex is a small agent toolkit for the work that keeps repeating: setting up an agent environment, finding the crux of a product problem, checking design quality, shipping Blade-heavy dashboard work, reviewing plans with another model, and turning media or memory into something usable.
+Dex is a small agent toolkit for the work that keeps repeating: setting up an agent environment, teaching unfamiliar concepts before execution, finding the crux of a product problem, checking design quality, shipping Blade-heavy dashboard work, reviewing plans with another model, and turning media or memory into something usable.
 
 It is not a giant prompt pack. The point is to keep the sharp workflows close, named plainly, and split by ownership so an agent can load the right behavior without dragging half the repo into context.
 
@@ -10,7 +10,7 @@ Dex ships four marketplace plugins.
 
 | Plugin | Owns | Does not own |
 |---|---|---|
-| `core` | Agent setup, council-style investigation, communication, reflection, DevRev, session wrap-up, session logs | Design implementation, browser tooling, media utilities |
+| `core` | Agent setup, teaching unfamiliar concepts, council-style investigation, communication, reflection, DevRev, session wrap-up, session logs | Design implementation, browser tooling, media utilities |
 | `design` | Product thinking, content design, divergence, presentation narrative, interactive playground artifacts | Blade, shaders, sound, generic code hardening, private review frameworks |
 | `dev` | Design engineering: Blade, dashboard implementation, hardening, shaders, sound | Product strategy, presentation coaching, third-party browser tools |
 | `tools` | Utility tools: Codex review, image generation, media optimization, mymind | Core setup, design critique, implementation doctrine |
@@ -67,17 +67,20 @@ Optional integrations depend on the skill you use: Figma MCP for Figma work, Dev
 
 ### Core
 
-`core` is the control plane. It should stay boring in the best way: setup, routing to durable records, and workflows that help agents reason across context and close sessions cleanly.
+`core` is the control plane. It should stay boring in the best way: setup, teaching, routing to durable records, and workflows that help agents reason across context and close sessions cleanly.
 
 | Skill | Use it for |
 |---|---|
 | `dex` | Fresh setup, doctor checks, `.agents` bootstrap, Claude/Codex compatibility links, project design-context capture |
+| `teach` | Explaining unfamiliar code, architecture, concepts, alternatives, tradeoffs, and clever functions before execution; recording learned concepts in `~/.agents/memory/teach/` with a hook-refreshed SQLite search index |
 | `council` | Parallel research, code audits, expert lenses, blind-spot passes, architecture investigations |
 | `communicate` | Drafting or sending Slack messages in the user's voice |
 | `reflect` | Surfacing patterns from sessions, finding leverage, noticing drift |
 | `devrev` | Sprint routines, grooming, enrichment, DevRev issue/enhancement work |
 | `wrap` | End-of-session recap, meaningful micro-commits, verification summary, and log handoff |
 | `log` | Task-scoped session journals after real work is done |
+
+`teach` ships a Codex Stop hook for refreshing its SQLite concept index. Codex plugin hooks run only when `[features].plugin_hooks = true` is enabled and the hook is trusted through the normal `/hooks` review flow; without that, the Markdown notes remain canonical and the index can be rebuilt manually.
 
 `council` lives here because it is a thinking primitive, not a misc tool.
 
