@@ -1,0 +1,656 @@
+{
+  "skill_name": "portent",
+  "version": 1,
+  "notes": "Comprehensive Dex eval suite for Portent. Cases judge routing, Tolaria-first behavior, Portent object modeling, lifecycle handling, relationship integrity, all supported modes, and regressions away from the old log/TASKS surfaces.",
+  "standards": {
+    "required_coverage": [
+      "explicit trigger",
+      "implicit trigger",
+      "contextual trigger",
+      "negative-control",
+      "known failure",
+      "artifact case",
+      "eval suite health",
+      "repair regression",
+      "benchmark comparison",
+      "response quality",
+      "tolaria mcp routing",
+      "markdown fallback",
+      "port types",
+      "entp types",
+      "lifecycle state",
+      "relationship integrity",
+      "duplicate prevention",
+      "no legacy write regression",
+      "mode capture",
+      "mode log",
+      "mode organize",
+      "mode brief",
+      "mode todo",
+      "mode archive",
+      "mode search"
+    ],
+    "response_quality": [
+      "Models reality with Portent objects instead of folder names.",
+      "Uses Tolaria as the canonical knowledge base.",
+      "Chooses the smallest correct Portent type.",
+      "Separates captured, organized, and archived lifecycle states.",
+      "Uses belongs_to for primary context and related_to for secondary context.",
+      "Searches for existing durable objects before creating duplicates.",
+      "Keeps capture fast and organization pessimistic.",
+      "Keeps briefings factual and separates next actions from facts.",
+      "Names unchecked sources or unavailable tools.",
+      "Reports created or updated objects with type, lifecycle, and relationships."
+    ],
+    "quality_grading": {
+      "scale": "Each quality_rubric dimension is a weight from 1 to 3. Judges score each dimension 0 to weight and cite output or artifact evidence for every non-zero score.",
+      "pass_threshold": 0.8,
+      "evidence_rule": "A pass requires concrete evidence from the response, generated frontmatter, or Tolaria/vault operation. Opinion-only grading is not enough."
+    },
+    "benchmark_requirements": {
+      "baseline": "snapshot",
+      "runs": ["pre-repair snapshot", "current Portent skill"],
+      "must_record": ["pass_rate", "routing_accuracy", "time_seconds", "tokens_or_unknown", "turns_or_commands", "quality_delta", "accepted_cost_tradeoff"]
+    }
+  },
+  "evals": [
+    {
+      "id": "eval-suite-health-before-forward-run",
+      "category": "known-failure",
+      "coverage": ["eval suite health", "repair regression"],
+      "should_trigger": true,
+      "run_mode": "deterministic-or-clean-context",
+      "prompt": "Use /dex eval on plugins/core/skills/portent. Before any clean-context evaluator runs, validate that the Portent eval suite is healthy and gradeable.",
+      "expected_output": "The agent validates eval JSON and Portent-specific coverage first, fixes suite blockers before forward runs, and records suite-health evidence.",
+      "assertions": [
+        "Runs JSON validation before clean-context forward runs.",
+        "Runs the Portent-specific validator before clean-context forward runs.",
+        "Blocks or repairs the run if any Portent mode, lifecycle, relationship, or legacy-write coverage is missing.",
+        "Records suite-health evidence in the round summary."
+      ],
+      "deterministic_checks": {
+        "commands": [
+          "python3 -m json.tool plugins/core/skills/portent/evals/evals.json",
+          "python3 plugins/core/skills/portent/scripts/validate_portent_skill.py"
+        ],
+        "must_include_any": [["Portent eval suite valid"], ["json validation"]],
+        "must_not_include_any": [["skip eval suite"], ["validate later"]]
+      },
+      "required_evidence": ["json validation output", "coverage validator output", "proceed/block/repair decision"]
+    },
+    {
+      "id": "explicit-portent-capture-note",
+      "category": "positive",
+      "coverage": ["explicit trigger", "mode capture", "entp types", "lifecycle state", "tolaria mcp routing", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $portent capture: remember that Ray AI marketplace work should be grouped by project object, not by folder.",
+      "expected_output": "The agent resolves the Tolaria vault, creates or proposes a captured Note with organized=false and archived=false, and reports the object type, lifecycle, and missing relationships.",
+      "assertions": [
+        "Uses Tolaria as the canonical destination.",
+        "Chooses `Note` because this is durable knowledge, not a bounded effort or event.",
+        "Keeps the object captured by setting organized false because the parent project relationship is not proven.",
+        "Reports missing relationship context instead of inventing a project link."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["mcp__tolaria__list_vaults", "Tolaria"], ["type: Note"], ["organized: false"], ["archived: false"]],
+        "must_not_include_any": [["~/.claude/log"], ["~/.claude/TASKS.md"], ["generic Codex memory"]]
+      },
+      "quality_rubric": {
+        "tolaria_destination": 3,
+        "type_choice": 2,
+        "lifecycle_choice": 2,
+        "relationship_honesty": 2
+      },
+      "required_evidence": ["Tolaria/vault resolution", "Note frontmatter", "missing relationship reported"]
+    },
+    {
+      "id": "implicit-remember-this-capture",
+      "category": "positive",
+      "coverage": ["implicit trigger", "mode capture", "lifecycle state", "markdown fallback", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Remember this for later: for dashboard work, if a page is auth-gated, stop at the login gate and report that honestly.",
+      "expected_output": "The agent implicitly routes to Portent capture, uses Tolaria if available or Markdown fallback inside the vault, and creates a captured Note rather than writing to generic memory.",
+      "assertions": [
+        "Routes to Portent without the user naming the skill.",
+        "Uses a captured Note because the instruction is durable knowledge.",
+        "Uses Markdown frontmatter and wikilinks if direct Tolaria write tools are unavailable.",
+        "Does not write to generic memory or legacy Claude paths."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["type: Note"], ["organized: false"], ["Markdown", "frontmatter"], ["Tolaria"]],
+        "must_not_include_any": [["~/.claude/log"], ["~/.claude/TASKS.md"], ["I added this to Codex memory"]]
+      },
+      "quality_rubric": {
+        "implicit_routing": 2,
+        "fallback_behavior": 2,
+        "capture_speed": 2,
+        "legacy_avoidance": 3
+      },
+      "required_evidence": ["implicit route", "frontmatter", "fallback or MCP write path"]
+    },
+    {
+      "id": "wrap-handoff-session-log-event",
+      "category": "contextual",
+      "coverage": ["contextual trigger", "mode log", "entp types", "relationship integrity", "no legacy write regression", "artifact case", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use portent after /wrap. We committed `feat: add Portent skill`, left one next step to release core later, and changed README plus plugins/core/skills/portent/SKILL.md.",
+      "expected_output": "The agent creates an Event for the completed work session, relates it to the primary Project when known or reports that it is missing, includes commits/files/next steps, and avoids ~/.claude/log.",
+      "assertions": [
+        "Chooses `Event` because a work session happened.",
+        "Includes concrete evidence such as changed files, commit messages, next steps, or verification.",
+        "Uses `belongs_to` only if the primary project is known.",
+        "Uses `related_to` for secondary topics or people when useful.",
+        "Does not write the old task journal path."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["type: Event"], ["primary project", "missing"], ["feat: add Portent skill"], ["plugins/core/skills/portent/SKILL.md"]],
+        "must_not_include_any": [["~/.claude/log"], ["type: session"], ["decisions-count"]]
+      },
+      "quality_rubric": {
+        "event_modeling": 3,
+        "evidence_capture": 2,
+        "relationship_integrity": 3,
+        "legacy_avoidance": 2
+      },
+      "required_evidence": ["Event frontmatter", "files or commits", "relationship decision", "no legacy write"]
+    },
+    {
+      "id": "organize-captured-material",
+      "category": "positive",
+      "coverage": ["mode organize", "artifact case", "port types", "entp types", "lifecycle state", "relationship integrity", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $portent organize on the captured material in evals/fixtures/captured-material.md.",
+      "files": ["evals/fixtures/captured-material.md"],
+      "expected_output": "The agent converts or proposes objects using default Portent types, sets organized true only where relationships are clear, and leaves or deletes weak captures that cannot attach to a useful context.",
+      "assertions": [
+        "Classifies bounded output work as `Project` and recurring review work as `Operation`.",
+        "Classifies a collaborator as `Person` and the conceptual area as `Topic`.",
+        "Uses one clear `belongs_to` where a primary parent exists.",
+        "Uses `related_to` for secondary associations.",
+        "Does not set organized true for objects without enough future-use relationships."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["type: Project"], ["type: Operation"], ["type: Person"], ["type: Topic"], ["organized: true"]],
+        "must_not_include_any": [["created type: Capture"], ["folder is the source of truth"]]
+      },
+      "quality_rubric": {
+        "type_accuracy": 3,
+        "relationship_accuracy": 3,
+        "lifecycle_discipline": 2,
+        "source_grounding": 2
+      },
+      "required_evidence": ["fixture inspected", "type mapping", "relationship mapping", "organized/captured decisions"]
+    },
+    {
+      "id": "brief-active-work-from-portent",
+      "category": "positive",
+      "coverage": ["mode brief", "artifact case", "relationship integrity", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $portent brief from evals/fixtures/vault-snapshot.md. Tell me what is active, what changed, and what I should do next.",
+      "files": ["evals/fixtures/vault-snapshot.md"],
+      "expected_output": "The briefing uses organized active Portent objects first, ignores archived records unless historically relevant, separates facts from next actions, and names quiet responsibilities.",
+      "assertions": [
+        "Prioritizes active organized Projects, Responsibilities, Operations, and Events.",
+        "Separates factual status from recommended next actions.",
+        "Calls out quiet responsibilities or stale projects based on the snapshot.",
+        "Does not treat archived objects as active work.",
+        "Names unchecked sources instead of pretending external tools were consulted."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["Active"], ["Changed"], ["Next actions"], ["quiet", "stale"], ["archived"]],
+        "must_not_include_any": [["Archived Project is active"], ["I checked Todoist"], ["I checked Linear"]]
+      },
+      "quality_rubric": {
+        "active_work_selection": 3,
+        "fact_action_separation": 2,
+        "quiet_signal": 2,
+        "source_honesty": 2
+      },
+      "required_evidence": ["snapshot inspected", "active records", "next actions", "unchecked sources"]
+    },
+    {
+      "id": "todo-durable-context-boundary",
+      "category": "positive",
+      "coverage": ["mode todo", "port types", "relationship integrity", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $portent todo with evals/fixtures/portent-vault-state.md: add a next action to reply to the Agent Marketplace PR review, and relate it back to the Agent Marketplace runtime fixes project.",
+      "files": ["evals/fixtures/portent-vault-state.md"],
+      "expected_output": "The agent creates or proposes a Task only if durable context is needed, relates it to the project, and says external task systems were not checked if unavailable.",
+      "assertions": [
+        "Chooses `Task` only because the task needs durable project context.",
+        "Uses `belongs_to` for the Agent Marketplace runtime fixes project if that object exists.",
+        "Reports when external task systems were not checked.",
+        "Does not write to ~/.claude/TASKS.md."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["type: Task"], ["belongs_to"], ["Agent Marketplace runtime fixes"], ["external task"]],
+        "must_not_include_any": [["~/.claude/TASKS.md"], ["checked Todoist"], ["checked Linear"]]
+      },
+      "quality_rubric": {
+        "task_boundary": 3,
+        "project_relationship": 3,
+        "source_honesty": 2,
+        "legacy_avoidance": 2
+      },
+      "required_evidence": ["Task frontmatter or proposal", "project relationship", "unchecked external tools"]
+    },
+    {
+      "id": "archive-completed-project",
+      "category": "positive",
+      "coverage": ["mode archive", "port types", "lifecycle state", "relationship integrity", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $portent archive using evals/fixtures/portent-vault-state.md: archive the completed Launch Portent v0.1 project but keep its launch event and Alice Example links searchable.",
+      "files": ["evals/fixtures/portent-vault-state.md"],
+      "expected_output": "The agent sets archived true on the Project, preserves relationships and searchable linked Events/People, and records a short archive note.",
+      "assertions": [
+        "Sets `archived: true` rather than deleting the project.",
+        "Preserves existing relationships.",
+        "Adds a short archive note explaining why it left active work.",
+        "Does not archive related people or topics just because the project is archived."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["type: Project"], ["archived: true"], ["archive note"], ["[[Alice Example]]"]],
+        "must_not_include_any": [["archived: true on Alice Example"], ["remove Alice Example link"]]
+      },
+      "quality_rubric": {
+        "archive_semantics": 3,
+        "relationship_preservation": 2,
+        "scope_control": 2
+      },
+      "required_evidence": ["archived Project", "preserved links", "archive note"]
+    },
+    {
+      "id": "search-without-forced-synthesis",
+      "category": "positive",
+      "coverage": ["mode search", "relationship integrity", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $portent search in evals/fixtures/portent-vault-state.md for what exists about knowledge graphs. Do not brief me, just show what records exist.",
+      "files": ["evals/fixtures/portent-vault-state.md"],
+      "expected_output": "The agent searches by title/type/relationship/content and returns object title, type, lifecycle state, and why each result matters without turning it into a briefing.",
+      "assertions": [
+        "Uses search behavior rather than brief behavior.",
+        "Returns title, type, lifecycle state, and relevance for each result.",
+        "Includes relationship context when available.",
+        "Does not synthesize next actions unless asked."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["title"], ["type"], ["organized", "archived"], ["related_to", "belongs_to"]],
+        "must_not_include_any": [["Next actions:"], ["full project brief"], ["you should"]]
+      },
+      "quality_rubric": {
+        "search_contract": 3,
+        "result_metadata": 3,
+        "no_forced_brief": 2
+      },
+      "required_evidence": ["search terms", "result metadata", "no next-action synthesis"]
+    },
+    {
+      "id": "duplicate-prevention-before-project-create",
+      "category": "known-failure",
+      "coverage": ["known failure", "duplicate prevention", "repair regression", "relationship integrity"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $portent with evals/fixtures/portent-vault-state.md: create a project for Agent Marketplace runtime fixes. There may already be something similar in the vault.",
+      "files": ["evals/fixtures/portent-vault-state.md"],
+      "known_failure_source": "Old log-style behavior created one note per session without checking whether durable project objects already existed.",
+      "before_failure_signal": "Creates a new Project immediately without searching likely existing titles.",
+      "fixed_by": "Portent skill now says to search before creating Project, Responsibility, Operation, Topic, or Person objects.",
+      "expected_output": "The agent searches for existing project-like objects first, updates or links to the existing object when found, and creates a new Project only when no likely match exists.",
+      "assertions": [
+        "Searches for likely existing Project objects before creating a duplicate.",
+        "Explains whether it updated, linked to, or created the object.",
+        "Uses `related_to` for near matches instead of collapsing distinct projects.",
+        "Does not create duplicates because the wording is slightly different."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["search"], ["existing"], ["Project"], ["duplicate"]],
+        "must_not_include_any": [["created a new Project without searching"], ["folder"]]
+      },
+      "quality_rubric": {
+        "search_before_create": 3,
+        "duplicate_judgment": 3,
+        "relationship_choice": 2
+      },
+      "required_evidence": ["search query or result", "create/update/link decision"]
+    },
+    {
+      "id": "project-context-update-existing-project",
+      "category": "positive",
+      "coverage": ["mode organize", "port types", "relationship integrity", "duplicate prevention", "artifact case", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $portent organize with evals/fixtures/portent-vault-state.md: update the existing Agent Marketplace runtime fixes Project with the latest status, open tasks, latest event, and relationships. Do not create a duplicate project.",
+      "files": ["evals/fixtures/portent-vault-state.md"],
+      "expected_output": "The agent finds the existing Agent Marketplace runtime fixes Project, updates its project context with current status, open tasks, latest event, and useful relationships, and explicitly avoids creating a duplicate.",
+      "assertions": [
+        "Searches fixture state and identifies the existing `Agent Marketplace runtime fixes` Project.",
+        "Updates project context fields or body sections for latest status, open tasks, latest event, and relationships.",
+        "Preserves the Project type and lifecycle instead of creating a new Project note.",
+        "Uses relationships already present in fixture state before inventing new links."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["Agent Marketplace runtime fixes"], ["type: Project"], ["Latest event"], ["Open tasks"], ["related_to"]],
+        "must_not_include_any": [["created a new Project"], ["duplicate Project"], ["changed the Project into an Event"]]
+      },
+      "quality_rubric": {
+        "existing_project_update": 3,
+        "context_completeness": 3,
+        "duplicate_avoidance": 3,
+        "relationship_grounding": 2
+      },
+      "required_evidence": ["fixture inspected", "existing Project updated", "status/tasks/latest event", "no duplicate"]
+    },
+    {
+      "id": "legacy-log-path-regression",
+      "category": "known-failure",
+      "coverage": ["known failure", "no legacy write regression", "repair regression", "mode log"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $portent log this session and put it wherever the canonical journal belongs.",
+      "known_failure_source": "Previous skill was named log and wrote task journals to ~/.claude/log plus updated ~/.claude/TASKS.md.",
+      "before_failure_signal": "Writes or instructs writing to ~/.claude/log, ~/.claude/TASKS.md, or `type: session` task-journal frontmatter.",
+      "fixed_by": "Portent skill forbids canonical writes to legacy Claude paths and uses Tolaria/Portent Event or Note objects.",
+      "expected_output": "The agent writes or proposes a Tolaria-backed Event/Note object and explicitly avoids the old ~/.claude/log and TASKS.md surfaces.",
+      "assertions": [
+        "Does not use `~/.claude/log` as the canonical journal path.",
+        "Does not update `~/.claude/TASKS.md` for carry-forward work.",
+        "Uses `Event` or `Note` based on what happened.",
+        "Reports Tolaria/vault write status."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["Tolaria"], ["type: Event", "type: Note"], ["canonical"]],
+        "must_not_include_any": [["~/.claude/log"], ["~/.claude/TASKS.md"], ["type: session"], ["decisions-count"]]
+      },
+      "quality_rubric": {
+        "legacy_avoidance": 3,
+        "new_canonical_path": 3,
+        "type_choice": 2
+      },
+      "required_evidence": ["no legacy path", "Tolaria destination", "Event or Note frontmatter"]
+    },
+    {
+      "id": "mcp-limited-markdown-fallback",
+      "category": "contextual",
+      "coverage": ["tolaria mcp routing", "markdown fallback", "artifact case", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $portent capture this note. The only Tolaria MCP tools available are list_vaults and open_note. list_vaults returns exactly one readable writable vault in evals/fixtures/tolaria-single-vault.md.",
+      "files": ["evals/fixtures/tolaria-single-vault.md"],
+      "expected_output": "The agent lists vaults, verifies the concrete single writable vault path, then writes Markdown directly inside that resolved vault path because direct Tolaria write/search tools are not available, and opens the note when useful.",
+      "assertions": [
+        "Uses `mcp__tolaria__list_vaults` when available.",
+        "Inspects the fixture and verifies the single writable vault path before writing.",
+        "Falls back to direct Markdown file operations inside the vault path when write/search MCP tools are unavailable.",
+        "Does not invent nonexistent Tolaria MCP tool names.",
+        "Uses `mcp__tolaria__open_note` only after creating or editing a note."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["mcp__tolaria__list_vaults"], ["Markdown"], ["vault path"], ["mcp__tolaria__open_note"]],
+        "must_not_include_any": [["mcp__tolaria__create_note"], ["mcp__tolaria__search"], ["imaginary tool"]]
+      },
+      "quality_rubric": {
+        "available_tool_awareness": 3,
+        "fallback_correctness": 3,
+        "no_tool_hallucination": 3
+      },
+      "required_evidence": ["vault list", "single writable vault fixture", "markdown file path", "open_note decision"]
+    },
+    {
+      "id": "multi-vault-selection-requires-disambiguation",
+      "category": "contextual",
+      "coverage": ["tolaria mcp routing", "markdown fallback", "response quality", "repair regression"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $portent capture a note about the Dex release checklist. Tolaria list_vaults returns the candidates in evals/fixtures/tolaria-vault-list.md, and I did not give a vault name or path hint.",
+      "files": ["evals/fixtures/tolaria-vault-list.md"],
+      "expected_output": "The agent lists or inspects the vault candidates, sees multiple plausible writable vaults, and asks which vault to use before writing any Markdown note.",
+      "assertions": [
+        "Uses `mcp__tolaria__list_vaults` or the fixture equivalent before choosing a destination.",
+        "Recognizes that multiple plausible writable vaults remain without a user label or path hint.",
+        "Asks the user to choose the vault before writing, rather than guessing from folder names.",
+        "Does not create a Markdown fallback file until a single vault path is resolved."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["multiple", "vault"], ["which vault"], ["choose"]],
+        "must_not_include_any": [["created the note in"], ["wrote the note to"], ["defaulted to first vault"]]
+      },
+      "quality_rubric": {
+        "vault_disambiguation": 3,
+        "write_safety": 3,
+        "tool_contract": 2
+      },
+      "required_evidence": ["vault candidates inspected", "multiple plausible writable vaults", "ask-before-write decision"]
+    },
+    {
+      "id": "missing-unreadable-vault-path-stops",
+      "category": "known-failure",
+      "coverage": ["tolaria mcp routing", "markdown fallback", "repair regression", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $portent log a short event in the Work vault. Tolaria list_vaults returns the broken Work vault shown in evals/fixtures/tolaria-missing-path.md.",
+      "files": ["evals/fixtures/tolaria-missing-path.md"],
+      "known_failure_source": "Earlier fallback instructions did not say what to do when a resolved vault path is missing or unreadable.",
+      "before_failure_signal": "Continues to write in the current repo or a legacy memory path after selecting a vault with no usable filesystem path.",
+      "fixed_by": "Portent now requires stopping and reporting when the selected vault has no readable path.",
+      "expected_output": "The agent matches the Work vault hint, detects that its path is missing or unreadable, stops without writing, and reports that Tolaria cannot be used until the path is fixed.",
+      "assertions": [
+        "Matches the user's Work vault hint against the listed vault label.",
+        "Checks whether the selected vault path exists and is readable before Markdown fallback.",
+        "Stops and reports the missing or unreadable path instead of writing somewhere else.",
+        "Does not use legacy Claude log or TASKS paths as a substitute destination."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["Work vault"], ["missing", "unreadable"], ["stop"]],
+        "must_not_include_any": [["~/.claude/log"], ["~/.claude/TASKS.md"], ["wrote the event"]]
+      },
+      "quality_rubric": {
+        "hint_matching": 2,
+        "path_validation": 3,
+        "failure_honesty": 3,
+        "legacy_avoidance": 2
+      },
+      "required_evidence": ["vault hint matched", "path checked", "stop/no-write decision"]
+    },
+    {
+      "id": "concrete-markdown-fallback-single-vault",
+      "category": "positive",
+      "coverage": ["tolaria mcp routing", "markdown fallback", "mode capture", "lifecycle state", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $portent capture with only list_vaults/open_note available. list_vaults returns exactly one readable vault, represented by evals/fixtures/tolaria-single-vault.md. Store: Browser verification must report auth gates honestly.",
+      "files": ["evals/fixtures/tolaria-single-vault.md"],
+      "expected_output": "The agent selects the sole vault, verifies the resolved path, writes a Markdown Note with frontmatter inside that vault path, and may open the note afterward with open_note.",
+      "assertions": [
+        "Selects the only vault without asking for disambiguation.",
+        "Uses direct Markdown fallback inside the resolved vault path because no write MCP tool is guaranteed.",
+        "Creates or proposes a `Note` with `organized: false` and `archived: false` frontmatter.",
+        "Uses `mcp__tolaria__open_note` only after the Markdown note exists or as a review step."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["single vault"], ["vault path"], ["type: Note"], ["organized: false"], ["archived: false"], ["Markdown"]],
+        "must_not_include_any": [["mcp__tolaria__create_note"], ["mcp__tolaria__search"], ["ask which vault"]]
+      },
+      "quality_rubric": {
+        "single_vault_selection": 2,
+        "fallback_execution": 3,
+        "frontmatter_correctness": 3,
+        "tool_contract": 2
+      },
+      "required_evidence": ["one vault selected", "path verified", "Markdown frontmatter", "open_note sequencing"]
+    },
+    {
+      "id": "vault-agents-read-before-write",
+      "category": "known-failure",
+      "coverage": ["tolaria mcp routing", "markdown fallback", "mode capture", "lifecycle state", "repair regression", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $portent capture with evals/fixtures/tolaria-agents-vault.md. Store: release notes should mention the Tolaria fallback path. The vault has hasAgentInstructions=true.",
+      "files": ["evals/fixtures/tolaria-agents-vault.md"],
+      "known_failure_source": "A fallback implementation can correctly resolve a writable vault but write at the vault root before reading vault-local AGENTS.md instructions.",
+      "before_failure_signal": "Creates a Markdown capture at the vault root or omits the required AGENTS.md template tags when hasAgentInstructions is true.",
+      "fixed_by": "Portent requires reading the vault AGENTS.md first when hasAgentInstructions is true and the file exists.",
+      "expected_output": "The agent reads the vault AGENTS.md before writing, uses the instructed Inbox/Captures path, applies the required capture template tags, and keeps the Note captured with organized false and archived false.",
+      "assertions": [
+        "Reads the vault AGENTS.md before creating or editing any Markdown capture because hasAgentInstructions is true.",
+        "Writes or proposes the capture under `Inbox/Captures/` rather than the vault root.",
+        "Applies the AGENTS.md template requirements, including the `inbox` and `portent-capture` tags.",
+        "Preserves Portent lifecycle fields with `organized: false` and `archived: false`."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["AGENTS.md"], ["read before"], ["Inbox/Captures"], ["portent-capture"], ["organized: false"], ["archived: false"]],
+        "must_not_include_any": [["wrote at the vault root"], ["skipped AGENTS.md"], ["hasAgentInstructions was ignored"]]
+      },
+      "quality_rubric": {
+        "agents_read_before_write": 3,
+        "vault_instruction_compliance": 3,
+        "frontmatter_correctness": 2,
+        "write_scope": 2
+      },
+      "required_evidence": ["AGENTS.md read before write", "Inbox/Captures path", "template tags", "captured lifecycle"]
+    },
+    {
+      "id": "custom-type-resistance",
+      "category": "boundary",
+      "coverage": ["negative-control", "port types", "entp types", "relationship integrity", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $portent to store a vendor call about dashboard analytics. Make a new type called VendorCall if needed.",
+      "expected_output": "The agent resists creating a custom type because Event plus related Person/Topic/Project captures the behavior. It uses default relationships unless a custom relationship has distinct behavior.",
+      "assertions": [
+        "Uses `Event` for the call.",
+        "Uses `Person` for the vendor and `Topic` for dashboard analytics when useful.",
+        "Explains that a custom type is not needed unless behavior/templates/workflows differ.",
+        "Uses `related_to` for known useful context and `belongs_to` only when a primary project or parent is known."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["type: Event"], ["type: Person"], ["type: Topic"], ["related_to"]],
+        "must_not_include_any": [["type: VendorCall"], ["created a custom relationship"]]
+      },
+      "quality_rubric": {
+        "default_type_preference": 3,
+        "extension_rule": 2,
+        "relationship_choice": 2
+      },
+      "required_evidence": ["default type selection", "custom type rejected", "relationship mapping"]
+    },
+    {
+      "id": "negative-control-devrev-sprint-workflow",
+      "category": "negative-control",
+      "coverage": ["negative-control"],
+      "should_trigger": false,
+      "run_mode": "clean-context-forward",
+      "prompt": "Plan my DevRev sprint, assign issues, and update stages in DevRev.",
+      "expected_output": "The Portent skill should not take over operational DevRev planning. The agent should route to the DevRev workflow and only use Portent if asked to record a durable brief afterward.",
+      "assertions": [
+        "Does not use Portent as the primary workflow.",
+        "Routes to DevRev for sprint planning and issue updates.",
+        "Mentions Portent only as an optional record-keeping follow-up if appropriate."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["DevRev"], ["sprint"], ["issue"]],
+        "must_not_include_any": [["created a Tolaria record before DevRev"], ["Portent as primary workflow"], ["Tolaria first"]]
+      },
+      "required_evidence": ["route-away decision", "DevRev workflow named"]
+    },
+    {
+      "id": "negative-control-repo-code-search",
+      "category": "negative-control",
+      "coverage": ["negative-control"],
+      "should_trigger": false,
+      "run_mode": "clean-context-forward",
+      "prompt": "Search this repository for where the dashboard router mounts the Agent Marketplace app.",
+      "expected_output": "The Portent skill should not take over ordinary repository code search. The agent should use repo search tools and only use Portent if asked to capture the result afterward.",
+      "assertions": [
+        "Does not resolve Tolaria as the primary action for repository code search.",
+        "Uses repository search or file inspection as the appropriate workflow.",
+        "Mentions Portent only as optional capture after the code answer is found."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["repo"], ["search"], ["router"], ["Agent Marketplace"]],
+        "must_not_include_any": [["wrote a Tolaria note before repo search"], ["Portent as primary workflow"], ["Tolaria first"]]
+      },
+      "required_evidence": ["route-away decision", "repo search workflow named"]
+    },
+    {
+      "id": "negative-control-github-pr-release-execution",
+      "category": "negative-control",
+      "coverage": ["negative-control"],
+      "should_trigger": false,
+      "run_mode": "clean-context-forward",
+      "prompt": "Create the GitHub PR, push the current branch, and cut the release tag.",
+      "expected_output": "The Portent skill should not execute GitHub, push, PR, or release work. The agent should route to the GitHub or Dex release workflow and reserve Portent for post-release logging if asked.",
+      "assertions": [
+        "Does not model the GitHub operation as a Portent Project or Event before doing the requested execution.",
+        "Routes push, PR creation, and release tagging to GitHub or Dex release workflows.",
+        "Uses Portent only as an optional after-action log if the user asks to record it."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["GitHub"], ["PR"], ["release"], ["tag"]],
+        "must_not_include_any": [["created a Tolaria event before execution"], ["Portent as primary workflow"], ["Tolaria first"]]
+      },
+      "required_evidence": ["route-away decision", "GitHub or release workflow named"]
+    },
+    {
+      "id": "negative-control-generic-implementation-request",
+      "category": "negative-control",
+      "coverage": ["negative-control"],
+      "should_trigger": false,
+      "run_mode": "clean-context-forward",
+      "prompt": "Implement the missing empty state in the Agent Marketplace app and run the tests.",
+      "expected_output": "The Portent skill should not take over generic implementation work. The agent should inspect the codebase, edit code, and test, then optionally log to Portent only if asked.",
+      "assertions": [
+        "Does not route implementation work to Tolaria or Portent first.",
+        "Uses normal code inspection, editing, and test commands for the app change.",
+        "Treats Portent as optional durable record-keeping after implementation, not the implementation workflow."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["implement"], ["code"], ["tests"], ["Agent Marketplace"]],
+        "must_not_include_any": [["created a Tolaria task before implementation"], ["Portent as primary workflow"], ["Tolaria first"]]
+      },
+      "required_evidence": ["route-away decision", "implementation workflow named"]
+    },
+    {
+      "id": "benchmark-against-log-snapshot",
+      "category": "benchmark",
+      "coverage": ["benchmark comparison", "response quality", "no legacy write regression"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Benchmark current Portent against the concrete pre-repair log snapshot in evals/fixtures/pre-repair-log-snapshot.md for a session handoff. Record whether current behavior improves canonical destination, object type, lifecycle, relationships, and legacy-path avoidance.",
+      "files": ["evals/fixtures/pre-repair-log-snapshot.md"],
+      "benchmark": {
+        "baseline": "snapshot",
+        "baseline_fixture": "evals/fixtures/pre-repair-log-snapshot.md",
+        "runs": ["pre-repair log snapshot", "current Portent skill"],
+        "score_dimensions": ["canonical_destination", "type_accuracy", "lifecycle", "relationships", "legacy_avoidance", "brief_response"],
+        "must_record": ["pass_rate", "routing_accuracy", "time_seconds", "tokens_or_unknown", "turns_or_commands", "quality_delta", "accepted_cost_tradeoff"]
+      },
+      "expected_output": "The eval records the fixture-backed baseline output, a current-skill output, and a scored delta across the named Portent dimensions.",
+      "assertions": [
+        "Uses baseline=snapshot for the dirty branch conversion from log to Portent.",
+        "Uses the pre-repair log snapshot fixture as the concrete baseline artifact.",
+        "Records baseline and current behavior separately.",
+        "Scores canonical destination, type, lifecycle, relationships, and legacy avoidance.",
+        "Names any quality regression instead of only reporting pass/fail."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["baseline"], ["snapshot"], ["quality_delta"], ["legacy_avoidance"]],
+        "must_not_include_any": [["baseline=none"], ["release ready without eval"]]
+      },
+      "quality_rubric": {
+        "baseline_recorded": 2,
+        "current_recorded": 2,
+        "delta_quality": 3,
+        "failure_notes": 1
+      },
+      "required_evidence": ["baseline output", "current output", "scored delta", "release recommendation"]
+    }
+  ]
+}

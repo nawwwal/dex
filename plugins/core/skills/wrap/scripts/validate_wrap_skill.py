@@ -29,10 +29,10 @@ SKILL_REQUIRED_PATTERNS = [
     r"README and release-doc drift",
     r"Stage by exact path or hunk",
     r"do not create an empty commit",
-    r"Run `log` when the session deserves a durable handoff",
-    r"Do not run `log` for empty diffs",
+    r"Run `portent` when the session deserves a durable handoff",
+    r"Do not run `portent` for empty diffs",
     r"## Started With",
-    r"## Log Created",
+    r"## Knowledge Record",
 ]
 
 REQUIRED_COVERAGE = {
@@ -42,7 +42,7 @@ REQUIRED_COVERAGE = {
     "negative-control",
     "known failure",
     "artifact case",
-    "log handoff",
+    "portent handoff",
     "commit boundary",
     "dirty worktree protection",
     "dex drift gate",
@@ -55,8 +55,8 @@ REQUIRED_EVAL_IDS = {
     "synonym-checkpoint-and-commit-triggers-wrap",
     "dirty-worktree-preserves-unrelated-files",
     "staged-incoherent-changes-ask-first",
-    "meaningful-work-runs-log-after-commits",
-    "empty-diff-skips-commit-and-log",
+    "meaningful-work-runs-portent-after-commits",
+    "empty-diff-skips-commit-and-portent",
     "dex-skill-inventory-checks-readme-drift",
     "push-deploy-release-not-implied",
 }
@@ -66,7 +66,7 @@ ASSERTION_COVERAGE_TERMS = [
     "recap",
     "staged",
     "unrelated",
-    "log",
+    "portent",
     "readme",
     "release",
     "push",

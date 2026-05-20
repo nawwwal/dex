@@ -1,7 +1,7 @@
 {
   "skill_name": "wrap",
   "version": 1,
-  "notes": "Behavior-first eval suite for end-of-session recap, meaningful micro-commit boundaries, dirty worktree protection, log handoff, and non-trigger boundaries.",
+  "notes": "Behavior-first eval suite for end-of-session recap, meaningful micro-commit boundaries, dirty worktree protection, Portent handoff, and non-trigger boundaries.",
   "standards": {
     "required_coverage": [
       "explicit trigger",
@@ -10,7 +10,7 @@
       "negative-control",
       "known failure",
       "artifact case",
-      "log handoff",
+      "portent handoff",
       "commit boundary",
       "dirty worktree protection",
       "dex drift gate"
@@ -32,7 +32,7 @@
         "Runs git status and git diff inspection before staging.",
         "Creates direct commits because /wrap was explicit.",
         "Groups feature, tests, and docs by real concern rather than one sweep commit.",
-        "Returns Started With, Problem Faced, Fixes Made, Verification, Current State, Next Steps, Commits Created, and Log Created."
+        "Returns Started With, Problem Faced, Fixes Made, Verification, Current State, Next Steps, Commits Created, and Knowledge Record."
       ],
       "deterministic_checks": {
         "must_include_any": [
@@ -53,7 +53,7 @@
             "Commits Created"
           ],
           [
-            "Log Created"
+            "Knowledge Record"
           ]
         ],
         "must_not_include_any": [
@@ -281,25 +281,25 @@
       }
     },
     {
-      "id": "meaningful-work-runs-log-after-commits",
+      "id": "meaningful-work-runs-portent-after-commits",
       "category": "positive",
       "coverage": [
-        "log handoff"
+        "portent handoff"
       ],
       "should_trigger": true,
       "run_mode": "clean-context-forward",
       "prompt": "Use /wrap after a multi-step bugfix that changed code and tests and left two next steps for tomorrow.",
-      "expected_output": "The agent commits and verifies first, then invokes the existing log skill because there were durable decisions, meaningful commits, and next steps.",
+      "expected_output": "The agent commits and verifies first, then invokes the existing portent skill because there were durable decisions, meaningful commits, and next steps.",
       "assertions": [
-        "Runs log after commit creation and verification, not before.",
-        "Uses log as the canonical journal writer instead of inventing a second journal format.",
-        "Records the created log path or explains the log result.",
+        "Runs portent after commit creation and verification, not before.",
+        "Uses portent as the canonical Tolaria/Portent writer instead of inventing a second journal format.",
+        "Records the created Portent object/path or explains the Portent result.",
         "Includes unresolved next steps in the recap."
       ],
       "deterministic_checks": {
         "must_include_any": [
           [
-            "log"
+            "portent"
           ],
           [
             "after commits",
@@ -309,30 +309,30 @@
             "Next Steps"
           ],
           [
-            "Log Created"
+            "Knowledge Record"
           ]
         ],
         "must_not_include_any": [
           [
-            "before committing, I ran log"
+            "before committing, I ran portent"
           ]
         ]
       }
     },
     {
-      "id": "empty-diff-skips-commit-and-log",
+      "id": "empty-diff-skips-commit-and-portent",
       "category": "boundary",
       "coverage": [
         "negative-control",
-        "log handoff"
+        "portent handoff"
       ],
       "should_trigger": true,
       "run_mode": "clean-context-forward",
       "prompt": "Use /wrap, but there are no file changes and this was just a quick question.",
-      "expected_output": "The agent reports the empty diff, creates no commit, skips log as not needed, and gives a brief recap.",
+      "expected_output": "The agent reports the empty diff, creates no commit, skips portent as not needed, and gives a brief recap.",
       "assertions": [
         "Does not create an empty commit.",
-        "Does not run log for a trivial no-op session.",
+        "Does not run portent for a trivial no-op session.",
         "Reports that there were no changed files.",
         "Keeps the recap brief."
       ],
@@ -355,7 +355,7 @@
             "git commit --allow-empty"
           ],
           [
-            "log written"
+            "portent written"
           ]
         ]
       }
