@@ -13,7 +13,7 @@ Dex ships four marketplace plugins.
 | `core` | Agent setup, teaching unfamiliar concepts, council-style investigation, communication, reflection, DevRev, session wrap-up, Portent/Tolaria knowledge records | Design implementation, browser tooling, media utilities |
 | `design` | Product thinking, content design, divergence, presentation narrative, interactive playground artifacts | Blade, shaders, sound, generic code hardening, private review frameworks |
 | `dev` | Design engineering: Blade, dashboard implementation, hardening, shaders, sound | Product strategy, presentation coaching, third-party browser tools |
-| `tools` | Utility tools: Codex review, image generation, media optimization, mymind | Core setup, design critique, implementation doctrine |
+| `tools` | Utility tools: Codex review, browser-native HTML presentations, image generation, media optimization, mymind | Core setup, design critique, implementation doctrine |
 
 This split is the product. When a workflow starts to sprawl, move it to the plugin that owns the actual behavior instead of making a router that knows too much.
 
@@ -93,7 +93,7 @@ Optional integrations depend on the skill you use: Figma MCP for Figma work, Dev
 | `content-design` | Product copy, UX writing, voice systems, in-product marketing, Razorpay-style marketing copy, errors, empty states, onboarding, accessibility labels, localization checks, and copy audits |
 | `crux` | Compressing vague claims, PRDs, opinions, or product problems down to the load-bearing issue |
 | `diverge` | Brainstorms, alternatives, product directions, interaction concepts, different approaches |
-| `present` | Design review narrative, stakeholder framing, rehearsal, explaining tradeoffs to a room |
+| `present` | Design review narrative, meeting-flow strategy, stakeholder framing, rehearsal, explaining tradeoffs to a room, and handoff to browser-native deck production |
 | `playground` | Interactive, visually distinctive playgrounds for exploring topics, systems, code, data, design, copy, motion, reviews, and handoffs. |
 
 Design has no catch-all router now. If the user wants Blade, go to `dev`. If the user wants browser automation, use the relevant external browser tool. If the user wants critique from a private review framework, keep that framework as a local skill outside Dex.
@@ -120,6 +120,7 @@ This plugin exists because coding agents need different instructions than design
 |---|---|
 | `codex` | Cross-model plan review through the Codex CLI |
 | `generate-image` | Image generation and editing through local scripts |
+| `html-presentation` | Browser-native HTML presentation decks with Reveal.js: deck construction, theme, motion, speaker notes, browser preview, and export behavior |
 | `media-optimizer` | Compressing, converting, resizing images and video |
 | `mymind` | Searching, saving, organizing, and inspecting mymind |
 

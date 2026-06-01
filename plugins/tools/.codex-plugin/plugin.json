@@ -1,15 +1,15 @@
 {
   "name": "tools",
   "version": "1.0.2",
-  "description": "Codex review, media tools, image generation, and mymind",
+  "description": "Codex review, media tools, HTML presentations, image generation, and mymind",
   "author": {
     "name": "Aditya Nawal"
   },
   "skills": "./skills/",
   "interface": {
     "displayName": "Dex Tools",
-    "shortDescription": "Codex review, image generation, media optimization, and mymind",
-    "longDescription": "Dex tools for cross-model Codex review, image generation, media optimization, and mymind workflows.",
+    "shortDescription": "Codex review, HTML decks, image generation, media optimization, and mymind",
+    "longDescription": "Dex tools for cross-model Codex review, Reveal.js HTML presentations, image generation, media optimization, and mymind workflows.",
     "developerName": "Aditya Nawal",
     "category": "Productivity",
     "composerIcon": "./assets/logo.png",

@@ -7,7 +7,9 @@ description: Interactive narrative coaching for presenting design work. Use when
 
 ## Core Stance
 
-Act as a design presentation coach, not a deck generator. The goal is to help the user create a focused conversation where the audience can give informed, useful feedback.
+Act as a design presentation coach and meeting-flow strategist, not a deck generator. The goal is to help the user create a focused conversation where the audience can give informed, useful feedback.
+
+If the user asks to create, build, generate, render, preview, export, or polish a working browser/HTML presentation, hand off to `$html-presentation` after the narrative frame is clear. `$present` owns story, audience, objections, decision flow, critique, and rehearsal. `$html-presentation` owns the Reveal.js/HTML deck artifact, full-bleed visual system, generated JavaScript decks, browser preview, speaker notes, PDF export, theme, motion, configuration, and slide implementation.
 
 Use Charlie Deets' central structure:
 
@@ -20,6 +22,34 @@ Use Charlie Deets' central structure:
 7. Prep the user with deeper questions, likely objections, and missed conversation moves.
 
 Read `references/deets-principles.md` for the operating philosophy when the request is about narrative direction, review framing, or critique structure.
+
+## Routing And Handoff Schedule
+
+There is no separate events or schedule file for this skill. This section is the present-skill routing contract.
+
+Use `$present` for these events:
+
+- **Frame**: define the audience, meeting type, decision, stakes, and problem sentence.
+- **Structure**: turn messy context into a narrative spine, story arc, deck outline, review script, or showing order.
+- **Pressure-test**: find weak joints, likely objections, missing evidence, unresolved tradeoffs, and sharper questions.
+- **Rehearse**: critique the user's talk track, room handling, transitions, and answer strategy.
+- **Debrief**: identify what should have been asked after a meeting and what decision remains unresolved.
+
+Hand off to `$html-presentation` when any event becomes deck production:
+
+- creating or building a browser-native deck
+- converting a narrative spine, outline, Markdown, doc, Slack context, or data into Reveal.js/HTML slides
+- rendering, previewing, or testing the deck in a browser
+- designing the full-bleed visual system, theme, layout classes, motion, media, code, math, fragments, or appendix slides
+- generating slides from JavaScript data or templates
+- adding speaker notes, print/PDF export, or delivery runtime instructions
+
+Handoff shape:
+
+1. Finish only the narrative material needed for deck construction: audience, decision, problem frame, slide spine, key objections, evidence, and close.
+2. State that `$present` is handing off because the next work is a browser-native deck artifact.
+3. Invoke `$html-presentation` with the narrative brief and any source files or constraints already known.
+4. Do not create HTML, Reveal.js configuration, CSS themes, JavaScript slide generators, browser previews, or PDF export steps inside `$present`.
 
 ## Interaction Model
 
@@ -183,5 +213,7 @@ Only produce final artifacts when asked, such as:
 - rehearsal critique
 - prep questions and likely objections
 - missed questions after a conversation
+
+For a working HTML/Reveal.js deck, produce the narrative spine or slide brief here, then hand off to `$html-presentation` to build, preview, and export the actual deck.
 
 Keep language concrete. Every important term must connect to an observable outcome in layout, hierarchy, interaction, copy, behavior, decision quality, or meeting flow.

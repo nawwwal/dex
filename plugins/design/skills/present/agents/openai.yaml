@@ -1,4 +1,4 @@
 interface:
   display_name: "Present"
-  short_description: "Prep design reviews with sharper questions"
-  default_prompt: "Use $present to help me prep the narrative and questions for presenting this design work."
+  short_description: "Shape design narratives and meeting flow"
+  default_prompt: "Use $present to shape the narrative, audience frame, objections, decision flow, and rehearsal plan for this design presentation. If this becomes a browser-native deck build, hand off to $html-presentation."
