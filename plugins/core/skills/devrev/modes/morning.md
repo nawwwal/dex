@@ -6,7 +6,7 @@ Goal: Today's agenda in 30 seconds. DevRev is source of truth.
 
 Run both agents simultaneously:
 
-**A (Fetcher):** `list_issues(owned_by=[$USER_DON], state=["open","in_progress"])`
+**A (Fetcher):** `list_objects(action_name="list_issues", values={"owned_by": [$USER_DON], "state": ["open","in_progress"], "limit": 100}, fields=["id","display_id","title","stage","target_close_date","target_start_date","sprint","tnt__remaining_effort"])`
 Return JSON array: `[{iss_id, title, stage, target_close_date, target_start_date, sprint, tnt__remaining_effort}]`
 Sort by target_close_date ascending.
 

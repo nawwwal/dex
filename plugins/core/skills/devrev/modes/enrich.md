@@ -8,7 +8,7 @@ Parse $ARGUMENTS rest as source hint.
 
 ## Phase 1 — Parallel fetchers
 
-**A (Fetcher):** `list_issues(owned_by=[$USER_DON], state=["open","in_progress"])`
+**A (Fetcher):** `list_objects(action_name="list_issues", values={"owned_by": [$USER_DON], "state": ["open","in_progress"], "limit": 100}, fields=["id","display_id","title","body","owned_by"])`
 Return JSON: `[{iss_id, title, body_excerpt (first 200 chars)}]`
 
 **B (Fetcher):** Fetch source based on hint:
@@ -35,6 +35,6 @@ Note: PM PRDs (Track A issues with `[J*-S*]` codes) are valid read targets here 
 
 ## Phase 3 — Apply
 
-Show diffs to user. On confirm: parallel `update_issue` calls.
+Show diffs to user. On confirm: parallel `update_object(action_name="update_issue", subtype="task")` calls.
 Body appends only, never overwrites.
 Use `## Context Update <date>` section header in the body.

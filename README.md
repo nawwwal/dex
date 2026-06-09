@@ -76,7 +76,7 @@ Optional integrations depend on the skill you use: Figma MCP for Figma work, Dev
 | `council` | Parallel research, code audits, expert lenses, blind-spot passes, architecture investigations |
 | `communicate` | Drafting or sending Slack messages in the user's voice |
 | `reflect` | Portent/Tolaria reflection: emerging patterns, leverage points, and drift across active knowledge objects |
-| `devrev` | Sprint routines, grooming, enrichment, DevRev issue/enhancement work |
+| `devrev` | Sprint routines, grooming, enrichment, and schema-discovered DevRev MCP issue/enhancement work |
 | `wrap` | End-of-session recap, meaningful micro-commits, verification summary, and Portent handoff |
 | `portent` | Tolaria knowledge-base capture, session logs, project context, current todos, briefings, organization, search, and archive using the Portent object model |
 

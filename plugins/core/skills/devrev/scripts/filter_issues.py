@@ -4,7 +4,10 @@
 import argparse
 import json
 import sys
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
+
+
+IST = timezone(timedelta(hours=5, minutes=30))
 
 
 def is_weekend(d: date) -> bool:
@@ -21,10 +24,27 @@ def next_workday(d: date) -> date:
 def parse_date(s: str | None) -> date | None:
     if not s:
         return None
+    if "T" not in s:
+        try:
+            return date.fromisoformat(s[:10])
+        except ValueError:
+            return None
     try:
-        return date.fromisoformat(s[:10])
+        value = s.replace("Z", "+00:00")
+        parsed = datetime.fromisoformat(value)
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=IST)
+        return parsed.astimezone(IST).date()
     except ValueError:
         return None
+
+
+def get_stage_name(issue: dict) -> str:
+    stage = issue.get("stage") or {}
+    if isinstance(stage, dict):
+        nested = stage.get("stage") or {}
+        return str(stage.get("name") or nested.get("name") or "").lower()
+    return str(stage).lower()
 
 
 def morning_buckets(issues: list, today: date) -> dict:
@@ -71,7 +91,7 @@ def no_sprint(issues: list) -> list:
 def idle(issues: list, today: date) -> list:
     result = []
     for iss in issues:
-        stage = (iss.get("stage") or "").lower()
+        stage = get_stage_name(iss)
         start = parse_date(iss.get("target_start_date"))
         if "to_do" in stage or stage == "to do" or stage == "open":
             if start and start < today:
@@ -106,8 +126,7 @@ def groom_buckets(issues: list, active_sprint_don: str, today: date) -> dict:
             no_body_list.append(iss)
 
         close = parse_date(iss.get("target_close_date"))
-        stage = iss.get("stage") or {}
-        stage_name = stage.get("name", "").lower() if isinstance(stage, dict) else str(stage).lower()
+        stage_name = get_stage_name(iss)
         if close and close < today and "to do" in stage_name:
             stale_list.append(iss)
 

@@ -8,7 +8,7 @@ Run before sprint planning, or any time the backlog feels messy.
 
 ## Phase 1 — Fetch (1 MCP call)
 
-**A (Fetcher):** `list_issues(owned_by=[$USER_DON], state=["open"])` → JSON array.
+**A (Fetcher):** `list_objects(action_name="list_issues", values={"owned_by": [$USER_DON], "state": ["open"], "limit": 100}, fields=["id","display_id","title","stage","sprint","target_close_date","target_start_date","tnt__remaining_effort","body","priority_v2"])` → JSON array.
 
 Filter via script immediately after:
 
@@ -116,8 +116,9 @@ Wait for: "go", "apply", "yes", "looks good", or equivalent.
 For issues being assigned a sprint (no dates — sprint planning does dates):
 
 ```
-update_issue:
+update_object(action_name="update_issue", subtype="task"):
   id: <DON>
+  ctype__task_type: "Design"
   sprint: <target_sprint_don>
   tnt__remaining_effort: <effort as float>
   priority_v2: <1–4 if specified, otherwise omit>
@@ -126,22 +127,25 @@ update_issue:
 For issues being closed (stage must step through In Progress first — gotchas.md #5):
 
 ```
-update_issue:
+update_object(action_name="update_issue", subtype="task"):
   id: <DON>
+  ctype__task_type: "Design"
   stage: don:core:dvrv-in-1:devo/2sRI6Hepzz:custom_stage/44   ← In Progress
 ```
 then:
 ```
-update_issue:
+update_object(action_name="update_issue", subtype="task"):
   id: <DON>
+  ctype__task_type: "Design"
   stage: don:core:dvrv-in-1:devo/2sRI6Hepzz:custom_stage/26   ← Completed
 ```
 
 For effort-only fixes (no sprint change):
 
 ```
-update_issue:
+update_object(action_name="update_issue", subtype="task"):
   id: <DON>
+  ctype__task_type: "Design"
   tnt__remaining_effort: <corrected float>
 ```
 
@@ -151,13 +155,13 @@ Run updates in parallel where there are no sequential stage dependencies.
 
 ## Phase 6 — Verify (mandatory)
 
-After all writes, call `get_issue` for each updated issue and compare:
+After all writes, call `fetch_object_context` or a narrow `list_objects` read for each updated issue and compare:
 
 | Field | Expected | Actual | Match? |
 |-------|----------|--------|--------|
-| sprint | <target DON> | <from get_issue> | ✓ / ✗ |
-| tnt__remaining_effort | <float> | <from get_issue> | ✓ / ✗ |
-| stage | <target DON> | <from get_issue> | ✓ / ✗ |
+| sprint | <target DON> | <from DevRev readback> | ✓ / ✗ |
+| tnt__remaining_effort | <float> | <from DevRev readback> | ✓ / ✗ |
+| stage | <target DON> | <from DevRev readback> | ✓ / ✗ |
 
 Show summary:
 ```

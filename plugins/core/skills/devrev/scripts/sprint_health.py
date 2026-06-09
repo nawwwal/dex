@@ -4,7 +4,10 @@
 import argparse
 import json
 import sys
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
+
+
+IST = timezone(timedelta(hours=5, minutes=30))
 
 
 def is_weekend(d: date) -> bool:
@@ -24,14 +27,31 @@ def working_days_between(start: date, end: date) -> int:
 def parse_date(s: str | None) -> date | None:
     if not s:
         return None
+    if "T" not in s:
+        try:
+            return date.fromisoformat(s[:10])
+        except ValueError:
+            return None
     try:
-        return date.fromisoformat(s[:10])
+        value = s.replace("Z", "+00:00")
+        parsed = datetime.fromisoformat(value)
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=IST)
+        return parsed.astimezone(IST).date()
     except ValueError:
         return None
 
 
+def get_stage_name(issue: dict) -> str:
+    stage = issue.get("stage") or {}
+    if isinstance(stage, dict):
+        nested = stage.get("stage") or {}
+        return str(stage.get("name") or nested.get("name") or "").lower()
+    return str(stage).lower()
+
+
 def velocity(issues: list) -> dict:
-    completed = [i for i in issues if (i.get("stage") or "").lower() in ("completed", "done")]
+    completed = [i for i in issues if get_stage_name(i) in ("completed", "done")]
     velocity_days = sum(float(i.get("tnt__remaining_effort") or 0) for i in completed)
     return {"velocity_days": velocity_days, "issues_completed": len(completed)}
 
@@ -45,7 +65,7 @@ def checkin(issues: list, today: date, sprint_start: date, sprint_end: date) -> 
     done, in_progress, at_risk, idle, to_do = [], [], [], [], []
 
     for iss in issues:
-        stage = (iss.get("stage") or "").lower()
+        stage = get_stage_name(iss)
         close = parse_date(iss.get("target_close_date"))
         start = parse_date(iss.get("target_start_date"))
         remaining = float(iss.get("tnt__remaining_effort") or 0)

@@ -8,15 +8,15 @@ Usage: `/devrev plan <feature_keyword>` — second token of $ARGUMENTS is the fe
 
 **A (Fetcher, user-scoped):**
 1. `hybrid_search(query=<feature_keyword>, namespace="enhancement")` → find matching enhancement DON
-2. `list_issues(owned_by=[$USER_DON], applies_to_part=[matched_enh])` → return MY existing design stories
+2. `list_objects(action_name="list_issues", values={"owned_by": [$USER_DON], "applies_to_part": [matched_enh], "limit": 100}, fields=["id","display_id","title","owned_by","subtype","ctype__task_type","tnt__remaining_effort"])` → return MY existing design stories
 
-Per subagent rule: `list_issues` MUST include `owned_by=[$USER_DON]`. Never list without the filter.
+Per subagent rule: `list_objects(action_name="list_issues")` MUST include `owned_by=[$USER_DON]`. Never list without the filter.
 
 Return: JSON array of existing user-owned issues under that enhancement.
 
 **A2 (Fetcher, optional, read-only PM context):**
 Only fires when user explicitly asks "what's the PM spec?" or "show me the PRD".
-`list_issues(applies_to_part=[matched_enh], state=["open"])` — label results "PM context, not your tasks".
+`list_objects(action_name="list_issues", values={"applies_to_part": [matched_enh], "state": ["open"], "limit": 20}, fields=["id","display_id","title","owned_by","body","stage"])` — label results "PM context, not your tasks".
 Default: OFF.
 
 **B (Fetcher):**
@@ -40,9 +40,9 @@ Rules for C:
 
 Show table to user. On approval:
 - Batch create by `applies_to_part` (one batch per enhancement, sequential not parallel — avoids race on same parent)
-- Each issue: `subtype: task`, `tnt__skills: ["Design"]`, `owned_by: [$USER_DON]`, `tnt__remaining_effort` per table
+- Each issue: call `create_object(action_name="create_issue", subtype="task", values={...})` with `subtype: "task"`, `ctype__task_type: "Design"`, `tnt__skills: ["Design"]`, `owned_by: [$USER_DON]`, and `tnt__remaining_effort` per table
 - NO sprint, NO dates
-- After creation: surface gotchas.md #1 reminder for task_type
+- After creation: verify `ctype__task_type`, `tnt__skills`, owner, part, and effort landed
 
 ## Phase 4 — Update memory (mandatory, immediately after creation)
 

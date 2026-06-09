@@ -6,7 +6,7 @@ Override: `/devrev sprint plan` or `/devrev sprint checkin`.
 ## Sub-mode detection
 
 **Step 0.5 — Light MCP fetch (1 agent):**
-`list_issues(owned_by=[$USER_DON], sprint=[$ACTIVE_SPRINT_DON])` → JSON array.
+`list_objects(action_name="list_issues", values={"owned_by": [$USER_DON], "sprint": [$ACTIVE_SPRINT_DON], "limit": 100}, fields=["id","display_id","title","stage","sprint","target_start_date","target_close_date","tnt__remaining_effort"])` → JSON array.
 
 ```bash
 echo '<issues_json>' | python3 "$CLAUDE_SKILL_DIR/scripts/sprint_state.py" submode \
@@ -23,7 +23,7 @@ Returns `{"submode": "planning" | "checkin" | "refresh"}`. User arg overrides.
 
 ### Phase 1 — Parallel fetchers (2 MCP agents + scripts)
 
-**A (Fetcher):** `list_issues(owned_by=[$USER_DON], state=["open"])` → JSON array.
+**A (Fetcher):** `list_objects(action_name="list_issues", values={"owned_by": [$USER_DON], "state": ["open"], "limit": 100}, fields=["id","display_id","title","stage","sprint","target_start_date","target_close_date","tnt__remaining_effort","priority_v2"])` → JSON array.
 
 **B (Fetcher):** `slack_search_public_and_private("priority OR roadmap after:<7d>")` → priority signals.
 
@@ -31,9 +31,9 @@ Returns `{"submode": "planning" | "checkin" | "refresh"}`. User arg overrides.
 ```bash
 echo '<A_json>' | python3 "$CLAUDE_SKILL_DIR/scripts/filter_issues.py" no_sprint
 ```
-Returns issues where `sprint == null`. Client-side filter — do NOT pass `sprint=null` to `list_issues`.
+Returns issues where `sprint == null`. Client-side filter — do NOT pass `sprint=null` to `list_objects`.
 
-**C-MCP (Fetcher):** `list_issues(owned_by=[$USER_DON], state=["closed"], sprint=[<prev_sprint_don>])` → closed issues from previous sprint for velocity.
+**C-MCP (Fetcher):** `list_objects(action_name="list_issues", values={"owned_by": [$USER_DON], "state": ["closed"], "sprint": [<prev_sprint_don>], "limit": 100}, fields=["id","display_id","title","stage","tnt__remaining_effort"])` → closed issues from previous sprint for velocity.
 
 ```bash
 echo '<C_json>' | python3 "$CLAUDE_SKILL_DIR/scripts/sprint_health.py" velocity
@@ -64,8 +64,6 @@ The `#` column is the intended work order. The `Priority` column is the DevRev `
 
 Ask the user to confirm or adjust priorities before writing. Priorities can be overridden per-issue ("make the Connectors task P0").
 
-The Start/Close values MUST come from `lib_dates.py schedule_task`. Compute each row:
-
 The Start/Close values in this table MUST come from `lib_dates.py schedule_task`, not from mental calculation. Compute each row:
 
 ```bash
@@ -84,8 +82,9 @@ Present the draft table. Wait for explicit user confirmation ("go", "looks good"
 For every issue in the confirmed schedule, apply ALL of these fields. Never omit any:
 
 ```
-update_issue:
+update_object(action_name="update_issue", subtype="task"):
   id: <ISS DON>
+  ctype__task_type: "Design"
   sprint: $ACTIVE_SPRINT_DON
   target_start_date: <start_ist from schedule_task output>     ← from script, not from chat table
   target_close_date: <close_ist from schedule_task output>     ← from script, not from chat table
@@ -94,7 +93,7 @@ update_issue:
   title: <title, only if changed>
 ```
 
-**ALL FOUR date/effort/priority fields are required in every update_issue call for sprint planning.** If any field is missing, the update is incomplete. Do not assume a field will be preserved from a previous state.
+**ALL FOUR date/effort/priority fields plus schema-required `ctype__task_type` are required in every sprint-planning `update_object` call.** If any field is missing, the update is incomplete or invalid. Do not assume a field will be preserved from a previous state.
 
 **Recompute from script, do not copy from chat table.** Before each write, run `schedule_task` again for that row. Chat tables are display artifacts; scripts are ground truth.
 
@@ -102,22 +101,22 @@ Run in parallel when no sequential dependency. Run sequentially only when B depe
 
 ### Phase 4 — Verify (mandatory, runs immediately after Phase 3)
 
-After all `update_issue` calls complete, fetch each updated issue and check that every field landed correctly.
+After all `update_object` calls complete, fetch each updated issue and check that every field landed correctly.
 
-For each issue updated in Phase 3, call `get_issue(id)` and compare:
+For each issue updated in Phase 3, call `fetch_object_context(id)` or a narrow `list_objects` by ID and compare:
 
 | Field | Expected | DevRev actual | Match? |
 |---|---|---|---|
-| target_start_date | <start_ist> | <from get_issue> | ✓ / ✗ |
-| target_close_date | <close_ist> | <from get_issue> | ✓ / ✗ |
-| tnt__remaining_effort | <float> | <from get_issue> | ✓ / ✗ |
-| sprint | $ACTIVE_SPRINT_DON | <from get_issue> | ✓ / ✗ |
+| target_start_date | <start_ist local date> | <DevRev timestamp converted to IST date> | ✓ / ✗ |
+| target_close_date | <close_ist local date> | <DevRev timestamp converted to IST date> | ✓ / ✗ |
+| tnt__remaining_effort | <float> | <from DevRev readback> | ✓ / ✗ |
+| sprint | $ACTIVE_SPRINT_DON | <from DevRev readback> | ✓ / ✗ |
 
-When comparing dates: extract the date portion only (`YYYY-MM-DD`) — ignore time and timezone offset differences in the display format.
+When comparing dates: convert DevRev's returned timestamp to IST first. Do not compare only the raw `YYYY-MM-DD` substring because DevRev may return UTC `Z`.
 
 If any field mismatches:
 - Report: "ISS-XXXX: `target_close_date` mismatch — expected 2026-05-06, got 2026-05-09 (Sat). Will retry."
-- Retry that specific field with a corrected `update_issue` call.
+- Retry that specific field with a corrected `update_object` call.
 - If retry fails twice, surface to user: "Could not set `target_close_date` on ISS-XXXX. Please update manually in DevRev."
 
 Show a summary at the end:
@@ -146,7 +145,7 @@ Answers: sprint health, days left, accomplished, at-risk, next up. No writes by 
 
 ### Phase 1 — 1 MCP agent
 
-**A (Fetcher):** `list_issues(owned_by=[$USER_DON], sprint=[$ACTIVE_SPRINT_DON])` → JSON array with stage, target_close_date, target_start_date, tnt__remaining_effort.
+**A (Fetcher):** `list_objects(action_name="list_issues", values={"owned_by": [$USER_DON], "sprint": [$ACTIVE_SPRINT_DON], "limit": 100}, fields=["id","display_id","title","stage","target_close_date","target_start_date","tnt__remaining_effort"])` → JSON array.
 
 **B (Fetcher, lazy — only on 🔴 or "why am I behind?"):**
 `slack_search_public_and_private("$SLACK_MENTION (blocked OR delayed OR slipped) after:<sprint_start>")` → blocker context.

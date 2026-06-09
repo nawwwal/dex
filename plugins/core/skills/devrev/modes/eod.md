@@ -6,7 +6,7 @@ Goal: Log what happened, clean up DevRev, prep tomorrow. Stateful flow.
 
 Run both simultaneously:
 
-**A (Fetcher):** `list_issues(owned_by=[$USER_DON], state=["open","in_progress"])`
+**A (Fetcher):** `list_objects(action_name="list_issues", values={"owned_by": [$USER_DON], "state": ["open","in_progress"], "limit": 100}, fields=["id","display_id","title","stage","target_close_date","target_start_date","tnt__remaining_effort","body"])`
 Return JSON array: `[{iss_id, title, stage, target_close_date, target_start_date, tnt__remaining_effort, body_excerpt}]`
 
 **B (Fetcher):** `slack_search_public_and_private("$SLACK_MENTION on:<today_date>")`
@@ -24,7 +24,7 @@ Ask conversationally:
 ## Phase 3 — Drafter agent (sequential, after Phase 2)
 
 **C (Drafter):** Given (A's issue list + user's answers from Phase 2), draft for each affected issue:
-- Stage change (with full DON string — see gotchas.md #3 and #5)
+- Stage change (prefer stage DON; see gotchas.md #4 and #5)
 - Body append (append only, never overwrite — use `## EOD Update [date]` section)
 - Effort update (`tnt__remaining_effort` as float days)
 
@@ -32,7 +32,7 @@ Return markdown diff per issue. Max 400 words total.
 
 ## Phase 4 — Apply updates
 
-Show drafts. On confirm: parallel `update_issue` calls (main thread, not subagents).
+Show drafts. On confirm: parallel `update_object(action_name="update_issue", subtype="task")` calls (main thread, not subagents).
 
 For stage transitions involving To Do → Completed: use two sequential calls per gotchas.md #5.
 

@@ -3,14 +3,19 @@ name: devrev
 description: "DevRev sprint management. Modes: morning (default), eod, plan, sprint, groom, enrich. Usage: /devrev [mode] [args]"
 argument-hint: "[morning|eod|plan|sprint|groom|enrich] [feature-keyword | URL | doc-name]"
 allowed-tools: Bash, Read, Write, Task, mcp__qmd__search, mcp__qmd__get,
-  mcp__claude_ai_DevRev__get_tool_metadata, mcp__claude_ai_DevRev__get_self,
-  mcp__claude_ai_DevRev__hybrid_search, mcp__claude_ai_DevRev__list_issues,
-  mcp__claude_ai_DevRev__get_issue, mcp__claude_ai_DevRev__update_issue,
-  mcp__claude_ai_DevRev__create_issue, mcp__claude_ai_DevRev__add_comment,
-  mcp__claude_ai_DevRev__list_enhancements, mcp__claude_ai_DevRev__get_enhancement,
-  mcp__claude_ai_DevRev__fetch_object_context, mcp__claude_ai_DevRev__link_issue_with_issue,
-  mcp__claude_ai_DevRev__list_sprint, mcp__claude_ai_DevRev__get_sprint,
-  mcp__claude_ai_DevRev__get_sprint_board, mcp__claude_ai_DevRev__get_valid_stage_transitions,
+  mcp__devrev_remote_mcp_server__get_tool_metadata,
+  mcp__devrev_remote_mcp_server__discover_schema,
+  mcp__devrev_remote_mcp_server__get_self,
+  mcp__devrev_remote_mcp_server__hybrid_search,
+  mcp__devrev_remote_mcp_server__list_objects,
+  mcp__devrev_remote_mcp_server__create_object,
+  mcp__devrev_remote_mcp_server__update_object,
+  mcp__devrev_remote_mcp_server__link_objects,
+  mcp__devrev_remote_mcp_server__fetch_object_context,
+  mcp__devrev_remote_mcp_server__add_comment,
+  mcp__devrev_remote_mcp_server__get_sprint,
+  mcp__devrev_remote_mcp_server__get_sprint_board,
+  mcp__devrev_remote_mcp_server__get_valid_stage_transitions,
   mcp__claude_ai_Slack__slack_search_public_and_private,
   mcp__claude_ai_Slack__slack_read_channel, mcp__claude_ai_Slack__slack_read_thread,
   mcp__claude_ai_Google_Drive__read_file_content, mcp__claude_ai_Google_Drive__search_files
@@ -36,6 +41,23 @@ If `ok: true` — extract placeholders from `context`:
 - `$ISSUE_CONVENTIONS`
 
 Load `gotchas.md` (Read tool) for any mode that writes to DevRev. Gotcha #9 (user scoping) applies to every fetch.
+
+## DevRev MCP contract check
+
+At the start of every `/devrev` run, before any DevRev read or write:
+
+1. Call `get_tool_metadata()`.
+2. Call `discover_schema()` with no arguments and cache the returned action names.
+3. Before any action, call `discover_schema(action_name="<action>")`; for task issues, call `discover_schema(action_name="<action>", subtype="task")`.
+4. Use the generic action tools:
+   - `list_objects(action_name="list_issues", values={...}, fields=[...])`
+   - `create_object(action_name="create_issue", subtype="task", values={...})`
+   - `update_object(action_name="update_issue", subtype="task", values={...})`
+   - `link_objects(action_name="link_issue_with_issue", ...)`
+
+Do not assume old dedicated tools such as `list_issues`, `create_issue`, `update_issue`, or `get_issue` exist. If a host still exposes dedicated wrappers, use them only after checking their current schema/metadata.
+
+**Sprint action name:** prefer the action name returned by `discover_schema()` for sprints. Current MCP action inventory exposes `list_sprints`; older metadata may still mention `list_sprint`. If the two disagree, use the action inventory, then verify with a one-row read.
 
 **Sprint freshness check:**
 
@@ -69,8 +91,9 @@ Read mode file + `gotchas.md`. Substitute Step 0 placeholders into mode logic.
 
 ## Subagent rules (applies to all modes)
 
-- Every `list_issues` call MUST include `owned_by=[$USER_DON]`. No exceptions.
-- Verify `owned_by == $USER_DON` on every `get_issue` result before use.
+- Every `list_objects(action_name="list_issues", ...)` call MUST include `owned_by=[$USER_DON]`. No exceptions.
+- Always pass a tight `fields` array and `limit <= 100`. Fetch only fields the mode needs.
+- Verify `owned_by == $USER_DON` on every `fetch_object_context` or issue read result before use.
 - Subagents return structured data only — tables, JSON arrays, bullet lists. No prose.
 - No double-fetching: if agent A fetched data, agent B filters it, never re-fetches.
 - Token budget per agent: 500 tokens max.
@@ -93,7 +116,7 @@ LLM: semantic dedup, story drafting, focus recommendation, blockers narrative.
 
 ## Part resolution
 
-Before every `create_issue`, resolve `applies_to_part`:
+Before every `create_object(action_name="create_issue")`, resolve `applies_to_part`:
 
 1. Read the project map from `devrev.md` (already loaded in Step 0 context).
 2. Match issue title and context keywords against project names:
@@ -121,24 +144,25 @@ For sequential task scheduling (sprint planning), chain: next task starts = `add
 
 **Always derive day-of-week from the date object, never assume.** May 5 2026 is Tuesday. Run `lib_dates.py` to get the correct date, then name it from the computed weekday.
 
-## list_issues guidance
+## list issue guidance
 
-`list_issues(state=["open"])` on a large org returns 100k+ chars and blows context. Always add at least one of these filters:
+`list_objects(action_name="list_issues")` now supports `limit` and `fields`. Use both. Always add at least one domain filter:
 - `sprint=[$ACTIVE_SPRINT_DON]` — current sprint only
 - `applies_to_part=[specific_enh_don]` — single enhancement
 - `target_close_date` range — upcoming issues only
 
-When ISS IDs are already known (from memory or prior fetch), use parallel `get_issue` calls instead of `list_issues`. Never fetch more than 20 issues in a single list call.
+When ISS IDs are already known (from memory or prior fetch), use `fetch_object_context` for the specific issues instead of a broad list. For list calls, request only the fields the mode will use, for example `["id","display_id","title","owned_by","stage","subtype","sprint","target_start_date","target_close_date","tnt__remaining_effort","ctype__task_type"]`.
 
 ## Writing conventions
 
 Always use from `$ISSUE_CONVENTIONS`:
 - `target_start_date`: computed via `lib_dates.py schedule_task`, format `YYYY-MM-DDT00:00:00+05:30`
 - `target_close_date`: computed via `lib_dates.py schedule_task`, format `YYYY-MM-DDT18:29:59+05:30`
-- stage: full DON string from `$ISSUE_CONVENTIONS` (see gotchas.md #3)
+- stage: use schema-discovered `stage` IDs for deterministic updates; `stage_name` exists but can vary by subtype
 - effort: `tnt__remaining_effort` as float days
+- task type: for task issues, include `ctype__task_type: "Design"` whenever the `subtype="task"` schema exposes it
 
-After any `create_issue` batch → surface gotcha #1 reminder.
+Do not surface manual UI reminders for task type unless schema discovery proves `ctype__task_type` is absent or a verified write fails.
 
 ## Draft-then-confirm rule (applies to all write modes)
 
@@ -146,29 +170,30 @@ After any `create_issue` batch → surface gotcha #1 reminder.
 
 1. Show the user a draft table listing every field that will be written (ISS ID, title, start, close, effort, sprint).
 2. Wait for explicit confirmation: "go", "apply", "yes", "looks good", or equivalent.
-3. Only then call `update_issue` / `create_issue`.
+3. Only then call `update_object` / `create_object`.
 
 This prevents half-applied writes caused by the user adjusting the plan mid-stream.
 
 ## All-fields rule for sprint date updates
 
-When updating an issue's schedule (start, close, effort), ALL THREE fields must appear in the same `update_issue` call:
+When updating a task issue's schedule (start, close, effort), all schedule fields plus any schema-required subtype fields must appear in the same `update_object` call:
 
 ```
-update_issue:
+update_object(action_name="update_issue", subtype="task"):
   id: <DON>
+  ctype__task_type: "Design"   # include when subtype="task" schema requires it
   target_start_date: <from schedule_task — not from chat table>
   target_close_date: <from schedule_task — not from chat table>
   tnt__remaining_effort: <float>
 ```
 
-Missing any one of these fields is a silent partial update — DevRev will silently keep the old value, causing drift between what the user sees in the plan and what is stored. There are no partial field updates in sprint scheduling.
+Missing any schedule field is a partial update that creates drift between the draft plan and DevRev. Missing a schema-required subtype field can reject the update.
 
 ## Verify-after-write rule (applies to all write modes)
 
-After any batch of `update_issue` or `create_issue` calls, verify every updated field landed correctly by reading the issue back with `get_issue`.
+After any batch of `update_object` or `create_object` calls, verify every updated field landed correctly by reading the issue back with `fetch_object_context` or a narrow `list_objects` call by ID.
 
-Compare only the fields that were written. For dates, compare the `YYYY-MM-DD` portion only. If any field doesn't match:
+Compare only the fields that were written. For dates, convert both expected and returned timestamps to IST calendar dates before comparing; DevRev often reads back `Z` timestamps even when writes used `+05:30`. If any field doesn't match:
 1. Retry that single field with a corrected call.
 2. If retry fails twice, flag it to the user explicitly — never silently skip.
 
