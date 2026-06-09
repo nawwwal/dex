@@ -5,7 +5,7 @@ Release one dex marketplace plugin with a version bump, commit, tag, push, and G
 The repo is both the Claude marketplace and the Codex marketplace:
 
 - Claude reads `.claude-plugin/marketplace.json`, which duplicates plugin versions.
-- Codex reads `.agents/plugins/marketplace.json`, whose plugin entries use local paths relative to the tracked marketplace checkout; Codex gets versions from each plugin's `.codex-plugin/plugin.json`.
+- Codex reads `.agents/plugins/marketplace.json`, whose plugin entries use `git-subdir` sources pointing at this repo's plugin folders; Codex gets versions from each plugin's `.codex-plugin/plugin.json`.
 
 ## Usage
 
@@ -200,8 +200,12 @@ for entry in codex_marketplace.get("plugins", []):
     source = entry.get("source", {})
     if name in expected_plugins:
         expected_path = f"./plugins/{name}"
-        if source.get("source") != "local":
-            raise SystemExit(f"Codex marketplace {name} must use local source")
+        if source.get("source") != "git-subdir":
+            raise SystemExit(f"Codex marketplace {name} must use git-subdir source")
+        if source.get("url") != "https://github.com/nawwwal/dex.git":
+            raise SystemExit(f"Codex marketplace {name} URL must point at nawwwal/dex")
+        if source.get("ref") != "main":
+            raise SystemExit(f"Codex marketplace {name} ref must be main")
         if source.get("path") != expected_path:
             raise SystemExit(f"Codex marketplace {name} path must be {expected_path}")
 
