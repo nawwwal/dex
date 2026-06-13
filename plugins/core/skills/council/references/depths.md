@@ -35,6 +35,7 @@ Required agents:
 Parent synthesis responsibilities:
 
 - add the `actionability` lens inline
+- include `## Lens Rationale` even at quick depth (one line per lens)
 - state what is still uncertain due to the smaller council
 
 ### Standard

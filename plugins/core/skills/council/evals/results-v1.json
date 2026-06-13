@@ -1,0 +1,51 @@
+{
+  "skill_name": "council",
+  "run_type": "post-redesign",
+  "run_date": "2026-06-13",
+  "skill_version": "dynamic-lenses-v1",
+  "notes": "Post-redesign eval run after lens-composer, domain-overlays, and synthesis Lens Rationale section.",
+  "summary": {
+    "total": 47,
+    "deterministic_pass": 44,
+    "deterministic_fail": 3,
+    "judge_pass": 38,
+    "judge_fail": 9,
+    "deterministic_pass_rate": 0.94,
+    "judge_pass_rate": 0.81
+  },
+  "category_breakdown": {
+    "explicit-trigger": {"pass": 4, "fail": 0},
+    "implicit-trigger": {"pass": 4, "fail": 0},
+    "negative-control": {"pass": 4, "fail": 0},
+    "mode-routing": {"pass": 5, "fail": 0},
+    "goal-routing": {"pass": 4, "fail": 0},
+    "depth-routing": {"pass": 3, "fail": 0},
+    "domain-design": {"pass": 3, "fail": 1},
+    "domain-product": {"pass": 3, "fail": 0},
+    "domain-research": {"pass": 3, "fail": 0},
+    "domain-workflow": {"pass": 3, "fail": 0},
+    "dynamic-lenses": {"pass": 4, "fail": 0},
+    "synthesis-contract": {"pass": 3, "fail": 0},
+    "debate-format": {"pass": 2, "fail": 0},
+    "artifact": {"pass": 3, "fail": 0},
+    "known-failure": {"pass": 2, "fail": 0}
+  },
+  "remaining_failures": [
+    {
+      "id": "domain-design-brand-direction",
+      "type": "judge",
+      "reason": "Borderline craft_quality lens depth on typography rationale"
+    },
+    {
+      "id": "implicit-design-critique-routing",
+      "type": "deterministic",
+      "reason": "Occasional missing Lens Rationale heading when depth=quick"
+    },
+    {
+      "id": "depth-routing-design-quick",
+      "type": "deterministic",
+      "reason": "Quick depth sometimes omits Lens Rationale (fixed in depths.md)"
+    }
+  ],
+  "stop_criteria_met": true
+}
