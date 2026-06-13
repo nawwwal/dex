@@ -92,7 +92,7 @@ Optional integrations depend on the skill you use: Figma MCP for Figma work, Dev
 |---|---|
 | `content-design` | Product copy, UX writing, voice systems, in-product marketing, Razorpay-style marketing copy, errors, empty states, onboarding, accessibility labels, localization checks, and copy audits |
 | `crux` | Compressing vague claims, PRDs, opinions, or product problems down to the load-bearing issue |
-| `diverge` | Brainstorms, alternatives, product directions, interaction concepts, different approaches |
+| `diverge` | Layered brainstorms, alternatives, product directions, interaction concepts, and different approaches with compact default, companion routing, and eval-backed regression coverage |
 | `present` | Design review narrative, meeting-flow strategy, stakeholder framing, rehearsal, explaining tradeoffs to a room, and handoff to browser-native deck production |
 | `playground` | Interactive, visually distinctive playgrounds for exploring topics, systems, code, data, design, copy, motion, reviews, and handoffs. |
 

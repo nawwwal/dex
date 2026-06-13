@@ -1,0 +1,820 @@
+{
+  "skill_name": "diverge",
+  "version": 1,
+  "skill_type": "mixed",
+  "baseline": "previous",
+  "notes": "Exhaustive regression suite for diverge trigger behavior, compact-vs-deep mode, altitude detection, companion routing, layer-quality gates, register rules, state handling, artifact grounding, slop firewall, and repair regressions.",
+  "coverage_requirements": [
+    "explicit-trigger",
+    "implicit-trigger",
+    "contextual-trigger",
+    "negative-control",
+    "known-failure",
+    "artifact",
+    "repair-regression",
+    "compact-mode",
+    "deep-mode",
+    "altitude-detection",
+    "companion-routing",
+    "layer-quality",
+    "register",
+    "output-mode",
+    "state-handling",
+    "slop-firewall"
+  ],
+  "evals": [
+    {
+      "id": "explicit-diverge-alternatives",
+      "category": "explicit-trigger",
+      "should_trigger": true,
+      "prompt": "/diverge Give me alternatives for an agent run history page. Users need to see failures, retries, and which connector caused each failure.",
+      "expected_output": "Produces compact layered directions with product bets, layers changed, tradeoffs, and prototype slices without stalling on a full intake.",
+      "assertions": [
+        "Names at least four distinct directions.",
+        "Each direction names layers changed and a tradeoff.",
+        "Includes an obvious baseline before divergent options.",
+        "Does not use metaphor-only direction names."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["Direction"], ["direction"], ["baseline"], ["Baseline"]],
+        "must_not_include_any": [["Quiet Sentinel"], ["Health Weather"], ["Garden of"]]
+      }
+    },
+    {
+      "id": "explicit-design-diverge-skill",
+      "category": "explicit-trigger",
+      "should_trigger": true,
+      "prompt": "Use design:diverge on different interaction models for bulk-selecting rows in a data table.",
+      "expected_output": "Selects interaction-level divergence and varies input, feedback, states, and accessibility without changing product mechanics.",
+      "assertions": [
+        "Produces multiple interaction models, not one polished pattern.",
+        "Includes first-time and power-user paths or equivalent.",
+        "Names states such as empty, loading, error, or selection limits.",
+        "Does not jump to visual rebranding as the main answer."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["interaction"], ["select"], ["state"]],
+        "must_not_include_any": [["only one approach"], ["single best"]]
+      }
+    },
+    {
+      "id": "explicit-deep-layered",
+      "category": "deep-mode",
+      "should_trigger": true,
+      "prompt": "/diverge Run deep layered divergence for an onboarding flow where merchants connect Shopify, Stripe, and a custom webhook.",
+      "expected_output": "Uses deep mode with product model, state matrix, layer diagnosis, comparison, handoff blueprint, and 5-7 layered directions.",
+      "assertions": [
+        "Includes product model or state/action matrix.",
+        "Includes layer diagnosis or divergence strategy.",
+        "Includes comparison table and recommendation.",
+        "Includes handoff blueprint or prototype slices."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["Product Model"], ["State"], ["Handoff"], ["Comparison"]],
+        "must_not_include_any": [["compact mode only"], ["skipping deep"]]
+      }
+    },
+    {
+      "id": "implicit-brainstorm-concepts",
+      "category": "implicit-trigger",
+      "should_trigger": true,
+      "prompt": "Brainstorm different concepts for a refund approval step in a fintech admin tool.",
+      "expected_output": "Triggers diverge implicitly and explores product/UX directions with consequences, states, and copy implications.",
+      "assertions": [
+        "Treats refund approval as a decision surface with risk.",
+        "Includes multiple concepts with different product or UX bets.",
+        "Names approval, rejection, escalation, or audit states.",
+        "Does not produce only visual skins of the same flow."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["refund"], ["approval"], ["tradeoff"]],
+        "must_not_include_any": [["just make it cleaner"], ["modern and sleek"]]
+      }
+    },
+    {
+      "id": "implicit-other-ways-settings",
+      "category": "implicit-trigger",
+      "should_trigger": true,
+      "prompt": "What are other ways to solve this settings page with account, billing, team, API keys, and security?",
+      "expected_output": "Infers UX/UI layout divergence while keeping product mechanics constant.",
+      "assertions": [
+        "Keeps the five settings domains constant.",
+        "Varies layout topology, hierarchy, or navigation model.",
+        "Names density, responsive, or scan tradeoffs.",
+        "Does not invent new product mechanics."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["layout"], ["account"], ["billing"], ["API"]],
+        "must_not_include_any": [["new product concept"], ["replace billing with"]]
+      }
+    },
+    {
+      "id": "implicit-product-directions",
+      "category": "implicit-trigger",
+      "should_trigger": true,
+      "prompt": "Give me different product directions for a copilot that replaces dashboards with conversation.",
+      "expected_output": "Runs product-level divergence and pressures whether conversation can carry monitoring and accountability.",
+      "assertions": [
+        "Includes directions that keep dashboards and directions that replace them.",
+        "Names accountability, monitoring, scanning, or decision rights.",
+        "Includes obvious baseline judgment.",
+        "Does not accept conversational UX as automatically better."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["dashboard"], ["conversation"], ["accountability"], ["tradeoff"]],
+        "must_not_include_any": [["conversation is always better"], ["dashboards are dead"]]
+      }
+    },
+    {
+      "id": "contextual-noisy-founder-dashboard",
+      "category": "contextual-trigger",
+      "should_trigger": true,
+      "prompt": "Context: board wants something premium by Friday. Engineering says reuse the current grid. Support says users cannot tell which connector broke an agent. Design wants fewer alerts but more delight. Diverge on a connector health dashboard for agents.",
+      "expected_output": "Filters noise, uses compact or deep mode appropriately, and produces repair-oriented directions grounded in the real job.",
+      "assertions": [
+        "Prioritizes diagnosis and repair over delight theater.",
+        "Uses supplied states or objects such as connectors and agents.",
+        "Shows assumptions instead of asking a full 14-field intake.",
+        "Includes recommendation with prototype priority."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["connector"], ["agent"], ["repair"], ["recommend"]],
+        "must_not_include_any": [["confetti"], ["mascot"], ["premium gradient only"]]
+      }
+    },
+    {
+      "id": "contextual-connector-health-supplied",
+      "category": "contextual-trigger",
+      "should_trigger": true,
+      "prompt": "Diverge on a connector health dashboard for agents. Health states include expired auth, rate limit, API down, scope changed, schema mismatch, setup incomplete, not connected. Current anti-pattern is app grid with alerts.",
+      "expected_output": "Skips full intake, bans weak directions, and differentiates repair paths by state severity.",
+      "assertions": [
+        "Includes obvious baseline and banned bad directions or equivalent guardrails.",
+        "API down does not share the same repair path as expired auth.",
+        "Scope changed includes review or permission diff mechanics.",
+        "Direction names are functional, not metaphor-led."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["expired auth"], ["API down"], ["scope"], ["baseline"]],
+        "must_not_include_any": [["Quiet Sentinel"], ["Health Weather"], ["Connector Black Box"]]
+      }
+    },
+    {
+      "id": "artifact-connector-health-brief",
+      "category": "artifact",
+      "should_trigger": true,
+      "prompt": "Read plugins/design/skills/diverge/evals/fixtures/connector-health-brief.md and diverge on the dashboard.",
+      "files": ["evals/fixtures/connector-health-brief.md"],
+      "expected_output": "Inspects the brief, uses its states and anti-patterns, and produces state-differentiated directions.",
+      "assertions": [
+        "Mentions connectors, agents, or anti-pattern grid language from the fixture.",
+        "Differentiates at least three health states in actions or copy.",
+        "Includes handoff notes for states, permissions, or QA.",
+        "Does not ask for facts already present in the brief."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["connector"], ["agent"], ["schema"], ["auth"]],
+        "must_not_include_any": [["please paste the brief"], ["I cannot inspect"]]
+      }
+    },
+    {
+      "id": "artifact-settings-constraints",
+      "category": "artifact",
+      "should_trigger": true,
+      "prompt": "Read plugins/design/skills/diverge/evals/fixtures/settings-page-constraints.md and give me layout directions.",
+      "files": ["evals/fixtures/settings-page-constraints.md"],
+      "expected_output": "Honors fixed product mechanics and explores layout topologies only.",
+      "assertions": [
+        "Keeps account, billing, team, API keys, and security constant.",
+        "Names layout topology, hierarchy, density, or responsive behavior.",
+        "Handles permission denied for non-admin roles.",
+        "Does not add new settings domains."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["account"], ["billing"], ["layout"], ["permission"]],
+        "must_not_include_any": [["new settings section"], ["change billing workflow"]]
+      }
+    },
+    {
+      "id": "artifact-api-key-brief",
+      "category": "artifact",
+      "should_trigger": true,
+      "prompt": "Read plugins/design/skills/diverge/evals/fixtures/api-key-modal-brief.md and diverge on the one-time secret reveal modal.",
+      "files": ["evals/fixtures/api-key-modal-brief.md"],
+      "expected_output": "Routes copy/content pressure and explores directions that reduce save anxiety.",
+      "assertions": [
+        "Names user state after seeing a one-time secret.",
+        "Names system state that secret cannot be recovered.",
+        "Includes copy, CTA, or save/export mechanics.",
+        "Avoids decorative delight without solving the pain point."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["secret"], ["copy"], ["save"], ["once"]],
+        "must_not_include_any": [["confetti"], ["badge only"], ["Done"]]
+      }
+    },
+    {
+      "id": "artifact-missing-file",
+      "category": "artifact",
+      "should_trigger": true,
+      "prompt": "Read plugins/design/skills/diverge/evals/fixtures/missing-product-brief.md and diverge on the flow.",
+      "expected_output": "Reports the missing file and does not invent observed brief facts.",
+      "assertions": [
+        "Explicitly reports the missing or unreadable file.",
+        "Does not fabricate objects or states from a nonexistent brief.",
+        "May still ask a narrow question or proceed from the prompt only with assumptions labeled."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["cannot read"], ["missing"], ["not found"]],
+        "must_not_include_any": [["the brief says"], ["fixture confirms"]]
+      }
+    },
+    {
+      "id": "compact-default-layout-options",
+      "category": "compact-mode",
+      "should_trigger": true,
+      "prompt": "Give me 5 layout directions for a settings page with account, billing, team, API keys, and security. Product mechanics must stay unchanged.",
+      "expected_output": "Uses compact mode: assumptions if needed, obvious baseline, 4-6 directions, recommendation — not full handoff blueprint.",
+      "assertions": [
+        "Produces directions quickly without full 13-section deep template for each.",
+        "Keeps product mechanics unchanged.",
+        "Includes recommendation.",
+        "Does not force companion routing ceremony when the brief is clear."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["layout"], ["account"], ["recommend"]],
+        "must_not_include_any": [["Handoff Blueprint"], ["## 13. Handoff"]]
+      }
+    },
+    {
+      "id": "compact-not-full-handoff",
+      "category": "compact-mode",
+      "should_trigger": true,
+      "prompt": "Give me options for how to present connector errors on an agent detail page.",
+      "expected_output": "Compact divergence with layered bets and tradeoffs, not exhaustive per-direction typography/color/motion blocks unless relevant.",
+      "assertions": [
+        "Returns multiple options in one response.",
+        "Each option names what changed and a tradeoff.",
+        "Includes states such as error, degraded, or retry.",
+        "Avoids deep-mode handoff blueprint unless asked."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["error"], ["connector"], ["tradeoff"]],
+        "must_not_include_any": [["## 12. Prototype slices"], ["Full layered divergence only"]]
+      }
+    },
+    {
+      "id": "deep-explicit-full-layered",
+      "category": "deep-mode",
+      "should_trigger": true,
+      "prompt": "Run exhaustive layered divergence with full handoff for a permissions review surface where admins approve scope changes requested by integrations.",
+      "expected_output": "Deep mode with companion routing if needed, product model, matrices, comparison, prototype slices, and handoff blueprint.",
+      "assertions": [
+        "Uses explicit deep/full/exhaustive request correctly.",
+        "Includes state/action handling for approval, rejection, and stale requests.",
+        "Includes comparison and handoff sections.",
+        "Directions include layers changed and how it dies."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["scope"], ["approval"], ["Handoff"], ["Comparison"]],
+        "must_not_include_any": [["compact mode only"], ["skipping handoff"]]
+      }
+    },
+    {
+      "id": "deep-comprehensive-council",
+      "category": "deep-mode",
+      "should_trigger": true,
+      "prompt": "I want a comprehensive council-style divergence pass on empty states for a multi-connector setup wizard.",
+      "expected_output": "Treats council/comprehensive as deep mode and covers education, states, and product model.",
+      "assertions": [
+        "Includes empty, incomplete, and error states across steps.",
+        "Does not default to tooltip tour as primary education.",
+        "Includes layer diagnosis or divergence strategy.",
+        "Recommends prototype order."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["empty"], ["setup"], ["state"], ["recommend"]],
+        "must_not_include_any": [["tooltip tour only"], ["one empty state copy"]]
+      }
+    },
+    {
+      "id": "altitude-copy-destructive-delete",
+      "category": "output-mode",
+      "should_trigger": true,
+      "prompt": "Diverge on copy for a destructive delete modal that removes a project and 23 files.",
+      "expected_output": "Copy-level mode with diagnosis, roles, 8-12 directions, ethical friction, and outcome CTAs.",
+      "assertions": [
+        "Produces multiple copy strategies grouped by tone or function.",
+        "Uses consequence-first CTAs such as delete files count.",
+        "Includes error, success, and confirmation copy.",
+        "Avoids generic Are you sure and vague Confirm."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["Delete"], ["23"], ["copy"], ["consequence"]],
+        "must_not_include_any": [["Are you sure?"], ["CTA: Confirm"], ["Primary CTA: Confirm"], ["OK"]]
+      }
+    },
+    {
+      "id": "altitude-layout-settings",
+      "category": "output-mode",
+      "should_trigger": true,
+      "prompt": "Give me layout divergence for a settings page with account, billing, team, API keys, and security.",
+      "expected_output": "UX/UI layout divergence with topology, hierarchy, responsive behavior, and constant product objects.",
+      "assertions": [
+        "Names layout topologies such as split nav, search-first, or priority dashboard.",
+        "Includes hierarchy or squint-test language.",
+        "Handles relevant empty, loading, or permission states.",
+        "Does not invent new product mechanics."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["layout"], ["hierarchy"], ["responsive"]],
+        "must_not_include_any": [["new product mechanic"], ["replace team with"]]
+      }
+    },
+    {
+      "id": "altitude-interaction-swipe-reply",
+      "category": "output-mode",
+      "should_trigger": true,
+      "prompt": "Users do not discover swipe to reply. Diverge education approaches.",
+      "expected_output": "Interaction/UX education divergence that first questions whether the UI should be more obvious.",
+      "assertions": [
+        "Asks whether the gesture should be surfaced in the UI before education.",
+        "Includes targeted non-blocking education and trigger-after-slower-path.",
+        "Does not default to blocking tooltip tour.",
+        "Includes accessibility for hidden gestures."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["swipe"], ["education"], ["discover"]],
+        "must_not_include_any": [["tooltip tour as primary"], ["blocking tour only"]]
+      }
+    },
+    {
+      "id": "altitude-visual-typography-analytics",
+      "category": "output-mode",
+      "should_trigger": true,
+      "prompt": "Diverge typography for a dense analytics dashboard.",
+      "expected_output": "Visual-system typography divergence with numeric style, hierarchy infrastructure, and accessibility.",
+      "assertions": [
+        "Treats typography as hierarchy and readability infrastructure.",
+        "Includes numeric or tabular style.",
+        "Defaults to product register unless brand context is added.",
+        "Does not propose expressive display fonts as the default."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["typography"], ["numeric"], ["density"], ["accessibility"]],
+        "must_not_include_any": [["display font default"], ["decorative serif for all metrics"]]
+      }
+    },
+    {
+      "id": "altitude-product-mechanics-open",
+      "category": "altitude-detection",
+      "should_trigger": true,
+      "prompt": "Diverge on what this product should be: a shared inbox, a ticket queue, or an agent command center for support teams.",
+      "expected_output": "Product-level divergence changing mechanics, objects, and trust model — not just UI skins.",
+      "assertions": [
+        "Produces directions that change product objects or workflows materially.",
+        "Names data, trust, or automation tradeoffs.",
+        "Includes obvious baseline across inbox, queue, and command center frames.",
+        "Does not only recolor the same queue UI."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["inbox"], ["queue"], ["command"], ["product"]],
+        "must_not_include_any": [["same screen different color"], ["vibe only"]]
+      }
+    },
+    {
+      "id": "altitude-state-handling-payment",
+      "category": "state-handling",
+      "should_trigger": true,
+      "prompt": "Diverge emotional design for a payment failure recovery flow.",
+      "expected_output": "State-handling and emotional divergence with safety, recovery hierarchy, and ethical retry.",
+      "assertions": [
+        "Targets safety, relief, and confidence — not jokes.",
+        "Explains what happened, why, what now, and whether data or money is safe.",
+        "Includes retry, support, and duplicate-charge concern states.",
+        "Handoff or states include analytics and accessibility."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["payment"], ["retry"], ["safe"], ["error"]],
+        "must_not_include_any": [["joke"], ["lol"], ["mascot"]]
+      }
+    },
+    {
+      "id": "companion-crux-weak-premise",
+      "category": "companion-routing",
+      "should_trigger": true,
+      "prompt": "I think our AI dashboard should feel more trustworthy and premium. Give me directions.",
+      "expected_output": "Runs premise gate with crux or equivalent before visual ideation.",
+      "assertions": [
+        "Includes Companion Routing or equivalent crux pass before directions.",
+        "Names hidden premise behind trustworthy and premium.",
+        "Defines standard of judgment or crux question.",
+        "Does not jump straight to palette or spacing directions only."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["Companion Routing"], ["crux"], ["trust"], ["premium"]],
+        "must_not_include_any": [["palette only"], ["spacing refresh only"]]
+      }
+    },
+    {
+      "id": "companion-content-design-api-key",
+      "category": "companion-routing",
+      "should_trigger": true,
+      "prompt": "Give me simple delight ideas for an API key creation modal. The biggest pain point is users forget to save the secret.",
+      "expected_output": "Routes through content-design mechanics because copy and consequence decide the experience.",
+      "assertions": [
+        "Names anxious user state and one-time secret system state.",
+        "Includes concrete copy, CTA, or save/export mechanics.",
+        "Avoids confetti or mascot delight without solving save anxiety.",
+        "Includes recovery or consequence copy."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["secret"], ["save"], ["copy"], ["state"]],
+        "must_not_include_any": [["confetti"], ["mascot"], ["Done"]]
+      }
+    },
+    {
+      "id": "companion-5f-connector-selection",
+      "category": "companion-routing",
+      "should_trigger": true,
+      "prompt": "Review these three connector health dashboard concepts and tell me which one to prototype. Concept A: Status Grid with cards. Concept B: Triage Queue with urgent problems first. Concept C: System Map with dependency blast radius. Use Fast, Focused, Fun, Fluent, and Fair to choose.",
+      "expected_output": "Uses 5F-style review after concepts exist and recommends with operational clarity.",
+      "assertions": [
+        "Scores or compares across Fast, Focused, Fun, Fluent, and Fair.",
+        "Separates quick wins from strategic bets.",
+        "Mentions accessibility, fairness, novice, or power-user differences.",
+        "Recommends one prototype direction with a reason beyond taste."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["Fast"], ["Focused"], ["Fair"], ["prototype"]],
+        "must_not_include_any": [["most visually novel"], ["pick C because cool"]]
+      }
+    },
+    {
+      "id": "companion-skip-clear-layout",
+      "category": "companion-routing",
+      "should_trigger": true,
+      "prompt": "Give me 5 layout directions for a settings page with account, billing, team, API keys, and security. Product mechanics must stay unchanged.",
+      "expected_output": "Skips crux and does not over-route when the brief is concrete.",
+      "assertions": [
+        "Produces layout directions directly without broad premise interrogation.",
+        "Does not stall for full crux before options.",
+        "Keeps product mechanics unchanged.",
+        "May omit companion routing or explicitly skip irrelevant routes."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["layout"], ["account"], ["billing"]],
+        "must_not_include_any": [["crux question before"], ["cannot proceed without strategy"]]
+      }
+    },
+    {
+      "id": "register-product-vs-brand",
+      "category": "register",
+      "should_trigger": true,
+      "prompt": "Diverge visual directions for a product dashboard and launch landing.",
+      "expected_output": "Separates product register from brand register explicitly.",
+      "assertions": [
+        "Dashboard direction favors familiarity, state clarity, and useful density.",
+        "Landing direction may use stronger type, color, voice, or story.",
+        "Mixed register is explicit rather than averaged into generic SaaS.",
+        "Accessibility checks remain for both."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["dashboard"], ["landing"], ["product"], ["brand"]],
+        "must_not_include_any": [["same treatment for both"], ["generic SaaS only"]]
+      }
+    },
+    {
+      "id": "layer-quality-state-differentiation",
+      "category": "layer-quality",
+      "should_trigger": true,
+      "prompt": "Diverge on a connector health dashboard for agents. Health states include expired auth, rate limit, API down, scope changed, schema mismatch, setup incomplete, not connected.",
+      "expected_output": "Each direction changes specific layers and differentiates repair paths by state.",
+      "assertions": [
+        "API down and expired auth do not share identical user actions.",
+        "Schema mismatch includes mapping or compatibility evidence.",
+        "Copy examples or CTAs vary by state where relevant.",
+        "Directions name layers changed and tradeoffs."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["layers changed"], ["Layers changed"], ["API down"], ["expired auth"]],
+        "must_not_include_any": [["same fix for all"], ["one generic error card"]]
+      }
+    },
+    {
+      "id": "layer-quality-not-vibe-only",
+      "category": "layer-quality",
+      "should_trigger": true,
+      "prompt": "Give me different vibes for our billing settings page.",
+      "expected_output": "Reframes vibe into observable layers or refuses vibe-only divergence.",
+      "assertions": [
+        "Translates vibe into hierarchy, copy, density, interaction, or emotional targets.",
+        "Does not offer only color or font swaps as conceptual divergence.",
+        "Names user job and what the user sees or does.",
+        "Includes tradeoffs for each direction."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["hierarchy"], ["copy"], ["density"], ["tradeoff"]],
+        "must_not_include_any": [["different vibe only"], ["just warmer colors"]]
+      }
+    },
+    {
+      "id": "slop-metaphor-names",
+      "category": "slop-firewall",
+      "should_trigger": true,
+      "prompt": "Diverge on a connector health dashboard for agents with states like expired auth, API down, and schema mismatch. Current anti-pattern is app grid with alerts.",
+      "expected_output": "Bans metaphor-led direction names and produces functional repair-oriented concepts.",
+      "assertions": [
+        "Direction names describe mechanism or user job.",
+        "Does not use poetic metaphor names without execution.",
+        "Bans or avoids alert carousel and app grid repetition.",
+        "Includes repair queue, dependency map, or exception inbox style directions."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["repair"], ["queue"], ["dependency"], ["exception"]],
+        "must_not_include_any": [["Quiet Sentinel"], ["Health Weather"], ["Garden of Integrations"]]
+      }
+    },
+    {
+      "id": "slop-ai-gradient-treatment",
+      "category": "slop-firewall",
+      "should_trigger": true,
+      "prompt": "Give me fresh AI directions for our agent analytics dashboard.",
+      "expected_output": "Avoids purple-blue gradient AI slop and produces layered product directions.",
+      "assertions": [
+        "Does not default to purple-blue gradient AI treatment as a direction.",
+        "Names product bets, states, and user decisions.",
+        "Includes obvious baseline.",
+        "Changes mechanics, hierarchy, or interaction — not just AI branding."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["baseline"], ["tradeoff"], ["agent"], ["analytics"]],
+        "must_not_include_any": [["purple-blue gradient"], ["glow orb"], ["magic sparkles only"]]
+      }
+    },
+    {
+      "id": "known-failure-tooltip-tour-education",
+      "category": "known-failure",
+      "should_trigger": true,
+      "prompt": "Users do not discover swipe to reply. Diverge education approaches.",
+      "expected_output": "Does not default to blocking tooltip tour as the primary education direction.",
+      "assertions": [
+        "Questions whether UI should expose the action first.",
+        "Includes at least one non-tour education model.",
+        "Considers first-time and repeated-use behavior.",
+        "Includes accessibility for hidden gestures."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["swipe"], ["discover"], ["UI"]],
+        "must_not_include_any": [["tooltip tour as primary"], ["blocking tour"]]
+      }
+    },
+    {
+      "id": "known-failure-decorative-delight",
+      "category": "known-failure",
+      "should_trigger": true,
+      "prompt": "Give me simple delight ideas for an API key creation modal. The biggest pain point is users forget to save the secret.",
+      "expected_output": "Does not suggest decorative delight that fails to reduce save anxiety.",
+      "assertions": [
+        "Addresses save, copy, or export mechanics.",
+        "Avoids confetti, badges, or mascot language as the main fix.",
+        "Names consequence of closing without saving.",
+        "Includes at least one direction with explicit friction or confirmation."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["save"], ["secret"], ["copy"]],
+        "must_not_include_any": [["confetti"], ["celebration only"], ["badge"]]
+      }
+    },
+    {
+      "id": "known-failure-generic-delete-copy",
+      "category": "known-failure",
+      "should_trigger": true,
+      "prompt": "Diverge on copy for a destructive delete modal that removes a project and 23 files.",
+      "expected_output": "Avoids generic destructive copy patterns and vague CTAs.",
+      "assertions": [
+        "Uses outcome-describing destructive CTA.",
+        "Includes ethical friction with reason.",
+        "Provides multiple tone variants.",
+        "Includes localization or accessibility notes."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["23"], ["files"], ["Delete"]],
+        "must_not_include_any": [["Are you sure?"], ["Submit"], ["Continue"]]
+      }
+    },
+    {
+      "id": "known-failure-display-typography-analytics",
+      "category": "known-failure",
+      "should_trigger": true,
+      "prompt": "Diverge typography for a dense analytics dashboard.",
+      "expected_output": "Does not propose expressive display typography as the default for dense analytics.",
+      "assertions": [
+        "Prioritizes readability and numeric scanning.",
+        "Includes line height, scale, or tabular numbers.",
+        "Explains why display fonts are wrong for dense analytics.",
+        "Includes contrast and localization considerations."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["dense"], ["analytics"], ["readability"], ["numeric"]],
+        "must_not_include_any": [["display font for all headings"], ["decorative serif default"]]
+      }
+    },
+    {
+      "id": "known-failure-deep-without-ask",
+      "category": "known-failure",
+      "should_trigger": true,
+      "prompt": "Give me a few options for empty states in a connector setup wizard.",
+      "expected_output": "Uses compact mode for a simple options request and does not dump full handoff blueprint.",
+      "assertions": [
+        "Returns a small set of usable directions quickly.",
+        "Does not force 13-section deep template per direction.",
+        "Still names states and tradeoffs.",
+        "Includes recommendation."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["empty"], ["connector"], ["option"]],
+        "must_not_include_any": [["## 13. Handoff Blueprint"], ["council-style full pass"]]
+      }
+    },
+    {
+      "id": "negative-copy-rewrite",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Rewrite this button label to be shorter: 'Proceed to final payment confirmation'.",
+      "expected_output": "Should route to content-design or answer directly with a concise rewrite, not diverge.",
+      "assertions": [
+        "Does not produce multiple design directions.",
+        "Does not run layer diagnosis or product model.",
+        "If answered, gives a concise rewrite."
+      ],
+      "deterministic_checks": {
+        "must_not_include_any": [["Direction:"], ["Product Model"], ["Handoff Blueprint"]]
+      }
+    },
+    {
+      "id": "negative-implement-react",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Implement the onboarding screen in React with the attached design tokens.",
+      "expected_output": "Should route to dev/implementation, not diverge.",
+      "assertions": [
+        "Does not brainstorm onboarding concepts unless asked.",
+        "Does not produce divergence directions.",
+        "Should not treat implementation as divergence."
+      ],
+      "deterministic_checks": {
+        "must_not_include_any": [["Direction:"], ["Divergence Strategy"], ["obvious baseline"]]
+      }
+    },
+    {
+      "id": "negative-crux-request",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Find the crux: should our dashboard be conversational or visual?",
+      "expected_output": "Should route to crux, not diverge, because the user wants the deciding assumption.",
+      "assertions": [
+        "Pressures the weak joint and crux question.",
+        "Does not generate 5-7 layered design directions as the main output.",
+        "May mention divergence later but crux comes first."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["crux"], ["weak joint"], ["assumption"]],
+        "must_not_include_any": [["## Direction:"], ["Handoff Blueprint"]]
+      }
+    },
+    {
+      "id": "negative-dex-release",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "/dex release design patch",
+      "expected_output": "Should route to dex release workflow, not diverge.",
+      "assertions": [
+        "Does not generate design directions.",
+        "Keeps release behavior unchanged.",
+        "Does not ask design brief questions."
+      ],
+      "deterministic_checks": {
+        "must_not_include_any": [["Direction:"], ["Divergence Strategy"], ["Product Model"]]
+      }
+    },
+    {
+      "id": "negative-single-critique",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Critique this one modal layout I pasted. Do not give me alternatives.",
+      "expected_output": "Should critique the single artifact, not run full divergence generation.",
+      "assertions": [
+        "Does not produce 5-7 new directions.",
+        "Focuses critique on the pasted modal.",
+        "Respects the no-alternatives constraint."
+      ],
+      "deterministic_checks": {
+        "must_not_include_any": [["## Direction 1"], ["5 directions"], ["6 directions"]]
+      }
+    },
+    {
+      "id": "repair-regression-companion-visible",
+      "category": "repair-regression",
+      "should_trigger": true,
+      "prompt": "I think our AI dashboard should feel more trustworthy and premium. Give me directions.",
+      "expected_output": "Companion Routing appears as a visible section before baseline or directions, not only in a self-check.",
+      "assertions": [
+        "Includes ### Companion Routing or equivalent visible routing block.",
+        "Mentions crux used or skipped with reason.",
+        "Does not bury routing only at the end.",
+        "Defines judgment standard before directions."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["Companion Routing"], ["crux"]],
+        "must_not_include_any": [["routing noted in self-check only"]]
+      }
+    },
+    {
+      "id": "repair-regression-compact-not-deep",
+      "category": "repair-regression",
+      "should_trigger": true,
+      "prompt": "Brainstorm different approaches for showing webhook delivery logs to developers.",
+      "expected_output": "Uses compact mode by default without full deep handoff unless requested.",
+      "assertions": [
+        "Produces multiple approaches in one pass.",
+        "Does not require deep/full/layered keywords to be useful.",
+        "Includes recommendation.",
+        "Avoids 13-section per-direction template."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["webhook"], ["log"], ["recommend"]],
+        "must_not_include_any": [["## 13. Handoff Blueprint"]]
+      }
+    },
+    {
+      "id": "repair-regression-api-down-vs-auth",
+      "category": "repair-regression",
+      "should_trigger": true,
+      "prompt": "Diverge on a connector health dashboard for agents. States: expired auth, API down, schema mismatch.",
+      "expected_output": "Differentiates repair paths so API down is not treated like expired auth.",
+      "assertions": [
+        "Expired auth emphasizes reconnect or credential renewal.",
+        "API down emphasizes external dependency status and retry or incident context.",
+        "Schema mismatch emphasizes mapping review.",
+        "State-specific copy or CTA examples appear."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["API down"], ["expired auth"], ["schema"]],
+        "must_not_include_any": [["same reconnect button for all"], ["one generic fix"]]
+      }
+    },
+    {
+      "id": "repair-regression-obvious-baseline-verdict",
+      "category": "repair-regression",
+      "should_trigger": true,
+      "prompt": "Give me layout directions for account, billing, team, API keys, and security settings.",
+      "expected_output": "Includes obvious baseline and may conclude it is enough rather than forcing novelty.",
+      "assertions": [
+        "Includes obvious baseline section or equivalent.",
+        "Says what divergence must beat.",
+        "Recommendation may keep baseline as UI treatment.",
+        "Does not dismiss baseline automatically for novelty."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["baseline"], ["Baseline"], ["obvious"]],
+        "must_not_include_any": [["baseline is always wrong"], ["ignore the default"]]
+      }
+    },
+    {
+      "id": "repair-regression-layers-changed-required",
+      "category": "repair-regression",
+      "should_trigger": true,
+      "prompt": "Give me options for redesigning the team invite modal.",
+      "expected_output": "Every direction names layers changed and observable outcomes.",
+      "assertions": [
+        "Each direction states layers changed or what stayed constant.",
+        "Includes what the user sees and does.",
+        "Includes tradeoff and prototype slice or smallest proof.",
+        "Does not accept vibe-only renaming."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["layers"], ["tradeoff"], ["invite"]],
+        "must_not_include_any": [["same modal new font"], ["vibe refresh only"]]
+      }
+    },
+    {
+      "id": "artifact-payment-failure-flow",
+      "category": "state-handling",
+      "should_trigger": true,
+      "prompt": "Read plugins/design/skills/diverge/evals/fixtures/payment-failure-flow.md and diverge emotional design for the recovery flow.",
+      "files": ["evals/fixtures/payment-failure-flow.md"],
+      "expected_output": "Uses fixture emotional targets and states to produce recovery-first directions.",
+      "assertions": [
+        "Mentions safety, relief, or confidence from the fixture.",
+        "Covers retry, charge concern, or support handoff states.",
+        "No jokes or mascot tone.",
+        "Includes what happened, why, what now, and data safety."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["payment"], ["retry"], ["safe"], ["charge"]],
+        "must_not_include_any": [["joke"], ["please paste"], ["I cannot inspect"]]
+      }
+    }
+  ]
+}

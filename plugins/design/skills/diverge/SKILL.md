@@ -1,6 +1,6 @@
 ---
 name: diverge
-description: Use when exploring divergence, brainstorms, alternatives, alternate concepts, different directions, or different approaches for a software product, surface, flow, page, modal, dashboard, component, interaction, state, copy system, visual language, or product direction.
+description: Use when exploring divergence, brainstorms, alternatives, alternate concepts, different directions, or different approaches for a software product, surface, flow, page, modal, dashboard, component, interaction, state, copy system, visual language, or product direction. Do not use when the user asks to find the crux, pressure a strategy bet, implement code, release a plugin, or rewrite one piece of copy without exploring alternatives.
 ---
 
 # /diverge - Layered Product Design Divergence
@@ -10,6 +10,17 @@ Generate design directions that differ by observable design layers, not by decor
 ## Trigger Language
 
 Use this skill for prompts containing: divergence, diverge, brainstorm, alternatives, alternate concepts, concepts, different directions, different approaches, product directions, UI directions, other ways to solve this, or "give me options."
+
+Reframe before ideation when the prompt uses loaded style words without mechanics:
+- "different vibes", "fresh AI", "more premium", "feel trustworthy" -> translate into hierarchy, copy, interaction, state clarity, or trust evidence; run `crux` when the real job or success criterion is still unclear.
+- "delight ideas" on risk surfaces (secrets, payments, deletes, permissions) -> route `content-design` first; delight means anxiety relief, not decoration.
+
+Do not use this skill when the user:
+- asks to find the crux, weak joint, or deciding assumption -> route `crux`
+- asks to implement, build, or code a screen -> route dev/implementation
+- asks for one label/button rewrite without alternatives -> route `content-design` or answer directly
+- invokes `/dex release` or other maintainer workflows -> route `dex`
+- asks to critique one pasted design with no alternatives requested -> critique only
 
 ## Default Depth
 
@@ -21,9 +32,17 @@ Compact output:
 1. Assumptions, only if needed.
 2. Companion routing, only when a companion skill is used or clearly relevant.
 3. Obvious baseline.
-4. 4-6 directions.
-5. For each direction: product bet, layers changed, visible execution, main interaction/state behavior, copy/content implication when relevant, tradeoff, prototype slice.
-6. Recommendation.
+4. Banned bad directions, when the prompt lists states, anti-patterns, or known failure modes.
+5. 4-6 directions.
+6. For each direction: product bet, layers changed, visible execution, main interaction/state behavior, copy/content implication when relevant, tradeoff, prototype slice.
+7. Recommendation.
+8. Handoff hooks, when an artifact brief or file was read: bullets for objects, critical states, permissions, and QA scenarios (not a full blueprint).
+
+Compact mode must not include deep-only sections such as `## 13. Handoff Blueprint`, full per-direction typography/color/motion blocks unless altitude requires them, or the complete 13-section direction template for every direction.
+
+For copy-heavy prompts (destructive modals, errors, onboarding, CTAs, labels), use Copywriting divergence (Mode 5) even if the user only says "diverge on copy" — load `copywriting-divergence.md` and return 8-12 copy directions grouped by tone/function. In compact copy runs, end with a `### Copy guardrails` block: localization risks (long strings, RTL, button width) and accessibility (destructive button labeling, `aria-describedby`, screen-reader consequence text).
+
+For recovery, payment, or health/state flows in compact mode, include analytics hooks and accessibility notes at recommendation level when states affect trust or safety.
 
 Deep output:
 - Use the full workflow below.
@@ -186,6 +205,19 @@ Rules:
 - Use 5F-style review after directions exist when critique, selection, B2B SaaS quality, or design review is central. For review/selection prompts with existing concepts, include the 5F lens before recommendation.
 - Use execution hardening after a direction is selected when polish, accessibility, density, typography, motion, or implementation readiness is the core risk.
 - For clear direct layout/options prompts, explicitly skip companion routing in one line or omit it if no route is relevant. Avoid over-routing.
+
+Example when skipping:
+
+```md
+### Companion Routing
+
+- crux: skipped — surface, objects, and constraints are already concrete.
+- content-design: skipped — labels are stable unless a direction changes warnings.
+- 5F review: skipped — no selection critique requested.
+- execution hardening: skipped — ideation only.
+```
+
+Or omit the section entirely when no route is relevant.
 
 ### 3. Divergence Altitude
 
