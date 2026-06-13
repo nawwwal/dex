@@ -1,7 +1,7 @@
 {
   "name": "core",
   "version": "1.1.3",
-  "description": "Agent environment setup, teaching, council, communication, reflection, DevRev, session wrap-up, and Portent knowledge-base workflows",
+  "description": "Agent environment setup, teaching, council, reflection, DevRev, session wrap-up, and Portent knowledge-base workflows",
   "author": {
     "name": "Aditya Nawal"
   },
@@ -10,7 +10,7 @@
   "interface": {
     "displayName": "Dex Core",
     "shortDescription": "Setup, teaching, council, reflection, DevRev, wrap-up, and Portent",
-    "longDescription": "Core Dex workflows for agent environment setup, teaching unfamiliar concepts before execution, multi-agent council analysis, communication, memory-aware reflection, DevRev workflows, end-of-session wrap-up, meaningful micro-commits, and Tolaria-backed Portent knowledge records.",
+    "longDescription": "Core Dex workflows for agent environment setup, teaching unfamiliar concepts before execution, multi-agent council analysis, memory-aware reflection, DevRev workflows, end-of-session wrap-up, meaningful micro-commits, and Tolaria-backed Portent knowledge records.",
     "developerName": "Aditya Nawal",
     "category": "Productivity",
     "composerIcon": "./assets/logo.png",

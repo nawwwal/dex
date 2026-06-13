@@ -10,7 +10,7 @@ Dex ships four marketplace plugins.
 
 | Plugin | Owns | Does not own |
 |---|---|---|
-| `core` | Agent setup, teaching unfamiliar concepts, council-style investigation, communication, reflection, DevRev, session wrap-up, Portent/Tolaria knowledge records | Design implementation, browser tooling, media utilities |
+| `core` | Agent setup, teaching unfamiliar concepts, council-style investigation, reflection, DevRev, session wrap-up, Portent/Tolaria knowledge records | Design implementation, browser tooling, media utilities |
 | `design` | Product thinking, content design, divergence, presentation narrative, interactive playground artifacts | Blade, shaders, sound, generic code hardening, private review frameworks |
 | `dev` | Design engineering: Blade, dashboard implementation, hardening, shaders, sound | Product strategy, presentation coaching, third-party browser tools |
 | `tools` | Utility tools: Codex review, browser-native HTML presentations, image generation, media optimization, mymind | Core setup, design critique, implementation doctrine |
@@ -74,7 +74,6 @@ Optional integrations depend on the skill you use: Figma MCP for Figma work, Dev
 | `dex` | Fresh setup, doctor checks, `.agents` bootstrap, Claude/Codex compatibility links, project design-context capture |
 | `teach` | Explaining unfamiliar code, architecture, concepts, alternatives, tradeoffs, and clever functions before execution; recording learned concepts in `~/.agents/memory/teach/` with a hook-refreshed SQLite search index |
 | `council` | Parallel research, code audits, expert lenses, blind-spot passes, architecture investigations |
-| `communicate` | Drafting or sending Slack messages in the user's voice |
 | `reflect` | Portent/Tolaria reflection: emerging patterns, leverage points, and drift across active knowledge objects |
 | `devrev` | Sprint routines, grooming, enrichment, and schema-discovered DevRev MCP issue/enhancement work |
 | `wrap` | End-of-session recap, meaningful micro-commits, verification summary, and Portent handoff |
