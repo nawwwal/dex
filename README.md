@@ -42,7 +42,7 @@ Current released versions:
 | `core` | `1.2.0` |
 | `design` | `1.2.3` |
 | `dev` | `1.0.4` |
-| `tools` | `1.2.0` |
+| `tools` | `1.2.1` |
 <!-- dex-current-versions:end -->
 
 Then bootstrap the shared agent home:

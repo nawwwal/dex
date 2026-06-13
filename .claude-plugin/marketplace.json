@@ -29,7 +29,7 @@
       "name": "tools",
       "source": "./plugins/tools",
       "description": "Codex review, media tools, and HTML presentations",
-      "version": "1.2.0"
+      "version": "1.2.1"
     }
   ]
 }
