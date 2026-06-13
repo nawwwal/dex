@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Narrative Walkthrough Scaffold</title>
+  <style>
+    :root {
+      --stage: #14110f;
+      --spot: #f5efe6;
+      --rail: #2a2420;
+      --accent: #d4a574;
+      --muted: #9a8775;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Fraunces", "Palatino Linotype", serif;
+      background: var(--stage);
+      color: var(--spot);
+    }
+    .walkthrough {
+      display: grid;
+      grid-template-columns: 200px 1fr 280px;
+      min-height: 100vh;
+    }
+    .section-rail {
+      background: var(--rail);
+      padding: 1rem 0.75rem;
+      border-right: 1px solid #3a322c;
+    }
+    .section-rail button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      margin-bottom: 0.35rem;
+      font: inherit;
+      font-family: "IBM Plex Sans", sans-serif;
+      font-size: 0.85rem;
+      background: transparent;
+      color: var(--muted);
+      border: none;
+      padding: 0.45rem 0.5rem;
+      cursor: pointer;
+    }
+    .section-rail button[aria-current="true"] {
+      color: var(--spot);
+      border-left: 3px solid var(--accent);
+      background: #1c1815;
+    }
+    .section-rail button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    main {
+      padding: 1.25rem;
+      background: #1a1613;
+    }
+    .drawer {
+      background: var(--rail);
+      border-left: 1px solid #3a322c;
+      padding: 1rem;
+      font-family: "IBM Plex Sans", sans-serif;
+      font-size: 0.9rem;
+    }
+    h1 { font-size: 1.5rem; margin: 0 0 0.75rem; }
+    .checkpoint {
+      margin: 1rem 0;
+      padding: 0.75rem;
+      border: 1px dashed var(--accent);
+      background: #201b17;
+    }
+    .source-assumptions, .export-output {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      border-left: 3px solid var(--accent);
+      background: #171411;
+      font-family: "IBM Plex Sans", sans-serif;
+      font-size: 0.85rem;
+    }
+    @media (max-width: 900px) {
+      .walkthrough { grid-template-columns: 1fr; }
+      .section-rail, .drawer { border: none; border-bottom: 1px solid #3a322c; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="walkthrough">
+    <nav class="section-rail" aria-label="Section rail">
+      <button type="button" data-section="0" aria-current="true">Problem</button>
+      <button type="button" data-section="1">Evidence</button>
+      <button type="button" data-section="2">Decision</button>
+      <button type="button" data-section="3">Appendix</button>
+    </nav>
+    <main aria-live="polite">
+      <h1 id="section-title">Problem</h1>
+      <p id="section-body">Narrative section content from source material.</p>
+      <div class="checkpoint" id="checkpoint">
+        <strong>Decision checkpoint</strong>
+        <p>What must the audience agree to before advancing?</p>
+      </div>
+    </main>
+    <aside class="drawer" aria-label="Objection drawer">
+      <h2 style="font-size:0.8rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);">Objections</h2>
+      <ul id="objections">
+        <li>Engineering scope concern</li>
+        <li>Timeline pushback</li>
+      </ul>
+      <section class="source-assumptions" id="source-assumptions">
+        <h2>Source Assumptions</h2>
+        <p>Narrative fixture, audience risks, and inferred stakeholder positions.</p>
+      </section>
+      <section class="export-output">
+        <h2>Export</h2>
+        <pre id="export-prompt">Meeting script / review prompt for selected sections.</pre>
+        <button type="button" id="copy-btn">Copy export</button>
+        <span id="copy-status" aria-live="polite"></span>
+      </section>
+    </aside>
+  </div>
+  <script>
+    const DEFAULTS = { section: 0 };
+    let state = structuredClone(DEFAULTS);
+
+    const SECTIONS = [
+      { title: "Problem", body: "Frame the design review problem from source narrative." },
+      { title: "Evidence", body: "Show supporting observations and constraints." },
+      { title: "Decision", body: "Surface the decision checkpoint and tradeoffs." },
+      { title: "Appendix", body: "Hold objections, alternatives, and follow-ups." }
+    ];
+
+    function updateAll() {
+      document.querySelectorAll("[data-section]").forEach((btn) => {
+        const active = Number(btn.dataset.section) === state.section;
+        btn.setAttribute("aria-current", active ? "true" : "false");
+      });
+      const current = SECTIONS[state.section];
+      document.getElementById("section-title").textContent = current.title;
+      document.getElementById("section-body").textContent = current.body;
+      updatePrompt();
+    }
+
+    function updatePrompt() {
+      document.getElementById("export-prompt").textContent =
+        "Walkthrough export — active section: " + SECTIONS[state.section].title +
+        "; include objections and decision checkpoints.";
+    }
+
+    document.querySelectorAll("[data-section]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state.section = Number(btn.dataset.section);
+        updateAll();
+      });
+    });
+
+    document.getElementById("copy-btn").addEventListener("click", async () => {
+      const status = document.getElementById("copy-status");
+      try {
+        await navigator.clipboard.writeText(document.getElementById("export-prompt").textContent);
+        status.textContent = "Copied";
+      } catch {
+        status.textContent = "Copy failed";
+      }
+    });
+
+    updateAll();
+  </script>
+</body>
+</html>

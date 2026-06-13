@@ -1,0 +1,784 @@
+{
+  "skill_name": "playground",
+  "version": 2,
+  "skill_type": "mixed",
+  "baseline": "evals.json-v1",
+  "notes": "Exhaustive regression suite migrated from evals/evals.json (v1, 10 cases). Original evals.json retained for routing.md and benchmark compatibility. Covers interaction-model routing, companion skills, HTML contract, visual slop firewall, explore/build modes, boundary cases, and negative controls.",
+  "coverage_requirements": [
+    "positive",
+    "companion-routing",
+    "boundary",
+    "negative-control",
+    "visual-quality",
+    "html-contract",
+    "explore-mode"
+  ],
+  "evals": [
+    {
+      "id": "artifact-editor-question-tool",
+      "category": "positive",
+      "should_trigger": true,
+      "prompt": "Use design:playground to explore layout changes to the question tool described in evals/files/question-tool.md.",
+      "files": ["evals/files/question-tool.md"],
+      "expected_output": "A standalone artifact editor playground with live preview, meaningful presets, stateful controls, inspector, export prompt, and source assumptions.",
+      "assertions": [
+        "Chooses artifact editor as the primary interaction model and explains why.",
+        "Includes live preview, presets, direct controls, reset, and export/paste-back output.",
+        "Uses the source fixture and labels source assumptions instead of inventing the question tool.",
+        "Uses topic-specific visual language tied to question layout, answer choices, confidence, and decision state.",
+        "Does not present three unrelated visual concepts unless the user asks for options.",
+        "Does not route to production frontend implementation."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["artifact editor"], ["live preview"], ["export", "paste-back"], ["reset"], ["source assumptions", "assumptions"]],
+        "must_not_include_any": [["design:diverge"], ["production UI"], ["frontend-design"]]
+      }
+    },
+    {
+      "id": "codebase-node-comments",
+      "category": "positive",
+      "should_trigger": true,
+      "prompt": "Use design:playground to show how the email agent in evals/files/email-agent-source.md works and let me comment on nodes.",
+      "files": ["evals/files/email-agent-source.md"],
+      "expected_output": "A canvas/node map playground with source-grounded modules, click-to-comment, filters, node inspector, source notes, and export feedback.",
+      "assertions": [
+        "Chooses canvas/node map as the primary interaction model and explains why.",
+        "Uses the provided source fixture instead of inventing a codebase.",
+        "Includes click-to-comment or select-node-to-comment behavior.",
+        "Includes node filters, inspector/details panel, source assumptions, and export feedback.",
+        "Avoids generic dashboard styling and static-only diagrams."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["canvas", "node map"], ["comment"], ["filter"], ["inspector"], ["source"]],
+        "must_not_include_any": [["static only"], ["fake metrics"], ["purple gradient"]]
+      }
+    },
+    {
+      "id": "skill-review-surface",
+      "category": "positive",
+      "should_trigger": true,
+      "prompt": "Use design:playground to review evals/files/sample-skill.md and give inline suggestions I can approve, reject, or comment on. Do not create files.",
+      "files": ["evals/files/sample-skill.md"],
+      "expected_output": "A read-only review surface response with anchored suggestions, approve/reject/comment states, review export shape, and no artifact file creation.",
+      "assertions": [
+        "Does not create files because the prompt says not to.",
+        "Chooses review surface as the primary interaction model and explains why.",
+        "Includes anchored suggestions tied to the sample skill.",
+        "Uses the sample skill source and names source assumptions.",
+        "Includes approve, reject, and comment states.",
+        "Defines export output containing only approved suggestions, with rejected items labeled separately."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["review surface"], ["approve", "reject", "comment"], ["anchored"], ["approved suggestions"], ["rejected"]],
+        "must_not_include_any": [["created at"], ["output_path"], ["wrote", ".html"]]
+      }
+    },
+    {
+      "id": "inferno-balance-simulator",
+      "category": "positive",
+      "should_trigger": true,
+      "prompt": "Use design:playground to help me balance the Inferno hero deck in evals/files/inferno-hero-deck.json.",
+      "files": ["evals/files/inferno-hero-deck.json"],
+      "expected_output": "A simulator playground with coupled variables, derived metrics, warnings, balance assumptions, and recommended patch output.",
+      "assertions": [
+        "Chooses simulator as the primary interaction model and explains why.",
+        "Includes coupled variables, scenario switches or presets, derived metrics, and warnings.",
+        "Distinguishes real fixture stats from inferred balance assumptions.",
+        "Exports a recommended patch prompt.",
+        "Does not treat deck as a presentation unless the source indicates a slide deck."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["simulator"], ["derived metrics"], ["warnings"], ["assumptions"], ["patch"]],
+        "must_not_include_any": [["design:present"], ["narrative walkthrough"]]
+      }
+    },
+    {
+      "id": "positive-state-machine-api-flow",
+      "category": "positive",
+      "should_trigger": true,
+      "prompt": "Use design:playground to make the API flow in evals/files/api-flow.md interactive as a state machine I can step through.",
+      "files": ["evals/files/api-flow.md"],
+      "expected_output": "A state machine playground with triggers, active state, guards, event log, and export of the reproduction path.",
+      "assertions": [
+        "Chooses state machine as the primary interaction model and explains why.",
+        "Includes trigger buttons, active state display, and event log or blocked-state messages.",
+        "Uses the API-flow source instead of inventing endpoints.",
+        "Includes source assumptions and export/paste-back output.",
+        "Does not produce a static diagram without interaction."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["state machine"], ["trigger"], ["event log"], ["source"], ["export"]],
+        "must_not_include_any": [["static only"], ["fake endpoint"]]
+      }
+    },
+    {
+      "id": "positive-lens-explorer-copy",
+      "category": "positive",
+      "should_trigger": true,
+      "prompt": "Use design:playground to explore evals/files/copy-states.md through user, system, and risk lenses without rewriting copy first.",
+      "files": ["evals/files/copy-states.md"],
+      "expected_output": "A lens explorer with overlays or filters per lens, confidence markers, source assumptions, and selected-lens export.",
+      "assertions": [
+        "Chooses lens explorer as the primary interaction model and explains why.",
+        "Includes at least user, system, and risk or tone lenses.",
+        "Uses the copy-state fixture and labels source assumptions.",
+        "Lens switching changes interpretation, not just decorative labels.",
+        "Includes export output with selected-lens notes."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["lens"], ["user"], ["system"], ["risk", "tone"], ["export"]],
+        "must_not_include_any": [["design:content-design"], ["rewrite only"]]
+      }
+    },
+    {
+      "id": "positive-replay-scrubber-narrative",
+      "category": "positive",
+      "should_trigger": true,
+      "prompt": "Use design:playground to scrub through the design review timeline in evals/files/design-review-narrative.md with play, pause, and bookmarks.",
+      "files": ["evals/files/design-review-narrative.md"],
+      "expected_output": "A replay/scrubber playground with timeline, play/pause/step, bookmarks, selected-range export, and source assumptions.",
+      "assertions": [
+        "Chooses replay/scrubber as the primary interaction model and explains why.",
+        "Includes play, pause, step, or speed controls and visible timeline markers.",
+        "Uses the design review narrative source and labels assumptions.",
+        "Exports selected-range summary or motion spec.",
+        "Does not clone a static slide deck."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["scrubber", "replay", "timeline"], ["play"], ["bookmark"], ["export"], ["source"]],
+        "must_not_include_any": [["static deck"], ["slide thumbnails only"]]
+      }
+    },
+    {
+      "id": "positive-parameter-tuner-question",
+      "category": "positive",
+      "should_trigger": true,
+      "prompt": "Use design:playground to tune spacing and density variables for the question tool in evals/files/question-tool.md with live preview.",
+      "files": ["evals/files/question-tool.md"],
+      "expected_output": "A parameter tuner or artifact editor with bounded variables, live preview, derived readouts, reset, and export deltas.",
+      "assertions": [
+        "Chooses parameter tuner or artifact editor and explains why.",
+        "Maps controls to real layout variables from the question tool.",
+        "Includes live preview and export with non-default deltas.",
+        "Labels source assumptions from the fixture.",
+        "Avoids decorative controls that do not affect layout."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["live preview"], ["spacing", "density"], ["export"], ["assumptions"], ["reset"]],
+        "must_not_include_any": [["fake metrics"], ["random sliders"]]
+      }
+    },
+    {
+      "id": "positive-annotated-report-api",
+      "category": "positive",
+      "should_trigger": true,
+      "prompt": "Use design:playground to triage the API flow in evals/files/api-flow.md as an annotated report with severity filters and comments.",
+      "files": ["evals/files/api-flow.md"],
+      "expected_output": "An annotated report playground with sections, severity filters, anchored comments, source links, and export JSON or Markdown.",
+      "assertions": [
+        "Chooses annotated report as the primary interaction model and explains why.",
+        "Includes filters, severity, or triage states tied to API flow sections.",
+        "Uses source fixture actors, services, and trust boundaries.",
+        "Includes source assumptions and export output.",
+        "Does not invent endpoints absent from the fixture."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["annotated report", "report"], ["filter", "severity"], ["comment"], ["export"], ["source"]],
+        "must_not_include_any": [["invented endpoint"], ["lorem ipsum"]]
+      }
+    },
+    {
+      "id": "presentation-walkthrough-routing",
+      "category": "companion-routing",
+      "should_trigger": true,
+      "prompt": "Use design:playground to turn the design review narrative in evals/files/design-review-narrative.md into interactive HTML.",
+      "files": ["evals/files/design-review-narrative.md"],
+      "expected_output": "Routes through design:present first, then proposes a narrative walkthrough playground with objection drawer, decision checkpoints, appendix, and exportable meeting script.",
+      "assertions": [
+        "Routes through design:present before building the walkthrough.",
+        "Chooses narrative walkthrough as the primary interaction model and explains why.",
+        "Uses the source narrative and labels source assumptions.",
+        "Includes section rail, objection drawer, decision checkpoints, appendix, and export output.",
+        "Does not clone a static deck.",
+        "Does not route to harden or production frontend implementation."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["design:present"], ["narrative walkthrough"], ["objection"], ["decision checkpoint"], ["export"]],
+        "must_not_include_any": [["harden"], ["production UI"]]
+      }
+    },
+    {
+      "id": "content-state-routing",
+      "category": "companion-routing",
+      "should_trigger": true,
+      "prompt": "Use design:playground to make the copy in evals/files/copy-states.md sharper and show it as an interactive state explorer.",
+      "files": ["evals/files/copy-states.md"],
+      "expected_output": "Routes through design:content-design first, then proposes a copy/state explorer with state variants, risk/tone notes, comments, and approved-copy export.",
+      "assertions": [
+        "Routes through design:content-design before the playground.",
+        "Chooses review surface or lens explorer as the interaction model for copy/state exploration and explains why.",
+        "Uses the copy-state source fixture and labels source assumptions.",
+        "Includes user state, system state, risk, tone, CTA, and state variants.",
+        "Includes approve/reject/comment or selected-copy export.",
+        "Does not treat copy as decorative labels."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["design:content-design"], ["state"], ["tone"], ["CTA"], ["export"]],
+        "must_not_include_any": [["decorative"], ["fake metrics"]]
+      }
+    },
+    {
+      "id": "image-seed-architecture",
+      "category": "companion-routing",
+      "should_trigger": true,
+      "prompt": "Use design:playground to generate visual inspiration first for an architecture playground based on evals/files/email-agent-source.md.",
+      "files": ["evals/files/email-agent-source.md"],
+      "expected_output": "Routes through imagegen for one inspiration seed, extracts visual grammar, and rebuilds the semantics in HTML/SVG/canvas instead of using wallpaper.",
+      "assertions": [
+        "Routes through imagegen because the user explicitly asked for visual inspiration first.",
+        "Chooses a source-grounded architecture interaction model after image seeding.",
+        "Uses one inspiration seed rather than multiple visual directions.",
+        "Extracts composition, depth, texture, lighting, rhythm, density, material, or spatial metaphor.",
+        "Keeps essential controls, labels, state, and export outside the bitmap.",
+        "Does not use generated image as wallpaper."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["imagegen"], ["inspiration seed"], ["visual grammar"], ["HTML", "SVG"], ["not", "wallpaper"]],
+        "must_not_include_any": [["multiple directions"], ["three concepts"]]
+      }
+    },
+    {
+      "id": "companion-crux-unclear-premise",
+      "category": "companion-routing",
+      "should_trigger": true,
+      "prompt": "Use design:playground to make our onboarding feel more premium and trustworthy as an interactive artifact.",
+      "expected_output": "Routes through design:crux or equivalent premise gate before building because the weak joint is unclear.",
+      "assertions": [
+        "Names design:crux or equivalent premise interrogation before artifact build.",
+        "Surfaces the hidden premise behind premium and trustworthy.",
+        "Does not jump straight to purple gradients or generic dashboard shells.",
+        "May propose playground after crux, but crux comes first."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["design:crux", "crux"], ["premise", "weak joint"], ["trust", "premium"]],
+        "must_not_include_any": [["playground-", ".html"], ["output_path"]]
+      }
+    },
+    {
+      "id": "companion-diverge-then-build",
+      "category": "companion-routing",
+      "should_trigger": true,
+      "prompt": "Use design:playground after I pick direction B from a diverge pass to prototype the connector health dashboard interactively.",
+      "expected_output": "Accepts a chosen direction and builds one playground artifact without re-running full divergence.",
+      "assertions": [
+        "Does not re-run design:diverge as the primary output.",
+        "Builds one interactive artifact for direction B.",
+        "Names interaction model and source assumptions.",
+        "Includes export/paste-back output.",
+        "Does not present three new unrelated concepts."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["direction B"], ["interaction"], ["export"], ["assumptions"]],
+        "must_not_include_any": [["design:diverge"], ["three concepts"], ["multiple directions"]]
+      }
+    },
+    {
+      "id": "companion-skip-present-static-brief",
+      "category": "companion-routing",
+      "should_trigger": true,
+      "prompt": "Use design:playground to explore evals/files/api-flow.md as an interactive trust-boundary map. No presentation or stakeholder walkthrough needed.",
+      "files": ["evals/files/api-flow.md"],
+      "expected_output": "Skips design:present because the user excluded presentation and builds a source-grounded map playground.",
+      "assertions": [
+        "Does not force design:present when user excluded walkthrough.",
+        "Chooses canvas/node map or annotated report and explains why.",
+        "Uses API-flow fixture trust boundaries and actors.",
+        "Includes source assumptions and export.",
+        "Does not invent endpoints."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["map", "canvas"], ["trust"], ["source"], ["export"]],
+        "must_not_include_any": [["design:present"], ["stakeholder walkthrough"]]
+      }
+    },
+    {
+      "id": "static-api-diagram",
+      "category": "boundary",
+      "should_trigger": true,
+      "prompt": "Use design:playground to create a static diagram of the API flow in evals/files/api-flow.md.",
+      "files": ["evals/files/api-flow.md"],
+      "expected_output": "A static API-flow artifact is allowed only with explicit justification that interaction adds no understanding, plus source notes, legend, assumptions, and export summary.",
+      "assertions": [
+        "States why static output is sufficient for this API-flow request.",
+        "Considers interaction and explains why it would not add understanding for the static diagram request.",
+        "Uses the API-flow source instead of inventing endpoints.",
+        "Includes actors, services, request/response order, branches, and trust boundaries.",
+        "Includes source notes, assumptions, legend, and export/paste-back output.",
+        "Does not omit the artifact contract just because output is static."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["static"], ["why"], ["source"], ["assumptions"], ["export"]],
+        "must_not_include_any": [["invented"], ["fake endpoint"]]
+      }
+    },
+    {
+      "id": "boundary-read-only-no-files",
+      "category": "boundary",
+      "should_trigger": true,
+      "prompt": "Use design:playground to review evals/files/sample-skill.md inline. Do not write any files.",
+      "files": ["evals/files/sample-skill.md"],
+      "expected_output": "Returns review surface in chat with anchored suggestions and export shape, no artifact file.",
+      "assertions": [
+        "Does not create HTML or other artifact files.",
+        "Returns review surface content in the response.",
+        "Includes approve/reject/comment and export shape.",
+        "Uses sample skill source and source assumptions.",
+        "Explains interaction model that would have been used."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["review"], ["approve"], ["export"], ["assumptions"], ["not create"]],
+        "must_not_include_any": [["output_path"], ["playground-"], ["wrote"]]
+      }
+    },
+    {
+      "id": "boundary-missing-fixture",
+      "category": "boundary",
+      "should_trigger": true,
+      "prompt": "Use design:playground to explore evals/files/missing-product-brief.md as an artifact editor.",
+      "expected_output": "Reports missing fixture, labels assumptions explicitly, and does not invent observed brief facts.",
+      "assertions": [
+        "Reports the missing or unreadable file.",
+        "Does not fabricate product objects from a nonexistent brief.",
+        "May proceed with labeled assumptions from the prompt only.",
+        "Still names interaction model and export shape.",
+        "Does not claim fixture confirms details."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["missing", "not found", "cannot read"], ["assumptions"], ["artifact editor"]],
+        "must_not_include_any": [["the brief says"], ["fixture confirms"]]
+      }
+    },
+    {
+      "id": "boundary-paper-medium",
+      "category": "boundary",
+      "should_trigger": true,
+      "prompt": "Use design:playground in Paper to explore layout changes to evals/files/question-tool.md.",
+      "files": ["evals/files/question-tool.md"],
+      "expected_output": "Routes to Paper medium per user request while preserving playground contract, source assumptions, and export.",
+      "assertions": [
+        "Uses Paper because the user requested it.",
+        "Preserves artifact editor or equivalent interaction intent.",
+        "Uses question-tool fixture and source assumptions.",
+        "Includes export or handoff back to the agent.",
+        "Does not default to standalone HTML silently."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["Paper"], ["question tool"], ["assumptions"], ["export", "handoff"]],
+        "must_not_include_any": [["standalone HTML only"], ["ignored Paper"]]
+      }
+    },
+    {
+      "id": "explore-sketch-layout-variants",
+      "category": "explore-mode",
+      "should_trigger": true,
+      "prompt": "Use design:playground in sketch mode to show 2-3 layout variants for the question tool in evals/files/question-tool.md.",
+      "files": ["evals/files/question-tool.md"],
+      "expected_output": "Sketch mode with 2-3 fast layout variants, shared source assumptions, and pick-one export — not full diverge ceremony.",
+      "assertions": [
+        "Uses sketch or explore mode explicitly.",
+        "Produces 2-3 variants, not 5-7 full diverge directions.",
+        "Variants share the same source fixture and assumptions.",
+        "Includes pick-one or compare export.",
+        "Does not route to design:diverge as primary skill."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["sketch", "explore"], ["variant"], ["question tool"], ["export"], ["assumptions"]],
+        "must_not_include_any": [["design:diverge"], ["five directions"], ["seven directions"]]
+      }
+    },
+    {
+      "id": "explore-sketch-not-diverge",
+      "category": "explore-mode",
+      "should_trigger": true,
+      "prompt": "Sketch a couple of interactive approaches for commenting on nodes in evals/files/email-agent-source.md.",
+      "files": ["evals/files/email-agent-source.md"],
+      "expected_output": "Fast sketch companions with 2 interaction approaches, not a full diverge pass.",
+      "assertions": [
+        "Treats sketch as fast iteration inside playground.",
+        "Produces about two approaches with interaction model named for each.",
+        "Uses email-agent source and source assumptions.",
+        "Includes export or next-step prompt.",
+        "Does not run layer diagnosis or product model from diverge."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["sketch", "approach"], ["comment", "node"], ["interaction"], ["source"], ["export"]],
+        "must_not_include_any": [["Product Model"], ["Handoff Blueprint"], ["design:diverge"]]
+      }
+    },
+    {
+      "id": "build-mode-single-artifact-default",
+      "category": "explore-mode",
+      "should_trigger": true,
+      "prompt": "Use design:playground to build one polished artifact editor for evals/files/question-tool.md.",
+      "files": ["evals/files/question-tool.md"],
+      "expected_output": "Build mode default: one polished artifact editor, not multiple sketch variants.",
+      "assertions": [
+        "Builds one polished artifact, not 2-3 sketch variants.",
+        "Chooses artifact editor and explains why.",
+        "Includes live preview, reset, and export.",
+        "Uses question-tool fixture and source assumptions.",
+        "Does not present unrelated visual concepts."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["build", "polished"], ["artifact editor"], ["live preview"], ["export"], ["assumptions"]],
+        "must_not_include_any": [["three variants"], ["sketch mode"], ["design:diverge"]]
+      }
+    },
+    {
+      "id": "explore-user-asked-options",
+      "category": "explore-mode",
+      "should_trigger": true,
+      "prompt": "Use design:playground to show me a few options for simulating deck balance using evals/files/inferno-hero-deck.json.",
+      "files": ["evals/files/inferno-hero-deck.json"],
+      "expected_output": "Explore mode because user asked for options: 2-3 simulator sketches with shared fixture and compare export.",
+      "assertions": [
+        "User asked for options so multiple simulator sketches are allowed.",
+        "Each option names interaction model and what differs.",
+        "Uses inferno deck fixture stats vs balance assumptions.",
+        "Includes compare or pick-one export.",
+        "Does not route to design:diverge."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["option", "variant"], ["simulator"], ["inferno", "deck"], ["assumptions"], ["export"]],
+        "must_not_include_any": [["design:diverge"], ["obvious baseline section"]]
+      }
+    },
+    {
+      "id": "explore-compare-interaction-models",
+      "category": "explore-mode",
+      "should_trigger": true,
+      "prompt": "Use design:playground explore mode to compare simulator vs state machine for evals/files/api-flow.md before I pick one to build.",
+      "files": ["evals/files/api-flow.md"],
+      "expected_output": "Explore mode compares two interaction models with tradeoffs, source assumptions, and pick-one handoff.",
+      "assertions": [
+        "Compares simulator and state machine for the API flow.",
+        "Names tradeoffs and what each model proves.",
+        "Uses API-flow fixture without inventing endpoints.",
+        "Includes pick-one or build-next export.",
+        "Does not build full polished artifact for both unless asked."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["simulator"], ["state machine"], ["compare", "tradeoff"], ["API"], ["export"]],
+        "must_not_include_any": [["design:diverge"], ["three concepts"]]
+      }
+    },
+    {
+      "id": "html-contract-inline-css-js",
+      "category": "html-contract",
+      "should_trigger": true,
+      "prompt": "Use design:playground to build a standalone HTML artifact editor for evals/files/question-tool.md.",
+      "files": ["evals/files/question-tool.md"],
+      "expected_output": "Single self-contained HTML file with inline CSS and JS, no remote scripts.",
+      "assertions": [
+        "Specifies single HTML file with inline CSS and JavaScript.",
+        "Does not use CDN or remote script imports by default.",
+        "Includes DEFAULTS/state/updateAll or equivalent pattern.",
+        "Includes source assumptions and export renderer.",
+        "Names open method for browser inspection."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["inline"], ["HTML"], ["state"], ["export"], ["assumptions"]],
+        "must_not_include_any": [["CDN"], ["remote script"], ["npm install"]]
+      }
+    },
+    {
+      "id": "html-contract-update-prompt",
+      "category": "html-contract",
+      "should_trigger": true,
+      "prompt": "Use design:playground to simulate deck balance for evals/files/inferno-hero-deck.json as standalone HTML with paste-back export.",
+      "files": ["evals/files/inferno-hero-deck.json"],
+      "expected_output": "HTML simulator with updatePrompt or equivalent export renderer and copy button feedback.",
+      "assertions": [
+        "Includes updatePrompt or equivalent paste-back export renderer.",
+        "Includes copy button with success/failure feedback.",
+        "Derived metrics update from state changes.",
+        "Includes reset control.",
+        "Labels balance assumptions separately from fixture stats."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["updatePrompt", "paste-back", "export"], ["copy"], ["reset"], ["derived"], ["assumptions"]],
+        "must_not_include_any": [["static metrics"], ["hardcoded dashboard"]]
+      }
+    },
+    {
+      "id": "html-contract-no-remote-scripts",
+      "category": "html-contract",
+      "should_trigger": true,
+      "prompt": "Use design:playground to map evals/files/email-agent-source.md in one HTML file I can open offline.",
+      "files": ["evals/files/email-agent-source.md"],
+      "expected_output": "Offline-capable HTML with no CDN dependencies and keyboard-accessible controls.",
+      "assertions": [
+        "Works offline with inline assets only.",
+        "Includes keyboard-accessible controls or alternatives to drag-only.",
+        "Includes visible focus states.",
+        "Includes source assumptions and export.",
+        "Does not require dev server."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["offline", "standalone"], ["keyboard", "focus"], ["export"], ["source"], ["HTML"]],
+        "must_not_include_any": [["cdn.jsdelivr"], ["unpkg"], ["dev server required"]]
+      }
+    },
+    {
+      "id": "html-contract-reduced-motion",
+      "category": "html-contract",
+      "should_trigger": true,
+      "prompt": "Use design:playground to build a narrative walkthrough HTML artifact for evals/files/design-review-narrative.md with motion that respects reduced motion.",
+      "files": ["evals/files/design-review-narrative.md"],
+      "expected_output": "HTML walkthrough with prefers-reduced-motion handling and optional motion toggle.",
+      "assertions": [
+        "Includes prefers-reduced-motion handling.",
+        "Motion simplifies or pauses under reduced motion.",
+        "Includes section rail and export output.",
+        "Uses design review narrative source.",
+        "Routes through design:present if building full walkthrough."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["reduced motion", "prefers-reduced-motion"], ["section"], ["export"], ["source"], ["walkthrough"]],
+        "must_not_include_any": [["autoplay only"], ["motion required"]]
+      }
+    },
+    {
+      "id": "html-contract-state-json-import",
+      "category": "html-contract",
+      "should_trigger": true,
+      "prompt": "Use design:playground to build a simulator HTML artifact for evals/files/inferno-hero-deck.json with import/export state JSON.",
+      "files": ["evals/files/inferno-hero-deck.json"],
+      "expected_output": "Non-trivial HTML simulator with export state JSON and import state JSON.",
+      "assertions": [
+        "Includes export state JSON for non-trivial artifact.",
+        "Includes import state JSON or equivalent restore.",
+        "Uses shared state object with DEFAULTS.",
+        "Includes warnings when state crosses thresholds.",
+        "Includes source assumptions."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["state JSON", "JSON"], ["import"], ["export"], ["DEFAULTS", "defaults"], ["assumptions"]],
+        "must_not_include_any": [["no import"], ["stateless only"]]
+      }
+    },
+    {
+      "id": "html-contract-responsive-breakpoints",
+      "category": "html-contract",
+      "should_trigger": true,
+      "prompt": "Use design:playground to build a review-surface HTML artifact for evals/files/sample-skill.md that works at 320px and desktop.",
+      "files": ["evals/files/sample-skill.md"],
+      "expected_output": "Responsive HTML review surface with 320px, 390px, and desktop behavior.",
+      "assertions": [
+        "Mentions responsive behavior at 320px and desktop.",
+        "Review surface controls remain usable on narrow viewports.",
+        "Includes approve/reject/comment and export.",
+        "Uses sample skill source.",
+        "Does not hide essential actions on mobile."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["320"], ["responsive", "mobile"], ["review"], ["export"], ["approve"]],
+        "must_not_include_any": [["desktop only"], ["horizontal scroll only"]]
+      }
+    },
+    {
+      "id": "visual-no-purple-gradient",
+      "category": "visual-quality",
+      "should_trigger": true,
+      "prompt": "Use design:playground to visualize evals/files/email-agent-source.md as an architecture map. Do not use generic AI styling.",
+      "files": ["evals/files/email-agent-source.md"],
+      "expected_output": "Topic-specific visual language without purple-blue gradient AI slop.",
+      "assertions": [
+        "Derives visual grammar from email agent mechanics.",
+        "Does not default to purple or blue gradient hero treatment.",
+        "Color semantics encode ownership, risk, or flow — not decoration.",
+        "Includes source assumptions and export.",
+        "Avoids nested-card dashboard shell."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["visual"], ["email agent"], ["source"], ["export"], ["assumptions"]],
+        "must_not_include_any": [["purple gradient"], ["purple-blue"], ["AI slop"]]
+      }
+    },
+    {
+      "id": "visual-no-inter-default",
+      "category": "visual-quality",
+      "should_trigger": true,
+      "prompt": "Use design:playground to build an artifact editor for evals/files/question-tool.md with typographic behavior tied to the topic.",
+      "files": ["evals/files/question-tool.md"],
+      "expected_output": "Typographic choices explained by question hierarchy and scan behavior, not Inter-by-default.",
+      "assertions": [
+        "Explains typographic contrast for claims, labels, and answers.",
+        "Does not silently default to Inter or system-ui without rationale.",
+        "Maps type behavior to question layout mechanics.",
+        "Includes live preview and export.",
+        "Labels source assumptions."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["typography", "type"], ["hierarchy"], ["question"], ["export"], ["assumptions"]],
+        "must_not_include_any": [["Inter by default"], ["system-ui only"], ["no typographic rationale"]]
+      }
+    },
+    {
+      "id": "visual-no-fake-metrics",
+      "category": "visual-quality",
+      "should_trigger": true,
+      "prompt": "Use design:playground to simulate balance for evals/files/inferno-hero-deck.json. Every number must derive from state.",
+      "files": ["evals/files/inferno-hero-deck.json"],
+      "expected_output": "Simulator where derived metrics come from coupled variables, not decorative counters.",
+      "assertions": [
+        "Derived metrics update when variables change.",
+        "Distinguishes fixture stats from inferred balance assumptions.",
+        "Warnings explain threshold crossings.",
+        "Does not show static fake KPI cards.",
+        "Exports recommended patch with evidence."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["derived"], ["variable"], ["warnings"], ["patch"], ["assumptions"]],
+        "must_not_include_any": [["fake metrics"], ["static KPI"], ["random numbers"]]
+      }
+    },
+    {
+      "id": "visual-no-lorem-ipsum",
+      "category": "visual-quality",
+      "should_trigger": true,
+      "prompt": "Use design:playground to explore evals/files/copy-states.md as a copy state explorer with real fixture text.",
+      "files": ["evals/files/copy-states.md"],
+      "expected_output": "Uses fixture copy strings, never lorem ipsum or placeholder Latin.",
+      "assertions": [
+        "Uses copy from the fixture, not lorem ipsum.",
+        "State variants reflect user and system states from source.",
+        "Includes risk/tone notes tied to real strings.",
+        "Includes export with selected copy.",
+        "Labels source assumptions."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["copy"], ["state"], ["fixture", "source"], ["export"], ["assumptions"]],
+        "must_not_include_any": [["lorem ipsum"], ["dolor sit amet"], ["placeholder text only"]]
+      }
+    },
+    {
+      "id": "visual-topic-specific-language",
+      "category": "visual-quality",
+      "should_trigger": true,
+      "prompt": "Use design:playground to visualize evals/files/inferno-hero-deck.json. Style must map to card-game balance mechanics.",
+      "files": ["evals/files/inferno-hero-deck.json"],
+      "expected_output": "Visual language uses instrument or ledger grammar for stats, costs, and warnings — not generic SaaS.",
+      "assertions": [
+        "Maps composition and color to card stats, costs, or role tension.",
+        "Every style choice maps to an observable outcome.",
+        "Avoids dark SaaS dashboard defaults.",
+        "Includes simulator interaction with derived metrics.",
+        "Exports patch prompt with assumptions."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["card", "deck"], ["balance"], ["visual"], ["derived"], ["export"]],
+        "must_not_include_any": [["generic SaaS"], ["nested cards dashboard"], ["feature grid"]]
+      }
+    },
+    {
+      "id": "visual-no-generic-dashboard",
+      "category": "visual-quality",
+      "should_trigger": true,
+      "prompt": "Use design:playground to explore evals/files/email-agent-source.md. Do not wrap it in a generic admin dashboard.",
+      "files": ["evals/files/email-agent-source.md"],
+      "expected_output": "Workbench or map surface centered on agent modules, not sidebar-plus-cards dashboard template.",
+      "assertions": [
+        "Primary surface is map or workbench, not admin dashboard shell.",
+        "Avoids three-column feature grid and decorative chips.",
+        "Modules and flows come from the email-agent fixture.",
+        "Includes comment or inspect affordances.",
+        "Includes source assumptions and export."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["map", "workbench", "canvas"], ["module", "agent"], ["export"], ["source"], ["assumptions"]],
+        "must_not_include_any": [["admin dashboard"], ["sidebar cards"], ["feature grid"]]
+      }
+    },
+    {
+      "id": "diverge-negative-control",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Show three different visual concepts for the onboarding dashboard.",
+      "expected_output": "Routes to design:diverge instead of playground.",
+      "assertions": [
+        "Does not use playground as the primary skill.",
+        "Routes to design:diverge because the user asked for multiple concepts.",
+        "Does not build an artifact before direction selection."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["design:diverge"], ["multiple"], ["concepts"]],
+        "must_not_include_any": [["artifact path"], ["playground-"]]
+      }
+    },
+    {
+      "id": "production-ui-negative-control",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Build this as production UI in the app route.",
+      "expected_output": "Routes to frontend-design or the app-specific implementation skill instead of playground.",
+      "assertions": [
+        "Does not use playground as the primary skill.",
+        "Routes to frontend-design or an app-specific development skill.",
+        "Does not create a standalone playground as the final production implementation."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["frontend-design"], ["app-specific"], ["production"]],
+        "must_not_include_any": [["standalone HTML"], ["playground-"]]
+      }
+    },
+    {
+      "id": "negative-crux-only",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Find the crux: should our dashboard be conversational or visual?",
+      "expected_output": "Routes to design:crux, not playground, because the user wants the deciding assumption.",
+      "assertions": [
+        "Pressures the weak joint and crux question.",
+        "Does not build an interactive HTML artifact as the main output.",
+        "May mention playground later but crux comes first."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["design:crux", "crux"], ["weak joint", "assumption"]],
+        "must_not_include_any": [["playground-"], ["output_path"], [".html"]]
+      }
+    },
+    {
+      "id": "negative-implement-react",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Implement the question tool playground screen in React with the attached design tokens.",
+      "expected_output": "Routes to dev/implementation skills, not playground artifact generation.",
+      "assertions": [
+        "Does not treat React implementation as playground HTML output.",
+        "Routes to frontend-design or app-specific dev skill.",
+        "Does not return standalone HTML as final deliverable."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["React", "implement"], ["frontend-design", "dev"]],
+        "must_not_include_any": [["playground-"], ["standalone HTML artifact"]]
+      }
+    },
+    {
+      "id": "negative-harden-skill",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Use design:playground to harden the implemented modal for accessibility and production.",
+      "expected_output": "Routes to harden or clarifies hardening is for implemented UI, not playground generation.",
+      "assertions": [
+        "Does not treat harden as playground sub-step for new artifact creation.",
+        "Routes to harden for production UI or declines playground ownership.",
+        "Does not generate a new playground as the hardening deliverable."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["harden"], ["production", "implemented"]],
+        "must_not_include_any": [["playground-"], ["new artifact editor"]]
+      }
+    }
+  ]
+}

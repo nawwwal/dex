@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canvas Node Map Scaffold</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --node: #1e2832;
+      --edge: #4a6274;
+      --label: #d7e0ea;
+      --accent: #3dadb8;
+      --comment: #e8c547;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Source Sans 3", "Helvetica Neue", sans-serif;
+      background: var(--bg);
+      color: var(--label);
+    }
+    .map-shell {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+    }
+    header, footer { padding: 0.75rem 1rem; background: #151c24; }
+    .map-body {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      min-height: 0;
+    }
+    .canvas-wrap {
+      position: relative;
+      overflow: auto;
+      background:
+        radial-gradient(circle at 1px 1px, #243040 1px, transparent 0) 0 0 / 24px 24px;
+    }
+    canvas { display: block; width: 100%; min-height: 420px; }
+    .side-panel { border-left: 1px solid #2a3644; padding: 1rem; background: #121820; }
+    section h2 { font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: #8fa3b5; }
+    .filter-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+    button, input, textarea {
+      font: inherit;
+      background: #1e2832;
+      color: var(--label);
+      border: 1px solid #3a4d5e;
+      padding: 0.35rem 0.55rem;
+    }
+    button:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+    .source-assumptions, .export-output {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      border-left: 3px solid var(--accent);
+      background: #161e28;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 800px) {
+      .map-body { grid-template-columns: 1fr; }
+      .side-panel { border-left: none; border-top: 1px solid #2a3644; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="map-shell">
+    <header>
+      <strong>Canvas / Node Map</strong> — spatial relationships with anchored comments
+    </header>
+    <div class="map-body">
+      <div class="canvas-wrap">
+        <div class="filter-bar" aria-label="Node filters">
+          <button type="button" data-filter="all">All</button>
+          <button type="button" data-filter="risk">Risk</button>
+          <button type="button" data-filter="commented">Commented</button>
+        </div>
+        <canvas id="node-canvas" aria-label="Node map canvas"></canvas>
+      </div>
+      <aside class="side-panel">
+        <section>
+          <h2>Inspector</h2>
+          <div id="node-inspector">Select a node to inspect</div>
+        </section>
+        <section>
+          <h2>Comment</h2>
+          <textarea id="node-comment" rows="3" placeholder="Comment on selected node"></textarea>
+          <button type="button" id="add-comment">Add comment</button>
+        </section>
+        <section class="source-assumptions" id="source-assumptions">
+          <h2>Source Assumptions</h2>
+          <p>Modules, flows, and inferred edges from fixture source.</p>
+        </section>
+        <section class="export-output">
+          <h2>Export</h2>
+          <pre id="export-prompt">Annotated map export with selected nodes and comments.</pre>
+          <button type="button" id="copy-btn">Copy export</button>
+          <span id="copy-status" aria-live="polite"></span>
+        </section>
+      </aside>
+    </div>
+    <footer>Zoom, filter, and comment map — not a static diagram.</footer>
+  </div>
+  <script>
+    const DEFAULTS = { filter: "all", selectedNode: null, comments: {} };
+    let state = structuredClone(DEFAULTS);
+
+    const canvas = document.getElementById("node-canvas");
+    const ctx = canvas.getContext("2d");
+
+    function resizeCanvas() {
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight || 420;
+      drawMap();
+    }
+
+    function drawMap() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#3dadb8";
+      ctx.fillRect(40, 40, 120, 48);
+      ctx.fillStyle = "#d7e0ea";
+      ctx.fillText("Node A", 52, 68);
+      ctx.strokeStyle = "#4a6274";
+      ctx.beginPath();
+      ctx.moveTo(160, 64);
+      ctx.lineTo(260, 64);
+      ctx.stroke();
+      ctx.fillStyle = "#e8c547";
+      ctx.fillRect(260, 40, 120, 48);
+      ctx.fillStyle = "#1a1814";
+      ctx.fillText("Node B", 272, 68);
+    }
+
+    function updateAll() {
+      drawMap();
+      document.getElementById("node-inspector").textContent =
+        state.selectedNode ? "Inspecting " + state.selectedNode : "Select a node to inspect";
+      updatePrompt();
+    }
+
+    function updatePrompt() {
+      document.getElementById("export-prompt").textContent =
+        "Map export — filter: " + state.filter + "; comments: " + JSON.stringify(state.comments);
+    }
+
+    document.querySelectorAll("[data-filter]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        state.filter = btn.dataset.filter;
+        updateAll();
+      });
+    });
+
+    canvas.addEventListener("click", (event) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      state.selectedNode = x < rect.width / 2 ? "Node A" : "Node B";
+      updateAll();
+    });
+
+    document.getElementById("add-comment").addEventListener("click", () => {
+      if (!state.selectedNode) return;
+      const text = document.getElementById("node-comment").value.trim();
+      if (!text) return;
+      state.comments[state.selectedNode] = text;
+      document.getElementById("node-comment").value = "";
+      updateAll();
+    });
+
+    document.getElementById("copy-btn").addEventListener("click", async () => {
+      const status = document.getElementById("copy-status");
+      try {
+        await navigator.clipboard.writeText(document.getElementById("export-prompt").textContent);
+        status.textContent = "Copied";
+      } catch {
+        status.textContent = "Copy failed";
+      }
+    });
+
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+    updateAll();
+  </script>
+</body>
+</html>

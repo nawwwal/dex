@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulator Scaffold</title>
+  <style>
+    :root {
+      --bench: #ece6dc;
+      --panel: #fff9f0;
+      --ink: #2c241c;
+      --warn: #b54a32;
+      --ok: #3a6b4f;
+      --dial: #5c4d3c;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "JetBrains Mono", "Menlo", monospace;
+      background: var(--bench);
+      color: var(--ink);
+    }
+    .instrument {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+    header { margin-bottom: 1rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    section {
+      background: var(--panel);
+      border: 1px solid #c9bfb0;
+      padding: 1rem;
+    }
+    section h2 {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dial);
+      margin: 0 0 0.75rem;
+    }
+    label { display: block; margin-bottom: 0.75rem; font-size: 0.85rem; }
+    input[type="range"] { width: 100%; }
+    .readout {
+      font-size: 1.4rem;
+      font-variant-numeric: tabular-nums;
+      padding: 0.5rem 0;
+    }
+    .warning {
+      color: var(--warn);
+      min-height: 1.25rem;
+      font-size: 0.85rem;
+    }
+    button {
+      font: inherit;
+      padding: 0.45rem 0.75rem;
+      border: 1px solid #9a8b78;
+      background: #f5efe4;
+      cursor: pointer;
+    }
+    button:focus-visible { outline: 2px solid #2a6f97; outline-offset: 2px; }
+    .source-assumptions, .export-output {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      border-left: 3px solid var(--dial);
+      background: #f7f2ea;
+    }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="instrument">
+    <header>
+      <strong>Simulator</strong> — coupled variables with derived readouts
+    </header>
+    <div class="grid">
+      <section aria-label="Variables">
+        <h2>Variables</h2>
+        <label>
+          Power
+          <input type="range" id="power" min="1" max="10" value="5">
+        </label>
+        <label>
+          Cost
+          <input type="range" id="cost" min="1" max="10" value="4">
+        </label>
+        <button type="button" id="reset-btn">Reset</button>
+      </section>
+      <section aria-label="Derived metrics">
+        <h2>Derived Metrics</h2>
+        <div class="readout" id="efficiency">Efficiency: —</div>
+        <div class="readout" id="balance-score">Balance score: —</div>
+        <div class="warning" id="warnings" aria-live="polite"></div>
+      </section>
+    </div>
+    <section class="source-assumptions" id="source-assumptions">
+      <h2>Source Assumptions</h2>
+      <p>Fixture stats vs inferred balance thresholds and tuning rationale.</p>
+    </section>
+    <section class="export-output">
+      <h2>Export</h2>
+      <pre id="export-prompt">Recommended patch prompt renders here.</pre>
+      <button type="button" id="copy-btn">Copy export</button>
+      <span id="copy-status" aria-live="polite"></span>
+      <details>
+        <summary>State JSON</summary>
+        <pre id="state-json"></pre>
+      </details>
+    </section>
+  </div>
+  <script>
+    const DEFAULTS = { power: 5, cost: 4 };
+    let state = structuredClone(DEFAULTS);
+
+    function deriveMetrics() {
+      const efficiency = state.power / state.cost;
+      const balanceScore = Math.round((efficiency * 10 + Number.EPSILON) * 10) / 10;
+      let warning = "";
+      if (efficiency > 1.5) warning = "Power exceeds safe cost ratio — may dominate matches.";
+      if (efficiency < 0.6) warning = "Cost too high relative to power — card may underperform.";
+      return { efficiency, balanceScore, warning };
+    }
+
+    function updateAll() {
+      const { efficiency, balanceScore, warning } = deriveMetrics();
+      document.getElementById("efficiency").textContent = "Efficiency: " + efficiency.toFixed(2);
+      document.getElementById("balance-score").textContent = "Balance score: " + balanceScore;
+      document.getElementById("warnings").textContent = warning;
+      document.getElementById("power").value = state.power;
+      document.getElementById("cost").value = state.cost;
+      updatePrompt();
+    }
+
+    function updatePrompt() {
+      const metrics = deriveMetrics();
+      const payload = { state, metrics, assumptions: "Fixture stats separated from inferred thresholds" };
+      document.getElementById("export-prompt").textContent =
+        "Recommended patch: tune power/cost to target balance score near 1.0 — " + JSON.stringify(payload);
+      document.getElementById("state-json").textContent = JSON.stringify(state, null, 2);
+    }
+
+    document.getElementById("power").addEventListener("input", (e) => {
+      state.power = Number(e.target.value);
+      updateAll();
+    });
+    document.getElementById("cost").addEventListener("input", (e) => {
+      state.cost = Number(e.target.value);
+      updateAll();
+    });
+    document.getElementById("reset-btn").addEventListener("click", () => {
+      state = structuredClone(DEFAULTS);
+      updateAll();
+    });
+    document.getElementById("copy-btn").addEventListener("click", async () => {
+      const status = document.getElementById("copy-status");
+      try {
+        await navigator.clipboard.writeText(document.getElementById("export-prompt").textContent);
+        status.textContent = "Copied";
+      } catch {
+        status.textContent = "Copy failed";
+      }
+    });
+
+    updateAll();
+  </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Artifact Editor Scaffold</title>
+  <style>
+    :root {
+      --surface: #f4f0e8;
+      --panel: #fffdf8;
+      --ink: #1a1814;
+      --accent: #c45c26;
+      --muted: #6b6458;
+      --focus: #2a6f97;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      background: var(--surface);
+      color: var(--ink);
+    }
+    .workbench {
+      display: grid;
+      grid-template-columns: 220px 1fr 280px;
+      min-height: 100vh;
+    }
+    header {
+      grid-column: 1 / -1;
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #d8d0c4;
+      background: var(--panel);
+    }
+    .controls, .inspector, .preview {
+      padding: 1rem;
+    }
+    .controls { border-right: 1px solid #d8d0c4; background: #efeae0; }
+    .preview { border-right: 1px solid #d8d0c4; }
+    .inspector { background: var(--panel); }
+    section h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 0 0 0.75rem; }
+    .placeholder { border: 1px dashed #b8aea0; padding: 1rem; min-height: 120px; background: #fff; }
+    button, input, select {
+      font: inherit;
+      padding: 0.4rem 0.6rem;
+      border: 1px solid #b8aea0;
+      background: #fff;
+    }
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid var(--focus);
+      outline-offset: 2px;
+    }
+    .source-assumptions, .export-output {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background: #faf7f2;
+      border-left: 3px solid var(--accent);
+      font-size: 0.9rem;
+    }
+    @media (max-width: 900px) {
+      .workbench { grid-template-columns: 1fr; }
+      .controls, .preview { border-right: none; border-bottom: 1px solid #d8d0c4; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="workbench">
+    <header>
+      <strong>Artifact Editor</strong> — direct manipulation with live preview
+    </header>
+    <aside class="controls" aria-label="Controls">
+      <section>
+        <h2>Presets</h2>
+        <div class="placeholder" id="presets">Preset slots</div>
+      </section>
+      <section>
+        <h2>Controls</h2>
+        <div class="placeholder" id="control-panel">Stateful controls</div>
+        <button type="button" id="reset-btn">Reset</button>
+      </section>
+    </aside>
+    <main class="preview" aria-label="Live preview">
+      <section>
+        <h2>Live Preview</h2>
+        <div class="placeholder" id="live-preview">Edited artifact surface</div>
+      </section>
+    </main>
+    <aside class="inspector" aria-label="Inspector">
+      <section>
+        <h2>Inspector</h2>
+        <div class="placeholder" id="inspector">Selected object details</div>
+      </section>
+      <section class="source-assumptions" id="source-assumptions">
+        <h2>Source Assumptions</h2>
+        <p>Document fixture paths, inferred fields, and unknowns.</p>
+      </section>
+      <section class="export-output">
+        <h2>Export</h2>
+        <pre id="export-prompt" aria-live="polite">Paste-back prompt renders here.</pre>
+        <button type="button" id="copy-btn">Copy export</button>
+        <span id="copy-status" aria-live="polite"></span>
+      </section>
+    </aside>
+  </div>
+  <script>
+    const DEFAULTS = { preset: "default", values: {} };
+    let state = structuredClone(DEFAULTS);
+
+    function updateAll() {
+      renderPreview();
+      renderInspector();
+      updatePrompt();
+    }
+
+    function renderPreview() {
+      document.getElementById("live-preview").textContent = "Preview for preset: " + state.preset;
+    }
+
+    function renderInspector() {
+      document.getElementById("inspector").textContent = JSON.stringify(state.values, null, 2);
+    }
+
+    function updatePrompt() {
+      document.getElementById("export-prompt").textContent =
+        "Apply these non-default artifact editor changes: " + JSON.stringify(state);
+    }
+
+    document.getElementById("reset-btn").addEventListener("click", () => {
+      state = structuredClone(DEFAULTS);
+      updateAll();
+    });
+
+    document.getElementById("copy-btn").addEventListener("click", async () => {
+      const status = document.getElementById("copy-status");
+      try {
+        await navigator.clipboard.writeText(document.getElementById("export-prompt").textContent);
+        status.textContent = "Copied";
+      } catch {
+        status.textContent = "Copy failed";
+      }
+    });
+
+    updateAll();
+  </script>
+</body>
+</html>

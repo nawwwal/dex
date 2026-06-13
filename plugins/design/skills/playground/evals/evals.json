@@ -1,7 +1,7 @@
 {
   "skill_name": "playground",
   "version": 1,
-  "notes": "Small regression set for skill invocation, routing, artifact contract, and output quality. Run each case in a clean workspace with and without the skill when comparing versions.",
+  "notes": "Legacy v1 regression set (10 cases). Migrated to evals/exhaustive-suite.json (v2, 35+ cases with visual-quality, html-contract, and explore-mode categories). Retained for routing.md and benchmark compatibility.",
   "evals": [
     {
       "id": "artifact-editor-question-tool",
