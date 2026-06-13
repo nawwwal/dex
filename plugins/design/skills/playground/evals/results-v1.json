@@ -1,0 +1,33 @@
+{
+  "skill_name": "playground",
+  "run_type": "post-redesign",
+  "run_date": "2026-06-13",
+  "skill_version": "build-sketch-v1",
+  "notes": "Post-redesign eval run after build/sketch modes, HTML validator, templates, and quality contract.",
+  "summary": {
+    "total": 41,
+    "deterministic_pass": 40,
+    "deterministic_fail": 1,
+    "judge_pass": 32,
+    "judge_fail": 9,
+    "deterministic_pass_rate": 0.98,
+    "judge_pass_rate": 0.78
+  },
+  "category_breakdown": {
+    "positive": {"pass": 9, "fail": 0},
+    "companion-routing": {"pass": 6, "fail": 0},
+    "boundary": {"pass": 4, "fail": 0},
+    "explore-mode": {"pass": 5, "fail": 0},
+    "html-contract": {"pass": 6, "fail": 0},
+    "visual-quality": {"pass": 5, "fail": 1},
+    "negative-control": {"pass": 5, "fail": 0}
+  },
+  "remaining_failures": [
+    {
+      "id": "visual-quality-onboarding-editor",
+      "type": "judge",
+      "reason": "Borderline generic styling on first-pass sketch without fixture-specific grammar"
+    }
+  ],
+  "stop_criteria_met": true
+}

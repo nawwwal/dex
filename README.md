@@ -13,7 +13,7 @@ Dex ships four marketplace plugins.
 | `core` | Agent setup, teaching unfamiliar concepts, council-style investigation, reflection, DevRev, session wrap-up, Portent/Tolaria knowledge records | Design implementation, browser tooling, media utilities |
 | `design` | Product thinking, content design, divergence, presentation narrative, interactive playground artifacts | Blade, shaders, sound, generic code hardening, private review frameworks |
 | `dev` | Design engineering: Blade, dashboard implementation, hardening, shaders, sound | Product strategy, presentation coaching, third-party browser tools |
-| `tools` | Utility tools: Codex review, browser-native HTML presentations, image generation, media optimization, mymind | Core setup, design critique, implementation doctrine |
+| `tools` | Utility tools: Codex review, browser-native HTML presentations, unified media generation/optimization, mymind | Core setup, design critique, implementation doctrine |
 
 This split is the product. When a workflow starts to sprawl, move it to the plugin that owns the actual behavior instead of making a router that knows too much.
 
@@ -73,7 +73,7 @@ Optional integrations depend on the skill you use: Figma MCP for Figma work, Dev
 |---|---|
 | `dex` | Fresh setup, doctor checks, `.agents` bootstrap, Claude/Codex compatibility links, project design-context capture |
 | `teach` | Explaining unfamiliar code, architecture, concepts, alternatives, tradeoffs, and clever functions before execution; recording learned concepts in `~/.agents/memory/teach/` with a hook-refreshed SQLite search index |
-| `council` | Parallel research, code audits, expert lenses, blind-spot passes, architecture investigations |
+| `council` | Multi-domain parallel investigation with dynamic lens composition: design critique, product decisions, research, code audits, workflow friction, expert debate |
 | `reflect` | Portent/Tolaria reflection: emerging patterns, leverage points, and drift across active knowledge objects |
 | `devrev` | Sprint routines, grooming, enrichment, and schema-discovered DevRev MCP issue/enhancement work |
 | `wrap` | End-of-session recap, meaningful micro-commits, verification summary, and Portent handoff |
@@ -91,9 +91,9 @@ Optional integrations depend on the skill you use: Figma MCP for Figma work, Dev
 |---|---|
 | `content-design` | Product copy, UX writing, voice systems, in-product marketing, Razorpay-style marketing copy, errors, empty states, onboarding, accessibility labels, localization checks, and copy audits |
 | `crux` | Compressing vague claims, PRDs, opinions, or product problems down to the load-bearing issue |
-| `diverge` | Layered brainstorms, alternatives, product directions, interaction concepts, and different approaches with compact default, companion routing, and eval-backed regression coverage |
+| `diverge` | Layered brainstorms, alternatives, product directions, interaction concepts, and different approaches with fast/explore/deep tiers, companion routing, and eval-backed regression coverage |
 | `present` | Design review narrative, meeting-flow strategy, stakeholder framing, rehearsal, explaining tradeoffs to a room, and handoff to browser-native deck production |
-| `playground` | Interactive, visually distinctive playgrounds for exploring topics, systems, code, data, design, copy, motion, reviews, and handoffs. |
+| `playground` | Interactive playgrounds with build/sketch modes, HTML quality contract, template scaffolds, and eval-backed output validation for topics, systems, design, copy, and handoffs |
 
 Design has no catch-all router now. If the user wants Blade, go to `dev`. If the user wants browser automation, use the relevant external browser tool. If the user wants critique from a private review framework, keep that framework as a local skill outside Dex.
 
