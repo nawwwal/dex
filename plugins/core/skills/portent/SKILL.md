@@ -35,6 +35,22 @@ Read `references/portent-spec.md` when classification, lifecycle, or relationshi
 
 Do not write canonical knowledge records to `~/.claude/log`, `~/.claude/TASKS.md`, or generic Codex memory. Those may be legacy inputs, but Tolaria is the source of truth.
 
+## Compiled Portent Operations
+
+When the active vault contains the operating notes below, load them for brain-grade behavior:
+
+- `[[portent-operating-contract]]`
+- `[[portent-write-templates]]`
+- `[[portent-ingest-query-lint-runbook]]`
+- `[[portent-index]]`
+- `[[brain-log]]`
+
+Use existing Tolaria MCP tools for discovery, search, note reads, note creation, opening, and refresh.
+
+Use direct Markdown edits inside the resolved Tolaria vault path for updating existing notes, saved views, index notes, log notes, relationship repair, and contract maintenance.
+
+Prefer compiled Portent objects over raw source re-reading. Verify live systems when facts are drift-prone.
+
 ## Portent Defaults
 
 Use these types before inventing anything custom:
