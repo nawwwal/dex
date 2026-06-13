@@ -15,8 +15,11 @@ Default to standalone interactive HTML. Use Paper, Figma, or React only when the
 1. Understand the topic.
 Extract objects, relationships, time, states, tensions, variables, decisions, risks, source truth, and user questions.
 
-2. Route companion skills before building.
-- Use `design:diverge` only when the user asks for multiple directions, options, or concepts.
+2. Choose build or sketch mode.
+Read `references/modes.md`. Default to **build mode** (one polished artifact). Use **sketch mode** when the user asks for options, variants, exploration, or sketch mode — produce 2–3 fast variants with shared assumptions and pick-one export. Route to `design:diverge` only when the user wants many directions or full divergence, not for sketch-level exploration.
+
+3. Route companion skills before building.
+- Use `design:diverge` only when the user asks for multiple directions, options, or concepts at diverge depth (5+ directions, product model, handoff blueprint). Do not use diverge for sketch-mode 2–3 variant exploration.
 - Use `tools:media-tools` when a generated bitmap seed, texture, scene, mockup, or visual reference would materially improve the artifact. When the user asks for visual inspiration first, name `tools:media-tools`, create one `inspiration seed`, extract `visual grammar`, then rebuild the structure in HTML/SVG/canvas. The response must say the generated image is not wallpaper and must keep labels, controls, state, and export outside the bitmap.
 - Use `design:present` before interactive presentation walkthroughs, design review narratives, stakeholder walkthroughs, or narrative HTML artifacts.
 - Use `design:content-design` before copy, state, tone, or CTA review playgrounds.
@@ -27,24 +30,27 @@ Extract objects, relationships, time, states, tensions, variables, decisions, ri
 - Do not route generation work to `harden`; hardening is for final implemented UI.
 When routing to a companion skill, name the exact skill in the response before describing the playground.
 
-3. Choose the interaction model.
-Internally consider at least three models from `references/interaction-models.md`, choose one, and state why. Do not show options unless the user asked for options.
+4. Quality contract (before and after build).
+- **Interaction model:** Internally consider at least three models from `references/interaction-models.md`, choose one, and state why. Do not show options unless the user asked for options or sketch mode applies.
+- **Visual grammar before styling:** Complete the pre-build checklist in `references/visual-language.md` before fonts, colors, or layout habits.
+- **Scaffold:** Start from the matching template in `assets/templates/` (`artifact-editor`, `canvas-node-map`, `simulator`, `review-surface`, or `narrative-walkthrough`) instead of a blank page.
+- **Post-build validation:** Run `scripts/validate_playground_html.py` on every standalone HTML artifact before returning.
+- **Sketch mode rules:** 2–3 variants max, shared source fixture and assumptions, named interaction model per variant, compare/pick-one export, no diverge ceremony.
+
 For concrete UI layout changes, component tuning, generated objects, or surface editing, prefer `artifact editor` unless the source clearly requires a map, review surface, state machine, scrubber, or simulator.
 For `artifact editor`, explicitly include live preview, reset, and export / paste-back output.
-
-4. Choose the visual language.
-Derive composition, material, motion, density, color semantics, typographic behavior, and metaphor from the topic. Every style choice must map to an observable outcome.
 
 5. Build the artifact.
 Default to one self-contained HTML file with inline CSS/JS, no remote scripts, instant interaction, export/paste-back output, browser inspection, keyboard access, reduced-motion support, and mobile handling.
 
 6. Return the result.
-Return the artifact path, open method, selected interaction model, selected visual grammar, source assumptions, artifact anatomy, what it proves, what it does not prove, and export / paste-back output.
+Return the artifact path, open method, selected mode (build or sketch), selected interaction model, selected visual grammar, source assumptions, artifact anatomy, what it proves, what it does not prove, and export / paste-back output.
 
-If the user explicitly asks for read-only review, inline suggestions, or no file/artifact creation, do not build a file. Return anchored suggestions in chat and include the same interaction model, visual grammar, source assumptions, and export shape the artifact would have used.
+If the user explicitly asks for read-only review, inline suggestions, or no file/artifact creation, do not build a file. Return anchored suggestions in chat and include the same mode, interaction model, visual grammar, source assumptions, and export shape the artifact would have used.
 
 ## References
 
+- Build vs sketch modes: `references/modes.md`
 - Main playground contract: `references/playground.md`
 - Topic-to-artifact mapping: `references/topic-modeling.md`
 - Interaction model selection: `references/interaction-models.md`

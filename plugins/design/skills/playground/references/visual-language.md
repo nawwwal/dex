@@ -1,5 +1,29 @@
 # Visual Language
 
+## Mandatory Pre-Build Checklist
+
+Complete this before styling. Do not pick fonts, colors, or layout habits until the grammar is written.
+
+1. Name the topic's primary mechanics (objects, relationships, time, states, tensions, variables).
+2. Choose one interaction model from `references/interaction-models.md` and state why.
+3. Extract visual grammar from the topic, not from a style adjective:
+   - composition and hierarchy
+   - depth and layering
+   - material and inspectability
+   - motion and what must stay still
+   - information density
+   - typographic contrast (claims vs evidence vs labels)
+   - color semantics (what color encodes)
+   - texture or imagery only when it aids reasoning
+4. Write the grammar as `topic mechanic -> observable outcome -> execution rule -> avoid trap`.
+5. Map every important style choice to an observable outcome. Ban decorative defaults unless justified by step 3.
+6. If using `tools:media-tools`, extract grammar from the seed and rebuild semantics in HTML/SVG/canvas — do not wallpaper with the bitmap.
+7. Start from the matching `assets/templates/` scaffold for the chosen interaction model.
+
+If any step is skipped, the artifact will read generic. Fix the grammar before adding polish.
+
+---
+
 Start from the topic's mechanics, not a style adjective. Visual language is the grammar that makes the artifact easier to understand: composition, depth, material, motion, information density, typographic contrast, color semantics, texture, and imagery.
 
 ## Extract The Grammar

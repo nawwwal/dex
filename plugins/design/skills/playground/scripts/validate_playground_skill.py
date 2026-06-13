@@ -10,6 +10,7 @@ from pathlib import Path
 
 
 REQUIRED_REFERENCE_MENTIONS = [
+    "references/modes.md",
     "references/playground.md",
     "references/topic-modeling.md",
     "references/interaction-models.md",
