@@ -13,7 +13,7 @@ Dex ships four marketplace plugins.
 | `core` | Agent setup, teaching unfamiliar concepts, council-style investigation, reflection, DevRev, session wrap-up, Portent/Tolaria knowledge records | Design implementation, browser tooling, media utilities |
 | `design` | Product thinking, content design, divergence, presentation narrative, interactive playground artifacts | Blade, shaders, sound, generic code hardening, private review frameworks |
 | `dev` | Design engineering: Blade, dashboard implementation, hardening, shaders, sound | Product strategy, presentation coaching, third-party browser tools |
-| `tools` | Utility tools: Codex review, browser-native HTML presentations, unified media generation/optimization, mymind | Core setup, design critique, implementation doctrine |
+| `tools` | Utility tools: Codex review, browser-native HTML presentations, unified media generation/optimization | Core setup, design critique, implementation doctrine |
 
 This split is the product. When a workflow starts to sprawl, move it to the plugin that owns the actual behavior instead of making a router that knows too much.
 
@@ -61,7 +61,7 @@ jq
 node
 ```
 
-Optional integrations depend on the skill you use: Figma MCP for Figma work, DevRev MCP for DevRev workflows, Slack MCP for message workflows, Tolaria MCP for Portent knowledge-base work, `mymind` for mymind search, and `agent-browser` for skills that explicitly call it as an external browser tool. Dex does not package `agent-browser`.
+Optional integrations depend on the skill you use: Figma MCP for Figma work, DevRev MCP for DevRev workflows, Slack MCP for message workflows, Tolaria MCP for Portent knowledge-base work, the official mymind MCP for mymind search, and `agent-browser` for skills that explicitly call it as an external browser tool. Dex does not package `agent-browser`.
 
 ## What Each Plugin Gives You
 
@@ -120,7 +120,6 @@ This plugin exists because coding agents need different instructions than design
 | `codex` | Cross-model plan review through the Codex CLI |
 | `html-presentation` | Browser-native HTML presentation decks with Reveal.js: deck construction, theme, motion, speaker notes, browser preview, and export behavior |
 | `media-tools` | AI image generation/editing, compression, format conversion, and resizing for images and video |
-| `mymind` | Searching, saving, organizing, and inspecting mymind |
 
 Tools should stay tools. If a tool grows taste, policy, or product judgment, it probably belongs somewhere else.
 
