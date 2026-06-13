@@ -1,0 +1,1201 @@
+{
+  "skill_name": "council",
+  "version": 1,
+  "skill_type": "mixed",
+  "notes": "Exhaustive regression suite for council trigger behavior, mode/goal/depth routing, domain overlays, dynamic lens composition, synthesis contract, debate format, artifact grounding, negative controls, and known failure modes.",
+  "coverage_requirements": [
+    "explicit-trigger",
+    "implicit-trigger",
+    "negative-control",
+    "mode-routing",
+    "goal-routing",
+    "depth-routing",
+    "domain-design",
+    "domain-product",
+    "domain-research",
+    "domain-workflow",
+    "dynamic-lenses",
+    "synthesis-contract",
+    "debate-format",
+    "artifact",
+    "known-failure"
+  ],
+  "evals": [
+    {
+      "id": "explicit-trigger-auth-audit",
+      "category": "explicit-trigger",
+      "should_trigger": true,
+      "prompt": "Use core:council to audit our auth module",
+      "expected_output": "Routes to council code mode with findings goal, spawns diverse lenses including devil's advocate and blind-spot, and synthesizes a Council Report grounded in the auth module.",
+      "assertions": [
+        "Invokes council rather than crux, diverge, or direct implementation.",
+        "Infers code mode and findings goal from the audit request.",
+        "Produces synthesis with Council Report structure and skeptical lens."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["Top 3 Takeaways"],
+          ["Devil's advocate", "devil's advocate", "skeptic", "Skeptic"],
+          ["Where Agents Disagree", "Where Agents Agree"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "created .tsx", "implemented the"],
+          ["design:diverge", "/diverge"]
+        ]
+      }
+    },
+    {
+      "id": "explicit-trigger-payment-research",
+      "category": "explicit-trigger",
+      "should_trigger": true,
+      "prompt": "Use core:council --mode research to compare how Stripe and Razorpay handle payment failure recovery UX.",
+      "expected_output": "Runs council in research mode with web-capable agents, triangulates sources, and synthesizes competitive findings.",
+      "assertions": [
+        "Honors explicit research mode flag.",
+        "Assigns agents distinct research lenses rather than one generic survey.",
+        "Distinguishes well-supported findings from single-source leads."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["Top 3 Takeaways"],
+          ["research", "Research"],
+          ["Where Agents Disagree", "Where Agents Agree"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "created .tsx"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "explicit-trigger-workflow-handoff",
+      "category": "explicit-trigger",
+      "should_trigger": true,
+      "prompt": "/council Why does design-to-eng handoff keep breaking in our sprint process?",
+      "expected_output": "Triggers council workflow mode with actions-oriented synthesis on handoff bottlenecks.",
+      "assertions": [
+        "Routes to workflow mode from handoff and process signals.",
+        "Surfaces repeat churn and ownership gaps across lenses.",
+        "Ends with prioritized next actions for the operating model."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["Top 3 Takeaways"],
+          ["handoff", "workflow", "process"],
+          ["Prioritized Next Actions", "next actions"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "explicit-trigger-system-plugins",
+      "category": "explicit-trigger",
+      "should_trigger": true,
+      "prompt": "Use core:council --mode system to map blast radius of changing our plugin lifecycle hooks.",
+      "expected_output": "Runs council system mode investigating cross-system interactions, ownership, and blast radius.",
+      "assertions": [
+        "Honors explicit system mode.",
+        "Includes dependency or blast-radius lens alongside skeptic.",
+        "Grounds findings in lifecycle and integration surfaces."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["blast radius", "dependency", "integration"],
+          ["Devil's advocate", "devil's advocate", "skeptic"],
+          ["Where Agents Disagree"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "implicit-onboarding-gaps",
+      "category": "implicit-trigger",
+      "should_trigger": true,
+      "prompt": "What are we missing in this onboarding?",
+      "expected_output": "Implicitly triggers council for blind-spot and gap review without requiring an explicit skill invocation.",
+      "assertions": [
+        "Treats the question as a multi-perspective investigation, not a single answer.",
+        "Includes blind-spot and devil's advocate lenses.",
+        "Surfaces gaps, risks, and next actions rather than jumping to implementation."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["Top 3 Takeaways"],
+          ["blind-spot", "Blind-spot", "blind spot", "missing"],
+          ["Devil's advocate", "devil's advocate", "skeptic"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "implicit-blind-spot-auth",
+      "category": "implicit-trigger",
+      "should_trigger": true,
+      "prompt": "Run a blind-spot review on our session refresh logic before we ship MFA.",
+      "expected_output": "Implicitly triggers council code mode with risks goal and adversarial lenses.",
+      "assertions": [
+        "Interprets blind-spot review as council investigation.",
+        "Focuses on session refresh and MFA interaction risks.",
+        "Names failure modes and disagreements between lenses."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["Top 3 Takeaways"],
+          ["blind-spot", "Blind-spot", "blind spot"],
+          ["Where Agents Disagree", "failure mode", "risk"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "implicit-multi-perspective-monolith",
+      "category": "implicit-trigger",
+      "should_trigger": true,
+      "prompt": "I need multiple expert perspectives on whether we should split the monolith now.",
+      "expected_output": "Implicitly triggers council opinion mode with decision goal and distinct expert personas.",
+      "assertions": [
+        "Routes to opinion mode from expert perspectives signal.",
+        "Briefs agents with non-overlapping expert stances.",
+        "Surfaces crux of disagreement and recommendation logic."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["Top 3 Takeaways"],
+          ["perspective", "expert", "recommend"],
+          ["Where Agents Disagree"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "implicit-audit-architecture",
+      "category": "implicit-trigger",
+      "should_trigger": true,
+      "prompt": "Audit our webhook retry architecture — I want parallel investigators, not one pass.",
+      "expected_output": "Implicitly triggers council system or code mode with parallel lens fan-out.",
+      "assertions": [
+        "Spawns multiple investigators with distinct lenses.",
+        "Maps webhook retry behavior and failure surfaces.",
+        "Synthesizes rather than concatenating agent outputs."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["Top 3 Takeaways"],
+          ["webhook", "retry"],
+          ["Devil's advocate", "devil's advocate", "skeptic"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "negative-crux-only",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Find the crux in this strategy: we should add AI recommendations, rebuild onboarding, and launch a premium dashboard so power users trust us.",
+      "expected_output": "Routes to design:crux to compress the weak joint — does not spawn a multi-agent council panel.",
+      "assertions": [
+        "Does not invoke council or produce a Council Report.",
+        "Routes to crux skill for weak-joint interrogation.",
+        "Ends with one crux question or decisive test, not multi-lens synthesis."
+      ],
+      "deterministic_checks": {
+        "must_not_include_any": [
+          ["Council Report", "# Council Report"],
+          ["core:council", "/council"],
+          ["Top 3 Takeaways"]
+        ],
+        "must_include_any": [
+          ["crux", "Crux", "weak joint", "real bet"]
+        ]
+      }
+    },
+    {
+      "id": "negative-diverge-only",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Brainstorm five different interaction models for our invoice template picker step.",
+      "expected_output": "Routes to design:diverge for alternative generation — not council multi-agent investigation.",
+      "assertions": [
+        "Does not invoke council or produce a Council Report.",
+        "Routes to diverge for layered direction exploration.",
+        "Produces multiple directions with tradeoffs, not lens-based audit synthesis."
+      ],
+      "deterministic_checks": {
+        "must_not_include_any": [
+          ["Council Report", "# Council Report"],
+          ["core:council", "/council"],
+          ["Devil's advocate lens", "Blind-spot lens"]
+        ],
+        "must_include_any": [
+          ["direction", "Direction", "alternative", "tradeoff"]
+        ]
+      }
+    },
+    {
+      "id": "negative-implement-only",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Implement the penny-drop verification step in our onboarding wizard with proper error states.",
+      "expected_output": "Routes to dev implementation skills — does not run council investigation.",
+      "assertions": [
+        "Does not invoke council or produce a Council Report.",
+        "Proceeds toward code implementation rather than multi-agent review.",
+        "Does not stall on spawning research agents for an implementation task."
+      ],
+      "deterministic_checks": {
+        "must_not_include_any": [
+          ["Council Report", "# Council Report"],
+          ["core:council", "/council"],
+          ["Top 3 Takeaways"]
+        ],
+        "must_include_any": [
+          ["implement", "Implement", "component", ".tsx", "code"]
+        ]
+      }
+    },
+    {
+      "id": "negative-content-design-only",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Rewrite the primary CTA on our KYC selfie step — it sounds too scary.",
+      "expected_output": "Routes to content-design for a focused copy rewrite — not council multi-perspective review.",
+      "assertions": [
+        "Does not invoke council or produce a Council Report.",
+        "Treats the request as a single-surface copy task.",
+        "Does not spawn parallel expert agents for one button label."
+      ],
+      "deterministic_checks": {
+        "must_not_include_any": [
+          ["Council Report", "# Council Report"],
+          ["core:council", "/council"],
+          ["Where Agents Disagree"]
+        ],
+        "must_include_any": [
+          ["CTA", "copy", "selfie", "KYC"]
+        ]
+      }
+    },
+    {
+      "id": "mode-routing-code",
+      "category": "mode-routing",
+      "should_trigger": true,
+      "prompt": "Council review the payments module tests and API error handling in src/payments/.",
+      "expected_output": "Routes to code mode, grounds investigation in files and modules, and synthesizes code findings.",
+      "assertions": [
+        "Infers code mode from module and test signals.",
+        "Grounds findings in specific files or error paths.",
+        "Includes devil's advocate on test coverage assumptions."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["code", "module", "payments", "test"],
+          ["Devil's advocate", "devil's advocate", "skeptic"],
+          ["Where Agents Disagree", "Where Agents Agree"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "mode-routing-research",
+      "category": "mode-routing",
+      "should_trigger": true,
+      "prompt": "How do other fintech products handle KYC drop-off recovery after Aadhaar OTP failure?",
+      "expected_output": "Routes to research mode with web search agents and source-quality triangulation.",
+      "assertions": [
+        "Infers research mode from competitive and best-practice signals.",
+        "Uses web-capable agents for external information gathering.",
+        "Rates source quality and flags information gaps."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["research", "source", "pattern"],
+          ["Top 3 Takeaways"],
+          ["confident", "investigation", "gap"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "mode-routing-opinion",
+      "category": "mode-routing",
+      "should_trigger": true,
+      "prompt": "What do you think — should we ship AI invoice recommendations or fix onboarding first?",
+      "expected_output": "Routes to opinion mode with decision goal and distinct expert personas debating the tradeoff.",
+      "assertions": [
+        "Infers opinion mode from second-opinion and should-we signals.",
+        "Briefs agents with specific expert personas.",
+        "Surfaces recommendation and what would change it."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["recommend", "tradeoff", "perspective"],
+          ["Where Agents Disagree"],
+          ["Top 3 Takeaways"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "mode-routing-system",
+      "category": "mode-routing",
+      "should_trigger": true,
+      "prompt": "Investigate how our auth hooks, session store, and webhook signing interact across the platform.",
+      "expected_output": "Routes to system mode for cross-system architecture and blast-radius investigation.",
+      "assertions": [
+        "Infers system mode from cross-system and integration signals.",
+        "Maps interactions across auth, session, and webhook surfaces.",
+        "Includes dependency or blast-radius lens."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["architecture", "integration", "blast radius", "cross-system"],
+          ["Devil's advocate", "devil's advocate", "skeptic"],
+          ["Where Agents Disagree"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "mode-routing-workflow",
+      "category": "mode-routing",
+      "should_trigger": true,
+      "prompt": "Our PR review process has become a bottleneck — map the repeated churn and handoff gaps.",
+      "expected_output": "Routes to workflow mode focusing on process, handoff, and operating-model friction.",
+      "assertions": [
+        "Infers workflow mode from process and bottleneck signals.",
+        "Identifies repeat churn and ownership gaps.",
+        "Prioritizes actionable workflow fixes."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["workflow", "process", "handoff", "bottleneck"],
+          ["Prioritized Next Actions", "next actions"],
+          ["Top 3 Takeaways"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "mode-routing-explicit-code-flag",
+      "category": "mode-routing",
+      "should_trigger": true,
+      "prompt": "Use core:council --mode code on the notifications retry queue implementation.",
+      "expected_output": "Honors explicit code mode flag and investigates the retry queue in code context.",
+      "assertions": [
+        "Respects --mode code over ambiguous prompt signals.",
+        "Grounds findings in implementation details.",
+        "Produces standard council synthesis contract."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["code", "retry", "queue", "notification"],
+          ["Top 3 Takeaways"],
+          ["Devil's advocate", "devil's advocate", "skeptic"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "goal-routing-findings",
+      "category": "goal-routing",
+      "should_trigger": true,
+      "prompt": "Use core:council --goal findings to map what is going on in our payout reconciliation pipeline.",
+      "expected_output": "Emphasizes current-state understanding and gaps with findings goal.",
+      "assertions": [
+        "Honors explicit findings goal.",
+        "Leads with current-state map and unknowns.",
+        "Distinguishes observed facts from inference."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["What We Know", "Known:", "findings"],
+          ["Top 3 Takeaways"],
+          ["Where Agents Disagree", "Where Agents Agree"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "goal-routing-risks",
+      "category": "goal-routing",
+      "should_trigger": true,
+      "prompt": "Council adversarial review — what could break if we ship MFA without refreshing session tokens?",
+      "expected_output": "Emphasizes failure modes, fragility, and blast radius with risks goal.",
+      "assertions": [
+        "Infers risks goal from adversarial and what-could-break signals.",
+        "Surfaces failure modes and threat scenarios.",
+        "Includes devil's advocate invalidating comfortable assumptions."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["risk", "failure", "fragile", "break"],
+          ["Devil's advocate", "devil's advocate"],
+          ["Top 3 Takeaways"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "goal-routing-decision",
+      "category": "goal-routing",
+      "should_trigger": true,
+      "prompt": "Use core:council --goal decision: should we adopt edge functions or keep everything in the monolith API?",
+      "expected_output": "Emphasizes tradeoffs, disagreements, and recommendation logic with decision goal.",
+      "assertions": [
+        "Honors explicit decision goal.",
+        "Presents tradeoffs and crux of disagreement.",
+        "States recommendation and falsifying assumption."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["recommend", "tradeoff", "decision"],
+          ["Where Agents Disagree"],
+          ["Top 3 Takeaways"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "goal-routing-actions",
+      "category": "goal-routing",
+      "should_trigger": true,
+      "prompt": "What should we do next to fix our onboarding drop-off? I need a prioritized action plan from multiple lenses.",
+      "expected_output": "Emphasizes sequence, priorities, and low-regret moves with actions goal.",
+      "assertions": [
+        "Infers actions goal from prioritized next steps signal.",
+        "Ends with specific, executable priorities.",
+        "Orders actions by leverage and reversibility."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["Prioritized Next Actions", "next actions", "action plan"],
+          ["Top 3 Takeaways"],
+          ["1.", "2."]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "goal-routing-explicit-decision",
+      "category": "goal-routing",
+      "should_trigger": true,
+      "prompt": "/council --goal decision Compare Postgres row-level security vs app-layer authorization for our multi-tenant invoices.",
+      "expected_output": "Runs decision-oriented council comparing authorization approaches with explicit disagreement surfacing.",
+      "assertions": [
+        "Honors --goal decision flag.",
+        "Compares RLS vs app-layer with tradeoff framing.",
+        "Names what evidence would change the recommendation."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["RLS", "authorization", "multi-tenant"],
+          ["Where Agents Disagree"],
+          ["Top 3 Takeaways"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "depth-routing-quick",
+      "category": "depth-routing",
+      "should_trigger": true,
+      "prompt": "Quick council pass on this single skill file — anything obviously fragile?",
+      "expected_output": "Runs quick depth with intentionally narrow lens fan-out and notes what deeper review was skipped.",
+      "assertions": [
+        "Infers quick depth from narrow scope signal.",
+        "States the review was intentionally narrow.",
+        "Keeps actions tight and reversible."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["quick", "narrow", "intentionally"],
+          ["Top 3 Takeaways"],
+          ["Devil's advocate", "devil's advocate", "skeptic"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "depth-routing-standard",
+      "category": "depth-routing",
+      "should_trigger": true,
+      "prompt": "Council investigate our invoice PDF generation flow — moderate scope, standard depth.",
+      "expected_output": "Runs standard depth with balanced lens fan-out for a medium-scope investigation.",
+      "assertions": [
+        "Infers standard depth from moderate scope signal.",
+        "Spawns non-overlapping lenses without over-fan-out.",
+        "Produces full synthesis contract."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["standard", "Top 3 Takeaways"],
+          ["Perspective Findings", "findings"],
+          ["Where Agents Disagree", "Where Agents Agree"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "depth-routing-deep",
+      "category": "depth-routing",
+      "should_trigger": true,
+      "prompt": "Use core:council --depth deep for a full cross-system audit of auth, sessions, webhooks, and payout permissions.",
+      "expected_output": "Runs deep depth with wide lens fan-out for comprehensive cross-system review.",
+      "assertions": [
+        "Honors explicit deep depth flag.",
+        "Covers multiple subsystems with distinct lenses.",
+        "Notes confidence limits and open questions."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["deep", "cross-system", "comprehensive"],
+          ["Top 3 Takeaways"],
+          ["Open Questions", "Assumptions"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "domain-design-onboarding-flow",
+      "category": "domain-design",
+      "should_trigger": true,
+      "files": ["evals/fixtures/onboarding-flow-brief.md"],
+      "prompt": "Council this onboarding flow brief — UX, copy, trust signals, and step order before eng handoff.",
+      "expected_output": "Runs design-domain council with craft, user-advocate, and skeptic overlays grounded in the onboarding fixture.",
+      "assertions": [
+        "Grounds critique in fixture specifics: penny-drop, GSTIN, three-step wizard.",
+        "Applies design overlays: visual hierarchy, copy tone, state coverage.",
+        "Prioritizes fixes before implementation, does not generate code."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["onboarding", "penny-drop", "bank verification"],
+          ["copy", "trust", "step"],
+          ["Devil's advocate", "devil's advocate", "skeptic"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge", "/diverge"]
+        ]
+      },
+      "judge_rubric": [
+        {"dimension": "fixture_grounding", "weight": 3, "criteria": "Critique cites specific onboarding fixture details, not generic wizard advice."},
+        {"dimension": "design_overlays", "weight": 3, "criteria": "Applies visual hierarchy, copy tone, and state coverage lenses distinctly."},
+        {"dimension": "skeptic_value", "weight": 2, "criteria": "Skeptic lens challenges a comfortable onboarding assumption from the brief."},
+        {"dimension": "actionability", "weight": 2, "criteria": "Prioritized fixes are specific enough for design handoff."}
+      ]
+    },
+    {
+      "id": "domain-design-brand-direction",
+      "category": "domain-design",
+      "should_trigger": true,
+      "files": ["evals/fixtures/brand-direction-brief.md"],
+      "prompt": "Review this brand direction brief before we diverge — what constraints and risks should shape exploration?",
+      "expected_output": "Runs design-domain council on brand constraints without triggering diverge concept generation.",
+      "assertions": [
+        "Grounds review in brand fixture: trust anxiety, fintech seriousness, token drift.",
+        "Treats output as constraints for later diverge, not final identity.",
+        "Includes skeptic on emotional differentiation claims."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["brand", "trust", "fintech"],
+          ["constraint", "hypothesis", "direction"],
+          ["skeptic", "Skeptic", "Devil's advocate"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge", "/diverge"]
+        ]
+      },
+      "judge_rubric": [
+        {"dimension": "fixture_grounding", "weight": 3, "criteria": "References Ledgerly audience anxieties and visual drift from the brief."},
+        {"dimension": "boundary_respect", "weight": 3, "criteria": "Produces investigation inputs, not a finished brand system or logo directions."},
+        {"dimension": "lens_diversity", "weight": 2, "criteria": "Craft, user-advocate, and skeptic lenses do not overlap."},
+        {"dimension": "synthesis_quality", "weight": 2, "criteria": "Resolves tension between differentiation and trust-sensitive fintech tone."}
+      ]
+    },
+    {
+      "id": "domain-design-plugin-architecture",
+      "category": "domain-design",
+      "should_trigger": true,
+      "files": ["evals/fixtures/plugin-architecture-brief.md"],
+      "prompt": "Council review the plugin architecture brief — UX of skill discovery, manifest contracts, and developer experience risks.",
+      "expected_output": "Runs design-informed system review on plugin UX and contract surfaces from the fixture.",
+      "assertions": [
+        "Grounds findings in plugin fixture manifest and discovery details.",
+        "Balances craft quality with system blast-radius concerns.",
+        "Surfaces DX risks without implementing plugin code."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["plugin", "manifest", "skill"],
+          ["Top 3 Takeaways"],
+          ["Where Agents Disagree"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      },
+      "judge_rubric": [
+        {"dimension": "fixture_grounding", "weight": 3, "criteria": "Findings cite plugin architecture brief specifics, not generic plugin platitudes."},
+        {"dimension": "dx_lens", "weight": 2, "criteria": "Includes a developer-experience or operator lens on discovery and contracts."},
+        {"dimension": "skeptic_value", "weight": 2, "criteria": "Skeptic challenges an assumption about manifest or marketplace simplicity."},
+        {"dimension": "actionability", "weight": 2, "criteria": "Next actions are scoped to contracts or UX, not code dumps."}
+      ]
+    },
+    {
+      "id": "domain-product-prioritization",
+      "category": "domain-product",
+      "should_trigger": true,
+      "files": ["evals/fixtures/product-prioritization-brief.md"],
+      "prompt": "Council perspectives on the product prioritization brief — AI recommendations vs onboarding fix for Q2.",
+      "expected_output": "Runs product-domain council with adoption-risk, ROI, and scope-fit overlays on the prioritization fixture.",
+      "assertions": [
+        "Grounds debate in fixture capacity, impact, and timeline constraints.",
+        "Includes product overlays: adoption risk, ROI, scope fit.",
+        "Surfaces decision logic and what would change the recommendation."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["AI", "onboarding", "Q2", "priorit"],
+          ["recommend", "tradeoff"],
+          ["Where Agents Disagree"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "domain-research-payment-failure",
+      "category": "domain-research",
+      "should_trigger": true,
+      "files": ["evals/fixtures/payment-failure-research.md"],
+      "prompt": "Run council research on the payment failure UX brief — competitive patterns, source quality, and gaps.",
+      "expected_output": "Runs research-mode council grounded in the payment failure fixture with source triangulation.",
+      "assertions": [
+        "Uses fixture research questions to scope agent assignments.",
+        "Includes source-quality and negative-space research lenses.",
+        "Distinguishes confident findings from leads needing more investigation."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["payment", "failure", "retry", "UPI"],
+          ["source", "confident", "gap"],
+          ["Top 3 Takeaways"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "domain-workflow-handoff",
+      "category": "domain-workflow",
+      "should_trigger": true,
+      "files": ["evals/fixtures/workflow-handoff-brief.md"],
+      "prompt": "Audit the design-to-engineering handoff brief — bottlenecks, repeat churn, and operating model fixes.",
+      "expected_output": "Runs workflow-domain council with handoff-owner and repeat-churn overlays from the fixture.",
+      "assertions": [
+        "Grounds audit in fixture sprint stall and Linear/Figma process details.",
+        "Identifies ownership gaps and repeat churn patterns.",
+        "Produces prioritized workflow actions, not code changes."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["handoff", "Figma", "Linear", "staging"],
+          ["bottleneck", "churn", "ownership"],
+          ["Prioritized Next Actions", "next actions"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "dynamic-lenses-skeptic-derivation",
+      "category": "dynamic-lenses",
+      "should_trigger": true,
+      "files": ["evals/fixtures/onboarding-flow-brief.md"],
+      "prompt": "Use core:council on the onboarding brief. Derive lenses dynamically — I want a skeptic that attacks our bank-first step order assumption.",
+      "expected_output": "Derives domain-appropriate lenses with explicit skeptic rationale attacking bank-first ordering.",
+      "assertions": [
+        "Includes Lens Rationale or equivalent listing derived lenses and why.",
+        "Assigns skeptic lens focused on bank-before-invoice assumption.",
+        "No two lenses share the same expertise area."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["skeptic", "Skeptic"],
+          ["bank", "step order", "assumption"],
+          ["Lens Rationale", "chosen because", "rationale"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      },
+      "judge_rubric": [
+        {"dimension": "lens_derivation", "weight": 3, "criteria": "Lenses are derived from fixture stakes, not a fixed persona table."},
+        {"dimension": "skeptic_focus", "weight": 3, "criteria": "Skeptic specifically pressures the bank-first step order assumption."},
+        {"dimension": "non_overlap", "weight": 2, "criteria": "Each lens has a distinct expertise area and one-line rationale."},
+        {"dimension": "synthesis_integration", "weight": 2, "criteria": "Skeptic findings change the synthesized recommendation or confidence."}
+      ]
+    },
+    {
+      "id": "dynamic-lenses-product-adoption",
+      "category": "dynamic-lenses",
+      "should_trigger": true,
+      "files": ["evals/fixtures/product-prioritization-brief.md"],
+      "prompt": "Council the product prioritization brief with dynamically composed lenses — include adoption-risk and cost-complexity overlays plus a permanent blind-spot lens.",
+      "expected_output": "Composes product-domain lenses with adoption-risk and cost-complexity archetypes plus blind-spot.",
+      "assertions": [
+        "Derives adoption-risk and cost-complexity lenses from fixture stakes.",
+        "Includes permanent blind-spot lens surfacing a new frame.",
+        "Documents lens rationale tied to Q2 capacity constraints."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["adoption", "cost", "complexity", "ROI"],
+          ["blind-spot", "Blind-spot", "blind spot"],
+          ["Lens Rationale", "chosen because", "rationale"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      },
+      "judge_rubric": [
+        {"dimension": "archetype_fit", "weight": 3, "criteria": "Adoption-risk and cost-complexity lenses match the Q2 tradeoff shape."},
+        {"dimension": "blind_spot_value", "weight": 3, "criteria": "Blind-spot lens surfaces a frame missing from the brief, not a duplicate skeptic."},
+        {"dimension": "rationale_clarity", "weight": 2, "criteria": "Each lens has a one-line chosen-because rationale."},
+        {"dimension": "synthesis_quality", "weight": 2, "criteria": "Report integrates dynamic lenses into a coherent prioritization view."}
+      ]
+    },
+    {
+      "id": "synthesis-contract-standard",
+      "category": "synthesis-contract",
+      "should_trigger": true,
+      "prompt": "Council audit our session timeout configuration across web and mobile web.",
+      "expected_output": "Produces full synthesis contract with Council Report heading, Top 3 Takeaways, and disagreement sections.",
+      "assertions": [
+        "Uses exact Council Report and Top 3 Takeaways headings.",
+        "Includes What We Know vs What We Infer distinction.",
+        "Names Where Agents Agree and Where Agents Disagree sections."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["# Council Report", "Council Report:"],
+          ["## Top 3 Takeaways", "Top 3 Takeaways"],
+          ["What We Know", "What We Infer"],
+          ["Where Agents Disagree"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "synthesis-contract-risks-emphasis",
+      "category": "synthesis-contract",
+      "should_trigger": true,
+      "prompt": "Use core:council --goal risks on our webhook signature verification — emphasize failure modes in the synthesis.",
+      "expected_output": "Follows synthesis contract with risks-goal emphasis on failure modes and devil's advocate impact section.",
+      "assertions": [
+        "Includes What the Devil's Advocate Changed section or equivalent.",
+        "Emphasizes failure modes over neutral inventory.",
+        "Ends with prioritized risk-reduction actions."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["Top 3 Takeaways"],
+          ["Devil's advocate", "devil's advocate"],
+          ["failure", "risk", "fragile"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "synthesis-contract-actions-emphasis",
+      "category": "synthesis-contract",
+      "should_trigger": true,
+      "prompt": "/council --goal actions What should we fix first in our error monitoring gaps?",
+      "expected_output": "Follows synthesis contract with actions-goal emphasis on Prioritized Next Actions.",
+      "assertions": [
+        "Includes Prioritized Next Actions with numbered items.",
+        "Actions are specific enough to execute this week.",
+        "Still includes Top 3 Takeaways and disagreement surfacing."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["Top 3 Takeaways"],
+          ["Prioritized Next Actions"],
+          ["1."]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "debate-format-microservices-binary",
+      "category": "debate-format",
+      "should_trigger": true,
+      "files": ["evals/fixtures/binary-debate-brief.md"],
+      "prompt": "Council debate the binary decision in the architecture brief — microservices split vs stay monolith. Use steel-man format.",
+      "expected_output": "Runs binary debate with advocate-for-A and advocate-for-B lenses, each steel-manning the opposing view before arguing.",
+      "assertions": [
+        "Spawns advocate lenses for both monolith and split positions.",
+        "Each side steel-mans the opposing view before arguing.",
+        "States what evidence would change each side's mind."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["steel-man", "steel man", "steelman"],
+          ["monolith", "microservice", "split"],
+          ["Where Agents Disagree"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      },
+      "judge_rubric": [
+        {"dimension": "steel_man_quality", "weight": 3, "criteria": "Each advocate fairly steel-mans the opposing architecture position."},
+        {"dimension": "evidence_falsifiers", "weight": 3, "criteria": "Each side states what evidence would change their mind."},
+        {"dimension": "crux_clarity", "weight": 2, "criteria": "Synthesis names the crux of disagreement, not a false balance."},
+        {"dimension": "fixture_grounding", "weight": 2, "criteria": "Debate uses Ledgerly scale, payments pain, and team size from the brief."}
+      ]
+    },
+    {
+      "id": "debate-format-explicit-opinion",
+      "category": "debate-format",
+      "should_trigger": true,
+      "files": ["evals/fixtures/binary-debate-brief.md"],
+      "prompt": "Use core:council --mode opinion on the binary debate brief. Run formal debate: advocates steel-man each other, then synthesize a recommendation.",
+      "expected_output": "Opinion-mode binary debate on monolith split with formal steel-man steps and recommendation.",
+      "assertions": [
+        "Uses opinion mode debate format from the brief.",
+        "Presents both sides before synthesizing recommendation.",
+        "States which side had stronger evidence if applicable."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["steel-man", "steel man", "steelman", "advocate"],
+          ["recommend"],
+          ["Where Agents Disagree"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      },
+      "judge_rubric": [
+        {"dimension": "debate_structure", "weight": 3, "criteria": "Follows advocate-A, advocate-B, steel-man, then synthesis order."},
+        {"dimension": "recommendation_logic", "weight": 3, "criteria": "Recommendation cites strongest evidence, not majority vote."},
+        {"dimension": "persona_distinctness", "weight": 2, "criteria": "Advocate personas reflect different stakeholder costs from the brief."},
+        {"dimension": "assumption_surfacing", "weight": 2, "criteria": "Names the assumption that, if wrong, would flip the recommendation."}
+      ]
+    },
+    {
+      "id": "artifact-onboarding-flow",
+      "category": "artifact",
+      "should_trigger": true,
+      "files": ["evals/fixtures/onboarding-flow-brief.md"],
+      "prompt": "Read evals/fixtures/onboarding-flow-brief.md and council the onboarding flow before we build.",
+      "expected_output": "Artifact-grounded council report on the onboarding fixture with full synthesis contract.",
+      "assertions": [
+        "Reads and cites the onboarding fixture artifact.",
+        "Covers trust, step order, and penny-drop failure copy from the brief.",
+        "Does not invent metrics or flows absent from the fixture."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["Top 3 Takeaways"],
+          ["34%", "55%", "penny-drop", "GSTIN"],
+          ["Devil's advocate", "devil's advocate", "skeptic"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "artifact-product-prioritization",
+      "category": "artifact",
+      "should_trigger": true,
+      "files": ["evals/fixtures/product-prioritization-brief.md"],
+      "prompt": "Council the attached product prioritization brief — I need a decision-ready report, not a feature brainstorm.",
+      "expected_output": "Artifact-grounded council on AI vs onboarding Q2 bet with decision-oriented synthesis.",
+      "assertions": [
+        "Reads and cites product prioritization fixture details.",
+        "Uses eng capacity and impact figures from the brief.",
+        "Produces decision-ready synthesis, not diverge directions."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["Top 3 Takeaways"],
+          ["AI", "onboarding", "Q2"],
+          ["Where Agents Disagree"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge", "/diverge"]
+        ]
+      }
+    },
+    {
+      "id": "artifact-kyc-copy",
+      "category": "artifact",
+      "should_trigger": true,
+      "files": ["evals/fixtures/kyc-copy-brief.md"],
+      "prompt": "Use core:council on evals/fixtures/kyc-copy-brief.md — legal exposure, user anxiety, and conversion risks in the KYC copy.",
+      "expected_output": "Artifact-grounded council on KYC copy risk surfaces with compliance and user-advocate lenses.",
+      "assertions": [
+        "Reads and cites KYC fixture: Aadhaar OTP drop-off, selfie step, PAN flow.",
+        "Includes risk-compliance and user-advocate perspectives.",
+        "Flags copy risks without rewriting the entire flow as implementation."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["KYC", "Aadhaar", "selfie"],
+          ["38%", "4.2", "drop-off", "anxiety"],
+          ["risk", "legal", "compliance"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "artifact-api-module",
+      "category": "artifact",
+      "should_trigger": true,
+      "files": ["evals/fixtures/api-module-brief.md"],
+      "prompt": "Council audit the API module brief — contract stability, error surfaces, and consumer blast radius.",
+      "expected_output": "Artifact-grounded code/system council on API module contract and error handling from the fixture.",
+      "assertions": [
+        "Reads and cites API module fixture specifics.",
+        "Maps error surfaces and consumer dependencies.",
+        "Includes devil's advocate on backward-compatibility assumptions."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["API", "contract", "error"],
+          ["Top 3 Takeaways"],
+          ["Devil's advocate", "devil's advocate", "skeptic"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "implemented"],
+          ["design:diverge"]
+        ]
+      }
+    },
+    {
+      "id": "known-failure-eng-panel-design",
+      "category": "known-failure",
+      "should_trigger": true,
+      "files": ["evals/fixtures/onboarding-flow-brief.md"],
+      "prompt": "Council review the onboarding flow brief for UX and copy quality.",
+      "expected_output": "Uses design-appropriate lenses (craft, user-advocate, copy tone) — does not default to a generic engineering code-review panel.",
+      "assertions": [
+        "Does not treat the design brief as a code module audit.",
+        "Includes design-relevant lenses: copy tone, cognitive load, trust signals.",
+        "Avoids engineering-only framing like test coverage or refactor suggestions."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["UX", "copy", "trust", "onboarding", "design"],
+          ["user", "cognitive", "step"]
+        ],
+        "must_not_include_any": [
+          ["test coverage", "unit test", "refactor the module"],
+          ["wrote .tsx", "implemented"]
+        ]
+      }
+    },
+    {
+      "id": "known-failure-council-runs-diverge",
+      "category": "known-failure",
+      "should_trigger": true,
+      "files": ["evals/fixtures/brand-direction-brief.md"],
+      "prompt": "Council the brand direction brief — I want investigation and constraints, not concept generation.",
+      "expected_output": "Produces council investigation output — does not route to diverge or generate concept directions.",
+      "assertions": [
+        "Does not invoke design:diverge or produce diverge-style direction lists.",
+        "Treats brand brief as constraints and risk investigation.",
+        "Maintains council synthesis contract throughout."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["constraint", "risk", "brand"],
+          ["Top 3 Takeaways"]
+        ],
+        "must_not_include_any": [
+          ["design:diverge", "/diverge"],
+          ["Direction 1", "Direction 2", "concept generation"]
+        ]
+      }
+    },
+    {
+      "id": "known-failure-council-implements",
+      "category": "known-failure",
+      "should_trigger": true,
+      "files": ["evals/fixtures/workflow-handoff-brief.md"],
+      "prompt": "Council the workflow handoff brief and tell me what to fix in the operating model.",
+      "expected_output": "Produces workflow investigation and actions — does not implement tooling, scripts, or code changes.",
+      "assertions": [
+        "Does not write implementation code or create PR-ready files.",
+        "Focuses on process diagnosis and prioritized workflow actions.",
+        "Spawns agents for investigation, not for building automation."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["workflow", "handoff", "process"],
+          ["Prioritized Next Actions", "next actions"]
+        ],
+        "must_not_include_any": [
+          ["wrote .tsx", "created .tsx", "implemented"],
+          ["git commit", "pull request"]
+        ]
+      }
+    },
+    {
+      "id": "known-failure-concat-not-synthesize",
+      "category": "known-failure",
+      "should_trigger": true,
+      "prompt": "Council investigate our rate limiting strategy — make sure you synthesize tensions, not just paste agent outputs.",
+      "expected_output": "Parent synthesizes tension between lenses into a unified report — does not concatenate raw subagent dumps.",
+      "assertions": [
+        "Produces a single cohesive Council Report, not sequential agent paste-ins.",
+        "Resolves or names tensions between lens findings.",
+        "Includes devil's advocate impact on final conclusions."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          ["Council Report"],
+          ["Top 3 Takeaways"],
+          ["Where Agents Disagree", "tension", "synthesize"],
+          ["Devil's advocate", "devil's advocate"]
+        ],
+        "must_not_include_any": [
+          ["Agent 1 output:", "Subagent 1:", "=== Agent"],
+          ["wrote .tsx", "implemented"]
+        ]
+      }
+    }
+  ]
+}
