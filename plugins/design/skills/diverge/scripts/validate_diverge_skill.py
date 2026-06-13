@@ -20,7 +20,7 @@ REQUIRED_REFERENCE_MENTIONS = [
 
 REQUIRED_REGRESSION_IDS = {
     "repair-regression-companion-visible",
-    "repair-regression-compact-not-deep",
+    "repair-regression-fast-not-deep",
     "repair-regression-api-down-vs-auth",
     "repair-regression-obvious-baseline-verdict",
     "repair-regression-layers-changed-required",
@@ -60,8 +60,12 @@ def main() -> None:
         if not (skill_root / mention).exists():
             fail(f"referenced file does not exist: {mention}")
 
-    if "Compact mode is the default" not in skill_md:
-        fail("SKILL.md must keep compact mode as default")
+    if "Fast mode is the default" not in skill_md:
+        fail("SKILL.md must keep fast mode as default")
+    if "Explore mode" not in skill_md:
+        fail("SKILL.md must document explore mode tier")
+    if "explore" not in skill_md.lower() or "playground" not in skill_md:
+        fail("SKILL.md must mention explore tier playground sketch companion")
     if "Companion Skill Routing Gate" not in skill_md:
         fail("SKILL.md must keep Companion Skill Routing Gate explicit")
     if "A direction only counts if it changes a specific design layer" not in skill_md:
@@ -86,6 +90,14 @@ def main() -> None:
     companion_cases = [case for case in evals if case["category"] == "companion-routing"]
     if len(companion_cases) < 4:
         fail("expected at least four companion-routing eval cases")
+
+    explore_cases = [case for case in evals if case["category"] == "explore-mode"]
+    if len(explore_cases) < 3:
+        fail("expected at least three explore-mode eval cases")
+
+    fast_cases = [case for case in evals if case["category"] == "fast-mode"]
+    if len(fast_cases) < 2:
+        fail("expected at least two fast-mode eval cases")
 
     slop_cases = [case for case in evals if case["category"] == "slop-firewall"]
     if len(slop_cases) < 2:

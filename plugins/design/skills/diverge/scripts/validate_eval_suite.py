@@ -26,7 +26,8 @@ REQUIRED_CATEGORIES = {
     "known-failure",
     "artifact",
     "repair-regression",
-    "compact-mode",
+    "fast-mode",
+    "explore-mode",
     "deep-mode",
     "altitude-detection",
     "companion-routing",
@@ -140,6 +141,10 @@ def main() -> None:
     artifact_cases = [case for case in evals if case["category"] == "artifact"]
     if len(artifact_cases) < 3:
         fail("expected at least three artifact cases")
+
+    explore_cases = [case for case in evals if case["category"] == "explore-mode"]
+    if len(explore_cases) < 3:
+        fail("expected at least three explore-mode cases")
 
     print(
         f"OK: {len(evals)} evals, {len(categories)} categories, "

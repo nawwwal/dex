@@ -3,7 +3,7 @@
   "version": 1,
   "skill_type": "mixed",
   "baseline": "previous",
-  "notes": "Exhaustive regression suite for diverge trigger behavior, compact-vs-deep mode, altitude detection, companion routing, layer-quality gates, register rules, state handling, artifact grounding, slop firewall, and repair regressions.",
+  "notes": "Exhaustive regression suite for diverge trigger behavior, fast-vs-explore-vs-deep mode, altitude detection, companion routing, layer-quality gates, register rules, state handling, artifact grounding, slop firewall, and repair regressions.",
   "coverage_requirements": [
     "explicit-trigger",
     "implicit-trigger",
@@ -12,7 +12,8 @@
     "known-failure",
     "artifact",
     "repair-regression",
-    "compact-mode",
+    "fast-mode",
+    "explore-mode",
     "deep-mode",
     "altitude-detection",
     "companion-routing",
@@ -28,7 +29,7 @@
       "category": "explicit-trigger",
       "should_trigger": true,
       "prompt": "/diverge Give me alternatives for an agent run history page. Users need to see failures, retries, and which connector caused each failure.",
-      "expected_output": "Produces compact layered directions with product bets, layers changed, tradeoffs, and prototype slices without stalling on a full intake.",
+      "expected_output": "Produces fast layered directions with product bets, layers changed, tradeoffs, and prototype slices without stalling on a full intake.",
       "assertions": [
         "Names at least four distinct directions.",
         "Each direction names layers changed and a tradeoff.",
@@ -130,7 +131,7 @@
       "category": "contextual-trigger",
       "should_trigger": true,
       "prompt": "Context: board wants something premium by Friday. Engineering says reuse the current grid. Support says users cannot tell which connector broke an agent. Design wants fewer alerts but more delight. Diverge on a connector health dashboard for agents.",
-      "expected_output": "Filters noise, uses compact or deep mode appropriately, and produces repair-oriented directions grounded in the real job.",
+      "expected_output": "Filters noise, uses fast or explore mode appropriately, and produces repair-oriented directions grounded in the real job.",
       "assertions": [
         "Prioritizes diagnosis and repair over delight theater.",
         "Uses supplied states or objects such as connectors and agents.",
@@ -230,11 +231,11 @@
       }
     },
     {
-      "id": "compact-default-layout-options",
-      "category": "compact-mode",
+      "id": "fast-default-layout-options",
+      "category": "fast-mode",
       "should_trigger": true,
       "prompt": "Give me 5 layout directions for a settings page with account, billing, team, API keys, and security. Product mechanics must stay unchanged.",
-      "expected_output": "Uses compact mode: assumptions if needed, obvious baseline, 4-6 directions, recommendation — not full handoff blueprint.",
+      "expected_output": "Uses fast mode: assumptions if needed, obvious baseline, 3-5 directions, recommendation — not full handoff blueprint.",
       "assertions": [
         "Produces directions quickly without full 13-section deep template for each.",
         "Keeps product mechanics unchanged.",
@@ -247,11 +248,11 @@
       }
     },
     {
-      "id": "compact-not-full-handoff",
-      "category": "compact-mode",
+      "id": "fast-not-full-handoff",
+      "category": "fast-mode",
       "should_trigger": true,
-      "prompt": "Give me options for how to present connector errors on an agent detail page.",
-      "expected_output": "Compact divergence with layered bets and tradeoffs, not exhaustive per-direction typography/color/motion blocks unless relevant.",
+      "prompt": "Brainstorm a few ways to present connector errors on an agent detail page.",
+      "expected_output": "Fast divergence with layered bets and tradeoffs, not exhaustive per-direction typography/color/motion blocks unless relevant.",
       "assertions": [
         "Returns multiple options in one response.",
         "Each option names what changed and a tradeoff.",
@@ -277,7 +278,7 @@
       ],
       "deterministic_checks": {
         "must_include_any": [["scope"], ["approval"], ["Handoff"], ["Comparison"]],
-        "must_not_include_any": [["compact mode only"], ["skipping handoff"]]
+        "must_not_include_any": [["fast mode only"], ["skipping handoff"]]
       }
     },
     {
@@ -531,7 +532,7 @@
         "Includes repair queue, dependency map, or exception inbox style directions."
       ],
       "deterministic_checks": {
-        "must_include_any": [["repair"], ["queue"], ["dependency"], ["exception"]],
+        "must_include_any": [["repair"], ["triage"], ["queue"], ["dependency"], ["exception"], ["status"]],
         "must_not_include_any": [["Quiet Sentinel"], ["Health Weather"], ["Garden of Integrations"]]
       }
     },
@@ -625,7 +626,7 @@
       "category": "known-failure",
       "should_trigger": true,
       "prompt": "Give me a few options for empty states in a connector setup wizard.",
-      "expected_output": "Uses compact mode for a simple options request and does not dump full handoff blueprint.",
+      "expected_output": "Uses fast mode for a simple options request and does not dump full handoff blueprint.",
       "assertions": [
         "Returns a small set of usable directions quickly.",
         "Does not force 13-section deep template per direction.",
@@ -731,11 +732,11 @@
       }
     },
     {
-      "id": "repair-regression-compact-not-deep",
+      "id": "repair-regression-fast-not-deep",
       "category": "repair-regression",
       "should_trigger": true,
       "prompt": "Brainstorm different approaches for showing webhook delivery logs to developers.",
-      "expected_output": "Uses compact mode by default without full deep handoff unless requested.",
+      "expected_output": "Uses fast mode by default without full deep handoff unless requested.",
       "assertions": [
         "Produces multiple approaches in one pass.",
         "Does not require deep/full/layered keywords to be useful.",
@@ -814,6 +815,74 @@
       "deterministic_checks": {
         "must_include_any": [["payment"], ["retry"], ["safe"], ["charge"]],
         "must_not_include_any": [["joke"], ["please paste"], ["I cannot inspect"]]
+      }
+    },
+    {
+      "id": "explore-show-me-options-onboarding",
+      "category": "explore-mode",
+      "should_trigger": true,
+      "prompt": "Show me options for onboarding merchants who need to connect Shopify, Stripe, and a custom webhook.",
+      "expected_output": "Uses explore mode with 5-8 directions, comparison, and recommendation — not full deep handoff.",
+      "assertions": [
+        "Produces a wider option set than fast mode (about 5-8 directions).",
+        "Includes obvious baseline and layers changed per direction.",
+        "Includes comparison or short compare bullets across directions.",
+        "Does not dump full 13-section template per direction."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["option", "onboard"], ["Shopify", "Stripe"], ["compare", "recommend"]],
+        "must_not_include_any": [["## 13. Handoff Blueprint"], ["Handoff Blueprint"]]
+      }
+    },
+    {
+      "id": "explore-early-ideation-team-invite",
+      "category": "explore-mode",
+      "should_trigger": true,
+      "prompt": "I want to explore different approaches for the team invite modal before we commit. Show me options.",
+      "expected_output": "Explore-mode ideation with 5-8 invite directions, tradeoffs, and prototype order.",
+      "assertions": [
+        "Treats early ideation language as explore mode.",
+        "Names invite-specific states such as pending, expired, or permission denied.",
+        "Each direction includes layers changed and tradeoff.",
+        "Includes recommendation with prototype priority."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["invite"], ["option"], ["tradeoff"], ["recommend"]],
+        "must_not_include_any": [["## 13. Handoff Blueprint"], ["council-style full pass"]]
+      }
+    },
+    {
+      "id": "explore-playground-sketch-companion",
+      "category": "explore-mode",
+      "should_trigger": true,
+      "prompt": "Show me options for settings page layout with account, billing, team, API keys, and security. Sketch the top two directions in playground if a visual compare would help.",
+      "expected_output": "Explore directions plus optional playground sketch companion for top recommendations.",
+      "assertions": [
+        "Produces 5-8 layout directions with product mechanics unchanged.",
+        "Mentions playground sketch companion for top directions or skips with reason.",
+        "Shared assumptions keep sketches comparable.",
+        "Does not route playground as primary skill before directions exist."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["layout", "account"], ["option"], ["playground", "sketch"]],
+        "must_not_include_any": [["design:playground only"], ["skipping directions"]]
+      }
+    },
+    {
+      "id": "explore-compare-webhook-logs",
+      "category": "explore-mode",
+      "should_trigger": true,
+      "prompt": "Show me options for how developers should browse webhook delivery logs so I can compare before picking one to prototype.",
+      "expected_output": "Explore mode with compare-friendly directions and prototype order, not deep handoff.",
+      "assertions": [
+        "Produces multiple log-browsing directions with different product or UX bets.",
+        "Includes comparison table or compare bullets.",
+        "Names developer jobs such as debug, retry, or inspect payload.",
+        "Recommends prototype order without full handoff blueprint."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["webhook"], ["log"], ["compare"], ["prototype"], ["recommend"]],
+        "must_not_include_any": [["## 13. Handoff Blueprint"], ["Handoff Blueprint"]]
       }
     }
   ]

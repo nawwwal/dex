@@ -102,6 +102,37 @@ Bring back into `diverge`:
 - motion rules
 - prototype-ready constraints
 
+## Explore Gate: Optional `playground` Sketch Companion
+
+Use `playground` in sketch mode after explore-mode directions exist when:
+
+- the user asked to "show me options" or compare directions before committing
+- two or more directions differ mainly in layout, interaction model, or flow structure
+- a quick visual or interactive sketch would help selection more than another prose direction
+- the user explicitly asks for a sketch, prototype, or interactive comparison
+
+Bring back into `diverge`:
+
+- which directions get sketch companions (usually top 2-3 from the recommendation)
+- what each sketch must prove (interaction model, hierarchy, or state behavior)
+- shared assumptions so sketches stay comparable
+- pick-one or build-next handoff after comparison
+
+Do not route to `playground` when:
+
+- the user only wants written directions
+- the prompt is copy-only or premise-weak (run `crux` or `content-design` first)
+- deep mode already includes prototype slices and handoff blueprint
+- fast mode with 3-5 directions is enough
+
+Example after explore directions:
+
+```text
+### Playground sketch companion (optional)
+- Direction B and D: route `playground` sketch mode — compare split-nav vs search-first settings IA with shared fixture assumptions and pick-one export.
+- Other directions: prose-only unless user asks to sketch.
+```
+
 ## Output Rule
 
 When a companion skill is used or should be used, state the routing decision before the obvious baseline or directions. Mentioning routing only in a self-check is invalid.
@@ -112,6 +143,7 @@ When a companion skill is used or should be used, state the routing decision bef
 - content-design: used / skipped because ...
 - 5F review: used / skipped because ...
 - execution hardening: used / skipped because ...
+- playground sketch: used / skipped because ...
 ```
 
-Keep this short in compact mode. In deep mode, include the inputs and extracted outputs.
+Keep this short in fast and explore modes. In deep mode, include the inputs and extracted outputs.

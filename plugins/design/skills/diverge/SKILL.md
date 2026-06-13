@@ -22,29 +22,57 @@ Do not use this skill when the user:
 - invokes `/dex release` or other maintainer workflows -> route `dex`
 - asks to critique one pasted design with no alternatives requested -> critique only
 
-## Default Depth
+## Depth Tiers
 
-Compact mode is the default. Most brainstorm, alternatives, concept, and different-direction requests should return a fast set of usable directions, not the full layered framework.
+Three depth tiers control output size. Pick the tier from prompt language before ideation.
+
+| Tier | When | Output |
+|------|------|--------|
+| **fast** (default) | brainstorm, alternatives, concepts, different directions | 3-5 directions, minimal sections |
+| **explore** | "show me options", early ideation, compare before committing | 5-8 directions; optional `playground` sketch companion |
+| **deep** | explicit deep, full, comprehensive, council, exhaustive, layered, or handoff blueprint | full layered framework |
+
+### Fast mode (default)
+
+Fast mode is the default. Most brainstorm, alternatives, concept, and different-direction requests should return a small usable set of directions, not the full layered framework.
+
+Use explore mode when the user says "show me options", "explore options", "what are my options", "a few directions to compare", or similar early-ideation language without asking for deep/handoff.
 
 Use deep mode only when the user explicitly asks for deep, full, comprehensive, council, exhaustive, layered divergence, or a full handoff blueprint.
 
-Compact output:
+Fast output:
 1. Assumptions, only if needed.
 2. Companion routing, only when a companion skill is used or clearly relevant.
 3. Obvious baseline.
 4. Banned bad directions, when the prompt lists states, anti-patterns, or known failure modes.
-5. 4-6 directions.
+5. 3-5 directions.
 6. For each direction: product bet, layers changed, visible execution, main interaction/state behavior, copy/content implication when relevant, tradeoff, prototype slice.
 7. Recommendation.
 8. Handoff hooks, when an artifact brief or file was read: bullets for objects, critical states, permissions, and QA scenarios (not a full blueprint).
 
-Compact mode must not include deep-only sections such as `## 13. Handoff Blueprint`, full per-direction typography/color/motion blocks unless altitude requires them, or the complete 13-section direction template for every direction.
+Fast mode must not include deep-only sections such as `## 13. Handoff Blueprint`, full per-direction typography/color/motion blocks unless altitude requires them, or the complete 13-section direction template for every direction.
 
-For copy-heavy prompts (destructive modals, errors, onboarding, CTAs, labels), use Copywriting divergence (Mode 5) even if the user only says "diverge on copy" — load `copywriting-divergence.md` and return 8-12 copy directions grouped by tone/function. In compact copy runs, end with a `### Copy guardrails` block: localization risks (long strings, RTL, button width) and accessibility (destructive button labeling, `aria-describedby`, screen-reader consequence text).
+For copy-heavy prompts on risk surfaces (destructive modals, payments, secrets, permissions, irreversible actions), use Copywriting divergence (Mode 5) even if the user only says "diverge on copy" — load `copywriting-divergence.md` and return 8-12 copy directions grouped by tone/function. End with a `### Copy guardrails` block: localization risks (long strings, RTL, button width) and accessibility (destructive button labeling, `aria-describedby`, screen-reader consequence text). For low-risk copy (labels, nav, helper text), fast copy runs may return fewer directions without the full guardrails block.
 
-For recovery, payment, or health/state flows in compact mode, include analytics hooks and accessibility notes at recommendation level when states affect trust or safety.
+For recovery, payment, or health/state flows in fast mode, include analytics hooks and accessibility notes at recommendation level when states affect trust or safety.
 
-Deep output:
+### Explore mode
+
+Use explore mode when the user wants a wider option set before choosing a direction, not a full handoff blueprint.
+
+Explore output:
+1. Assumptions, only if needed.
+2. Companion routing, when a companion skill is used or clearly relevant.
+3. Obvious baseline.
+4. Banned bad directions, when relevant.
+5. 5-8 directions with product bet, layers changed, tradeoff, and prototype slice for each.
+6. Comparison table or short compare bullets when directions compete on different axes.
+7. Recommendation with prototype order.
+8. Optional `playground` sketch companion — offer when visual or interaction comparison would help selection. See `references/companion-skill-routing.md`.
+
+Explore mode must not dump the full 13-section direction template for every direction or include `## 13. Handoff Blueprint` unless the user also asked for deep/handoff.
+
+### Deep output
 - Use the full workflow below.
 - Load the relevant reference files.
 - Load `references/companion-skill-routing.md` when the prompt includes weak premise, copy-heavy work, critique/selection pressure, or implementation-quality risk.
@@ -196,14 +224,16 @@ If any route below matches, the response must include `### Companion Routing` be
 - content-design: used/skipped because ...
 - 5F review: used/skipped because ...
 - execution hardening: used/skipped because ...
+- playground sketch: used/skipped because ...
 ```
 
 Rules:
 
-- Use `crux` before divergence when the premise, user job, or success criterion is unclear. For weak-premise prompts, do a compact crux pass before ideation: hidden premise, standard of judgment, weak joint, and crux question or crude test.
+- Use `crux` before divergence when the premise, user job, or success criterion is unclear. For weak-premise prompts, do a fast crux pass before ideation: hidden premise, standard of judgment, weak joint, and crux question or crude test.
 - Use `content-design` when copy changes behavior, trust, risk, conversion, accessibility, or localization, including API keys, secrets, credentials, tokens, permissions, irreversible actions, and other save/recovery moments. For copy-heavy or risk-sensitive prompts, include the content-design minimum: user state, system state, risk level, required next action, and one concrete copy implication.
 - Use 5F-style review after directions exist when critique, selection, B2B SaaS quality, or design review is central. For review/selection prompts with existing concepts, include the 5F lens before recommendation.
 - Use execution hardening after a direction is selected when polish, accessibility, density, typography, motion, or implementation readiness is the core risk.
+- Use `playground` in sketch mode after explore-mode directions when visual or interaction comparison would help selection. Load `references/companion-skill-routing.md` for the explore gate.
 - For clear direct layout/options prompts, explicitly skip companion routing in one line or omit it if no route is relevant. Avoid over-routing.
 
 Example when skipping:
@@ -215,6 +245,7 @@ Example when skipping:
 - content-design: skipped — labels are stable unless a direction changes warnings.
 - 5F review: skipped — no selection critique requested.
 - execution hardening: skipped — ideation only.
+- playground sketch: skipped — prose directions are enough.
 ```
 
 Or omit the section entirely when no route is relevant.
