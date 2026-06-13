@@ -429,14 +429,14 @@
       "should_trigger": false,
       "run_mode": "clean-context-forward",
       "prompt": "Compress the video assets I plan to use in a deck and convert them to WebM.",
-      "expected_output": "The html-presentation skill should not take over media optimization. The agent should route to media-optimizer and only return to html-presentation if deck integration is requested.",
+      "expected_output": "The html-presentation skill should not take over media optimization. The agent should route to media-tools and only return to html-presentation if deck integration is requested.",
       "assertions": [
         "Does not use html-presentation as the primary workflow.",
-        "Routes compression/conversion to media-optimizer.",
+        "Routes compression/conversion to media-tools.",
         "Treats deck integration as a follow-up, not the current task."
       ],
       "deterministic_checks": {
-        "must_include_any": [["media-optimizer"], ["compress"], ["WebM"]],
+        "must_include_any": [["media-tools"], ["compress"], ["WebM"]],
         "must_not_include_any": [["Reveal.js as primary"], ["build a deck first"]]
       },
       "required_evidence": ["route-away decision", "media optimization workflow named"]

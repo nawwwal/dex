@@ -1,10 +1,75 @@
-# Optimo Reference
+# Optimize — Compress, Convert, and Resize Media
 
-Reference for [Optimo](https://optimo.microlink.io/) — media compression CLI.
+Optimize and convert images and videos using [Optimo](https://optimo.microlink.io/) — format-specific compression pipelines on top of ImageMagick and FFmpeg.
 
-Source: [Official upstream SKILL.md](https://microlink.io/skills/optimo)
+## Tool
 
-> **Node.js requirement:** Optimo requires Node >= 24. Upgrade with `nvm install 24 && nvm use 24`.
+```bash
+npx optimo@0.0.24 <file-or-directory>
+```
+
+Check for newer versions: `npm view optimo version`
+
+> **Node.js requirement:** Optimo requires Node >= 24. Verify with `node --version`. If on an older version, upgrade Node first or use `nvm install 24 && nvm use 24`.
+>
+> **Security:** Pin to an exact version in production. Avoid running on untrusted files — ImageMagick and FFmpeg have active CVEs.
+
+## Prerequisites
+
+| Format | Required binary |
+|---|---|
+| PNG, JPEG, WebP, AVIF, HEIC, JXL, GIF | `magick` (ImageMagick) |
+| SVG | `svgo` |
+| JPEG second pass | `mozjpegtran` or `jpegtran` (optional) |
+| GIF second pass | `gifsicle` (optional) |
+| MP4, WebM, MOV, MKV, AVI, OGV | `ffmpeg` |
+
+**Partial install behavior:** SVG works with only `svgo` installed. Video fails gracefully if `ffmpeg` is absent. JPEG second-pass is skipped if neither mozjpegtran nor jpegtran is found.
+
+> `svgo` and `debug` are peer deps not bundled by optimo — install with `npm install -g svgo debug`.
+
+## Recommended Workflow
+
+1. **Dry run first** — confirm target files without changes
+2. **Test single file** — run on one file before scaling to directories
+3. **Convert intentionally** — use `--format` only when format conversion is the goal
+4. **Resize explicitly** — use `--resize` only when dimension/size control is required
+5. **Debug issues** — use `--verbose` when diagnosing unsupported files or binary errors
+6. **Verify & commit** — check outputs in version control before committing
+
+## Common Commands
+
+```bash
+# Dry run — preview what would change
+npx optimo@0.0.24 public/ --dry-run
+
+# Optimize a single file
+npx optimo@0.0.24 image.png
+
+# Optimize entire directory
+npx optimo@0.0.24 public/media
+
+# Convert format
+npx optimo@0.0.24 image.png --format webp
+npx optimo@0.0.24 image.heic --format jpeg
+
+# Lossy mode for maximum compression
+npx optimo@0.0.24 image.jpg --losy
+
+# Resize options
+npx optimo@0.0.24 image.png --resize 50%      # by percentage
+npx optimo@0.0.24 image.png --resize 100kB    # to target file size (images only)
+npx optimo@0.0.24 image.png --resize w960     # by width
+npx optimo@0.0.24 image.png --resize h480     # by height
+
+# Video
+npx optimo@0.0.24 clip.mp4
+npx optimo@0.0.24 clip.mov --format webm
+npx optimo@0.0.24 clip.mp4 --mute false       # keep audio (muted by default)
+
+# Debug
+npx optimo@0.0.24 image.heic --dry-run --verbose
+```
 
 ## Supported Formats
 
@@ -81,12 +146,11 @@ const { dataUrl } = await optimo.file('/absolute/path/image.png', {
   dataUrl: true,
   onLogs: console.log
 })
-// dataUrl is a base64 data URL string
 
 // Single file — video
 await optimo.file('/absolute/path/video.mp4', {
   losy: false,
-  mute: false,  // true by default for videos
+  mute: false,
   format: 'webm',
   resize: 'w1280',
   onLogs: console.log
@@ -96,10 +160,6 @@ await optimo.file('/absolute/path/video.mp4', {
 const result = await optimo.dir('/absolute/path/images')
 console.log(result)
 // { originalSize, optimizedSize, savings }
-
-// Utility
-const { formatBytes } = require('optimo')
-console.log(formatBytes(1024)) // '1 kB'
 ```
 
 ## Git Pre-Commit Hook
@@ -127,12 +187,12 @@ npx simple-git-hooks
 
 ```bash
 brew install imagemagick ffmpeg gifsicle mozjpeg
-npm install -g svgo debug    # svgo and debug are peer deps not bundled by optimo
+npm install -g svgo debug
 ```
 
 > **Note:** `svgo` and `debug` must be installed separately — optimo@0.0.24 does not bundle them despite requiring them. `brew install svgo` installs a different binary; use `npm install -g svgo debug` instead.
 
-After installing mozjpeg, the binary is at `/opt/homebrew/opt/mozjpeg/bin/jpegtran` — but Optimo calls it `mozjpegtran`. Symlink it:
+After installing mozjpeg, symlink for Optimo:
 
 ```bash
 ln -s /opt/homebrew/opt/mozjpeg/bin/jpegtran /usr/local/bin/mozjpegtran
@@ -145,8 +205,6 @@ export PATH="/opt/homebrew/opt/mozjpeg/bin:$PATH"
 ```
 
 ## Dependency Detection
-
-Check which pipelines are available:
 
 ```bash
 command -v magick    && echo "ImageMagick: OK" || echo "ImageMagick: MISSING (PNG/JPEG/WebP/AVIF/HEIC/JXL/GIF)"

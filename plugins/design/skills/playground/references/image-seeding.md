@@ -1,6 +1,6 @@
 # Image Seeding
 
-Use image generation when a bitmap seed, texture, scene, mockup, specimen, or visual reference would materially improve the artifact. Imagegen is a source of visual constraints or assets, not a replacement for interaction design.
+Use `tools:media-tools` when a bitmap seed, texture, scene, mockup, specimen, or visual reference would materially improve the artifact. Media generation is a source of visual constraints or assets, not a replacement for interaction design.
 
 ## Inspiration Seed
 
@@ -23,6 +23,6 @@ Use this when the image itself is a useful object in the artifact.
 
 - Use generated images as wallpaper.
 - Hide essential information, labels, controls, or data inside a bitmap.
-- Generate multiple visual directions through imagegen; use `design:diverge` for options.
-- Let imagegen decide information architecture, affordances, control layout, text legibility, or interaction state.
+- Generate multiple visual directions through media-tools; use `design:diverge` for options.
+- Let media-tools decide information architecture, affordances, control layout, text legibility, or interaction state.
 - Leave project-used assets only in `$CODEX_HOME/generated_images`.

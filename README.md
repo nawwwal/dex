@@ -118,9 +118,8 @@ This plugin exists because coding agents need different instructions than design
 | Skill | Use it for |
 |---|---|
 | `codex` | Cross-model plan review through the Codex CLI |
-| `generate-image` | Image generation and editing through local scripts |
 | `html-presentation` | Browser-native HTML presentation decks with Reveal.js: deck construction, theme, motion, speaker notes, browser preview, and export behavior |
-| `media-optimizer` | Compressing, converting, resizing images and video |
+| `media-tools` | AI image generation/editing, compression, format conversion, and resizing for images and video |
 | `mymind` | Searching, saving, organizing, and inspecting mymind |
 
 Tools should stay tools. If a tool grows taste, policy, or product judgment, it probably belongs somewhere else.

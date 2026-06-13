@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-generate-image skill — Gemini image generation CLI
+media-tools skill — Gemini image generation CLI
 Usage: python generate.py --prompt "..." [options]
 Output: JSON to stdout  |  Errors: stderr + exit 1
 """

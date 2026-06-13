@@ -1,0 +1,336 @@
+{
+  "skill_name": "media-tools",
+  "version": 1,
+  "skill_type": "deterministic",
+  "baseline": "snapshot",
+  "notes": "Exhaustive regression suite for media-tools routing, AI image generation, Optimo optimization, companion-skill boundaries, and legacy skill replacement.",
+  "coverage_requirements": [
+    "routing",
+    "generate",
+    "optimize",
+    "explicit-trigger",
+    "implicit-trigger",
+    "negative-control",
+    "companion-routing",
+    "repair-regression"
+  ],
+  "evals": [
+    {
+      "id": "routing-generate-hero",
+      "category": "explicit-trigger",
+      "should_trigger": true,
+      "prompt": "Generate a 16:9 hero image for a fintech landing page with abstract gradients and trust cues.",
+      "expected_output": "Routes to the generate path, uses Flash model by default, and names generate.py or inline google-genai.",
+      "assertions": [
+        "Selects generate, not optimize.",
+        "Defaults to gemini-3.1-flash-image-preview unless pro is requested.",
+        "Mentions aspect ratio 16:9 when relevant."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["generate"], ["gemini-3.1-flash-image-preview"], ["generate.py"], ["media-tools"]],
+        "must_not_include_any": [["optimo"], ["compress directory"], ["Reveal.js"]]
+      }
+    },
+    {
+      "id": "routing-optimize-webp",
+      "category": "routing",
+      "should_trigger": true,
+      "prompt": "Use media-tools to convert every PNG in public/images to WebP and keep originals until I verify.",
+      "expected_output": "Routes to optimize with dry-run first, pinned optimo@0.0.24, and explicit format conversion.",
+      "assertions": [
+        "Selects optimize, not generate.",
+        "Recommends dry-run before batch conversion.",
+        "Uses npx optimo@0.0.24."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["optimo@0.0.24"], ["optimize"], ["--dry-run"], ["webp"]],
+        "must_not_include_any": [["gemini"], ["generate.py"], ["generate-content"]]
+      }
+    },
+    {
+      "id": "routing-generate-then-optimize",
+      "category": "routing",
+      "should_trigger": true,
+      "prompt": "Generate a product mockup, then convert it to WebP for my html-presentation deck.",
+      "expected_output": "Sequences generate then optimize; returns to html-presentation only for deck integration.",
+      "assertions": [
+        "Names generate first, optimize second.",
+        "Does not make html-presentation the primary handler.",
+        "Treats deck wiring as follow-up."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["generate"], ["optimo"], ["WebP"], ["html-presentation"]],
+        "must_not_include_any": [["Reveal.js as primary"], ["build the deck first"]]
+      }
+    },
+    {
+      "id": "routing-playground-asset",
+      "category": "companion-routing",
+      "should_trigger": true,
+      "prompt": "I'm building a playground artifact and need a generated texture seed before extracting visual grammar.",
+      "expected_output": "Routes to media-tools generate for one bitmap seed; playground owns HTML/SVG rebuild.",
+      "assertions": [
+        "Names media-tools or generate path.",
+        "Keeps one inspiration seed, not multiple directions.",
+        "Says bitmap is not wallpaper."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["media-tools"], ["generate"], ["texture"], ["visual grammar"]],
+        "must_not_include_any": [["diverge for options"], ["wallpaper only"]]
+      }
+    },
+    {
+      "id": "explicit-generate-edit",
+      "category": "generate",
+      "should_trigger": true,
+      "prompt": "Use media-tools to edit ./logo.png — remove the background and add a soft drop shadow.",
+      "expected_output": "Uses generate.py with --input-image for editing mode.",
+      "assertions": [
+        "Passes --input-image for editing.",
+        "Uses generate.py or inline editing code.",
+        "Does not switch to pro model without request."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["--input-image"], ["edit"], ["generate.py"]],
+        "must_not_include_any": [["gemini-3-pro-image-preview"], ["optimo"]]
+      }
+    },
+    {
+      "id": "explicit-generate-pro",
+      "category": "generate",
+      "should_trigger": true,
+      "prompt": "Generate a higher-quality nano banana pro poster at 2K, 4:5 aspect ratio.",
+      "expected_output": "Uses gemini-3-pro-image-preview because user explicitly asked for pro.",
+      "assertions": [
+        "Selects pro model only because user asked.",
+        "Sets size 2K and aspect ratio 4:5.",
+        "Does not use deprecated gemini-2.x models."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["gemini-3-pro-image-preview"], ["2K"], ["4:5"]],
+        "must_not_include_any": [["gemini-2"], ["gemini-2.5"], ["optimo"]]
+      }
+    },
+    {
+      "id": "implicit-generate-mockup",
+      "category": "implicit-trigger",
+      "should_trigger": true,
+      "prompt": "I need an AI mockup of a dark-mode dashboard settings screen.",
+      "expected_output": "Triggers media-tools generate with Flash default.",
+      "assertions": [
+        "Treats mockup as image generation.",
+        "Defaults to Flash model.",
+        "Does not route to playground or html-presentation."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["generate"], ["mockup"], ["gemini-3.1-flash-image-preview"]],
+        "must_not_include_any": [["html-presentation"], ["Reveal.js"], ["optimo"]]
+      }
+    },
+    {
+      "id": "generate-thinking-complex",
+      "category": "generate",
+      "should_trigger": true,
+      "prompt": "Generate a multi-element infographic about photosynthesis with labels — use thinking for composition.",
+      "expected_output": "Uses TEXT,IMAGE modalities and --thinking High for complex composition.",
+      "assertions": [
+        "Enables thinking High for complex prompt.",
+        "Uses TEXT,IMAGE when text labels matter.",
+        "Keeps generate path."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["thinking"], ["TEXT,IMAGE"], ["generate"]],
+        "must_not_include_any": [["optimo"], ["compress"]]
+      }
+    },
+    {
+      "id": "generate-script-json-output",
+      "category": "generate",
+      "should_trigger": true,
+      "prompt": "Call the deterministic media-tools script to generate a 1:1 icon and parse JSON stdout.",
+      "expected_output": "Documents generate.py JSON contract with path, text, model, usage.",
+      "assertions": [
+        "Names generate.py explicitly.",
+        "Describes JSON stdout fields.",
+        "Mentions stderr + exit 1 on failure."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["generate.py"], ["path"], ["model"], ["usage"]],
+        "must_not_include_any": [["optimo@0.0.24"], ["Reveal.js"]]
+      }
+    },
+    {
+      "id": "optimize-dry-run-directory",
+      "category": "optimize",
+      "should_trigger": true,
+      "prompt": "Dry-run optimo on public/media before optimizing the whole folder.",
+      "expected_output": "Uses npx optimo@0.0.24 with --dry-run on directory.",
+      "assertions": [
+        "Pins optimo@0.0.24.",
+        "Uses --dry-run before batch write.",
+        "Does not invoke generate."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["optimo@0.0.24"], ["--dry-run"], ["public/media"]],
+        "must_not_include_any": [["generate.py"], ["gemini"]]
+      }
+    },
+    {
+      "id": "optimize-video-webm",
+      "category": "optimize",
+      "should_trigger": true,
+      "prompt": "Compress deck.mp4 and convert it to WebM, keeping audio.",
+      "expected_output": "Uses optimo video pipeline with --format webm and --mute false.",
+      "assertions": [
+        "Names ffmpeg/optimo video path.",
+        "Sets --mute false to keep audio.",
+        "Targets WebM output."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["optimo"], ["webm"], ["--mute false"], ["ffmpeg"]],
+        "must_not_include_any": [["generate"], ["gemini"]]
+      }
+    },
+    {
+      "id": "optimize-resize-width",
+      "category": "optimize",
+      "should_trigger": true,
+      "prompt": "Resize hero.png to width 960px with optimo before committing.",
+      "expected_output": "Uses --resize w960 on optimize path.",
+      "assertions": [
+        "Uses width resize syntax w960.",
+        "Stays on optimize path.",
+        "Suggests verify before commit."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["--resize"], ["w960"], ["optimo"]],
+        "must_not_include_any": [["generate.py"], ["aspect-ratio"]]
+      }
+    },
+    {
+      "id": "optimize-avif-conversion",
+      "category": "optimize",
+      "should_trigger": true,
+      "prompt": "Convert screenshots/heic-batch to AVIF for the static site.",
+      "expected_output": "Uses optimo --format avif with dry-run recommendation for batch.",
+      "assertions": [
+        "Names AVIF conversion.",
+        "Recommends testing one file or dry-run first.",
+        "Uses pinned optimo version."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["avif"], ["optimo@0.0.24"], ["--format"]],
+        "must_not_include_any": [["gemini"], ["generate-content"]]
+      }
+    },
+    {
+      "id": "optimize-implicit-large-assets",
+      "category": "implicit-trigger",
+      "should_trigger": true,
+      "prompt": "These slide images are 4MB each — shrink them for the deck without changing layout.",
+      "expected_output": "Routes to optimize compression, not html-presentation deck build.",
+      "assertions": [
+        "Treats task as compression/resize.",
+        "Does not start Reveal.js deck construction.",
+        "May mention returning to deck integration after optimize."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["optimo"], ["compress"], ["optimize"]],
+        "must_not_include_any": [["build a Reveal deck"], ["index.html deck first"]]
+      }
+    },
+    {
+      "id": "negative-html-presentation-primary",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Build a Reveal.js HTML presentation deck from this outline with speaker notes.",
+      "expected_output": "Routes to html-presentation, not media-tools.",
+      "assertions": [
+        "Does not use media-tools as primary workflow.",
+        "Names html-presentation or Reveal.js.",
+        "Does not start image generation or optimo."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["html-presentation"], ["Reveal"]],
+        "must_not_include_any": [["optimo@0.0.24 as primary"], ["generate.py as primary"]]
+      }
+    },
+    {
+      "id": "negative-codex-review",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Run a Codex review on this implementation plan before I ship.",
+      "expected_output": "Routes to codex skill, not media-tools.",
+      "assertions": [
+        "Names codex review workflow.",
+        "Does not invoke generate or optimo."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["codex"]],
+        "must_not_include_any": [["media-tools"], ["optimo"], ["generate.py"]]
+      }
+    },
+    {
+      "id": "negative-crux-product",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "Find the crux in this onboarding strategy — should we fix activation or add premium features first?",
+      "expected_output": "Routes to crux, not media-tools.",
+      "assertions": [
+        "Names crux or weak joint framing.",
+        "Does not invoke image generation or compression."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["crux"], ["weak joint"]],
+        "must_not_include_any": [["optimo"], ["generate.py"], ["gemini-3"]]
+      }
+    },
+    {
+      "id": "negative-css-only",
+      "category": "negative-control",
+      "should_trigger": false,
+      "prompt": "How do I center a flex container vertically in CSS?",
+      "expected_output": "Answers CSS directly without loading media-tools.",
+      "assertions": [
+        "Gives CSS guidance.",
+        "Does not invoke media-tools."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["flex"], ["align-items"], ["center"]],
+        "must_not_include_any": [["media-tools"], ["optimo"], ["generate.py"]]
+      }
+    },
+    {
+      "id": "repair-regression-legacy-generate-image",
+      "category": "repair-regression",
+      "should_trigger": true,
+      "prompt": "Use /generate-image to make a square app icon for our settings page.",
+      "expected_output": "Routes to media-tools generate; does not claim generate-image still exists as a separate skill.",
+      "assertions": [
+        "Uses media-tools or generate path.",
+        "Does not tell user to install generate-image separately.",
+        "Sets 1:1 aspect ratio for square icon."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["media-tools"], ["generate"], ["1:1"]],
+        "must_not_include_any": [["generate-image skill still exists"], ["install generate-image"]]
+      }
+    },
+    {
+      "id": "repair-regression-legacy-media-optimizer",
+      "category": "repair-regression",
+      "should_trigger": true,
+      "prompt": "Run media-optimizer on assets/ before I commit these PNGs.",
+      "expected_output": "Routes to media-tools optimize with optimo@0.0.24; does not reference deleted media-optimizer skill.",
+      "assertions": [
+        "Uses media-tools optimize path.",
+        "Pins optimo@0.0.24.",
+        "Does not claim media-optimizer is a separate skill."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["media-tools"], ["optimo@0.0.24"], ["assets/"]],
+        "must_not_include_any": [["media-optimizer skill still exists"], ["invoke /media-optimizer"]]
+      }
+    }
+  ]
+}

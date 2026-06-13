@@ -17,7 +17,7 @@ Extract objects, relationships, time, states, tensions, variables, decisions, ri
 
 2. Route companion skills before building.
 - Use `design:diverge` only when the user asks for multiple directions, options, or concepts.
-- Use `imagegen` when a generated bitmap seed, texture, scene, mockup, or visual reference would materially improve the artifact. When the user asks for visual inspiration first, name `imagegen`, create one `inspiration seed`, extract `visual grammar`, then rebuild the structure in HTML/SVG/canvas. The response must say the generated image is not wallpaper and must keep labels, controls, state, and export outside the bitmap.
+- Use `tools:media-tools` when a generated bitmap seed, texture, scene, mockup, or visual reference would materially improve the artifact. When the user asks for visual inspiration first, name `tools:media-tools`, create one `inspiration seed`, extract `visual grammar`, then rebuild the structure in HTML/SVG/canvas. The response must say the generated image is not wallpaper and must keep labels, controls, state, and export outside the bitmap.
 - Use `design:present` before interactive presentation walkthroughs, design review narratives, stakeholder walkthroughs, or narrative HTML artifacts.
 - Use `design:content-design` before copy, state, tone, or CTA review playgrounds.
 - Use `design:crux` when the premise or weak joint is unclear.
