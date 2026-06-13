@@ -57,6 +57,8 @@ Tell the designer what you checked and what the result is:
 If everything is correct:
 > "Your app is set up and wired into the [Payments sidebar / top navigation]. I verified all the connections and everything looks right. Your app should be reachable at: localhost:8888/app/[read the actual route path from the registered route config — never assume or guess it]"
 
+Do not treat this as logged-in browser proof. For a real local Dashboard smoke check, follow [phases/debug.md](debug.md): use Chrome with ModHeader, start from the devstack URL, and verify the handoff to localhost plus visible product content.
+
 If something needs fixing:
 > "I found an issue: [describe the problem in plain English — never mention the file name]. I fixed it. Here's what was wrong and what I did..."
 

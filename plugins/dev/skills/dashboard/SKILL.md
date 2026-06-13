@@ -1,7 +1,7 @@
 ---
 name: dashboard-design
-description: "Guide for building dashboard features at Razorpay — create, share, PR, ship."
-argument-hint: "[create | build | share | pr | ship]"
+description: "Guide for building and debugging Dashboard features at Razorpay — create, build, debug locally, share, PR, ship."
+argument-hint: "[create | build | debug | share | pr | ship]"
 disable-model-invocation: true
 allowed-tools: Read, Grep, Glob, Bash, Write
 ---
@@ -18,7 +18,7 @@ Never use these terms with the designer — treat them as invisible implementati
 - pnpm-lock.yaml, importers, SHELL_REMOTES
 - SidebarV2, WorkspaceWrapper, RouteGuard
 - isMockMode — say "placeholder data mode" or "fake data mode" instead
-- rzpctx-dev-serve-user — just tell them what to set in Mod Header
+- rzpctx-dev-serve-user — for designer-facing text, just tell them what to set in Mod Header
 - Commit — Claude handles this invisibly
 - CI checks — say "automated checks"
 - Scaffold — say "set up" or "create the app"
@@ -26,10 +26,13 @@ Never use these terms with the designer — treat them as invisible implementati
 These terms ARE fine to use with designers — they know them:
 Blade, Blade Score, PR, Branch, Merge, Canary deployment, Splitz, devstack, Mod Header
 
+Exception: internal runbooks may use exact header names, routes, ports, and browser tool names. Do not hide exact keys from the agent when the agent is configuring or debugging local Dashboard access.
+
 ## Entry Point — Intent Detection First
 
 **Before asking anything**, check whether the user's message already names a phase or artifact:
 - Mentions PR, code review, reviewers → jump to [phases/review.md](phases/review.md)
+- Mentions local dashboard, run locally, localhost, Chrome, Mod Header, CDP, browser debugging, "not redirecting", login loop, Accounts loop, or local-shell → jump to [phases/debug.md](phases/debug.md)
 - Mentions devstack, share, deploy, team review → jump to [phases/share.md](phases/share.md)
 - Mentions ship, canary, go live, production, real users → jump to [phases/ship.md](phases/ship.md)
 - Mentions fix, bug, broken, improve, update, change → jump to [phases/fix.md](phases/fix.md)
@@ -56,6 +59,7 @@ Before every user-facing reply, scan for banned terms and rewrite them:
 - Scaffold → "set up" or "create"
 
 This rule applies to every reply in every phase, not just certain phases.
+It does not apply to agent-only runbooks such as [phases/debug.md](phases/debug.md), where exact header names and browser-control steps are required to avoid unsafe local code changes.
 
 Exception: when code changes are made, include concise file references after the plain-language summary so the designer can hand work to an engineer without losing traceability.
 

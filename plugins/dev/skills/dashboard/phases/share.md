@@ -49,10 +49,14 @@ After deployment is complete, tell the designer exactly how to access it:
 
 Never mention rzpctx-dev-serve-user by name — just tell them the key and value to enter.
 
+For agents doing the verification before sharing: follow [debug.md](debug.md). Use the real Chrome profile with ModHeader, open the devstack URL first, and prove it redirects to the localhost or devstack route the designer should use. Do not use the in-app browser when ModHeader is required.
+
 ## Step 4: If something doesn't show up
 
 Check what went wrong automatically:
 - Mod Header not set / wrong value → tell them what to check
+- Wrong Chrome profile selected → switch to the profile where Mod Header and Dashboard login are already configured
+- Started from localhost before the devstack handoff → restart from the devstack URL
 - CI docker build not finished → wait and tell them
 - App not connected to shell → check remotes config (invisible, fix silently)
 
