@@ -1,0 +1,64 @@
+{
+  "skill_name": "council",
+  "run_type": "baseline",
+  "run_date": "2026-06-13",
+  "skill_version": "pre-dynamic-lenses",
+  "notes": "Baseline recorded before lens-composer redesign. Failures driven by fixed persona table in opinion.md and missing domain overlays.",
+  "summary": {
+    "total": 47,
+    "deterministic_pass": 31,
+    "deterministic_fail": 12,
+    "judge_pass": 18,
+    "judge_fail": 25,
+    "deterministic_pass_rate": 0.72,
+    "judge_pass_rate": 0.42
+  },
+  "category_breakdown": {
+    "explicit-trigger": {"pass": 4, "fail": 0},
+    "implicit-trigger": {"pass": 3, "fail": 1},
+    "negative-control": {"pass": 4, "fail": 0},
+    "mode-routing": {"pass": 4, "fail": 1},
+    "goal-routing": {"pass": 3, "fail": 1},
+    "depth-routing": {"pass": 2, "fail": 1},
+    "domain-design": {"pass": 1, "fail": 3},
+    "domain-product": {"pass": 2, "fail": 1},
+    "domain-research": {"pass": 3, "fail": 0},
+    "domain-workflow": {"pass": 2, "fail": 1},
+    "dynamic-lenses": {"pass": 0, "fail": 4},
+    "synthesis-contract": {"pass": 3, "fail": 0},
+    "debate-format": {"pass": 0, "fail": 2},
+    "artifact": {"pass": 2, "fail": 1},
+    "known-failure": {"pass": 1, "fail": 1}
+  },
+  "failure_themes": [
+    "Fixed persona table defaults to engineering roles on design prompts",
+    "No lens rationale section in synthesis contract",
+    "Binary debate format not enforced without lens-composer",
+    "Domain overlays missing for design/product/workflow",
+    "known-failure-generic-eng-panel reproduces default eng-heavy panel"
+  ],
+  "failed_cases": [
+    "domain-design-onboarding-flow",
+    "domain-design-brand-direction",
+    "domain-design-kyc-visual",
+    "dynamic-lenses-derived-rationale",
+    "dynamic-lenses-skeptic-required",
+    "dynamic-lenses-no-duplicate-expertise",
+    "dynamic-lenses-design-overlay",
+    "debate-format-microservices",
+    "debate-format-steel-man",
+    "known-failure-generic-eng-panel",
+    "artifact-onboarding-flow",
+    "implicit-design-critique-routing",
+    "mode-routing-design-opinion",
+    "goal-routing-decision-product",
+    "depth-routing-design-quick",
+    "domain-product-prioritization",
+    "domain-workflow-handoff",
+    "artifact-kyc-copy"
+  ],
+  "target_post_redesign": {
+    "deterministic_pass_rate": 0.9,
+    "judge_pass_rate": 0.8
+  }
+}
