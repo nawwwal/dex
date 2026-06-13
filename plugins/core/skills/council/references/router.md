@@ -24,13 +24,15 @@ Infer the mode without asking questions when the message is clear.
 |---|---|
 | `code` | files, dirs, modules, APIs, tests, refactor, implementation, code review, regression |
 | `research` | how do others, best practice, compare, evaluate, alternatives, state of the art, what exists, survey |
-| `opinion` | what do you think, second opinion, should we, expert view, perspectives, debate, which approach |
+| `opinion` | what do you think, second opinion, should we, expert view, perspectives, debate, which approach, design critique, visual, copy, brand, onboarding, UX flow |
 | `system` | architecture, hooks, lifecycle, integrations, plugins, ownership, blast radius, cross-system behavior |
 | `workflow` | process, handoff, review flow, bottleneck, repeated churn, operating model, automation gap |
 
 Prefer `research` over `code` when the question is about external information, alternatives, or best practices rather than investigating existing code.
 
 Prefer `opinion` over `research` when the user wants perspectives on a decision rather than factual information gathering.
+
+Prefer `opinion` with the **design overlay** (see `$CLAUDE_SKILL_DIR/references/domain-overlays.md`) when signals include: design critique, visual direction, copy review, brand, onboarding, UX flow, hierarchy, or interaction states — even if the topic is not code-heavy.
 
 Prefer `system` over `code` when the request spans multiple parts of the repo or asks about interactions, ownership, or lifecycle.
 
@@ -86,7 +88,7 @@ Before spawning agents, spend 1-3 tool calls to ground the investigation:
 
 For `research` mode, the reconnaissance pass should include 1-2 quick web searches to map the landscape before assigning deeper research to agents.
 
-For `opinion` mode, the reconnaissance pass should identify what the decision is, what constraints exist, and what the stakes are, so agents can be briefed with the right personas.
+For `opinion` mode, the reconnaissance pass should identify what the decision is, what constraints exist, and what the stakes are. Extract `domain`, `stakes`, `decision_shape`, `evidence_available`, and `cost_bearer` for lens composition via `$CLAUDE_SKILL_DIR/references/lens-composer.md`. Apply domain overlays when signals match `$CLAUDE_SKILL_DIR/references/domain-overlays.md`.
 
 Do not try to answer the whole question in reconnaissance.
 
@@ -97,6 +99,11 @@ Load exactly these:
 1. one mode file from `$CLAUDE_SKILL_DIR/references/modes/`
 2. `$CLAUDE_SKILL_DIR/references/depths.md`
 3. `$CLAUDE_SKILL_DIR/references/synthesis.md`
+
+For `opinion` mode, also load:
+
+4. `$CLAUDE_SKILL_DIR/references/lens-composer.md`
+5. `$CLAUDE_SKILL_DIR/references/domain-overlays.md` when design, product, research, or workflow signals are present
 
 Use `$CLAUDE_SKILL_DIR/references/examples.md` only if the request is still hard to classify or the prompting shape is unclear.
 

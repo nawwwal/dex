@@ -80,9 +80,10 @@ Prefer breadth with discipline. Do not pad the council with low-signal variants 
 
 ### Opinion mode agents
 
-- Brief each agent with a **specific expert persona** from the persona library in `modes/opinion.md`.
-- Each persona prompt should state: role, focus area, natural skepticism, and what they value.
-- For debate format: spawn exactly 2 agents with opposing positions + require each to steel-man the other side before arguing their own.
+- Compose derived lenses via `$CLAUDE_SKILL_DIR/references/lens-composer.md` — not a fixed persona table.
+- Apply domain overlays from `$CLAUDE_SKILL_DIR/references/domain-overlays.md` when signals match.
+- Each lens prompt must state: archetype, instantiation, one-line rationale, focus area, natural skepticism, and what the lens values.
+- For debate format: spawn exactly 2 advocate lenses derived from `cost_bearer` and `stakes` + require each to steel-man the other side before arguing their own.
 - Instruct opinion agents to **state their assumptions** before giving their assessment.
 
 ### Code / System / Workflow agents
@@ -130,10 +131,15 @@ Return:
 Do not describe your plan. Do the investigation.
 ```
 
-### Persona-enhanced skeleton (for opinion mode)
+### Lens-enhanced skeleton (for opinion mode)
 
 ```text
-You are a [ROLE] with [EXPERIENCE LEVEL] experience.
+You are the [ARCHETYPE] lens, instantiated as [ROLE FOR THIS TOPIC].
+Chosen because: [one-line rationale from inputs].
+
+Domain overlay (if any): [design|research|workflow|product]
+Required dimensions: [from domain-overlays.md]
+
 You focus on [SPECIALTY] and are naturally skeptical of [ANTI-PATTERN].
 You value [VALUE] over [COUNTER-VALUE].
 
@@ -142,7 +148,7 @@ You are being consulted on: [TOPIC]
 Context:
 [DECISION/QUESTION DETAILS]
 
-Give your honest expert assessment. State your assumptions first.
+Give your honest assessment. State your assumptions first.
 Then give your position. Then state what evidence would change your mind.
 
 Return:

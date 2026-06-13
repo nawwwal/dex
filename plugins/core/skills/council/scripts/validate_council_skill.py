@@ -13,9 +13,11 @@ REQUIRED_REFERENCE_MENTIONS = [
     "references/router.md",
     "references/synthesis.md",
     "references/depths.md",
+    "references/lens-composer.md",
+    "references/domain-overlays.md",
 ]
 
-OPTIONAL_POST_REDESIGN = [
+LENS_REDESIGN_FILES = [
     "references/lens-composer.md",
     "references/domain-overlays.md",
     "references/lens-archetypes.md",
@@ -44,11 +46,18 @@ def main() -> None:
         if not (skill_root / mention).exists():
             fail(f"referenced file does not exist: {mention}")
 
+    for ref in LENS_REDESIGN_FILES:
+        if not (skill_root / ref).exists():
+            fail(f"missing lens redesign file: {ref}")
+
     if "devil's advocate" not in skill_md.lower() and "devil" not in skill_md.lower():
         fail("SKILL.md must require devil's advocate lens")
 
     if "disable-model-invocation: true" not in skill_md:
         fail("SKILL.md must keep disable-model-invocation: true")
+
+    if "lens-composer" not in skill_md:
+        fail("SKILL.md must require lens composition via lens-composer.md")
 
     subprocess.run(
         [sys.executable, str(skill_root / "scripts" / "validate_eval_suite.py"), str(suite_path)],
@@ -71,13 +80,6 @@ def main() -> None:
     debate_cases = [case for case in evals if case["category"] == "debate-format"]
     if len(debate_cases) < 2:
         fail("expected at least two debate-format eval cases")
-
-    # Post-redesign references are optional until Task 3
-    post_redesign = all((skill_root / ref).exists() for ref in OPTIONAL_POST_REDESIGN)
-    if post_redesign:
-        for mention in OPTIONAL_POST_REDESIGN:
-            if mention not in skill_md:
-                fail(f"SKILL.md must mention {mention} after lens redesign")
 
     print("OK: council skill contract, references, and eval suite are valid")
 

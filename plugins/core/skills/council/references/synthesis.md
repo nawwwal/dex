@@ -17,6 +17,12 @@ Synthesize the tension between lenses, not just the inventory of observations.
 - ...
 - ...
 
+## Lens Rationale
+- **[Lens name]**: chosen because [reason from domain, stakes, decision_shape, evidence, cost_bearer]
+- ...
+
+List every derived lens (not permanent coverage labels alone). One line per lens. State which domain overlay applied, if any.
+
 ## What We Know vs. What We Infer
 - Known: ...
 - Inferred: ...
@@ -103,8 +109,9 @@ Adjust the report emphasis by `goal`:
 
 ### Opinion mode
 
-- Lead with the consensus (if any) across expert personas.
-- Present each expert's core position in 2-3 sentences, not full essays.
+- Lead with the consensus (if any) across derived lenses.
+- `## Lens Rationale` is required — list each composed lens and why it was chosen.
+- Present each lens's core position in 2-3 sentences, not full essays.
 - Highlight the crux of any disagreement: what specific claim or assumption do experts diverge on?
 - If debate format was used, state which side had the stronger evidence.
 - End with: the recommendation and what assumption, if proven wrong, would change it.
