@@ -1,5 +1,17 @@
 {
   "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/sh -c 'if [ -n \"${CLAUDE_PLUGIN_ROOT:-}\" ]; then exec /usr/bin/python3 \"$CLAUDE_PLUGIN_ROOT/hooks/portent_context_receipt.py\"; elif [ -n \"${PLUGIN_ROOT:-}\" ]; then exec /usr/bin/python3 \"$PLUGIN_ROOT/hooks/portent_context_receipt.py\"; else exit 0; fi'",
+            "timeout": 5,
+            "statusMessage": "Checking Portent context"
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [
@@ -8,6 +20,12 @@
             "command": "/bin/sh -c 'if [ -n \"${CLAUDE_PLUGIN_ROOT:-}\" ]; then exec /usr/bin/python3 \"$CLAUDE_PLUGIN_ROOT/hooks/reindex_teach_memory.py\"; elif [ -n \"${PLUGIN_ROOT:-}\" ]; then exec /usr/bin/python3 \"$PLUGIN_ROOT/hooks/reindex_teach_memory.py\"; else printf \"%s\\n\" \"{\\\"continue\\\": true, \\\"systemMessage\\\": \\\"Teach memory hook skipped: plugin root env missing.\\\"}\"; fi'",
             "timeout": 30,
             "statusMessage": "Checking Teach memory index"
+          },
+          {
+            "type": "command",
+            "command": "/bin/sh -c 'if [ -n \"${CLAUDE_PLUGIN_ROOT:-}\" ]; then exec /usr/bin/python3 \"$CLAUDE_PLUGIN_ROOT/hooks/portent_stop_capture_reminder.py\"; elif [ -n \"${PLUGIN_ROOT:-}\" ]; then exec /usr/bin/python3 \"$PLUGIN_ROOT/hooks/portent_stop_capture_reminder.py\"; else printf \"%s\\n\" \"{\\\"continue\\\": true}\"; fi'",
+            "timeout": 5,
+            "statusMessage": "Checking Portent write-back"
           }
         ]
       }

@@ -214,7 +214,7 @@ The SQLite index is generated, not canonical:
 ~/.agents/memory/teach/index.sqlite3
 ```
 
-Indexing is normally handled by the bundled Codex `Stop` hook in the Core plugin. Codex plugin hooks run only when `[features].plugin_hooks = true` is enabled and the hook is trusted through the normal `/hooks` review flow; when hooks are disabled, Markdown notes remain canonical and usable.
+Indexing is normally handled by the bundled Codex `Stop` hook in the Core plugin. Codex hooks run when `[features].hooks` is enabled and the hook is trusted through the normal `/hooks` review flow; when hooks are disabled, Markdown notes remain canonical and usable.
 
 If the user asks for immediate search before the hook runs, or if the hook is disabled, run:
 
