@@ -128,14 +128,14 @@ Applied: 7 issues
   ...
 ```
 
-### Phase 5 — Update memory (mandatory, immediately after verify)
+### Phase 5 — Update Portent (mandatory, immediately after verify)
 
-Apply the update-memory rule from SKILL.md. Read `devrev-sprint.md`, then write back:
+Apply the Update Portent rule from SKILL.md. Read the DevRev Portent note in the resolved Tolaria vault, then write back:
 
 1. Set `last_synced` to `<today> (sprint planning)`
 2. For every issue in the confirmed schedule, update its `Sprint` column in the Track B table to the active sprint number. If the issue is not yet in the table, append a new row.
 
-This step is not optional. The skill must not exit planning mode without updating the sprint record.
+This step is not optional. The skill must not exit planning mode without updating the Tolaria sprint record.
 
 ---
 
@@ -189,4 +189,4 @@ Next up:     <candidates>
 ## Refresh sub-mode
 
 Sprint has ended. Prompt: "Sprint <old> ended. Promote Sprint <next> to active?"
-On yes: update `devrev-sprint.md` with new active sprint data.
+On yes: update the DevRev Portent note with new active sprint data.

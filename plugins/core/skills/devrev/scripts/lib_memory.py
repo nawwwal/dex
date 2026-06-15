@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Parse and validate devrev memory files."""
+"""Parse and validate the DevRev Portent note."""
 
 import json
 import os
@@ -37,7 +37,7 @@ def _parse_md_body(path: str) -> dict:
 
 
 def _parse_sprint_block(path: str) -> dict:
-    """Extract active sprint data from devrev-sprint.md."""
+    """Extract active sprint data from a DevRev Portent note."""
     with open(os.path.expanduser(path)) as f:
         text = f.read()
 
@@ -57,7 +57,7 @@ def _parse_sprint_block(path: str) -> dict:
     return sprint
 
 
-def validate(devrev_path: str, sprint_path: str) -> dict:
+def validate(devrev_path: str) -> dict:
     required_in_devrev = ["user_don", "sprint_board", "default_part", "slack_mention"]
     required_in_sprint = ["name", "don", "start", "end"]
 
@@ -67,17 +67,17 @@ def validate(devrev_path: str, sprint_path: str) -> dict:
         return {"ok": False, "error": f"File not found: {devrev_path}"}
 
     try:
-        sprint_data = _parse_sprint_block(sprint_path)
+        sprint_data = _parse_sprint_block(devrev_path)
     except FileNotFoundError:
-        return {"ok": False, "error": f"File not found: {sprint_path}"}
+        return {"ok": False, "error": f"File not found: {devrev_path}"}
 
     for key in required_in_devrev:
         if key not in devrev_data:
-            return {"ok": False, "error": f"missing required key in devrev.md: {key}"}
+            return {"ok": False, "error": f"missing required key in DevRev Portent note: {key}"}
 
     for key in required_in_sprint:
         if key not in sprint_data:
-            return {"ok": False, "error": f"missing required key in devrev-sprint.md active sprint: {key}"}
+            return {"ok": False, "error": f"missing required key in DevRev Portent note active sprint: {key}"}
 
     context = {
         "user_don": devrev_data["user_don"],
@@ -98,7 +98,7 @@ def validate(devrev_path: str, sprint_path: str) -> dict:
         },
     }
 
-    # Optional fields
+    # Stage fields from the Portent note, when present.
     for k in ["stage_to_do", "stage_in_progress", "stage_completed", "stage_blocked"]:
         if k in devrev_data:
             context[k] = devrev_data[k]
@@ -107,11 +107,11 @@ def validate(devrev_path: str, sprint_path: str) -> dict:
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 4 or sys.argv[1] != "validate":
-        print("Usage: lib_memory.py validate <devrev.md> <devrev-sprint.md>", file=sys.stderr)
+    if len(sys.argv) != 3 or sys.argv[1] != "validate":
+        print("Usage: lib_memory.py validate <devrev-portent-note.md>", file=sys.stderr)
         sys.exit(1)
 
-    result = validate(sys.argv[2], sys.argv[3])
+    result = validate(sys.argv[2])
     print(json.dumps(result))
     if not result["ok"]:
         sys.exit(1)

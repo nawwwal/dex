@@ -44,9 +44,9 @@ Show table to user. On approval:
 - NO sprint, NO dates
 - After creation: verify `ctype__task_type`, `tnt__skills`, owner, part, and effort landed
 
-## Phase 4 — Update memory (mandatory, immediately after creation)
+## Phase 4 — Update Portent (mandatory, immediately after creation)
 
-Apply the update-memory rule from SKILL.md. Read `devrev-sprint.md`, then write back:
+Apply the Update Portent rule from SKILL.md. Read the DevRev Portent note in the resolved Tolaria vault, then write back:
 
 1. Set `last_synced` to `<today> (plan)`
 2. Append each newly created issue as a new Track B row:

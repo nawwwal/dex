@@ -38,7 +38,7 @@ Current update schemas expose both `stage` and `stage_name`. `stage_name` enums 
 
 Workaround: Prefer the custom stage DON for writes. Use `stage_name` only when the discovered subtype schema has the exact intended value and verification reads back the intended state.
 
-Stage DONs from the current memory convention:
+Stage DONs from the current DevRev Portent note convention:
 - to_do: `don:core:dvrv-in-1:devo/2sRI6Hepzz:custom_stage/67`
 - in_progress: `don:core:dvrv-in-1:devo/2sRI6Hepzz:custom_stage/44`
 - completed: `don:core:dvrv-in-1:devo/2sRI6Hepzz:custom_stage/26`

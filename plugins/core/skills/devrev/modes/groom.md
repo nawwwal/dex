@@ -172,9 +172,9 @@ Groomed: N issues
   ✓ ISS-XXXX — closed
 ```
 
-## Phase 7 — Update memory (mandatory, immediately after verify)
+## Phase 7 — Update Portent (mandatory, immediately after verify)
 
-Apply the update-memory rule from SKILL.md. Read `devrev-sprint.md`, then write back:
+Apply the Update Portent rule from SKILL.md. Read the DevRev Portent note in the resolved Tolaria vault, then write back:
 
 1. Set `last_synced` to `<today> (groom)`
 2. For issues assigned to a sprint: update their `Sprint` column in the Track B table
@@ -185,7 +185,7 @@ Apply the update-memory rule from SKILL.md. Read `devrev-sprint.md`, then write 
 
 ## Sprint DON lookup
 
-To assign a future sprint, resolve its DON from `devrev-sprint.md` (loaded in Step 0 context):
+To assign a future sprint, resolve its DON from the DevRev Portent note (loaded in Step 0 context):
 
 - If `$ARGUMENTS` names a sprint ("Sprint 27"), match from the upcoming sprints table.
 - Never pass sprint names to the API — always pass the full DON string.

@@ -3,6 +3,7 @@ name: devrev
 description: "DevRev sprint management. Modes: morning (default), eod, plan, sprint, groom, enrich. Usage: /devrev [mode] [args]"
 argument-hint: "[morning|eod|plan|sprint|groom|enrich] [feature-keyword | URL | doc-name]"
 allowed-tools: Bash, Read, Write, Task, mcp__qmd__search, mcp__qmd__get,
+  mcp__tolaria__list_vaults, mcp__tolaria__open_note,
   mcp__devrev_remote_mcp_server__get_tool_metadata,
   mcp__devrev_remote_mcp_server__discover_schema,
   mcp__devrev_remote_mcp_server__get_self,
@@ -23,17 +24,33 @@ allowed-tools: Bash, Read, Write, Task, mcp__qmd__search, mcp__qmd__get,
 
 # DevRev Skill — Generic Sprint Manager
 
-No hardcoded DON IDs. All personal context loaded from memory. Shareable across users.
+No hardcoded DON IDs. All personal context is loaded from the user's Tolaria knowledge base via the `core:portent` model. Shareable across users.
 
-## Step 0 — Load and validate context
+## Step 0 — Load and validate Portent context
+
+Use `core:portent` rules for knowledge storage:
+
+1. Resolve the active Tolaria vault with `mcp__tolaria__list_vaults` when available.
+2. Read the vault's AGENTS.md first when present.
+3. Find the existing DevRev Portent object by title/frontmatter/content. Prefer `[[DevRev local knowledge]]`.
+4. If no DevRev object exists, abort: "DevRev Portent knowledge is missing. Create `[[DevRev local knowledge]]` in Tolaria first."
+5. Use only that resolved Tolaria note for DevRev local knowledge.
+
+The DevRev Portent note must contain the local project map, active sprint block, upcoming sprint table, Track B table, and these body keys:
+
+- `user_don`
+- `sprint_board`
+- `default_part`
+- `slack_mention`
+
+Validate the resolved Tolaria Markdown note path:
 
 ```bash
 python3 "$CLAUDE_SKILL_DIR/scripts/lib_memory.py" validate \
-  "$HOME/.agents/memory/reference/devrev.md" \
-  "$HOME/.agents/memory/records/devrev-sprint.md"
+  "<resolved_tolaria_vault_path>/.../DevRev local knowledge.md"
 ```
 
-If `ok: false` — abort: "DevRev memory incomplete. Run `/devrev init` to set up."
+If `ok: false` — abort with the missing field and say the DevRev Portent note needs repair.
 
 If `ok: true` — extract placeholders from `context`:
 - `$USER_DON`, `$SPRINT_BOARD`, `$DEFAULT_PART`, `$SLACK_MENTION`
@@ -63,10 +80,10 @@ Do not assume old dedicated tools such as `list_issues`, `create_issue`, `update
 
 ```bash
 python3 "$CLAUDE_SKILL_DIR/scripts/sprint_state.py" freshness \
-  --memory "$HOME/.agents/memory/records/devrev-sprint.md"
+  --memory "<resolved_tolaria_vault_path>/.../DevRev local knowledge.md"
 ```
 
-If stale: prompt user to confirm sprint rollover, then update `devrev-sprint.md`.
+If stale: prompt user to confirm sprint rollover, then update the DevRev Portent note in Tolaria.
 
 ## Step 1 — Mode dispatch
 
@@ -109,7 +126,7 @@ Read mode file + `gotchas.md`. Substitute Step 0 placeholders into mode logic.
 
 Deterministic work → Python script. Probabilistic/judgment work → LLM.
 
-Scripts: date math, sprint health, JSON filtering, regex audits, memory validation.
+Scripts: date math, sprint health, JSON filtering, regex audits, Portent note validation.
 LLM: semantic dedup, story drafting, focus recommendation, blockers narrative.
 
 **NEVER use inline `python3 -c "..."` for date calculation or JSON parsing.** Always call named scripts. Inline one-liners bypass weekend validation and produce silent errors.
@@ -118,7 +135,7 @@ LLM: semantic dedup, story drafting, focus recommendation, blockers narrative.
 
 Before every `create_object(action_name="create_issue")`, resolve `applies_to_part`:
 
-1. Read the project map from `devrev.md` (already loaded in Step 0 context).
+1. Read the project map from the DevRev Portent note (already loaded in Step 0 context).
 2. Match issue title and context keywords against project names:
    - "Dev X" / "dashboard" / "FEAT-301" → FEAT-301 feature DON
    - "Agent Studio" / "connectors" / "My Agents" / "Activity" / "Catalog" / "Install" / "Agent Builder" / "Delights" → matching ENH DON from memory
@@ -151,7 +168,7 @@ For sequential task scheduling (sprint planning), chain: next task starts = `add
 - `applies_to_part=[specific_enh_don]` — single enhancement
 - `target_close_date` range — upcoming issues only
 
-When ISS IDs are already known (from memory or prior fetch), use `fetch_object_context` for the specific issues instead of a broad list. For list calls, request only the fields the mode will use, for example `["id","display_id","title","owned_by","stage","subtype","sprint","target_start_date","target_close_date","tnt__remaining_effort","ctype__task_type"]`.
+When ISS IDs are already known (from the DevRev Portent note or prior fetch), use `fetch_object_context` for the specific issues instead of a broad list. For list calls, request only the fields the mode will use, for example `["id","display_id","title","owned_by","stage","subtype","sprint","target_start_date","target_close_date","tnt__remaining_effort","ctype__task_type"]`.
 
 ## Writing conventions
 
@@ -206,9 +223,9 @@ Applied N issues:
 
 This prevents the skill from reporting "done" when writes only partially applied.
 
-## Update-memory rule (applies to all write modes)
+## Update Portent rule (applies to all write modes)
 
-After verification passes, update `devrev-sprint.md` immediately. Use the Read + Write tools directly — no script, no subagent.
+After verification passes, update the DevRev Portent note in Tolaria immediately. Use direct Markdown edits inside the resolved vault path — no script, no subagent.
 
 **Always update:**
 - `last_synced` → today's date + mode name (e.g. `2026-05-07 (sprint planning)`)
@@ -228,4 +245,4 @@ After verification passes, update `devrev-sprint.md` immediately. Use the Read +
 
 **Never update Track A rows** — those are PM-owned and not the skill's concern.
 
-Do this even if the user doesn't ask. Stale memory causes every subsequent session to re-fetch data that was already known.
+Do this even if the user doesn't ask. A stale DevRev Portent note causes every subsequent session to re-fetch data that was already known.
