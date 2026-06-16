@@ -71,7 +71,7 @@ Only show if no_effort or no_body. Skip if clean.
 Scan no-sprint titles against active-sprint titles for keyword overlap (same feature area). Flag pairs where a backlog issue likely duplicates an in-flight one:
 ```
 Possible duplicates:
-  ⚠ ISS-XXXX "Connectors: Setup flow" ← may overlap ISS-YYYY "Connectors: Setup journeys" (Sprint 26)
+  ⚠ ISS-XXXX "<feature>: setup flow" ← may overlap ISS-YYYY "<feature>: setup journeys" (Sprint 26)
 ```
 Surface these before Q&A so the user can close them rather than assign them to a sprint.
 
@@ -100,10 +100,10 @@ From user answers, generate the proposed changes:
 
 | ISS | Title | Action | Sprint | Effort |
 |-----|-------|--------|--------|--------|
-| ISS-XXXX | My Agents: Cards | assign sprint | Sprint 27 | 2d |
-| ISS-XXXX | Catalog Detail | assign sprint | Sprint 28 | 2d |
-| ISS-XXXX | Agent Analytics | close | — | — |
-| ISS-XXXX | WhatsApp wizard | fix effort | Sprint 27 | 1d |
+| ISS-XXXX | <feature>: cards | assign sprint | Sprint 27 | 2d |
+| ISS-XXXX | <feature>: detail view | assign sprint | Sprint 28 | 2d |
+| ISS-XXXX | <feature>: analytics | close | — | — |
+| ISS-XXXX | <feature>: setup wizard | fix effort | Sprint 27 | 1d |
 
 **Do NOT write to DevRev until user confirms.**
 
@@ -130,14 +130,14 @@ For issues being closed (stage must step through In Progress first — gotchas.m
 update_object(action_name="update_issue", subtype="task"):
   id: <DON>
   ctype__task_type: "Design"
-  stage: don:core:dvrv-in-1:devo/2sRI6Hepzz:custom_stage/44   ← In Progress
+  stage: <stage_in_progress_don from local knowledge or schema>
 ```
 then:
 ```
 update_object(action_name="update_issue", subtype="task"):
   id: <DON>
   ctype__task_type: "Design"
-  stage: don:core:dvrv-in-1:devo/2sRI6Hepzz:custom_stage/26   ← Completed
+  stage: <stage_completed_don from local knowledge or schema>
 ```
 
 For effort-only fixes (no sprint change):
@@ -172,14 +172,12 @@ Groomed: N issues
   ✓ ISS-XXXX — closed
 ```
 
-## Phase 7 — Update Portent (mandatory, immediately after verify)
+## Phase 7 — Update Sync State
 
-Apply the Update Portent rule from SKILL.md. Read the DevRev Portent note in the resolved Tolaria vault, then write back:
+Read `references/sync-state.md`.
+Read `## Sync State` in `[[DevRev local knowledge]]`, then overwrite only that section.
 
-1. Set `last_synced` to `<today> (groom)`
-2. For issues assigned to a sprint: update their `Sprint` column in the Track B table
-3. For closed issues: remove their row from the Track B table (or append `closed <date>` to Notes)
-4. For new sprint assignments not yet in the table: append a row
+Use the section shape and source-coverage rules from `references/sync-state.md`. Set `last_mode: groom`; populate Plate with assigned/closed/corrected/still-attention work, Signals with duplicate/stale/missing-metadata findings, and Proposed writebacks for non-Sync-State changes that need confirmation.
 
 ---
 

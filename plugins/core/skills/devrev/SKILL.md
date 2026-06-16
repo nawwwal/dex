@@ -1,7 +1,6 @@
 ---
 name: devrev
-description: "DevRev sprint management. Modes: morning (default), eod, plan, sprint, groom, enrich. Usage: /devrev [mode] [args]"
-argument-hint: "[morning|eod|plan|sprint|groom|enrich] [feature-keyword | URL | doc-name]"
+description: "DevRev sprint management and attention sync through [[DevRev local knowledge]] and Sync State. Use for /devrev morning, EOD closeout, sprint planning, backlog grooming, feature task planning, DevRev enrichment, and ad-hoc questions like what is on my plate, what is blocking me, what needs attention, or what is stale across DevRev, Slack, Tolaria, and supplied External evidence."
 allowed-tools: Bash, Read, Write, Task, mcp__qmd__search, mcp__qmd__get,
   mcp__tolaria__list_vaults, mcp__tolaria__open_note,
   mcp__devrev_remote_mcp_server__get_tool_metadata,
@@ -50,6 +49,8 @@ python3 "$CLAUDE_SKILL_DIR/scripts/lib_memory.py" validate \
   "<resolved_tolaria_vault_path>/.../DevRev local knowledge.md"
 ```
 
+If `$CLAUDE_SKILL_DIR` is unavailable, use the resolved directory containing this `SKILL.md`.
+
 If `ok: false` — abort with the missing field and say the DevRev Portent note needs repair.
 
 If `ok: true` — extract placeholders from `context`:
@@ -58,6 +59,14 @@ If `ok: true` — extract placeholders from `context`:
 - `$ISSUE_CONVENTIONS`
 
 Load `gotchas.md` (Read tool) for any mode that writes to DevRev. Gotcha #9 (user scoping) applies to every fetch.
+
+## Sync State contract
+
+Before morning, EOD, ad-hoc attention, plan, sprint, or groom reconciliation, read `references/sync-state.md`.
+
+Core rule: `[[DevRev local knowledge]]` is the single DevRev operating note in Tolaria, and agents may overwrite only its `## Sync State` section. DevRev is the operational anchor. Slack and Tolaria are supporting evidence. GitHub and Codex are accepted only from a supplied `External evidence` block.
+
+Do not add automation scheduling or mandatory session/ticket policy to this skill.
 
 ## DevRev MCP contract check
 
@@ -83,15 +92,19 @@ python3 "$CLAUDE_SKILL_DIR/scripts/sprint_state.py" freshness \
   --memory "<resolved_tolaria_vault_path>/.../DevRev local knowledge.md"
 ```
 
-If stale: prompt user to confirm sprint rollover, then update the DevRev Portent note in Tolaria.
+If stale: record sprint rollover drift in `Proposed writebacks` inside `## Sync State` and ask the user how to proceed. Do not edit active sprint data outside `## Sync State`.
 
 ## Step 1 — Mode dispatch
 
-Parse `$ARGUMENTS`. Apply these rules IN ORDER:
+Parse `$ARGUMENTS` case-insensitively. Apply these rules IN ORDER:
 
-1. If $ARGUMENTS contains "sprint" (anywhere) AND (first token is "plan" OR phrase matches "plan my sprint" / "plan sprint" / "sprint plan") → `modes/sprint.md` (planning sub-mode)
-2. If $ARGUMENTS contains "plan" and a feature keyword (not "sprint") → `modes/plan.md`
-3. Otherwise match first token:
+1. If $ARGUMENTS contains "eod", "closeout", "close out", or "end of day" → `modes/eod.md`
+2. If $ARGUMENTS contains both "devrev" and "ledger" → explain that the DevRev ledger is the existing `[[DevRev local knowledge]]` `## Sync State` section. Do not create a separate active-work ledger note and do not edit `core:portent`.
+3. If $ARGUMENTS contains "keep DevRev aware", "DevRev aware", "working session", or "start working" without explicit sync/refresh/morning/EOD/planning intent → explain that DevRev does not manage live working sessions. Use morning, EOD, or ad-hoc Sync State only when the user asks to sync or inspect attention.
+4. If $ARGUMENTS asks "what is on my plate?", "what is blocking me?", "what needs attention?", "what is stale?", or contains "reconcile", "drift", "blocked", "blocking", or "Slack says" → use the Sync State method from `modes/morning.md`
+5. If $ARGUMENTS contains "sprint" (anywhere) AND (first token is "plan" OR phrase matches "plan my sprint" / "plan sprint" / "sprint plan") → `modes/sprint.md` (planning sub-mode)
+6. If $ARGUMENTS contains "plan" and a feature keyword (not "sprint") → `modes/plan.md`
+7. Otherwise match first token:
 
 | Token | Mode file |
 |---|---|
@@ -105,6 +118,17 @@ Parse `$ARGUMENTS`. Apply these rules IN ORDER:
 Unknown token → list modes and exit.
 
 Read mode file + `gotchas.md`. Substitute Step 0 placeholders into mode logic.
+
+## Ad-hoc attention routing
+
+Prompts such as "what is on my plate?", "what is blocking me?", "what needs attention?", or "what is stale?" route through the same Sync State method as morning mode, even when the user does not type `/devrev`.
+
+Default behavior:
+1. Read `## Sync State` from `[[DevRev local knowledge]]`.
+2. If `last_synced` is under 4 hours old and the user did not request refresh, answer from Sync State and report `source_coverage`.
+3. If Sync State is stale, missing, or refresh is requested, run the narrow DevRev + Slack refresh from `modes/morning.md`.
+4. Reconcile live data, existing Sync State, and any supplied `External evidence`.
+5. Overwrite only `## Sync State`.
 
 ## Subagent rules (applies to all modes)
 
@@ -136,11 +160,10 @@ LLM: semantic dedup, story drafting, focus recommendation, blockers narrative.
 Before every `create_object(action_name="create_issue")`, resolve `applies_to_part`:
 
 1. Read the project map from the DevRev Portent note (already loaded in Step 0 context).
-2. Match issue title and context keywords against project names:
-   - "Dev X" / "dashboard" / "FEAT-301" → FEAT-301 feature DON
-   - "Agent Studio" / "connectors" / "My Agents" / "Activity" / "Catalog" / "Install" / "Agent Builder" / "Delights" → matching ENH DON from memory
+2. Match issue title and context keywords against project names, aliases, feature IDs, and enhancement IDs in that local project map.
 3. If match found → use that DON.
-4. Only if no match → fall back to `$DEFAULT_PART` and warn the user.
+4. If no match → fall back to `$DEFAULT_PART` and warn the user.
+5. Do not hardcode project names, feature IDs, enhancement IDs, or user-specific aliases in the shipped skill.
 
 ## Date computation rules
 
@@ -223,26 +246,10 @@ Applied N issues:
 
 This prevents the skill from reporting "done" when writes only partially applied.
 
-## Update Portent rule (applies to all write modes)
+## Update local DevRev knowledge rule
 
-After verification passes, update the DevRev Portent note in Tolaria immediately. Use direct Markdown edits inside the resolved vault path — no script, no subagent.
+Use direct Markdown edits inside the resolved vault path. No script, no subagent.
 
-**Always update:**
-- `last_synced` → today's date + mode name (e.g. `2026-05-07 (sprint planning)`)
+After every morning, EOD, plan, sprint, or groom reconciliation, overwrite only `## Sync State` in `[[DevRev local knowledge]]` with the latest Plate, Signals, Proposed writebacks, `last_synced`, `last_mode`, and `source_coverage`.
 
-**For sprint assignment or date changes (sprint planning, groom):**
-- In the Track B table, update the `Sprint` column for every issue assigned or moved
-- Remove rows for closed/deleted issues
-
-**For new issues (plan mode):**
-- Append each created issue as a new row to the Track B table
-- Include: Issue ID, title, Part DON short-name (e.g. `ENH-18478`), Sprint, any notes
-
-**Format for Track B rows:**
-```
-| ISS-XXXXX | Title | ENH-XXXXX | Sprint N | Notes |
-```
-
-**Never update Track A rows** — those are PM-owned and not the skill's concern.
-
-Do this even if the user doesn't ask. A stale DevRev Portent note causes every subsequent session to re-fetch data that was already known.
+Do not edit DevRev config, project map, active sprint, Track A, or Track B as part of local knowledge sync. If one of those sections appears stale, add a `Proposed writebacks` row explaining the desired change and ask for confirmation before any external DevRev mutation.

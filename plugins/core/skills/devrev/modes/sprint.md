@@ -62,7 +62,7 @@ The `#` column is the intended work order. The `Priority` column is the DevRev `
 - `#4+` (important but secondary) → **P2**
 - Stretch / blocked issues → **P3**
 
-Ask the user to confirm or adjust priorities before writing. Priorities can be overridden per-issue ("make the Connectors task P0").
+Ask the user to confirm or adjust priorities before writing. Priorities can be overridden per-issue ("make the setup task P0").
 
 The Start/Close values in this table MUST come from `lib_dates.py schedule_task`, not from mental calculation. Compute each row:
 
@@ -128,14 +128,14 @@ Applied: 7 issues
   ...
 ```
 
-### Phase 5 — Update Portent (mandatory, immediately after verify)
+### Phase 5 — Update Sync State
 
-Apply the Update Portent rule from SKILL.md. Read the DevRev Portent note in the resolved Tolaria vault, then write back:
+Read `references/sync-state.md`.
+Read `## Sync State` in `[[DevRev local knowledge]]`, then overwrite only that section.
 
-1. Set `last_synced` to `<today> (sprint planning)`
-2. For every issue in the confirmed schedule, update its `Sprint` column in the Track B table to the active sprint number. If the issue is not yet in the table, append a new row.
+Use the section shape and source-coverage rules from `references/sync-state.md`. Set `last_mode: sprint`; populate Plate with the confirmed schedule plus at-risk/stretch work, Signals with priority/velocity/blocker evidence, and Proposed writebacks for non-Sync-State changes that need confirmation.
 
-This step is not optional. The skill must not exit planning mode without updating the Tolaria sprint record.
+This step is not optional. The skill must not exit planning mode without updating Sync State.
 
 ---
 
@@ -189,4 +189,4 @@ Next up:     <candidates>
 ## Refresh sub-mode
 
 Sprint has ended. Prompt: "Sprint <old> ended. Promote Sprint <next> to active?"
-On yes: update the DevRev Portent note with new active sprint data.
+On yes: add a `Proposed writebacks` row inside `## Sync State` describing the active sprint change needed. Do not edit active sprint data outside `## Sync State`.

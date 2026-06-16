@@ -44,10 +44,9 @@ Show table to user. On approval:
 - NO sprint, NO dates
 - After creation: verify `ctype__task_type`, `tnt__skills`, owner, part, and effort landed
 
-## Phase 4 — Update Portent (mandatory, immediately after creation)
+## Phase 4 — Update Sync State
 
-Apply the Update Portent rule from SKILL.md. Read the DevRev Portent note in the resolved Tolaria vault, then write back:
+Read `references/sync-state.md`.
+Read `## Sync State` in `[[DevRev local knowledge]]`, then overwrite only that section.
 
-1. Set `last_synced` to `<today> (plan)`
-2. Append each newly created issue as a new Track B row:
-   `| ISS-XXXXX | <title> | ENH-XXXXX | — | no sprint yet |`
+Use the section shape and source-coverage rules from `references/sync-state.md`. Set `last_mode: plan`; populate Plate with created/overlapping issues, Signals with context used in the breakdown, and Proposed writebacks for non-Sync-State changes that need confirmation.

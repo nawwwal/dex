@@ -2,16 +2,13 @@
 
 Source: TKT-62791, operational experience, and live MCP schema checks on 2026-06-09.
 
+`SKILL.md` owns the operating rules. This file records why those rules exist when DevRev behaves unexpectedly.
+
 ## 1. Schema discovery is mandatory
 
 The DevRev MCP now routes creates, updates, lists, and links through generic tools. Old dedicated calls like `create_issue`, `update_issue`, `list_issues`, and `get_issue` may not exist in the current host.
 
-Workaround: Always start with `get_tool_metadata()` and `discover_schema()`. Before action calls, discover the specific action schema:
-- `discover_schema(action_name="list_issues")`
-- `discover_schema(action_name="create_issue", subtype="task")`
-- `discover_schema(action_name="update_issue", subtype="task")`
-
-Then call `list_objects`, `create_object`, or `update_object` with the discovered action name.
+Effect: follow the MCP contract in `SKILL.md`; do not use old dedicated issue tools unless the host schema proves they exist.
 
 ## 2. ctype__task_type is now schema-backed for task issues
 
@@ -38,11 +35,7 @@ Current update schemas expose both `stage` and `stage_name`. `stage_name` enums 
 
 Workaround: Prefer the custom stage DON for writes. Use `stage_name` only when the discovered subtype schema has the exact intended value and verification reads back the intended state.
 
-Stage DONs from the current DevRev Portent note convention:
-- to_do: `don:core:dvrv-in-1:devo/2sRI6Hepzz:custom_stage/67`
-- in_progress: `don:core:dvrv-in-1:devo/2sRI6Hepzz:custom_stage/44`
-- completed: `don:core:dvrv-in-1:devo/2sRI6Hepzz:custom_stage/26`
-- blocked: `don:core:dvrv-in-1:devo/2sRI6Hepzz:custom_stage/116`
+Resolve stage DONs from the DevRev local knowledge note or current subtype schema. Do not ship user-specific stage IDs in the skill.
 
 ## 5. get_valid_stage_transitions is only partially reliable
 
@@ -54,7 +47,7 @@ Workaround: Use `get_valid_stage_transitions` as advisory evidence. For known ta
 
 The old no-pagination context blowup is repaired enough for normal use: `list_objects(action_name="list_issues")` supports `limit` with a max of 100 and accepts a `fields` projection.
 
-Workaround: Every list call must include `owned_by=[$USER_DON]`, `limit <= 100`, and a tight `fields` array. Do not fetch full issue bodies unless the mode needs body text. When ISS IDs are known, prefer `fetch_object_context` for those specific objects.
+Effect: keep user-owned filters, `limit`, and `fields` projection from `SKILL.md`; fetch bodies only when a mode needs body text.
 
 ## 7. Sprint board IDs are not sprint IDs
 
@@ -70,16 +63,12 @@ Workaround:
 
 Naive ISO strings are parsed as UTC. IST midnight is the previous UTC date at 18:30. DevRev may read back `Z` timestamps even when the write used `+05:30`.
 
-Workaround: Write:
-- `target_start_date`: `YYYY-MM-DDT00:00:00+05:30`
-- `target_close_date`: `YYYY-MM-DDT18:29:59+05:30`
-
-For verification and scripts, convert returned timestamps to IST calendar dates before comparing or bucketing. Never compare only the first 10 characters of a DevRev timestamp.
+Effect: use `lib_dates.py` for writes and compare returned timestamps as IST calendar dates. Never compare only the first 10 characters of a DevRev timestamp.
 
 ## 9. Issues live in two parallel tracks (PM vs user)
 
-Features like "Connectors" or "My Agents" have both PM PRDs (full bodies, `[J*-S*]` codes, owned by another user) and design tasks (user-owned, often empty bodies). Both share `applies_to_part` and sprint.
+Feature areas can have both PM PRDs (full bodies, planning codes, owned by another user) and design tasks (user-owned, often empty bodies). Both may share `applies_to_part` and sprint.
 
-Workaround: ALWAYS scope issue lists with `owned_by=[$USER_DON]`. Verify `owned_by` on every issue read. PM PRDs are read-only context in `enrich` mode; they never enter the user's task surface, agenda, EOD updates, or velocity calculations.
+Effect: user-owned issue filters are not optional. PM PRDs are read-only context in `enrich` mode; they never enter the user's task surface, agenda, EOD updates, or velocity calculations.
 
 Failure mode if violated: PM's PRDs appear in "today's tasks", inflating apparent backlog and breaking sprint health math.

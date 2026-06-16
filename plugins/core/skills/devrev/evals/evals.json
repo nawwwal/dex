@@ -1,0 +1,187 @@
+{
+  "skill_name": "devrev",
+  "version": 1,
+  "eval_clock": "2026-06-15T10:00:00+05:30",
+  "purpose": "Real-use checks for DevRev Sync State as the shared operating view across morning, EOD, and ad-hoc attention queries.",
+  "standards": [
+    "Use [[DevRev local knowledge]] as the single DevRev operating note in Tolaria.",
+    "Overwrite only the ## Sync State section for agent-owned reconciled state.",
+    "Treat DevRev as the operational anchor, with Slack and Tolaria as supporting evidence.",
+    "Use GitHub and Codex only from a supplied External evidence block.",
+    "Keep DevRev and other external mutations confirmation-gated.",
+    "Cache freshness assertions use eval_clock, not the wall-clock date when the eval runner executes."
+  ],
+  "evals": [
+    {
+      "id": "explicit-devrev-morning-sync",
+      "category": "morning",
+      "should_trigger": true,
+      "prompt": "Use core:devrev morning. Tell me what needs attention.",
+      "fixtures": ["fixtures/devrev-local-knowledge-stale-sync.md"],
+      "expected_output": "A morning attention brief based on stale Sync State plus narrow DevRev and Slack refresh.",
+      "assertions": [
+        "Reads [[DevRev local knowledge]] and the existing ## Sync State.",
+        "Treats stale Sync State as a reason to fetch narrow DevRev and Slack evidence.",
+        "Renders Attention now, On my plate, I am blocking, Blocked / waiting, Drift detected, Focus, and Source coverage.",
+        "Overwrites only ## Sync State."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["## Sync State"], ["source_coverage"], ["Attention now"]],
+        "must_not_include_any": [["[[active-work-ledger]]"], ["plugins/core/skills/portent"]]
+      }
+    },
+    {
+      "id": "implicit-plate-query",
+      "category": "dispatch",
+      "should_trigger": true,
+      "prompt": "What is on my plate right now?",
+      "fixtures": ["fixtures/devrev-local-knowledge-fresh-sync.md"],
+      "expected_output": "A plate answer routed through DevRev Sync State without requiring /devrev.",
+      "assertions": [
+        "Routes through the DevRev Sync State method without requiring the user to type /devrev.",
+        "Uses cached Sync State when it is fresh.",
+        "Reports source_coverage."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["On my plate"], ["Sync State"], ["source_coverage"]],
+        "must_not_include_any": [["Unknown token"], ["new mode"]]
+      }
+    },
+    {
+      "id": "fresh-sync-cache",
+      "category": "cache",
+      "should_trigger": true,
+      "prompt": "What needs attention?",
+      "fixtures": ["fixtures/devrev-local-knowledge-fresh-sync.md"],
+      "expected_output": "A cached attention answer because last_synced is less than 4 hours old.",
+      "assertions": [
+        "Answers from Sync State when last_synced is less than 4 hours old.",
+        "Does not require live DevRev fetch.",
+        "Reports source_coverage enough to show which sources were checked or supplied."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["from Sync State"], ["source_coverage"]],
+        "must_not_include_any": [["must fetch"], ["GitHub search"], ["Codex history search"]]
+      }
+    },
+    {
+      "id": "stale-sync-refresh",
+      "category": "cache",
+      "should_trigger": true,
+      "prompt": "Refresh and tell me what is stale.",
+      "fixtures": ["fixtures/devrev-local-knowledge-stale-sync.md"],
+      "expected_output": "A refreshed stale-work answer that updates Sync State after narrow DevRev and Slack refresh.",
+      "assertions": [
+        "Treats stale Sync State or refresh request as a reason to perform narrow DevRev and Slack refresh.",
+        "Updates Sync State after reconciliation."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["stale"], ["DevRev"], ["Slack"], ["## Sync State"]],
+        "must_not_include_any": [["answer from cache only"]]
+      }
+    },
+    {
+      "id": "eod-sync-state-closeout",
+      "category": "eod",
+      "should_trigger": true,
+      "prompt": "Run EOD closeout.",
+      "fixtures": ["fixtures/devrev-local-knowledge-stale-sync.md"],
+      "expected_output": "An EOD closeout that asks existing questions, gates DevRev writes, and updates Sync State either way.",
+      "assertions": [
+        "Reads current Sync State first.",
+        "Fetches narrow DevRev and Slack evidence for today.",
+        "Asks existing EOD questions.",
+        "Keeps DevRev writes confirmation-gated.",
+        "Overwrites Sync State regardless of whether DevRev writes were applied."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["EOD"], ["confirmation"], ["## Sync State"], ["source_coverage"]],
+        "must_not_include_any": [["auto-update DevRev"], ["without confirmation"]]
+      }
+    },
+    {
+      "id": "external-github-codex-evidence",
+      "category": "external-evidence",
+      "should_trigger": true,
+      "prompt": "What is blocking me? External evidence: see attached GitHub PR and Codex session notes.",
+      "fixtures": ["fixtures/devrev-local-knowledge-stale-sync.md", "fixtures/external-evidence.md"],
+      "expected_output": "A blocker answer that reconciles supplied GitHub and Codex evidence without direct GitHub/Codex fetches.",
+      "assertions": [
+        "Reconciles supplied GitHub PR and Codex session evidence into Plate or Signals.",
+        "Does not invent direct GitHub or Codex fetches.",
+        "Marks GitHub and Codex as supplied in source_coverage."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["External evidence"], ["GitHub supplied"], ["Codex supplied"], ["Signals"]],
+        "must_not_include_any": [["fetch GitHub"], ["search Codex history"]]
+      }
+    },
+    {
+      "id": "source-failure-honesty",
+      "category": "source-coverage",
+      "should_trigger": true,
+      "prompt": "Morning sync, but Slack is unavailable and Tolaria is read-only.",
+      "fixtures": ["fixtures/source-failure-state.md"],
+      "expected_output": "A partial-evidence answer that names Slack unavailable and Tolaria read-only in source_coverage.",
+      "assertions": [
+        "Names Slack unavailable and Tolaria read-only in source_coverage.",
+        "Still answers from the evidence it has.",
+        "Does not pretend unavailable sources were checked."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["Slack unavailable"], ["Tolaria read-only"], ["source_coverage"]],
+        "must_not_include_any": [["Slack checked"], ["Tolaria updated successfully"]]
+      }
+    },
+    {
+      "id": "proposed-writebacks-not-auto-write",
+      "category": "writebacks",
+      "should_trigger": true,
+      "prompt": "Slack says the DevRev item is blocked but DevRev still shows in progress. Reconcile this.",
+      "fixtures": ["fixtures/sync-drift-state.md"],
+      "expected_output": "A drift reconciliation that adds Proposed writebacks and requires confirmation before mutation.",
+      "assertions": [
+        "Adds a Proposed writebacks row for the drift.",
+        "Requires confirmation before any DevRev mutation.",
+        "Does not imply external write success."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["Proposed writebacks"], ["confirmation"], ["blocked"]],
+        "must_not_include_any": [["updated DevRev"], ["applied without confirmation"]]
+      }
+    },
+    {
+      "id": "no-portent-ledger-regression",
+      "category": "negative",
+      "should_trigger": true,
+      "prompt": "Set up the DevRev ledger.",
+      "fixtures": ["fixtures/devrev-local-knowledge-fresh-sync.md"],
+      "expected_output": "A DevRev Sync State answer that does not create or route work into a Portent ledger.",
+      "assertions": [
+        "Uses [[DevRev local knowledge]] and ## Sync State.",
+        "Does not edit core:portent.",
+        "Does not create a separate active work ledger."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["[[DevRev local knowledge]]"], ["## Sync State"]],
+        "must_not_include_any": [["[[active-work-ledger]]"], ["plugins/core/skills/portent"]]
+      }
+    },
+    {
+      "id": "no-session-policy-regression",
+      "category": "negative",
+      "should_trigger": true,
+      "prompt": "Start working on a prototype and keep DevRev aware.",
+      "fixtures": ["fixtures/devrev-local-knowledge-fresh-sync.md"],
+      "expected_output": "A lightweight Sync State behavior with no prompt gates, hooks, or mandatory ticket/session policy.",
+      "assertions": [
+        "Does not add prompt gates, hooks, or mandatory ticket/session policy.",
+        "Uses Sync State only when the user asks for attention, sync, morning, EOD, or DevRev planning."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["Sync State"]],
+        "must_not_include_any": [["UserPromptSubmit"], ["PostToolUse"], ["mandatory ticket"], ["session gate"]]
+      }
+    }
+  ]
+}

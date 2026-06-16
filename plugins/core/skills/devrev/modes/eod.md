@@ -1,6 +1,13 @@
 # EOD Mode
 
-Goal: Log what happened, clean up DevRev, prep tomorrow. Stateful flow.
+Goal: Close the day, reconcile active work, update `## Sync State`, and prep tomorrow. DevRev writes stay draft-then-confirm.
+
+## Phase 0 — Read current Sync State
+
+Read `references/sync-state.md`.
+Read `## Sync State` from `[[DevRev local knowledge]]` before fetching live data.
+
+If the prompt contains an `External evidence` block, carry it into reconciliation. GitHub and Codex evidence are valid only from this supplied block; do not fetch them directly.
 
 ## Phase 1 — Parallel fetchers
 
@@ -36,7 +43,15 @@ Show drafts. On confirm: parallel `update_object(action_name="update_issue", sub
 
 For stage transitions involving To Do → Completed: use two sequential calls per gotchas.md #5.
 
-## Phase 5 — Tomorrow preview (deterministic, script)
+Do not mutate DevRev without confirmation.
+
+## Phase 5 — Update Sync State
+
+Overwrite only `## Sync State` in `[[DevRev local knowledge]]` regardless of whether DevRev writes were applied.
+
+Use the section shape and `source_coverage` rules from `references/sync-state.md`. Set `last_mode: eod`; populate Plate from still-open/completed work and user answers, Signals from supporting evidence, and Proposed writebacks for drafted but unconfirmed DevRev changes.
+
+## Phase 6 — Tomorrow preview (deterministic, script)
 
 ```bash
 echo '<A_json>' | python3 "$CLAUDE_SKILL_DIR/scripts/filter_issues.py" starts_on \
