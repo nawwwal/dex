@@ -79,7 +79,7 @@ Optional integrations depend on the skill you use: Figma MCP for Figma work, Dev
 | `wrap` | End-of-session recap, meaningful micro-commits, verification summary, and Portent handoff |
 | `portent` | Tolaria knowledge-base capture, session logs, project context, current todos, briefings, organization, search, and archive using the Portent object model |
 
-`teach` ships a Codex Stop hook for refreshing its SQLite concept index. `portent` ships two lightweight hooks: a prompt-time context receipt that reminds the agent to use `core:portent`/Tolaria MCP before behavior-changing work when prior context may matter, and a Stop reminder that gives the agent one extra pass to write durable session knowledge back through `core:portent`. Codex hooks run when `[features].hooks` is enabled and the hook is trusted through the normal `/hooks` review flow; without that, the Markdown notes remain canonical and the index can be rebuilt manually.
+`teach` ships a Codex Stop hook for refreshing its SQLite concept index. `portent` ships a prompt-time context receipt hook that reminds the agent to use `core:portent`/Tolaria MCP before behavior-changing work when prior context may matter, then write durable session knowledge back before the final response when useful. Codex hooks run when `[features].hooks` is enabled and the hook is trusted through the normal `/hooks` review flow; without that, the Markdown notes remain canonical and the index can be rebuilt manually.
 
 `council` lives here because it is a thinking primitive, not a misc tool.
 

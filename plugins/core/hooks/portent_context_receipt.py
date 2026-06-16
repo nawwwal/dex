@@ -15,6 +15,7 @@ import sys
 CONTEXT = """Portent context receipt
 required action:
 - If this prompt may depend on prior project context, use core:portent and Tolaria MCP before behavior-changing work.
+- Before the final response, if this turn created durable project context, decisions, session notes, TODOs, or handoff value, use core:portent and Tolaria MCP to log or capture it.
 - If skipped, state `Portent skipped: <reason>`.
 - Use direct Markdown only as the core:portent fallback when Tolaria MCP is unavailable."""
 
@@ -35,6 +36,7 @@ def emit(event_name: str = "UserPromptSubmit") -> None:
 
 def self_test() -> int:
     assert "Tolaria MCP" in CONTEXT
+    assert "Before the final response" in CONTEXT
     assert "Portent skipped" in CONTEXT
     assert "Markdown only as the core:portent fallback" in CONTEXT
     return 0
