@@ -1,7 +1,7 @@
 {
   "name": "core",
   "description": "Agent environment setup, teaching, council, reflection, DevRev, session wrap-up, and Portent knowledge-base workflows",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "author": {
     "name": "Aditya Nawal"
   }
