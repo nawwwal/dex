@@ -4,7 +4,7 @@ The other four dex plugins are utilitarian — setup, design intelligence, dev w
 
 Most people use LLMs to **do less**: skip the reading, write the email, autocomplete the code. `fun` uses them to do something you **couldn't do without one**. Every skill is a frame-break: it makes the model refuse its defaults — be helpful, agree, summarize, hedge — and instead **estrange, compete, divine, or play**. The output isn't productivity. It's surprise.
 
-This is not a folder of unrelated toys. The twelve skills cluster around a handful of reusable primitives.
+This is not a folder of unrelated toys. The fourteen skills cluster around a handful of reusable primitives.
 
 ## The skills
 
@@ -21,6 +21,8 @@ This is not a folder of unrelated toys. The twelve skills cluster around a handf
 | `cartography` | A chat-history export rendered as the *shape* of an intimacy — who initiates, how in-jokes evolve, the words that exist only between you two. Including the unflattering version. | corpus |
 | `quest` | A location-aware scavenger hunt over your real city. Clues resolve only when you're standing somewhere specific. You feed it the map; it writes the story. | world |
 | `prospect` | Invent a two-player word game with rules you've never seen, teach it, play it. Most break — that's the point. The junkyard of failures is funnier than most working games. | generative |
+| `cosmogony` | Take one absurd premise and fully commit — derive the whole world it implies: physics, society, dating culture, wars, memes — with a straight face. The rigor is where the comedy and the insight come from. | generative |
+| `branch` | Take one divergence point — a life decision, a historical fork, an absurd premise — and grow its alternate timelines as a comparable tree, each carried N years out. Honest branches: no fantasy where the road not taken was perfect. | generative |
 | `seance` | Reconstruct the idiolect of someone gone from their texts and letters, and ask the things you never got to. A door you open once and leave — not a residence. | teeth |
 
 ## The shared primitives
