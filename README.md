@@ -43,6 +43,7 @@ Current released versions:
 | `design` | `1.2.3` |
 | `dev` | `1.0.4` |
 | `tools` | `1.2.1` |
+| `fun` | `1.0.0` |
 <!-- dex-current-versions:end -->
 
 Then bootstrap the shared agent home:
@@ -122,6 +123,27 @@ This plugin exists because coding agents need different instructions than design
 | `media-tools` | AI image generation/editing, compression, format conversion, and resizing for images and video |
 
 Tools should stay tools. If a tool grows taste, policy, or product judgment, it probably belongs somewhere else.
+
+### Fun
+
+`fun` is the anti-productivity plugin. Every other plugin helps you do work; `fun` makes the model refuse its defaults — be helpful, agree, summarize, hedge — and instead estrange, compete, divine, or play. The output is surprise, not output. See `plugins/fun/README.md` for the thesis, the shared-primitive map, and the cross-cutting guardrails.
+
+| Skill | Use it for |
+|---|---|
+| `gravity` | Iterating text against itself to find its semantic fixed point; surfacing your unconscious default voice as the attractor of your own writing |
+| `oracle` | A mind year-locked to year N reasoning about your present; using what it cannot imagine to reveal what is genuinely new; reverse far-future cosplay |
+| `reskin` | Piping dull recurring feeds (weather, calendar, headlines) through one fixed absurd register on a daily ritual; never breaking voice |
+| `voiceover` | Narrating a photographed object in a held register — noir, disappointed parent, the object itself speaking after years of silence |
+| `clone` | Few-shot autocomplete of your own writing; two clones debating a question you are undecided on while you tiebreak |
+| `arena` | A population of LLM-authored temperaments playing an iterated game on a deterministic engine; evolving strategies and reading emergent norms |
+| `nemesis` | An adversary that attacks a belief and a judge that keeps only the unanswerable hits; a standing weekly stress-test of your least-defended conviction |
+| `augury` | A daily collision draw of random objects from your own collection; honest apophenia, not prophecy; optional mymind MCP |
+| `cartography` | Rendering the shape of an intimacy from a chat export — initiation, in-jokes, temperature — including the unflattering read |
+| `quest` | A location-aware ARG over your real city; clues that resolve only on-site; you feed the map, it writes the story |
+| `prospect` | Inventing, teaching, and playtesting two-player word games with unseen rules; keeping a junkyard of the broken ones |
+| `seance` | A one-time reconstruction of a gone person's idiolect to ask what you never got to; a door you open once and leave |
+
+Fun is allowed to be uncanny, but not dishonest. Its guardrails — privacy, no flattery, honest randomizer, feed-the-map, doors-not-residences — are enforced inside the skills, not optional.
 
 ## The Agent Home
 

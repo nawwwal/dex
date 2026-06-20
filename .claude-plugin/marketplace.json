@@ -30,6 +30,12 @@
       "source": "./plugins/tools",
       "description": "Codex review, media tools, and HTML presentations",
       "version": "1.2.1"
+    },
+    {
+      "name": "fun",
+      "source": "./plugins/fun",
+      "description": "Anti-productivity skills that make the model refuse its defaults: estrange, compete, divine, and play",
+      "version": "1.0.0"
     }
   ]
 }
