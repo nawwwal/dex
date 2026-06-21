@@ -38,6 +38,20 @@ Two more are **platform concerns, not built here**:
 - **Ritual scheduling** — daily/weekly runs that deliver one artifact. Wired with Claude Code web cron routines or `core:loop`, not a scheduler this plugin ships. `register --feed`, `augury`, and `nemesis` document the wiring.
 - **mymind ingestion** — `augury` uses the optional official mymind MCP when present and degrades gracefully when it isn't, exactly like Tolaria/DevRev elsewhere in dex.
 
+## Chaining and serendipity
+
+These skills are built to hand off to each other. Each `SKILL.md` carries a **Pairs with** section naming its natural upstream seeds and downstream moves, and the model is encouraged to **follow the chain on its own** — when the output of one skill is obviously the input of another, take the next step (or offer it) rather than stopping at a clean boundary. The plugin's disposition is *feeling lucky*: surprising, emergent, unasked-for fun is welcome here in a way it never is in the utilitarian plugins. Surprise is the product.
+
+The recurring chains worth knowing:
+
+- **Game lab** — `prospect` → `arena` (invent a game, then watch a population discover its emergent play).
+- **World engine** — `augury` / `oracle` → `cosmogony` → `quest` / `register` (a random collision or a year-locked mind's wrong guess seeds a whole world, which you then stage over your real city or inhabit through a held voice).
+- **Decision crucible** — `clone --debate` → `branch` → `nemesis` (argue both sides in your own voice, play out the timelines, then stress-test the choice you land on).
+- **Self-model** — `gravity` → `clone` → `cartography` (find your attractor voice, model it, map how it behaves with someone).
+- **Daily ritual stack** — `register --feed` + `augury` + `nemesis standing`.
+
+Two limits on the serendipity, both deliberate: the **explicit-intent gate** (the privacy skills `clone`, `cartography`, `seance` never auto-fire on a casual or emotional mention — they wait to be asked), and the **terminal door** (`seance` is never chained *into* automatically; reaching it is always the user's deliberate choice). Lucky, not reckless.
+
 ## Cross-cutting guardrails
 
 These are enforced inside the relevant `SKILL.md` files. They are what keep the plugin honest instead of cute.

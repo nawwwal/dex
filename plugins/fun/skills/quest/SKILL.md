@@ -35,3 +35,7 @@ If you don't have enough real anchors, **ask for more** — never paper over a g
 - Keep routes walkable and ordered sensibly on the ground; respect real distance and a sane direction of travel.
 - Don't send players anywhere unsafe, private, trespassing, or closed. Public, accessible, real.
 - If anchors are too few, ask for more locations rather than padding with invented ones.
+
+## Pairs with
+
+A world built by `cosmogony` is ready-made lore: thread its story through real places to turn the user's city into that world's board.

@@ -40,3 +40,9 @@ It returns normalized samples plus stats (vocabulary richness, average sentence 
 - In debate mode, both clones must be genuinely the user — not a strawman and a hero. The point is that the user can argue both sides; show that.
 - Never persist samples or output unless asked. If the user wants to save a session, write only where they specify.
 - If samples are too thin to characterize a voice, say so and ask for more rather than faking a generic clone.
+
+## Pairs with
+
+- **From `gravity`** — run gravity on the user's writing first to find their attractor voice; it sharpens the clone.
+- **To `branch`** — when a debate surfaces a real decision, play its timelines out.
+- **To `nemesis`** — hand a belief argued in the user's own voice to the adversary.

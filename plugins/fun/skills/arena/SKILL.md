@@ -42,3 +42,9 @@ The default game is iterated prisoner's dilemma — the cleanest substrate for r
 - Read *emergent norms*, not just winners. "TitForTat topped the board" is a result; "reciprocity plus a clean-reputation second chance suppressed defection until a probe exploited the forgivers" is a norm.
 - Use a fixed seed per generation so results are reproducible and the evolution is honest.
 - Author strategies as the documented spec; don't hand the engine free-form prose it can't execute.
+
+## Pairs with
+
+- **From `prospect`** — hand a keeper game to `arena` to populate with temperaments and watch its emergent play.
+- **To `nemesis`** — turn a winning temperament into a claim ("grudges beat saints") and let the adversary attack it.
+- **To `cosmogony`** — take the society's emergent norms and derive the whole civilization built on them.

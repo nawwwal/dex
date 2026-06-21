@@ -38,3 +38,7 @@ Two clearly separated parts:
 - Future-cosplay must label itself as imagination, not prediction. It may not smuggle in confident claims about what will happen — it estranges the present by looking back, it does not forecast.
 - Always deliver the seam. The in-character passage alone is a parlor trick; the analytical step-out is what makes it worth running.
 - Never break character *inside* the "In the year" section. Save all hindsight for "The seam."
+
+## Pairs with
+
+A year-locked mind's confident wrong prediction is raw material: hand it to `cosmogony` to build the world it imagined, or to `branch` to play out the timeline where it turned out right.

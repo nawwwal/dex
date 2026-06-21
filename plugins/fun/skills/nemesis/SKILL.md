@@ -39,3 +39,8 @@ Standing mode is built to fire weekly. The wiring is a **platform concern, not b
 - Standing store holds only the user's convictions and attack results. Read before, write after. Don't invent convictions the user didn't state.
 - Name the smallest resolver for each survivor — evidence, a distinction, or a concession — so the user can actually do something with the hit.
 - This is adversarial, not cruel. Attack the belief, not the person. The goal is a stronger believer, not a defeated one.
+
+## Pairs with
+
+- **From `clone --debate`, `arena`, or `branch`** — a belief argued in the user's own voice, an emergent norm restated as a claim, or the choice they land on.
+- **To `branch`** — take a surviving objection and play out the futures where the user actually acts on it.

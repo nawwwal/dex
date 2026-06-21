@@ -43,3 +43,7 @@ The transform must be a closed loop: its output must be valid input to itself. R
 - Keep `N` bounded — this is N model passes; respect cost. Default 25, never exceed 50 without explicit ask.
 - If the transform isn't a closed loop, fix it or refuse it; don't silently mutate it mid-run.
 - The trajectory text is canonical. If you summarize it for the chat, keep the full version in a file.
+
+## Pairs with
+
+Run gravity on the user's own writing to surface their default voice, then hand that attractor to `clone` to build a sharper self-model (and onward to `cartography` to see how that voice behaves in a relationship).

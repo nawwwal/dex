@@ -31,3 +31,7 @@ Failed games are the point of the collection. Seed and grow `${CLAUDE_PLUGIN_ROO
 - Keep rules teachable in ≤5 lines. Complexity is not novelty.
 - Keep the junkyard. Offer to log every game, working or broken; the failures are the collection.
 - This is play, not a productivity tool. If the user just wants to mess around for ten minutes, that's the entire intended use.
+
+## Pairs with
+
+Hand a keeper game to `arena` — populate it with LLM-authored temperaments and watch the emergent play. (The broken ones stay in the junkyard.)

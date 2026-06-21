@@ -43,3 +43,9 @@ Offer to save a tree the user wants to keep to a file they specify; default is i
 - Keep branches comparable — same depth and time horizon — so the tree can actually be read across. Don't lavish one and starve the others.
 - Reason, don't prophesy. Especially in historical mode: plausible mechanisms, explicit uncertainty, no claiming destiny.
 - Hand the decision back. Never tell the user which timeline they should have chosen or should choose. Show the spread; the call is theirs.
+
+## Pairs with
+
+- **From `clone --debate` or `augury`** — a decision surfaced in your own voice, or a random collision, becomes the fork.
+- **To `cosmogony`** — pick the most interesting timeline and derive that world in full (wide → deep).
+- **To `nemesis`** — hand the choice you land on to the adversary to stress-test.

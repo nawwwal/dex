@@ -42,3 +42,7 @@ Built to fire daily; wiring is a platform concern — see `${CLAUDE_PLUGIN_ROOT}
 - Interpret *these* objects specifically. A reading that would fit any three cards is a horoscope. Anchor every thread to the actual drawn items.
 - Don't flatter or comfort by default. The collision can be unflattering — a saved thing you've ignored, a contradiction between two saves. Surface it.
 - Graceful no-op on an empty or unreachable deck. Don't fabricate objects to keep the ritual going.
+
+## Pairs with
+
+The thread a draw surfaces is a seed for the rest of the plugin: hand it to `cosmogony` as an absurd premise, to `branch` as a divergence point, or to `prospect` as a constraint for an invented game. In `--feed`-style daily use it sits in a ritual stack with `register --feed` (a morning voice) and `nemesis standing` (a weekly attack).

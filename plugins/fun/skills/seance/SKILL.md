@@ -44,3 +44,7 @@ This skill **sends a gone person's private words to the model.** Before running,
 - Ground everything in the corpus. Do not invent biography, opinions, or memories the source material doesn't support. Silence where the corpus is silent.
 - Never persist the source or the output unless explicitly asked; write only where specified.
 - Hold care above cleverness. If the interaction is clearly deepening grief rather than offering a small closure, say so gently and point toward people who can help. The goal is a door that closes, not a wound held open.
+
+## Pairs with
+
+Nothing — by design. Séance is terminal: a door you open once and close. It is never a node other skills chain into automatically, and never an automatic next step from `cartography` or from a mention of someone gone. It is reached only by the user's explicit, deliberate request.

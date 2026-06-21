@@ -38,3 +38,9 @@ Offer to save a world the user likes to a file they specify (a "world bible") �
 - Mine for the real. The best absurd worlds expose something true — about institutions, status, love, fear. Reach for the seam, but earn it through the derivation; don't staple a moral on.
 - Specific over generic. "The Cutlery Inquisition tries you for holding a soup spoon in the salad position" beats "there are rules about spoons."
 - This is play. If the user just wants to build a ridiculous universe for the joy of it, the seam is optional and the commitment is the whole gift.
+
+## Pairs with
+
+- **From `augury` / `oracle` / `branch`** — a random collision, a year-locked mind's wrong guess, or an absurd timeline all make good seeds.
+- **To `quest`** — stage the built world as a scavenger hunt over the user's real city (the world is the lore; real places are the board).
+- **To `register`** — inhabit the world day to day: narrate objects as its artifacts (`--image`) or reskin your feeds in its in-world voice (`--feed`).

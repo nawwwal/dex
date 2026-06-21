@@ -47,3 +47,7 @@ It detects common export formats (WhatsApp-style lines, JSON arrays, generic `Na
 - Never persist the export or the map unless asked. Write only where the user specifies.
 - This is the user's own understanding of their relationship, not a dossier on the other person. Don't produce leverage, scorekeeping, or "who's right" verdicts.
 - Hold care and honesty together. The unflattering read is delivered to help, not to wound.
+
+## Pairs with
+
+Upstream, `gravity` and `clone` characterize your own voice before you map how it behaves inside a relationship. Cartography does **not** auto-hand off to `seance` — if the other person is gone, reaching for séance is the user's explicit, deliberate choice, never an automatic next step.

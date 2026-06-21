@@ -46,4 +46,4 @@ Feed mode is built to fire on a schedule, not just on demand. The wiring is a **
 
 ## Pairs with
 
-A world built by `cosmogony` makes a ready-made register — narrate your objects as its artifacts, or reskin your feed in its in-world voice.
+A world built by `cosmogony` makes a ready-made register — narrate your objects as its artifacts (`--image`), or reskin your feed in its in-world voice (`--feed`). In `--feed` mode it joins the daily ritual stack with `augury` (a morning draw) and `nemesis standing` (a weekly attack).
