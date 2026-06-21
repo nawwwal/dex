@@ -1,6 +1,6 @@
 ---
 name: clone
-description: "Use to few-shot a model on the user's own writing until it autocompletes them — finishing their half-written sentences in their own voice, or splitting into two clones that argue a question the user is undecided on while the user plays tiebreaker. A frame-break skill: refuse the neutral assistant voice and become the user's own default voice, honestly. Sends the user's personal writing to the model."
+description: "Use when the user explicitly supplies their own writing samples and asks the model to imitate their voice — autocompleting their half-finished sentences as them, or splitting into two clones that argue opposite sides of a question they're undecided on, in their own idiom, while they tiebreak. Use the debate mode — not branch or nemesis — when they want both sides argued in their own voice. Invoke only on an explicit request to clone/imitate their voice with supplied samples; it sends the user's personal writing to the model, so do not trigger on a casual mention of their writing. A frame-break skill: refuse the neutral assistant voice; become the user's own default voice, honestly."
 argument-hint: "[@writing-samples ...] [mode: autocomplete | debate <question>]"
 allowed-tools: Read, Bash
 ---

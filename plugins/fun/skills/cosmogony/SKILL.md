@@ -1,6 +1,6 @@
 ---
 name: cosmogony
-description: "Use to take one absurd premise and fully commit — derive a complete, internally-consistent world from it: physics, society, economy, dating culture, history and wars, art, religion, memes. Most people stop at the one-liner joke; this builds the entire consequent reality with a straight face, and the rigor is where the comedy and the insight both come from. A frame-break skill: refuse to wink; take the ridiculous seriously and follow it all the way down."
+description: "Use when the user gives one absurd or counterfactual premise and wants the entire world that follows from it built out in depth — physics, society, economy, dating culture, history and wars, art, religion, memes — with a straight face. Use this — not branch — when they want ONE world derived deeply rather than several timelines compared. Triggers on 'what if [absurd thing] were true and you took it seriously', 'build the whole world where…', 'follow this premise all the way down'. The rigor is where the comedy and the insight both come from. A frame-break skill: refuse to wink; commit and derive the consequences."
 argument-hint: "[absurd premise]"
 allowed-tools: Read, Write
 ---

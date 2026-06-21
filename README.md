@@ -132,8 +132,7 @@ Tools should stay tools. If a tool grows taste, policy, or product judgment, it 
 |---|---|
 | `gravity` | Iterating text against itself to find its semantic fixed point; surfacing your unconscious default voice as the attractor of your own writing |
 | `oracle` | A mind year-locked to year N reasoning about your present; using what it cannot imagine to reveal what is genuinely new; reverse far-future cosplay |
-| `reskin` | Piping dull recurring feeds (weather, calendar, headlines) through one fixed absurd register on a daily ritual; never breaking voice |
-| `voiceover` | Narrating a photographed object in a held register — noir, disappointed parent, the object itself speaking after years of silence |
+| `register` | Running information through one held voice — `--image` narrates a photographed object (noir, disappointed parent, the object speaking); `--feed` pipes weather/calendar/headlines through one fixed absurd register on a daily ritual, never breaking voice |
 | `clone` | Few-shot autocomplete of your own writing; two clones debating a question you are undecided on while you tiebreak |
 | `arena` | A population of LLM-authored temperaments playing an iterated game on a deterministic engine; evolving strategies and reading emergent norms |
 | `nemesis` | An adversary that attacks a belief and a judge that keeps only the unanswerable hits; a standing weekly stress-test of your least-defended conviction |
@@ -141,6 +140,8 @@ Tools should stay tools. If a tool grows taste, policy, or product judgment, it 
 | `cartography` | Rendering the shape of an intimacy from a chat export — initiation, in-jokes, temperature — including the unflattering read |
 | `quest` | A location-aware ARG over your real city; clues that resolve only on-site; you feed the map, it writes the story |
 | `prospect` | Inventing, teaching, and playtesting two-player word games with unseen rules; keeping a junkyard of the broken ones |
+| `cosmogony` | Taking one absurd premise and deriving the whole world it implies — physics, society, dating culture, wars, memes — straight-faced; the rigor carries the comedy and the insight |
+| `branch` | Growing one divergence point — a decision, a historical fork, an absurd premise — into a comparable tree of alternate timelines carried N years out; honest branches, no perfect road-not-taken |
 | `seance` | A one-time reconstruction of a gone person's idiolect to ask what you never got to; a door you open once and leave |
 
 Fun is allowed to be uncanny, but not dishonest. Its guardrails — privacy, no flattery, honest randomizer, feed-the-map, doors-not-residences — are enforced inside the skills, not optional.

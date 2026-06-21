@@ -1,6 +1,6 @@
 ---
 name: branch
-description: "Use to take a single divergence point — a life decision, a historical fork, or an absurd premise — and play out its alternate timelines as a structured, comparable tree: full lived-out scenes, second-order ripples, and where each branch stands N years later. You can branch again from any branch. A frame-break skill: refuse the single fluent answer and refuse the fantasy where the road not taken was perfect; build the tree and keep every branch honest."
+description: "Use when the user has one divergence point — a life decision, a historical fork, or an absurd premise — and wants its alternate timelines played out and compared as a tree: lived-out scenes, second-order ripples, where each lands N years later, branchable again. Use this — not cosmogony — for SEVERAL compared futures, and — not clone or nemesis — when they want consequences played out rather than arguments or attacks. Triggers on 'what would have happened if…', 'play out both paths', 'what if I'd taken the other job/stayed/moved'. A frame-break skill: refuse the single fluent answer and the fantasy where the road not taken was perfect; keep every branch honest."
 argument-hint: "[divergence point] [mode: personal | historical | absurd]"
 allowed-tools: Read, Write
 ---

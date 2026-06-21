@@ -4,7 +4,7 @@ The other four dex plugins are utilitarian — setup, design intelligence, dev w
 
 Most people use LLMs to **do less**: skip the reading, write the email, autocomplete the code. `fun` uses them to do something you **couldn't do without one**. Every skill is a frame-break: it makes the model refuse its defaults — be helpful, agree, summarize, hedge — and instead **estrange, compete, divine, or play**. The output isn't productivity. It's surprise.
 
-This is not a folder of unrelated toys. The fourteen skills cluster around a handful of reusable primitives.
+This is not a folder of unrelated toys. The thirteen skills cluster around a handful of reusable primitives.
 
 ## The skills
 
@@ -12,8 +12,7 @@ This is not a folder of unrelated toys. The fourteen skills cluster around a han
 |---|---|---|
 | `gravity` | Rewrite text, feed the output back, repeat — watch it fall toward its semantic attractor. On your own writing, the attractor is your unconscious default voice. | iteration |
 | `oracle` | A mind that knows nothing after year N, reasoning about your present. What it *can't* imagine is what's genuinely new. | persona |
-| `reskin` | Pipe dull recurring feeds (weather, calendar, headlines) through one fixed absurd register, every morning. Pick one voice, never break it. | persona |
-| `voiceover` | Point a camera at the most boring object in the room; narrate it as noir, your disappointed mother, or an object that waited years to speak. | persona |
+| `register` | Run information through one fixed, committed voice. `--image`: narrate a photographed object as noir, your disappointed mother, or the object speaking after years of silence. `--feed`: pipe dull recurring feeds (weather, calendar, headlines) through one absurd register every morning, never breaking voice. | persona |
 | `clone` | Few-shot on your own writing until it autocompletes *you*. Two clones argue a question you're undecided on — you're the tiebreaker. | persona / corpus |
 | `arena` | A population of LLM-authored temperaments plays an iterated game; a deterministic engine runs the rounds, the model evolves strategies and reads the emergent norms. | adversarial |
 | `nemesis` | A destroyer attacks a belief; a judge keeps only the hits you can't answer. Standing mode fires the strongest unanswered attack at your least-defended conviction on a schedule. | adversarial |
@@ -30,13 +29,13 @@ This is not a folder of unrelated toys. The fourteen skills cluster around a han
 Each primitive is built **inside the first skill that needs it** and reused by siblings via `${CLAUDE_PLUGIN_ROOT}/skills/{owner}/references/...`.
 
 - **Iteration harness** (`gravity`) — apply a transform to its own output N times, capture the trajectory, surface the fixed point. Reused by `arena`'s generational loop.
-- **Persona harness** (`oracle`) — instantiate and *hold* a constrained voice so it never drifts back to assistant-default. Reused by `reskin`, `voiceover`, `clone`, `seance`.
+- **Persona harness** (`oracle`) — instantiate and *hold* a constrained voice so it never drifts back to assistant-default. Reused by `register` (a feed register and an image narrator), `clone`, `seance`.
 - **Corpus ingestion** (`clone` / `scripts/corpus.py`) — load the user's own material (writing samples, chat export, collection objects) into a normalized form. Reused by `cartography`, `augury`, `seance`.
 - **Judge / survivor contract** (`nemesis`) — adversarial output filtered to only what survives a referee. Reused by any guarded-objection mode.
 
 Two more are **platform concerns, not built here**:
 
-- **Ritual scheduling** — daily/weekly runs that deliver one artifact. Wired with Claude Code web cron routines or `core:loop`, not a scheduler this plugin ships. `reskin`, `augury`, and `nemesis` document the wiring.
+- **Ritual scheduling** — daily/weekly runs that deliver one artifact. Wired with Claude Code web cron routines or `core:loop`, not a scheduler this plugin ships. `register --feed`, `augury`, and `nemesis` document the wiring.
 - **mymind ingestion** — `augury` uses the optional official mymind MCP when present and degrades gracefully when it isn't, exactly like Tolaria/DevRev elsewhere in dex.
 
 ## Cross-cutting guardrails

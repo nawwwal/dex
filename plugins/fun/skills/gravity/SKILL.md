@@ -1,6 +1,6 @@
 ---
 name: gravity
-description: "Use to find the semantic fixed point of a text by iterating a transform against its own output until it stops moving. Reveals the attractor a rewrite, summary, translation, or style falls toward; on the user's own writing, the attractor is their unconscious default voice. A frame-break skill: estrange the familiar by over-applying the ordinary."
+description: "Use when the user wants to apply a transform to its own output over and over — rewrite a rewrite, summarize a summary, translate back and forth, restyle repeatedly — to see what the text collapses toward (its semantic fixed point / attractor). Triggers on 'what does this keep turning into', 'run this rewrite again and again', 'simplify until it stops changing', 'what's my default voice / what do I sound like'. On the user's own writing the attractor is their unconscious default voice. A frame-break skill: estrange the familiar by over-applying the ordinary."
 argument-hint: "[text or @file] [transform, e.g. 'make it warmer' | 'summarize' | 'translate EN<->FR']"
 allowed-tools: Read, Write
 ---

@@ -1,6 +1,6 @@
 ---
 name: seance
-description: "Use to reconstruct the idiolect of someone gone — from their texts, letters, or messages — closely enough to ask the things you never got to, and read what that voice might have said. A one-time artifact by design: a door you open once and leave, never an ongoing relationship. Hard-refuses being framed as a standing presence. A frame-break skill that demands the most care; sends a deceased or absent person's private words to the model."
+description: "Use ONLY when the user explicitly asks to reconstruct the voice or idiolect of a specific gone or absent person from writing samples they provide, in order to ask the things they never got to. A one-time artifact by design — a door opened once and left, never an ongoing relationship; it hard-refuses standing-presence framing. Invoke only on an explicit reconstruction request with supplied texts; never trigger on grief, missing someone, or merely mentioning the person — those are not requests to run this. The most care-demanding skill; sends a deceased or absent person's private words to the model."
 argument-hint: "[@their-writing ...] [the thing you want to ask]"
 allowed-tools: Read, Bash
 ---

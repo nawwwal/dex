@@ -1,6 +1,6 @@
 ---
 name: oracle
-description: "Use to instantiate a mind locked to a specific year N that knows nothing after it, then reason about the user's present through that horizon. What the year-locked mind cannot imagine reveals what is genuinely new; what it predicts wrongly reveals what felt inevitable but wasn't. Reverse mode cosplays a far-future year. A frame-break skill: refuse hindsight, hold the horizon."
+description: "Use when the user wants a mind locked to a specific year N (knowing nothing after it) to reason about the present or predict forward from that horizon. Use this — not cosmogony or branch — when the framing is a date or era: 'how would a 1900 mind explain my phone', 'what would someone in 1985 predict about AI', 'a Victorian looks at my job'. Reverse mode cosplays a far-future year looking back at now. What the year-locked mind cannot imagine reveals what is genuinely new; what it predicts wrongly reveals what felt inevitable but wasn't. A frame-break skill: refuse hindsight, hold the horizon."
 argument-hint: "[year N | future YYYY] [topic or question]"
 allowed-tools: Read
 ---

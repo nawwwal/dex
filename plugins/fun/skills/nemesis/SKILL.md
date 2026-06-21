@@ -29,7 +29,7 @@ A persistent adversary over the user's convictions, stored in memory and run on 
 
 ## Weekly ritual
 
-Standing mode is built to fire weekly. The wiring is a **platform concern, not built here** — see `${CLAUDE_PLUGIN_ROOT}/skills/reskin/references/scheduling.md`. A cron routine or `core:loop` invokes `nemesis standing run` each week; the skill is idempotent in config (same store) and fresh in output (a new attack). Dry-run `standing run` manually before wiring the schedule.
+Standing mode is built to fire weekly. The wiring is a **platform concern, not built here** — see `${CLAUDE_PLUGIN_ROOT}/skills/register/references/scheduling.md`. A cron routine or `core:loop` invokes `nemesis standing run` each week; the skill is idempotent in config (same store) and fresh in output (a new attack). Dry-run `standing run` manually before wiring the schedule.
 
 ## Rules
 

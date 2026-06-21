@@ -33,7 +33,7 @@ python3 "${CLAUDE_PLUGIN_ROOT}/skills/augury/scripts/draw.py" collection.json --
 
 ## Daily ritual
 
-Built to fire daily; wiring is a platform concern — see `${CLAUDE_PLUGIN_ROOT}/skills/reskin/references/scheduling.md`. Date-seeding makes each day's draw stable within the day and fresh across days.
+Built to fire daily; wiring is a platform concern — see `${CLAUDE_PLUGIN_ROOT}/skills/register/references/scheduling.md`. Date-seeding makes each day's draw stable within the day and fresh across days.
 
 ## Rules
 

@@ -1,6 +1,6 @@
 ---
 name: cartography
-description: "Use to render the shape of a relationship from a chat-history export — who initiates, how in-jokes evolve, where the temperature spikes, the words that exist only between these two people, the rhythms of silence and repair. Demands the unflattering read too, not just the warm one. A frame-break skill: refuse the flattering summary; map an intimacy honestly. Sends the user's private conversation to the model."
+description: "Use when the user explicitly supplies a chat-history export and asks to map or analyze the relationship in it — who initiates, how in-jokes evolve, where the temperature spikes, the words that exist only between these two people, the rhythms of silence and repair — including the unflattering read, not just the warm one. Invoke only on an explicit request to map/analyze a supplied conversation export; it sends the user's private conversation to the model, so do not trigger on a casual mention of a friendship or person. A frame-break skill: refuse the flattering summary; map an intimacy honestly."
 argument-hint: "[@chat-export] [other person's name]"
 allowed-tools: Read, Bash
 ---

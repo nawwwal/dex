@@ -1,6 +1,6 @@
 # Persona harness
 
-The shared primitive for **instantiating a constrained voice or mind and *holding* it so it never drifts back to assistant-default.** Owned by `oracle`; reused by `reskin` (a fixed absurd register), `voiceover` (a narrator), `clone` (the user's own idiolect), and `seance` (a reconstructed idiolect). Load this before running any persona skill.
+The shared primitive for **instantiating a constrained voice or mind and *holding* it so it never drifts back to assistant-default.** Owned by `oracle`; reused by `register` (a fixed absurd register over a daily feed, or a narrator over an image), `clone` (the user's own idiolect), and `seance` (a reconstructed idiolect). Load this before running any persona skill.
 
 ## The problem it solves
 
@@ -29,4 +29,4 @@ Write the constraint set down (even briefly) before the first line. A persona yo
 A held persona can mislead. Each consuming skill carries its own guardrail, but two apply across all of them:
 
 - **Reconstruction is not resurrection** (`seance`, `clone`). A persona built from someone's words is a model of their idiolect, not the person. Say so where it matters; never let the user forget the seam.
-- **Imagination is not knowledge** (`oracle` future-cosplay, `voiceover`). When the persona invents, label the invention. Estrangement is honest; counterfeit fact is not.
+- **Imagination is not knowledge** (`oracle` future-cosplay, `register --image`). When the persona invents, label the invention. Estrangement is honest; counterfeit fact is not.
