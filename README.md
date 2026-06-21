@@ -126,25 +126,25 @@ Tools should stay tools. If a tool grows taste, policy, or product judgment, it 
 
 ### Fun
 
-`fun` is the anti-productivity plugin. Every other plugin helps you do work; `fun` makes the model refuse its defaults — be helpful, agree, summarize, hedge — and instead estrange, compete, divine, or play. The output is surprise, not output. See `plugins/fun/README.md` for the thesis, the shared-primitive map, and the cross-cutting guardrails.
+`fun` is the plugin that is not about getting work done. Every other plugin helps you finish a task. `fun` does the opposite. It tells the model to stop acting like a polite, agreeable assistant and instead surprise you: make ordinary things strange, compete, guess, and play. The point is the surprise, not the output. For the full idea behind it, the shared building blocks, and the safety rules, see `plugins/fun/README.md`.
 
 | Skill | Use it for |
 |---|---|
-| `gravity` | Iterating text against itself to find its semantic fixed point; surfacing your unconscious default voice as the attractor of your own writing |
-| `oracle` | A mind year-locked to year N reasoning about your present; using what it cannot imagine to reveal what is genuinely new; reverse far-future cosplay |
-| `register` | Running information through one held voice — `--image` narrates a photographed object (noir, disappointed parent, the object speaking); `--feed` pipes weather/calendar/headlines through one fixed absurd register on a daily ritual, never breaking voice |
-| `clone` | Few-shot autocomplete of your own writing; two clones debating a question you are undecided on while you tiebreak |
-| `arena` | A population of LLM-authored temperaments playing an iterated game on a deterministic engine; evolving strategies and reading emergent norms |
-| `nemesis` | An adversary that attacks a belief and a judge that keeps only the unanswerable hits; a standing weekly stress-test of your least-defended conviction |
-| `augury` | A daily collision draw of random objects from your own collection; honest apophenia, not prophecy; optional mymind MCP |
-| `cartography` | Rendering the shape of an intimacy from a chat export — initiation, in-jokes, temperature — including the unflattering read |
-| `quest` | A location-aware ARG over your real city; clues that resolve only on-site; you feed the map, it writes the story |
-| `prospect` | Inventing, teaching, and playtesting two-player word games with unseen rules; keeping a junkyard of the broken ones |
-| `cosmogony` | Taking one absurd premise and deriving the whole world it implies — physics, society, dating culture, wars, memes — straight-faced; the rigor carries the comedy and the insight |
-| `branch` | Growing one divergence point — a decision, a historical fork, an absurd premise — into a comparable tree of alternate timelines carried N years out; honest branches, no perfect road-not-taken |
-| `seance` | A one-time reconstruction of a gone person's idiolect to ask what you never got to; a door you open once and leave |
+| `gravity` | Rewrite a piece of text over and over and watch what it turns into. Run it on your own writing to find the voice you fall back on without thinking. Example: rewrite a paragraph 30 times and see what is left. |
+| `oracle` | Talk to a version of the model that only knows the world up to a year you pick. What it cannot imagine shows you what is actually new. Example: ask a 1995 mind to make sense of your phone. |
+| `register` | Take everyday information and deliver it in one strong character that never breaks. `--image` narrates a photo (your messy desk as a film noir scene). `--feed` rewrites your daily weather or calendar in a fixed voice every morning. |
+| `clone` | Feed it your own writing so it can finish your sentences the way you would. Or split it into two copies of you that argue a decision you are stuck on while you pick the winner. |
+| `arena` | Set up a crowd of small characters with different personalities and let them play a game against each other many times. Watch trust, grudges, and cooperation appear on their own. |
+| `nemesis` | Tell it a belief you hold. It attacks that belief as hard as it can, then keeps only the points you cannot answer. Can run every week against your strongest opinions. |
+| `augury` | Pull a few random things from your own saved notes and find the thread between them. Like tarot, but the cards are your own stuff. It picks at random, you read the meaning. |
+| `cartography` | Give it an exported chat history and it maps the shape of the relationship: who texts first, the inside jokes, the warm and cold stretches. It tells you the unflattering parts too. |
+| `quest` | Turn your real city into a scavenger hunt. You give it real places, it writes a story and clues that only make sense when you are standing there. Example: a Sunday hunt across your neighborhood. |
+| `prospect` | It invents a brand new two-player word game, teaches you the rules, and plays it with you. Most of them are broken, and that is half the fun. |
+| `cosmogony` | Give it one silly idea and it builds the whole world that would follow, with a straight face: the rules, the society, the holidays, the wars. Example: what if every houseplant was secretly spying on you. |
+| `branch` | Pick a fork in the road, a real decision or a what-if, and it plays out each path in detail, years into the future, side by side. It keeps every version honest, bad parts included. |
+| `seance` | Rebuild how someone who is gone used to write, from their old messages, so you can ask the thing you never got to. You open it once and then close it. It is not a chatbot of the dead. |
 
-Fun is allowed to be uncanny, but not dishonest. Its guardrails — privacy, no flattery, honest randomizer, feed-the-map, doors-not-residences — are enforced inside the skills, not optional.
+`fun` is allowed to be strange, but never dishonest. Its safety rules are built into the skills, not optional: keep private things private, never just flatter you, keep the random draw truly random, never invent real places, and treat the seance as a one-time thing you close.
 
 ## The Agent Home
 
