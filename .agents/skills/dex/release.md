@@ -14,8 +14,9 @@ The repo is both the Claude marketplace and the Codex marketplace:
 `/dex release dev` - patch bump `dev`
 `/dex release dev initial` - publish the current `dev` version as its first release
 `/dex release tools minor` - minor bump `tools`
+`/dex release fun initial` - publish the current `fun` version as its first release
 
-Supported plugins: `core`, `design`, `dev`, `tools`
+Supported plugins: `core`, `design`, `dev`, `tools`, `fun`
 
 ## Version bump rules
 
@@ -43,7 +44,7 @@ Run this after choosing `PLUGIN` and before committing or tagging:
 ```bash
 PLUGIN="${1:-}"
 case "$PLUGIN" in
-  core|design|dev|tools) ;;
+  core|design|dev|tools|fun) ;;
   *) echo "ERROR: First arg must be one of: core, design, dev, tools"; exit 1 ;;
 esac
 
@@ -90,7 +91,7 @@ PLUGIN="${1:-}"
 BUMP="${2:-patch}"
 
 case "$PLUGIN" in
-  core|design|dev|tools) ;;
+  core|design|dev|tools|fun) ;;
   *) echo "ERROR: First arg must be one of: core, design, dev, tools"; exit 1 ;;
 esac
 
@@ -192,7 +193,7 @@ with open("$CODEX_MARKETPLACE_JSON") as fh:
 if codex_marketplace.get("name") != "nawwwal-dex":
     raise SystemExit("Codex marketplace name must be nawwwal-dex")
 
-expected_plugins = {"core", "design", "dev", "tools"}
+expected_plugins = {"core", "design", "dev", "tools", "fun"}
 seen_plugins = set()
 for entry in codex_marketplace.get("plugins", []):
     name = entry.get("name")
@@ -214,7 +215,7 @@ if missing:
     raise SystemExit(f"Codex marketplace missing plugins: {', '.join(sorted(missing))}")
 
 versions = {}
-for name in ["core", "design", "dev", "tools"]:
+for name in ["core", "design", "dev", "tools", "fun"]:
     with open(f"plugins/{name}/.claude-plugin/plugin.json") as fh:
         versions[name] = json.load(fh)["version"]
 
@@ -226,7 +227,7 @@ table = "\n".join([
     "<!-- dex-current-versions:start -->",
     "| Plugin | Version |",
     "|---|---:|",
-    *[f"| `{name}` | `{versions[name]}` |" for name in ["core", "design", "dev", "tools"]],
+    *[f"| `{name}` | `{versions[name]}` |" for name in ["core", "design", "dev", "tools", "fun"]],
     "<!-- dex-current-versions:end -->",
 ])
 

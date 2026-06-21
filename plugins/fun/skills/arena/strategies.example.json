@@ -1,0 +1,55 @@
+{
+  "agents": [
+    {
+      "name": "Saint",
+      "temperament": "cooperates unconditionally, trusts to a fault",
+      "open": "C",
+      "rules": [],
+      "default": "C"
+    },
+    {
+      "name": "Defector",
+      "temperament": "betrays everyone, always",
+      "open": "D",
+      "rules": [],
+      "default": "D"
+    },
+    {
+      "name": "TitForTat",
+      "temperament": "opens warm, then mirrors whatever you just did",
+      "open": "C",
+      "rules": [
+        {"feature": "opp_last", "op": "==", "value": "D", "do": "D"}
+      ],
+      "default": "C"
+    },
+    {
+      "name": "Grudger",
+      "temperament": "cooperates until crossed once, then never forgives",
+      "open": "C",
+      "rules": [
+        {"feature": "betrayed", "op": "==", "value": true, "do": "D"}
+      ],
+      "default": "C"
+    },
+    {
+      "name": "ForgivingTFT",
+      "temperament": "mirrors defection but extends trust again when your reputation is mostly clean",
+      "open": "C",
+      "rules": [
+        {"feature": "opp_reputation", "op": ">", "value": 0.5, "do": "D"},
+        {"feature": "opp_last", "op": "==", "value": "D", "do": "D"}
+      ],
+      "default": "C"
+    },
+    {
+      "name": "Suspicious",
+      "temperament": "opens cold, warms only once you prove yourself",
+      "open": "D",
+      "rules": [
+        {"feature": "opp_last", "op": "==", "value": "C", "do": "C"}
+      ],
+      "default": "D"
+    }
+  ]
+}
