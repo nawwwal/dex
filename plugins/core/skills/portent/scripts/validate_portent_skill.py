@@ -31,6 +31,9 @@ SKILL_REQUIRED_PATTERNS = [
     r"description:.*Portent object model",
     r"mcp__tolaria__list_vaults",
     r"mcp__tolaria__open_note",
+    r"source packets",
+    r"derived assertions",
+    r"MOCs",
     r"If `list_vaults` returns one vault, use it",
     r"multiple plausible writable vaults remain.*ask which vault",
     r"path is missing or unreadable.*stop",
@@ -52,6 +55,10 @@ SKILL_REQUIRED_PATTERNS = [
     r"organized: false",
     r"archived: false",
     r"Prefer updating an existing object over creating a duplicate",
+    r"Key assertions",
+    r"derived_from",
+    r"supersedes",
+    r"Current.*Historical.*Open gaps.*Read next",
 ]
 
 SPEC_REQUIRED_PATTERNS = [
@@ -70,6 +77,11 @@ SPEC_REQUIRED_PATTERNS = [
     r"Organized",
     r"Archived",
     r"Extension Rules",
+    r"Memory Layers",
+    r"Source packet",
+    r"Derived assertion",
+    r"MOC",
+    r"supersedes",
 ]
 
 REQUIRED_COVERAGE = {

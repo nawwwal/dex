@@ -1,7 +1,6 @@
 ---
 name: portent
-description: "Use when storing, organizing, retrieving, or briefing from the user's Tolaria knowledge base using the Portent object model: project context, responsibilities, operations, session logs, decisions, current todos, tasks, events, notes, topics, people, archived records, and durable handoffs."
-argument-hint: "[capture | log | organize | brief | todo | archive | search]"
+description: "Use when storing, organizing, retrieving, or briefing from the user's Tolaria knowledge base using the Portent object model: project context, responsibilities, operations, session logs, decisions, source packets, derived assertions, MOCs, current todos, tasks, events, notes, topics, people, archived records, and durable handoffs."
 allowed-tools: Bash, Read, Write, Edit, Glob, Grep, mcp__tolaria__list_vaults, mcp__tolaria__open_note
 ---
 
@@ -72,6 +71,20 @@ archived: false
 
 Set `organized: true` only when the object has a clear title, type, and enough relationships to explain future use.
 
+## Source Packets, Assertions, And MOCs
+
+Keep raw evidence, agent interpretation, and prompt-ready maps visibly separate.
+
+- Source packet: raw evidence such as a Slack thread, PR, DevRev issue, meeting note, browser finding, screenshot, or user correction. Store it as an `Event` or `Note` with source, actor, timestamp, and source status when available.
+- Derived assertion: an agent-made conclusion from one or more source packets. Put it in a `Key assertions` section or use frontmatter such as `derived_from`, `assertion_type`, `source_status`, and `last_verified` when structured fields will help later retrieval.
+- MOC: map of content. Use it as a prompt-context surface, not a link dump. A useful MOC has `Current`, `Historical`, `Key assertions`, `Open gaps`, and `Read next`.
+
+Do not store every conclusion. Store only Aditya-relevant durable conclusions with sources. Do not infer facts about people from agent-authored messages unless speaker attribution is clear.
+
+Use `supersedes` only when a newer object or assertion replaces an older one. Otherwise preserve older records and mark them stale, historical, or unchecked.
+
+Prefer index-plus-whole-object reading over opaque vector memory until Tolaria search and Portent index reads repeatedly miss relevant objects.
+
 ## Mode Routing
 
 Choose the mode from the user's request. If no mode is named, infer it from the outcome they want.
@@ -103,6 +116,7 @@ The event should include:
 
 - What happened, with concrete evidence.
 - Decisions and rationale.
+- Key assertions when the log contains agent-derived conclusions; each assertion should name its source, confidence or staleness when known, and any live-source gap.
 - Changed files, commits, links, DevRev IDs, PRs, docs, or external anchors when available.
 - Carry-forward tasks or open questions.
 - Relationships to the primary `Project`, `Responsibility`, people, and topics.
@@ -130,6 +144,9 @@ Build the briefing from organized Portent objects first, then recent captured ob
 - Open tasks or external task references related to those projects.
 - Decisions made since the last brief.
 - Quiet projects or responsibilities that may need attention.
+- Current vs historical facts when state may have changed.
+- Open gaps, stale assertions, or sources not checked.
+- Read-next objects when the brief is acting as an MOC.
 - Useful next actions, separated from facts.
 
 ### Todo
@@ -171,6 +188,14 @@ related_to:
 Keep filenames stable and boring. The title and frontmatter carry meaning; the folder does not.
 
 Prefer updating an existing object over creating a duplicate. Before writing a new `Project`, `Responsibility`, `Operation`, `Topic`, or `Person`, search for a likely existing object.
+
+Use extra relationship or provenance fields only when they change future retrieval or trust:
+
+- `source`, `source_status`, `last_verified`, `compiled_from`
+- `derived_from`, `assertion_type`
+- `supersedes`
+
+Default to prose sections when a field would be one-off decoration.
 
 ## Response Contract
 

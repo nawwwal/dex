@@ -45,7 +45,7 @@ Run this after choosing `PLUGIN` and before committing or tagging:
 PLUGIN="${1:-}"
 case "$PLUGIN" in
   core|design|dev|tools|fun) ;;
-  *) echo "ERROR: First arg must be one of: core, design, dev, tools"; exit 1 ;;
+  *) echo "ERROR: First arg must be one of: core, design, dev, tools, fun"; exit 1 ;;
 esac
 
 PREV_TAG=$(git tag --sort=-version:refname | grep "^$PLUGIN-v" | head -1)
@@ -92,7 +92,7 @@ BUMP="${2:-patch}"
 
 case "$PLUGIN" in
   core|design|dev|tools|fun) ;;
-  *) echo "ERROR: First arg must be one of: core, design, dev, tools"; exit 1 ;;
+  *) echo "ERROR: First arg must be one of: core, design, dev, tools, fun"; exit 1 ;;
 esac
 
 if [ "$BUMP" = "major" ] && [ -z "${DEX_MAJOR_REASON:-}" ]; then

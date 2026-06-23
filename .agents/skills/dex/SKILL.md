@@ -7,7 +7,7 @@ description: "Project-local dex maintainer workflow. Use when maintaining nawwwa
 
 ## Usage
 
-`release <core|design|dev|tools> [patch|minor|major|initial]`
+`release <core|design|dev|tools|fun> [patch|minor|major|initial]`
 `eval <skill-path-or-plugin-skill> [rounds=N] [baseline=previous|none|snapshot]`
 
 ## Dispatch

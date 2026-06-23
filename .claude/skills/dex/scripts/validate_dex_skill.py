@@ -54,7 +54,7 @@ def validate_skill_md() -> None:
         require(text, r"description:.*plugin releases", label)
         require(text, r"description:.*skill evals", label)
         require(text, r"description:.*multi-round skill repair", label)
-        require(text, r"`release <core\|design\|dev\|tools> \[patch\|minor\|major\|initial\]`", label)
+        require(text, r"`release <core\|design\|dev\|tools\|fun> \[patch\|minor\|major\|initial\]`", label)
         require(text, r"`eval <skill-path-or-plugin-skill> \[rounds=N\] \[baseline=previous\|none\|snapshot\]`", label)
         require(text, r"\*\*release\*\*\s*->\s*Read `\./release\.md`", label)
         require(text, r"\*\*eval\*\*\s*->\s*Read `\./eval\.md`", label)
@@ -232,7 +232,7 @@ def validate_repo_docs() -> None:
     require(readme, r"<!-- dex-current-versions:start -->", "README.md")
     require(readme, r"<!-- dex-current-versions:end -->", "README.md")
 
-    for plugin in ("core", "design", "dev", "tools"):
+    for plugin in ("core", "design", "dev", "tools", "fun"):
         claude_manifest = json.loads(read(REPO / "plugins" / plugin / ".claude-plugin" / "plugin.json"))
         codex_manifest = json.loads(read(REPO / "plugins" / plugin / ".codex-plugin" / "plugin.json"))
         if claude_manifest["version"] != codex_manifest["version"]:

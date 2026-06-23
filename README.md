@@ -78,7 +78,7 @@ Optional integrations depend on the skill you use: Figma MCP for Figma work, Dev
 | `reflect` | Portent/Tolaria reflection: emerging patterns, leverage points, and drift across active knowledge objects |
 | `devrev` | Sprint routines, grooming, enrichment, schema-discovered DevRev MCP work, and Portent-backed local DevRev knowledge |
 | `wrap` | End-of-session recap, meaningful micro-commits, verification summary, and Portent handoff |
-| `portent` | Tolaria knowledge-base capture, session logs, project context, current todos, briefings, organization, search, and archive using the Portent object model |
+| `portent` | Tolaria knowledge-base capture, session logs, project context, source packets, derived assertions, MOCs, current todos, briefings, organization, search, and archive using the Portent object model |
 
 `teach` ships a Codex Stop hook for refreshing its SQLite concept index. `portent` ships a prompt-time context receipt hook that reminds the agent to use `core:portent`/Tolaria MCP before behavior-changing work when prior context may matter, then write durable session knowledge back before the final response when useful. Codex hooks run when `[features].hooks` is enabled and the hook is trusted through the normal `/hooks` review flow; without that, the Markdown notes remain canonical and the index can be rebuilt manually.
 

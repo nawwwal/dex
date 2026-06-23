@@ -37,6 +37,18 @@ related_to:
 ---
 ```
 
+## Memory Layers
+
+Use three layers when building richer knowledge objects:
+
+- Source packet: raw evidence, usually an `Event` or `Note`. Keep source, actor, timestamp, source status, and verification state visible.
+- Derived assertion: an agent-made conclusion from source packets. Keep it separate from raw evidence with a `Key assertions` section or fields such as `derived_from` and `assertion_type`.
+- MOC: map of content. Use it as a prompt-context surface with `Current`, `Historical`, `Key assertions`, `Open gaps`, and `Read next`.
+
+Store derived assertions only when they are durable and Aditya-relevant. Do not turn every retrieval result or agent inference into memory.
+
+Use `supersedes` only when a newer object or assertion replaces an older one. Otherwise preserve older records and mark them historical, stale, or unchecked.
+
 ## Types
 
 Portent has eight default types.
