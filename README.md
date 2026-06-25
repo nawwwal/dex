@@ -43,7 +43,7 @@ Current released versions:
 |---|---:|
 | `core` | `1.2.9` |
 | `design` | `1.2.4` |
-| `dev` | `1.0.4` |
+| `dev` | `1.0.5` |
 | `tools` | `1.2.1` |
 | `fun` | `1.0.0` |
 <!-- dex-current-versions:end -->
