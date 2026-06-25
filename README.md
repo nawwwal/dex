@@ -42,7 +42,7 @@ Current released versions:
 | Plugin | Version |
 |---|---:|
 | `core` | `1.2.9` |
-| `design` | `1.2.3` |
+| `design` | `1.2.4` |
 | `dev` | `1.0.4` |
 | `tools` | `1.2.1` |
 | `fun` | `1.0.0` |
