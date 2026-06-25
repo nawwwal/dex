@@ -1,0 +1,4 @@
+interface:
+  display_name: "Why"
+  short_description: "Explain unfamiliar concepts before execution"
+  default_prompt: "Use $why to explain this unfamiliar code or context before doing the task."

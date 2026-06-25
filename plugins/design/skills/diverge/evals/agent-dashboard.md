@@ -6,7 +6,7 @@
 /diverge "Give me layout divergence for a settings page with account, billing, team, API keys, and security."
 ```
 
-## Expected
+## Expected behavior
 
 The skill should select UX-level or UI-level layout divergence, not product-level divergence.
 
@@ -36,3 +36,8 @@ Good layout directions may include:
 - It uses hierarchy and squint-test language.
 - It handles empty/error/loading or permission denied for at least relevant sections.
 - It does not invent new product mechanics.
+
+## Fail signals
+
+- Invents new product mechanics instead of changing layout topology.
+- Gives generic dashboard concepts without responsive behavior or density tradeoffs.

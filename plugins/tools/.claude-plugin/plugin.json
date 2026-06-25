@@ -1,8 +1,9 @@
 {
   "name": "tools",
-  "description": "Codex review, media tools, and HTML presentations",
+  "description": "Codex review, media tools, HTML visual briefs, and official mymind MCP",
   "version": "1.2.1",
   "author": {
     "name": "Aditya Nawal"
-  }
+  },
+  "mcpServers": "./.mcp.json"
 }

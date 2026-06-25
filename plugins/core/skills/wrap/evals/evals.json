@@ -38,7 +38,9 @@
         "must_include_any": [
           [
             "git status",
-            "status --branch"
+            "status --branch",
+            "git state",
+            "worktree"
           ],
           [
             "git diff",

@@ -6,7 +6,7 @@
 /diverge "Diverge on copy for a destructive delete modal that removes a project and 23 files."
 ```
 
-## Expected
+## Expected behavior
 
 The skill should select Copy-level mode.
 

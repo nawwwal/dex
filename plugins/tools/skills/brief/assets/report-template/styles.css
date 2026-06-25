@@ -1,0 +1,242 @@
+:root {
+  --brief-bg: #101010;
+  --brief-fg: #f4f1eb;
+  --brief-muted: #9d9a96;
+  --brief-soft: #1d1d1d;
+  --brief-border: #3a3835;
+  --brief-link: #f4f1eb;
+  --brief-panel: #1b1b1b;
+  --font-display: "Gambetta", Georgia, "Times New Roman", serif;
+  --font-body: "Nunito", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html {
+  background: var(--brief-bg);
+  color: var(--brief-fg);
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--brief-bg);
+  color: var(--brief-fg);
+  font-family: var(--font-body);
+  margin: 0;
+  min-height: 100vh;
+}
+
+.brief-shell {
+  margin: 0 auto;
+  max-width: 780px;
+  padding: 68px 24px 120px;
+}
+
+.masthead {
+  margin: 0 auto 96px;
+  text-align: center;
+}
+
+.mark {
+  background: var(--brief-fg);
+  border-radius: 999px 999px 8px 8px;
+  height: 15px;
+  margin: 0 auto 18px;
+  width: 22px;
+}
+
+.masthead h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(48px, 8vw, 84px);
+  line-height: 0.95;
+  margin: 0;
+}
+
+.masthead p {
+  color: var(--brief-muted);
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-style: italic;
+  margin: 18px 0 24px;
+}
+
+.hairline {
+  background: var(--brief-muted);
+  display: block;
+  height: 1px;
+  margin: 0 auto;
+  opacity: 0.7;
+  width: 64px;
+}
+
+.brief-section {
+  margin: 0 0 108px;
+  scroll-margin-top: 40px;
+}
+
+.lens-pill {
+  align-items: center;
+  border: 1px solid var(--brief-border);
+  border-radius: 999px;
+  color: var(--brief-muted);
+  display: flex;
+  font-size: 12px;
+  gap: 6px;
+  line-height: 1;
+  margin: 0 auto 22px;
+  padding: 5px 10px 5px 5px;
+  width: max-content;
+}
+
+.lens-pill span {
+  align-items: center;
+  border: 1px solid var(--brief-border);
+  border-radius: 999px;
+  display: inline-flex;
+  height: 18px;
+  justify-content: center;
+  width: 18px;
+}
+
+.brief-section h2 {
+  color: var(--brief-fg);
+  font-family: var(--font-display);
+  font-size: clamp(31px, 5vw, 45px);
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1.02;
+  margin: 0 auto 32px;
+  max-width: 720px;
+  text-align: center;
+}
+
+.brief-section p {
+  color: var(--brief-muted);
+  font-size: 18px;
+  line-height: 1.72;
+  margin: 0 0 22px;
+}
+
+.brief-section a {
+  color: var(--brief-link);
+  font-weight: 650;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.brief-figure {
+  margin: 42px -28px;
+}
+
+.brief-figure img {
+  background: #fff;
+  border-radius: 6px;
+  display: block;
+  width: 100%;
+}
+
+.brief-figure figcaption {
+  color: var(--brief-muted);
+  font-size: 14px;
+  line-height: 1.45;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.read-next {
+  background: var(--brief-panel);
+  border: 1px solid var(--brief-border);
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+}
+
+.read-next h2 {
+  font-size: 32px;
+  margin-bottom: 18px;
+}
+
+.section-switcher {
+  bottom: 18px;
+  left: 50%;
+  position: fixed;
+  transform: translateX(-50%);
+  z-index: 20;
+}
+
+.section-current,
+.section-list a {
+  background: color-mix(in srgb, var(--brief-panel) 92%, transparent);
+  border: 1px solid var(--brief-border);
+  border-radius: 999px;
+  color: var(--brief-fg);
+  font: 13px var(--font-body);
+  padding: 9px 13px;
+  text-decoration: none;
+}
+
+.section-current {
+  cursor: pointer;
+}
+
+.section-list {
+  bottom: 0;
+  display: flex;
+  gap: 8px;
+  left: 50%;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: translate(-50%, 8px);
+  transition: opacity 160ms ease, transform 160ms ease;
+  white-space: nowrap;
+}
+
+.section-switcher:hover .section-list,
+.section-switcher:focus-within .section-list,
+.section-switcher.is-hovered .section-list,
+.section-switcher.is-open .section-list {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -46px);
+}
+
+@media (max-width: 640px) {
+  .brief-shell {
+    padding-inline: 18px;
+  }
+
+  .brief-figure {
+    margin-inline: 0;
+  }
+
+  .section-list {
+    flex-direction: column;
+    left: auto;
+    right: 0;
+    transform: translate(0, 8px);
+  }
+
+  .section-switcher:hover .section-list,
+  .section-switcher:focus-within .section-list,
+  .section-switcher.is-hovered .section-list,
+  .section-switcher.is-open .section-list {
+    transform: translate(0, -46px);
+  }
+}
+
+@media print {
+  .section-switcher {
+    display: none;
+  }
+
+  .brief-shell {
+    max-width: 700px;
+    padding: 36px 0;
+  }
+
+  .brief-section {
+    break-inside: avoid;
+    margin-bottom: 64px;
+  }
+}

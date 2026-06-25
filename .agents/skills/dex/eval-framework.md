@@ -5,13 +5,15 @@ Use this reference when `/dex eval` is improving a Dex skill. It turns skill tes
 ## Source Principles
 
 - Design the relevant eval suite before repairing the skill.
+- Treat every eval as: prompt -> captured run trace plus artifacts -> checks -> score.
 - Start small: 10-20 focused prompts are enough to catch regressions early.
 - Test triggering as well as output quality.
+- Include explicit, implicit, contextual, and negative-control prompt rows so routing regressions are visible.
 - Use positive, contextual, boundary, and negative-control cases.
 - Prefer constrained tasks and concrete fixtures over broad vibe checks.
 - Compare with the previous skill, a snapshot, or no skill so the delta is visible.
 - Require evidence for every pass.
-- Track cost: time, tokens, turns, command count, and repair rounds.
+- Track score, time, tokens, turns, command count, and repair rounds.
 - Keep eval artifacts local unless they are durable fixtures or validators.
 
 ## Execution Surfaces
@@ -40,7 +42,7 @@ Classify the target before writing evals:
 
 ## Eval Case Shape
 
-Use JSON for multi-case suites when possible:
+Use JSON for multi-case suites when possible. The durable prompt row fields are `id`, `should_trigger`, and `prompt`; every other field exists to make the row gradeable:
 
 ```json
 {
@@ -63,7 +65,8 @@ Use JSON for multi-case suites when possible:
       "deterministic_checks": {
         "must_include_any": [["weak joint"], ["crux question"]],
         "must_not_include_any": [["I cannot inspect"], ["generic best practices"]]
-      }
+      },
+      "rubric_checks": ["source_grounding", "weak_joint", "final_question"]
     }
   ]
 }
@@ -105,6 +108,37 @@ Before running or repairing, create or refresh the suite that will judge the wor
 - Mark expensive, auth-dependent, or destructive cases with their run condition instead of deleting them.
 
 Do not let repair discovery become the eval design method. If the first failed run reveals that the suite was missing the real behavior, fix the eval suite first, then rerun before editing the target skill.
+
+## Trace And Grading Contract
+
+Each runnable case must produce a local run record under `.dex/evals/<skill-name>/<timestamp>/round-N/`:
+
+```json
+{
+  "id": "explicit-crux-request",
+  "prompt": "Use design:crux to find the crux in this plan.",
+  "should_trigger": true,
+  "trace_jsonl": "artifacts/explicit-crux-request.trace.jsonl",
+  "stdout_path": "artifacts/explicit-crux-request.stdout.txt",
+  "stderr_path": "artifacts/explicit-crux-request.stderr.txt",
+  "deterministic_results": [
+    { "id": "skill_invoked", "pass": true, "evidence": "trace contains skill_context" },
+    { "id": "no_thrash", "pass": true, "evidence": "3 command_execution events" }
+  ],
+  "rubric_result": "artifacts/explicit-crux-request.rubric.json",
+  "score": 92,
+  "overall_pass": true
+}
+```
+
+Deterministic checks inspect JSONL events and artifacts first:
+
+- skill invocation: the expected skill appears in the trace, loaded instructions, or explicit evaluator evidence
+- command behavior: `command_execution` events include or exclude the expected commands
+- artifact behavior: expected files exist, expected files are absent, or `git status --porcelain` matches an allow list
+- efficiency: command count, token usage from `turn.completed` events, and repeated-command loops stay within the case limit
+
+Use model-assisted grading only after deterministic checks cannot answer the question. The rubric run must be read-only, must use `--output-schema`, and must write structured JSON next to the trace.
 
 ## Judge Rubric
 
@@ -191,7 +225,22 @@ Record:
 
 ## Codex Exec Launch
 
-When an eval runner uses Codex as the judge or forward-test agent, launch it through the current non-interactive CLI shape:
+When an eval runner uses Codex as the forward-test agent, capture a JSONL trace:
+
+```bash
+codex exec \
+  --json \
+  --full-auto \
+  --model gpt-5.5 \
+  -c 'model_reasoning_effort="medium"' \
+  --ephemeral \
+  --skip-git-repo-check \
+  - < "$PROMPT_FILE" \
+  > "$TRACE_JSONL" \
+  2> "$STDERR_FILE"
+```
+
+When an eval runner uses Codex as the judge, keep it read-only and schema-constrained:
 
 ```bash
 codex exec \
@@ -200,13 +249,19 @@ codex exec \
   --sandbox read-only \
   --ephemeral \
   --skip-git-repo-check \
-  --output-last-message "$OUTPUT_FILE" \
+  --output-schema "$RUBRIC_SCHEMA" \
+  -o "$RUBRIC_JSON" \
   - < "$PROMPT_FILE"
 ```
 
 Rules:
 
 - Put `exec` immediately after `codex`; flags belong to `codex exec`.
+- Use `--json` for forward-test runs so graders can parse trace events instead of final prose.
+- Use `--full-auto` for forward-test cases that must write files, and keep judge passes read-only.
+- Persist stdout JSONL, stderr, generated artifacts, and rubric JSON before scoring a case.
+- Parse `command_execution` and `turn.completed` events for process, command-count, and token checks.
+- Use `--output-schema` for rubric judging so subjective checks become stable JSON.
 - Use `--model gpt-5.5` by default for skill evals. Do not default to `gpt-5.4-mini`; it is for lighter coding tasks or subagents, not quality benchmarks.
 - Allow an explicit `--model` override for cost or availability, but record the actual model in every benchmark artifact.
 - Use `-c 'model_reasoning_effort="medium"'` as the balanced default. Use `low` only for fast smoke checks and `high`/`xhigh` only when evals show a quality gain.

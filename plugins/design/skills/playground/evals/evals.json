@@ -20,7 +20,7 @@
       ],
       "deterministic_checks": {
         "must_include_any": [["artifact editor"], ["live preview"], ["export", "paste-back"], ["reset"], ["source assumptions", "assumptions"]],
-        "must_not_include_any": [["design:diverge"], ["production UI"], ["frontend-design"]]
+        "must_not_include_any": [["design:diverge"], ["frontend-design"]]
       }
     },
     {

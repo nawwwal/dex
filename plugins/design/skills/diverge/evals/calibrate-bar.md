@@ -6,7 +6,7 @@
 /diverge "Diverge typography for a dense analytics dashboard."
 ```
 
-## Expected
+## Expected behavior
 
 The skill should select Visual-system-level mode with Typography emphasis.
 
@@ -28,3 +28,8 @@ Output should include:
 - It includes numeric/tabular style.
 - It includes accessibility and localization considerations.
 - It does not propose expressive display typography as the default for dense analytics.
+
+## Fail signals
+
+- Treats typography as decoration instead of hierarchy and readability infrastructure.
+- Defaults to expressive display type for a dense dashboard.

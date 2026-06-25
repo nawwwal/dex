@@ -10,7 +10,7 @@
     {
       "name": "core",
       "source": "./plugins/core",
-      "description": "Agent environment setup, teaching, council, reflection, DevRev, session wrap-up, and Portent knowledge-base workflows",
+      "description": "Agent environment setup, explanation, council, reflection, DevRev, session wrap-up, and Portent knowledge-base workflows",
       "version": "1.2.8"
     },
     {
@@ -28,7 +28,7 @@
     {
       "name": "tools",
       "source": "./plugins/tools",
-      "description": "Codex review, media tools, and HTML presentations",
+      "description": "Codex review, media tools, HTML visual briefs, and official mymind MCP",
       "version": "1.2.1"
     },
     {

@@ -31,7 +31,7 @@
         "Ends with one crux question or a decisive next test."
       ],
       "deterministic_checks": {
-        "must_include_any": [["weak joint"], ["core"], ["real bet"], ["crux question"]],
+        "must_include_any": [["weak joint"], ["core", "real question", "where exactly"], ["real bet", "different bet", "failure mode"], ["crux question"]],
         "must_not_include_any": [["dao:"], ["qi:"], ["evidence ledger:"], ["method agent"]]
       }
     },

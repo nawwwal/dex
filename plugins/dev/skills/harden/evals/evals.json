@@ -3,6 +3,8 @@
   "evals": [
     {
       "id": "frontend-substrate-review",
+      "category": "positive",
+      "should_trigger": true,
       "prompt": "Use $harden to review evals/files/brittle-settings-panel.tsx for production interface risks. Focus on the biggest weak joints first.",
       "expected_output": "A severity-ranked critique that leads with semantic HTML, layout flow, cascade cost, and runtime/dependency risk before visual polish.",
       "files": [
@@ -32,6 +34,8 @@
     },
     {
       "id": "state-and-form-hardening",
+      "category": "positive",
+      "should_trigger": true,
       "prompt": "Use $harden to review evals/files/payment-filter-form.tsx. This is a merchant dashboard form used on narrow screens and slow networks.",
       "expected_output": "A production hardening review that catches form semantics, validation placement, disabled/loading behavior, text overflow, and narrow-screen failure modes.",
       "files": [
@@ -60,6 +64,8 @@
     },
     {
       "id": "browser-route-out",
+      "category": "companion-routing",
+      "should_trigger": true,
       "prompt": "Use $harden to check http://localhost:8704/settings for overflow, loading states, and accessibility. I need a live page inspection.",
       "expected_output": "The skill should not pretend to inspect the live URL. It should route capture to agent-browser before making page-specific claims.",
       "files": [],
@@ -82,6 +88,8 @@
     },
     {
       "id": "blade-route-out",
+      "category": "companion-routing",
+      "should_trigger": true,
       "prompt": "Use $harden to score whether this Razorpay Blade page uses the right Card, Box, Scale, hover, and focus behavior.",
       "expected_output": "The skill should route Blade scoring, component choice, and interaction behavior to the Blade skill instead of doing a generic harden review.",
       "files": [],
@@ -105,6 +113,8 @@
     },
     {
       "id": "visual-polish-secondary",
+      "category": "positive",
+      "should_trigger": true,
       "prompt": "Use $harden to review evals/files/marketing-card.css. The stakeholder says it needs to look more premium.",
       "expected_output": "A critique that translates vague style language into mechanics and still prioritizes substrate issues such as cascade cost and responsive behavior over decorative polish.",
       "files": [

@@ -1,5 +1,9 @@
 # Test: Companion skill routing
 
+## Prompt
+
+Multiple companion-routing prompts; see the individual prompt sections below.
+
 ## Prompt 1: Weak premise before divergence
 
 ```md

@@ -51,16 +51,16 @@
       "id": "routing-generate-then-optimize",
       "category": "routing",
       "should_trigger": true,
-      "prompt": "Generate a product mockup, then convert it to WebP for my html-presentation deck.",
-      "expected_output": "Sequences generate then optimize; returns to html-presentation only for deck integration.",
+      "prompt": "Generate a product mockup, then convert it to WebP for my brief.",
+      "expected_output": "Sequences generate then optimize; returns to brief only for HTML artifact integration.",
       "assertions": [
         "Names generate first, optimize second.",
-        "Does not make html-presentation the primary handler.",
-        "Treats deck wiring as follow-up."
+        "Does not make brief the primary handler.",
+        "Treats brief wiring as follow-up."
       ],
       "deterministic_checks": {
-        "must_include_any": [["generate"], ["optimo"], ["WebP"], ["html-presentation"]],
-        "must_not_include_any": [["Reveal.js as primary"], ["build the deck first"]]
+        "must_include_any": [["generate"], ["optimo"], ["WebP"], ["brief"]],
+        "must_not_include_any": [["brief as primary"], ["build the HTML first"]]
       }
     },
     {
@@ -120,11 +120,11 @@
       "assertions": [
         "Treats mockup as image generation.",
         "Defaults to Flash model.",
-        "Does not route to playground or html-presentation."
+        "Does not route to playground or brief."
       ],
       "deterministic_checks": {
         "must_include_any": [["generate"], ["mockup"], ["gemini-3.1-flash-image-preview"]],
-        "must_not_include_any": [["html-presentation"], ["Reveal.js"], ["optimo"]]
+        "must_not_include_any": [["brief"], ["optimo"]]
       }
     },
     {
@@ -227,31 +227,31 @@
       "id": "optimize-implicit-large-assets",
       "category": "implicit-trigger",
       "should_trigger": true,
-      "prompt": "These slide images are 4MB each — shrink them for the deck without changing layout.",
-      "expected_output": "Routes to optimize compression, not html-presentation deck build.",
+      "prompt": "These brief images are 4MB each - shrink them for the HTML report without changing layout.",
+      "expected_output": "Routes to optimize compression, not brief artifact construction.",
       "assertions": [
         "Treats task as compression/resize.",
-        "Does not start Reveal.js deck construction.",
-        "May mention returning to deck integration after optimize."
+        "Does not start HTML brief construction.",
+        "May mention returning to brief integration after optimize."
       ],
       "deterministic_checks": {
         "must_include_any": [["optimo"], ["compress"], ["optimize"]],
-        "must_not_include_any": [["build a Reveal deck"], ["index.html deck first"]]
+        "must_not_include_any": [["build the brief first"], ["index.html first"]]
       }
     },
     {
-      "id": "negative-html-presentation-primary",
+      "id": "negative-brief-primary",
       "category": "negative-control",
       "should_trigger": false,
-      "prompt": "Build a Reveal.js HTML presentation deck from this outline with speaker notes.",
-      "expected_output": "Routes to html-presentation, not media-tools.",
+      "prompt": "Build a browser-native editorial HTML brief from this source with generated Blackline visuals.",
+      "expected_output": "Routes to brief, not media-tools as the primary handler.",
       "assertions": [
         "Does not use media-tools as primary workflow.",
-        "Names html-presentation or Reveal.js.",
-        "Does not start image generation or optimo."
+        "Names brief.",
+        "Treats image generation as a sub-step, not the primary workflow."
       ],
       "deterministic_checks": {
-        "must_include_any": [["html-presentation"], ["Reveal"]],
+        "must_include_any": [["brief"], ["HTML"]],
         "must_not_include_any": [["optimo@0.0.24 as primary"], ["generate.py as primary"]]
       }
     },

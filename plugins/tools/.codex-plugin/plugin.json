@@ -1,15 +1,16 @@
 {
   "name": "tools",
   "version": "1.2.1",
-  "description": "Codex review, media tools, and HTML presentations",
+  "description": "Codex review, media tools, HTML visual briefs, and official mymind MCP",
   "author": {
     "name": "Aditya Nawal"
   },
   "skills": "./skills/",
+  "mcpServers": "./codex.mcp.json",
   "interface": {
     "displayName": "Dex Tools",
-    "shortDescription": "Codex review, HTML decks, and media-tools",
-    "longDescription": "Dex tools for cross-model Codex review, Reveal.js HTML presentations, and unified media generation and optimization.",
+    "shortDescription": "Codex review, HTML briefs, media, and mymind",
+    "longDescription": "Dex tools for cross-model Codex review, browser-native editorial HTML briefs, unified media generation and optimization, and the official mymind MCP server.",
     "developerName": "Aditya Nawal",
     "category": "Productivity",
     "composerIcon": "./assets/logo.png",

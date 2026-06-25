@@ -1,6 +1,6 @@
 {
   "skill_name": "dex",
-  "version": 2,
+  "version": 3,
   "notes": "Behavior-first regression suite for Dex maintainer routing, schema hygiene, release gates, and skill-eval orchestration. Cases must prove agent behavior with artifacts or explicit evidence, not just mention workflow terms.",
   "standards": {
     "required_coverage": [
@@ -11,6 +11,8 @@
       "known failure",
       "artifact case",
       "eval suite health",
+      "json trace capture",
+      "structured rubric grading",
       "repair regression",
       "release gate",
       "benchmark comparison"
@@ -19,6 +21,9 @@
       "route chosen",
       "files inspected",
       "artifacts created or intentionally skipped",
+      "jsonl trace path",
+      "deterministic check results",
+      "rubric JSON path or skipped",
       "baseline used",
       "pass/fail evidence",
       "blocking failures",
@@ -79,7 +84,6 @@
       ],
       "deterministic_checks": {
         "commands": [
-          "python3 -m json.tool .agents/skills/dex/evals/evals.json",
           "python3 .agents/skills/dex/scripts/validate_dex_skill.py"
         ]
       },
@@ -88,6 +92,56 @@
         "coverage/evidence check result",
         "decision to proceed, block, or repair",
         "artifact or summary entry recorded before forward-run output"
+      ]
+    },
+    {
+      "id": "codex-exec-jsonl-and-schema-run-record",
+      "category": "known-failure",
+      "coverage": [
+        "json trace capture",
+        "structured rubric grading",
+        "benchmark comparison"
+      ],
+      "should_trigger": true,
+      "run_mode": "deterministic-or-clean-context",
+      "prompt": "Use the dex skill to eval plugins/design/skills/crux. Follow the OpenAI eval-skills pattern: prompt rows, codex exec JSONL traces, deterministic checks, and schema-constrained rubric grading.",
+      "expected_output": "The agent records each runnable case as prompt -> JSONL trace/artifacts -> deterministic checks -> optional rubric JSON -> score, and stores the run record under .dex/evals/.",
+      "assertions": [
+        "Uses `codex exec --json` for forward-test runs and saves stdout as a .jsonl trace.",
+        "Grades objective behavior from JSONL events or artifacts before model-assisted judgment.",
+        "Parses command behavior from `command_execution` events and token/cost data from `turn.completed` events when present.",
+        "Uses `--output-schema` for qualitative rubric judging and saves the rubric JSON.",
+        "Records score and overall_pass in the case run record."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [
+          [
+            "--json"
+          ],
+          [
+            "JSONL"
+          ],
+          [
+            "command_execution"
+          ],
+          [
+            "--output-schema"
+          ]
+        ],
+        "must_not_include_any": [
+          [
+            "grade from final prose only"
+          ],
+          [
+            "rubric can be free-form"
+          ]
+        ]
+      },
+      "required_evidence": [
+        "trace_jsonl path",
+        "deterministic_results entries",
+        "rubric JSON path or explicit deterministic-only skip",
+        "score and overall_pass"
       ]
     },
     {

@@ -6,11 +6,11 @@
 /diverge "Diverge visual directions for a product dashboard and launch landing."
 ```
 
-## Expected
+## Expected behavior
 
 The skill should select Visual-system-level or Mixed and explicitly separate register.
 
-Pass criteria:
+## Pass criteria
 
 - Separates product dashboard from brand landing.
 - Product dashboard uses familiarity, state clarity, useful density, restrained color, and motion for feedback.
@@ -18,3 +18,8 @@ Pass criteria:
 - Mixed register is explicit.
 - It does not average both into generic SaaS treatment.
 - Accessibility checks remain present for both.
+
+## Fail signals
+
+- Averages product dashboard and launch landing into one generic SaaS visual system.
+- Drops accessibility or state clarity while chasing brand expression.

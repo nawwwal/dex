@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "mymind": {
+      "type": "http",
+      "url": "https://mcp.mymind.com/mcp"
+    }
+  }
+}

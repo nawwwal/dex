@@ -57,13 +57,15 @@ From script output + Slack asks + previous Sync State + any supplied `External e
 5. Renders:
 
 ```
+## Sync State
+source_coverage: [DevRev checked; Slack checked; Tolaria checked; GitHub/Codex not provided or supplied]
+
 → ATTENTION NOW: [ISS-X or signal] — [why it needs attention]
 → ON MY PLATE: [ISS-Y: title] — [state, freshness, next action]
 → I AM BLOCKING: [item/person] — [what they need from me]
 → BLOCKED / WAITING: [item] — [who/what is blocking it]
 → DRIFT DETECTED: [DevRev vs Slack/Tolaria/external mismatch]
 → FOCUS: [the one thing to start with — one sentence why]
-→ SOURCE COVERAGE: [DevRev checked; Slack checked; Tolaria checked; GitHub/Codex not provided or supplied]
 ```
 
 If due_today and overdue are both empty: show starts_today as top item.

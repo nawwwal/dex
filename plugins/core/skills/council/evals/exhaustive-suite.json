@@ -25,6 +25,8 @@
       "id": "explicit-trigger-auth-audit",
       "category": "explicit-trigger",
       "should_trigger": true,
+      "run_condition": "long-run only; representative aggregate runners should prefer fixture-backed explicit cases such as artifact-api-module or explicit-trigger-system-plugins",
+      "timeout_seconds": 600,
       "prompt": "Use core:council to audit our auth module",
       "expected_output": "Routes to council code mode with findings goal, spawns diverse lenses including devil's advocate and blind-spot, and synthesizes a Council Report grounded in the auth module.",
       "assertions": [

@@ -1,6 +1,6 @@
 ---
 name: media-tools
-description: "Generate, edit, compress, convert, and resize images and video. Use for AI image generation/editing, WebP/AVIF conversion, compression, resizing, or when playground/html-presentation needs optimized media. Replaces generate-image and media-optimizer."
+description: "Generate, edit, compress, convert, and resize images and video. Use for AI image generation/editing, WebP/AVIF conversion, compression, resizing, or when playground/brief needs optimized media. Replaces generate-image and media-optimizer."
 disable-model-invocation: true
 ---
 
@@ -16,15 +16,17 @@ Replaces `generate-image` and `media-optimizer`. Do not invoke those legacy skil
 |---|---|---|
 | Generate, edit, or create AI images | generate | `references/generate.md` |
 | Compress, convert format, resize images or video | optimize | `references/optimize.md` |
-| Generate then optimize (e.g. mockup → WebP for a deck) | generate → optimize | both references |
+| Generate then optimize (e.g. illustration -> WebP for a brief) | generate -> optimize | both references |
 
-When `playground` or `html-presentation` needs generated or optimized media, route here first. Return to the requesting skill only for artifact or deck integration.
+When `playground` or `brief` needs generated or optimized media, route here first. Return to the requesting skill only for artifact integration.
 
-Do not use `html-presentation`, `playground`, or `codex` as the primary handler for raw media work.
+Do not use `brief`, `playground`, or `codex` as the primary handler for raw media work.
 
 ## Quick surfaces
 
 ### Generate (deterministic CLI)
+
+Before generating, state the chosen path, default model, and invocation surface: `generate`, `gemini-3.1-flash-image-preview`, and `scripts/generate.py` unless you are explicitly using inline `google-genai` code for a conversational edit.
 
 ```bash
 python $CLAUDE_SKILL_DIR/scripts/generate.py \

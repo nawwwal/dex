@@ -1,0 +1,5 @@
+---
+name: brief
+short_description: "Build editorial HTML briefs"
+default_prompt: "Use $brief to create a browser-native editorial HTML brief with dynamic sectioning, Blackline-style visuals, inline sources, read-next links, adaptive color theme, and a floating section switcher."
+---

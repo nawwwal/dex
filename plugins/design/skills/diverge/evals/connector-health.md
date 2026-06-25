@@ -23,7 +23,7 @@
 - Exception inbox
 - Connector inventory with impact overlay
 
-## Expected
+## Expected behavior
 
 The skill should not ask the full intake because the prompt includes surface, objects, states, and anti-pattern.
 
@@ -78,3 +78,8 @@ Each direction must include:
 - Copy examples include state-specific CTA or error text.
 - Handoff notes include objects, states, events, data, permissions, accessibility, and QA.
 - Obvious baseline is judged seriously rather than dismissed for novelty.
+
+## Fail signals
+
+- Reuses the same action path for all connector health states.
+- Produces novelty names without state/action mechanics or handoff notes.

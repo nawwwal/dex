@@ -6,11 +6,11 @@
 /diverge "Users do not discover swipe to reply. Diverge education approaches."
 ```
 
-## Expected
+## Expected behavior
 
 The skill should select UX-level or Interaction-level with Education emphasis.
 
-Pass criteria:
+## Pass criteria
 
 - First asks whether the UI can be made more obvious.
 - Includes targeted non-blocking education.
@@ -19,3 +19,8 @@ Pass criteria:
 - Does not default to a blocking tooltip tour.
 - Includes accessibility for hidden gestures.
 - Includes first-time and repeated-use behavior.
+
+## Fail signals
+
+- Defaults to a blocking tooltip tour.
+- Teaches a hidden gesture without accessibility or repeated-use behavior.

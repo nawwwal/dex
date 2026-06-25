@@ -1,0 +1,424 @@
+{
+  "skill_name": "why",
+  "version": 1,
+  "notes": "Dex eval suite for Why. Cases judge routing, source-backed explanation, Tolaria-backed learner profile use, explicit knowledge-base writeback, and response feel. Passing output must explain the why behind unfamiliar work without reviving the old local Teach memory or SQLite index.",
+  "standards": {
+    "required_coverage": [
+      "explicit trigger",
+      "alias trigger",
+      "learn-alias trigger",
+      "implicit trigger",
+      "contextual trigger",
+      "negative-control",
+      "known failure",
+      "artifact case",
+      "eval suite health",
+      "repair regression",
+      "benchmark comparison",
+      "response quality",
+      "knowledge-base profile lookup",
+      "knowledge-base writeback",
+      "frontend-personalized teaching",
+      "over-teaching regression",
+      "execution-gate regression",
+      "no-local-memory regression",
+      "concept-leakage regression",
+      "brief handoff",
+      "subagent handoff"
+    ],
+    "response_quality": [
+      "Builds a mental model before details.",
+      "Uses the active context or artifact instead of generic explanation.",
+      "Searches Tolaria for learner, learning, teach, or why profile context before non-trivial personalization.",
+      "Uses the learner profile to choose frontend or design-to-code examples when that helps.",
+      "Defines unfamiliar terms once and then uses them naturally.",
+      "Explains alternatives through when they win and fail.",
+      "States tradeoffs as benefit, cost, and risk.",
+      "Names concepts used by clever code or abstractions.",
+      "Gives focused read-next topics.",
+      "Asks one grounding question before execution.",
+      "Avoids over-teaching when a compact answer is enough.",
+      "Does not claim the user has learned a concept without confirmation or observed use.",
+      "Does not create local Teach or Why memory files when Tolaria is the requested knowledge base.",
+      "Routes HTML output, report, and shareable-site artifact requests through brief while Why owns the learning spine."
+    ],
+    "passing_run_must_record": [
+      "route chosen",
+      "files or artifacts inspected",
+      "Tolaria profile queries or reason skipped",
+      "whether execution was gated",
+      "concepts explained",
+      "knowledge-base writes performed or intentionally skipped",
+      "response-quality score",
+      "blocking failures"
+    ],
+    "quality_grading": {
+      "scale": "Each quality_rubric dimension is a weight from 1 to 3. Judges score each dimension 0 to weight and cite output evidence for every non-zero score.",
+      "pass_threshold": 0.75,
+      "evidence_rule": "A pass requires concrete evidence snippets from the output or generated artifact, not only evaluator opinion."
+    },
+    "benchmark_requirements": {
+      "baseline": "none",
+      "runs": ["no-skill baseline", "with Why skill"],
+      "must_record": ["pass_rate", "routing_accuracy", "time_seconds", "tokens_or_unknown", "turns_or_commands", "quality_delta", "accepted_cost_tradeoff"]
+    }
+  },
+  "evals": [
+    {
+      "id": "eval-suite-health-before-forward-run",
+      "category": "known-failure",
+      "coverage": ["eval suite health", "repair regression"],
+      "should_trigger": true,
+      "run_mode": "deterministic-or-clean-context",
+      "prompt": "Use the dex skill to eval plugins/core/skills/why. Before any clean-context evaluator runs, validate that the Why eval suite is healthy and gradeable.",
+      "expected_output": "The agent validates eval JSON and Why-specific coverage first, fixes suite blockers before forward runs, and records suite-health evidence.",
+      "assertions": [
+        "Runs `python3 -m json.tool plugins/core/skills/why/evals/evals.json` before clean-context forward runs.",
+        "Runs `python3 plugins/core/skills/why/scripts/validate_why_evals.py` before clean-context forward runs.",
+        "Blocks or repairs the run if response-quality, knowledge-base, or benchmark coverage is missing.",
+        "Records suite-health evidence in the eval summary or round artifact."
+      ],
+      "deterministic_checks": {
+        "commands": [
+          "python3 -m json.tool plugins/core/skills/why/evals/evals.json",
+          "python3 plugins/core/skills/why/scripts/validate_why_evals.py"
+        ]
+      },
+      "required_evidence": ["json validation output", "coverage validator output", "proceed/block/repair decision"]
+    },
+    {
+      "id": "explicit-why-unfamiliar-context",
+      "category": "positive",
+      "coverage": ["explicit trigger", "response quality", "execution-gate regression", "knowledge-base profile lookup"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $why to explain how SQLite FTS indexing works before implementing anything.",
+      "expected_output": "The agent searches Tolaria for relevant learner/profile context, teaches SQLite FTS with a mental model, alternatives, tradeoffs, read-next topics, and one grounding question before implementation.",
+      "assertions": [
+        "Builds a mental model before implementation details.",
+        "Searches Tolaria for learner, learning, teach, or why profile context, or states why Tolaria was unavailable.",
+        "Defines SQLite FTS5 and distinguishes lexical search from semantic embedding search.",
+        "Compares grep, SQLite LIKE, FTS5, and vector embeddings through when they win and fail.",
+        "Explains tradeoffs as benefit, cost, and risk.",
+        "Asks one grounding question before doing implementation work."
+      ],
+      "quality_rubric": {
+        "mental_model": 2,
+        "profile_lookup": 2,
+        "context_grounding": 1,
+        "alternatives_tradeoffs": 2,
+        "read_next": 1,
+        "execution_gate": 2
+      },
+      "required_evidence": ["trigger route", "Tolaria profile lookup", "response-quality score", "grounding question"]
+    },
+    {
+      "id": "teach-alias-unfamiliar-context",
+      "category": "positive",
+      "coverage": ["alias trigger", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $teach to explain how this ranking abstraction works, but follow the current Dex skill name if it changed.",
+      "expected_output": "The agent treats teach as an alias for Why, uses the Why behavior, and does not ask the user to switch skill names before answering.",
+      "assertions": [
+        "Routes to Why behavior even though the user used the old teach alias.",
+        "Does not claim the teach skill still owns the behavior.",
+        "Explains the abstraction through concepts and tradeoffs.",
+        "Uses the current `why` skill name in any route summary."
+      ],
+      "quality_rubric": {
+        "alias_routing": 3,
+        "concept_clarity": 2,
+        "current_name": 2
+      },
+      "required_evidence": ["alias route", "current skill name", "concept explanation"]
+    },
+    {
+      "id": "learn-alias-trigger",
+      "category": "positive",
+      "coverage": ["learn-alias trigger", "alias trigger", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $learn to walk me through how React useEffect cleanup works before we touch the component.",
+      "expected_output": "The agent treats $learn as an alias for Why, routes to Why behavior, explains useEffect cleanup through frontend mechanics, and asks one grounding question before any component changes.",
+      "assertions": [
+        "Routes to Why behavior for the $learn alias without asking the user to switch skill names.",
+        "Does not claim a separate learn skill exists or routes elsewhere.",
+        "Explains useEffect cleanup through concrete mechanics: return function, dependency array, and cleanup timing.",
+        "Asks one grounding question before any component changes."
+      ],
+      "quality_rubric": {
+        "alias_routing": 3,
+        "concept_clarity": 2,
+        "execution_gate": 2
+      },
+      "required_evidence": ["learn alias route", "why skill invoked", "concept explanation", "grounding question"]
+    },
+    {
+      "id": "implicit-explain-trigger",
+      "category": "positive",
+      "coverage": ["implicit trigger", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "I don't understand this parser function in plugins/core/skills/why/evals/fixtures/parser_function.py. Walk me through what concepts it uses before changing it.",
+      "files": ["evals/fixtures/parser_function.py"],
+      "expected_output": "The agent implicitly routes to Why, explains parser concepts before edits, and asks whether to proceed before changing code.",
+      "assertions": [
+        "Routes as Why behavior even without explicit $why.",
+        "Names parser-related concepts such as tokenization, grammar, syntax tree, state, or validation only when relevant to the given function.",
+        "Explains concepts through the function's actual behavior rather than abstract textbook prose.",
+        "Quotes or names at least one concrete line, function, or branch from the fixture.",
+        "Does not edit code before a grounding question or user confirmation."
+      ],
+      "quality_rubric": {
+        "implicit_routing": 2,
+        "artifact_grounding": 2,
+        "concept_clarity": 2,
+        "execution_gate": 2
+      },
+      "required_evidence": ["implicit route", "fixture inspected", "concept list", "no pre-confirmation edit"]
+    },
+    {
+      "id": "clever-function-explanation",
+      "category": "positive",
+      "coverage": ["contextual trigger", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Write a compact ranking function for search results and explain the clever parts.",
+      "expected_output": "The answer includes code plus a plain explanation of concepts, why the function has that shape, and what to read to understand the choice.",
+      "assertions": [
+        "Includes `Concepts Used`, `Why This Shape`, and `To Understand This Choice` sections or equivalent headings.",
+        "Explains ranking concepts such as weighting, normalization, token match, or BM25 only if the code uses them.",
+        "States the simpler alternative and why the chosen shape wins or fails.",
+        "Does not hide cleverness behind unexplained terse code."
+      ],
+      "quality_rubric": {
+        "code_explanation": 2,
+        "design_choice": 2,
+        "read_next": 1,
+        "no_unexplained_cleverness": 2
+      },
+      "required_evidence": ["concepts used", "design-choice explanation", "read-next topics"]
+    },
+    {
+      "id": "unrelated-clever-function-no-knowledgebase-leakage",
+      "category": "known-failure",
+      "coverage": ["response quality", "repair regression", "concept-leakage regression"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Write a compact debounce helper for UI input events and explain the clever parts.",
+      "known_failure_source": "Teach-to-Why migration: knowledge-base examples must not leak into unrelated clever-function explanations.",
+      "before_failure_signal": "Mentions Tolaria, Portent, SQLite, FTS, BM25, lexical search, or inverted indexes while explaining a debounce helper.",
+      "fixed_by": "Clever Function Rule now says not to import Why knowledge-base examples into unrelated answers.",
+      "expected_output": "The answer includes a debounce helper plus concepts actually used by debounce logic, such as timers, closures, event frequency, cancellation, and latency tradeoffs.",
+      "assertions": [
+        "Includes a self-contained debounce helper or clearly described implementation.",
+        "Explains only mechanisms used by debounce logic.",
+        "Does not mention Tolaria, Portent, SQLite, FTS, BM25, inverted indexes, or lexical search.",
+        "States the simpler alternative and the latency/responsiveness tradeoff."
+      ],
+      "deterministic_checks": {
+        "must_not_include_any": [
+          ["Tolaria"],
+          ["Portent"],
+          ["SQLite"],
+          ["FTS"],
+          ["BM25"],
+          ["inverted index"],
+          ["lexical search"]
+        ]
+      },
+      "quality_rubric": {
+        "code_explanation": 2,
+        "concept_relevance": 3,
+        "design_choice": 2,
+        "no_unrelated_knowledgebase_leakage": 3
+      },
+      "required_evidence": ["concepts used", "no knowledge-base leakage", "latency tradeoff"]
+    },
+    {
+      "id": "brief-handoff-html-output-learning-request",
+      "category": "positive",
+      "coverage": ["brief handoff", "subagent handoff", "artifact case", "response quality", "contextual trigger"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $why to explain why the parser in plugins/core/skills/why/evals/fixtures/parser_function.py works. Then produce a substantial multi-section shareable HTML report/site that I can send to a teammate.",
+      "files": ["evals/fixtures/parser_function.py"],
+      "expected_output": "The agent uses Why to inspect and explain the parser, then routes the substantial HTML report or shareable-site artifact production to the brief skill through a subagent when available, or through an explicit clean handoff boundary when subagents are unavailable.",
+      "assertions": [
+        "Uses Why for the explanation spine: mental model, concepts, alternatives, tradeoffs, or read-next guidance.",
+        "Inspects the parser fixture and grounds the explanation in the actual function.",
+        "Passes a concrete handoff to `brief` that includes the learning spine, source material, audience, and artifact constraints.",
+        "Uses a subagent for the substantial Brief artifact when subagent tooling is available, or states that subagents are unavailable before using a clean same-thread brief handoff.",
+        "Does not hand-roll the final HTML artifact as Why-owned output.",
+        "Does not route this request to a slide deck, Reveal.js, PowerPoint, or Figma Slides workflow."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["brief", "subagent"], ["brief", "handoff"], ["brief", "clean handoff"]],
+        "must_not_include_any": [["Reveal.js"], ["PowerPoint"], ["Figma Slides"], ["Why owns the HTML artifact"]]
+      },
+      "quality_rubric": {
+        "source_grounding": 2,
+        "learning_spine": 2,
+        "brief_routing": 3,
+        "subagent_handoff": 2,
+        "deck_route_avoided": 1
+      },
+      "required_evidence": ["fixture inspected", "why explanation spine", "brief route", "subagent or clean handoff boundary", "deck route avoided"]
+    },
+    {
+      "id": "artifact-backed-skill-teaching",
+      "category": "positive",
+      "coverage": ["artifact case", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $why to explain /Users/aditya.nawal/projects/dex/plugins/core/skills/why/SKILL.md to me like I have never seen skill routing or knowledge-base-backed learner profiles before.",
+      "expected_output": "The agent inspects the skill file, teaches from the actual file, explains routing and Tolaria-backed profiles, and avoids generic database advice disconnected from the skill.",
+      "assertions": [
+        "Inspects the target file before explaining it.",
+        "Uses concrete sections or rules from the skill in the explanation.",
+        "Explains skill routing and knowledge-base profile resolution in plain language.",
+        "Names alternatives and tradeoffs from this skill's design.",
+        "Asks one grounding question before proposing changes."
+      ],
+      "quality_rubric": {
+        "source_grounding": 3,
+        "concept_clarity": 2,
+        "alternatives_tradeoffs": 2,
+        "execution_gate": 1
+      },
+      "required_evidence": ["file inspected", "source-grounded explanation", "quality score"]
+    },
+    {
+      "id": "knowledge-base-concept-write",
+      "category": "positive",
+      "coverage": ["knowledge-base writeback", "no-local-memory regression"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Teach me the concept of inverted indexes and save it to my learning knowledge base.",
+      "expected_output": "The agent explains the concept, uses core:portent/Tolaria for the durable note, and avoids creating local Teach or Why memory directories or SQLite indexes.",
+      "assertions": [
+        "Explains the concept before writing.",
+        "Uses Tolaria or clearly states Tolaria is unavailable before any fallback.",
+        "Creates or updates a Tolaria Note, Topic, or Event only because the prompt has explicit save intent.",
+        "Does not create `~/.agents/memory/teach/`, `~/.agents/memory/why/`, `profile.md`, or `index.sqlite3`.",
+        "Reports the knowledge-base object created or updated."
+      ],
+      "deterministic_checks": {
+        "must_not_include_any": [
+          ["~/.agents/memory/teach"],
+          ["~/.agents/memory/why"],
+          ["teach_memory.py"],
+          ["index.sqlite3"]
+        ]
+      },
+      "quality_rubric": {
+        "concept_explanation": 2,
+        "knowledge_base_write": 3,
+        "no_local_memory": 3
+      },
+      "required_evidence": ["concept explanation", "Tolaria object path or unavailable reason", "no local memory write"]
+    },
+    {
+      "id": "response-feel-not-lecture",
+      "category": "known-failure",
+      "coverage": ["known failure", "response quality", "repair regression", "over-teaching regression", "execution-gate regression"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Before fixing this small shell command, explain why it failed: `python3 script.py --path foo` says `unrecognized arguments: --path`.",
+      "known_failure_source": "Teach response-feel review: small command failures can turn into broad argparse lectures.",
+      "before_failure_signal": "Explains argparse internals broadly, includes unrelated read-next material, or asks for confirmation before giving the compact explanation.",
+      "fixed_by": "Right-size rule and execution-gate matrix in SKILL.md.",
+      "expected_output": "The answer teaches argparse basics compactly, uses the exact error, names the likely mismatch, gives one alternative, and avoids a long unrelated Python CLI lecture.",
+      "assertions": [
+        "Starts from the actual error message.",
+        "Explains the concept of CLI argument definitions and parser mismatch.",
+        "Keeps the response compact enough for a small error.",
+        "Does not include a broad tutorial on argparse internals.",
+        "Asks one grounding or proceed question before changing code."
+      ],
+      "quality_rubric": {
+        "right_sized_depth": 3,
+        "source_grounding": 2,
+        "concept_clarity": 2,
+        "execution_gate": 1
+      },
+      "required_evidence": ["right-sized response", "actual error referenced", "no broad lecture"]
+    },
+    {
+      "id": "frontend-personalized-teaching",
+      "category": "positive",
+      "coverage": ["response quality", "artifact case", "frontend-personalized teaching", "knowledge-base profile lookup", "no-local-memory regression"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $why to explain why the React component in plugins/core/skills/why/evals/fixtures/layout_shift_component.tsx has layout shift and hydration warnings. Search the knowledge base for the learner profile first.",
+      "files": ["evals/fixtures/layout_shift_component.tsx"],
+      "expected_output": "The answer searches Tolaria for learner profile context, then explains the issue through design-to-code mechanics: user-visible behavior, HTML structure, CSS layout constraints, JavaScript/React rendering, TypeScript or prop invariants when relevant, and design-engineering tradeoffs.",
+      "assertions": [
+        "Searches Tolaria for learner, learning, teach, or why profile context.",
+        "Uses the designer-to-design-engineer profile as the teaching lens when available or fallback when no Tolaria profile is found.",
+        "Inspects the fixture and grounds the explanation in `mounted`, conditional `<p>`, or the unsized image.",
+        "Explains frontend mechanics in detail instead of defaulting to backend or database examples.",
+        "Connects React behavior to HTML, CSS, browser rendering, and user-visible UI behavior.",
+        "Names tradeoffs such as accessibility, performance, maintainability, and design-system fit.",
+        "Gives focused read-next topics across HTML, CSS, JavaScript, TypeScript, or React.",
+        "Does not create or update local profile files because durable profiles belong in Tolaria."
+      ],
+      "quality_rubric": {
+        "profile_lookup": 3,
+        "profile_use": 2,
+        "frontend_mechanics": 3,
+        "design_to_code_bridge": 2,
+        "read_next": 1,
+        "no_local_memory": 2
+      },
+      "required_evidence": ["Tolaria profile lookup", "fixture inspected", "frontend mechanics", "design-to-code bridge", "read-next topics", "local memory intentionally skipped"]
+    },
+    {
+      "id": "negative-control-direct-implementation",
+      "category": "negative-control",
+      "coverage": ["negative-control"],
+      "should_trigger": false,
+      "run_mode": "clean-context-forward",
+      "prompt": "For plugins/core/skills/why/evals/fixtures/broken-plugin.json, state the smallest patch that would make the JSON valid. Do not explain anything unless needed.",
+      "files": ["evals/fixtures/broken-plugin.json"],
+      "expected_output": "The Why workflow should not take over. The agent should provide the narrow patch or answer and maybe mention JSON validation, without a concept lesson.",
+      "assertions": [
+        "Does not route to Why.",
+        "Does not produce a teaching scaffold.",
+        "Keeps the answer narrow.",
+        "Does not modify live plugin manifests."
+      ],
+      "required_evidence": ["no why route", "scoped answer", "fixture used"]
+    },
+    {
+      "id": "benchmark-against-no-skill-baseline",
+      "category": "benchmark",
+      "coverage": ["benchmark comparison", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Benchmark Why against a no-skill baseline for explaining plugins/core/skills/why/evals/fixtures/parser_function.py. Record whether Why improves mental model, tradeoffs, read-next guidance, knowledge-base profile use, and execution gating.",
+      "files": ["evals/fixtures/parser_function.py"],
+      "benchmark": {
+        "baseline": "none",
+        "runs": ["no-skill baseline", "with Why skill"],
+        "score_dimensions": ["mental_model", "tradeoffs", "read_next", "profile_lookup", "execution_gate", "source_grounding"],
+        "must_record": ["pass_rate", "routing_accuracy", "time_seconds", "tokens_or_unknown", "turns_or_commands", "quality_delta", "accepted_cost_tradeoff"]
+      },
+      "expected_output": "The eval records a no-skill baseline, a Why run, and a response-quality delta across the named dimensions.",
+      "assertions": [
+        "Uses baseline=none for the new skill unless comparing against a snapshot.",
+        "Records both baseline and with-skill outputs or summaries.",
+        "Scores mental model, tradeoffs, read-next guidance, profile lookup, and execution gate.",
+        "Names any quality regression instead of only reporting pass/fail."
+      ],
+      "quality_rubric": {
+        "baseline_recorded": 2,
+        "with_skill_recorded": 2,
+        "delta_quality": 3,
+        "failure_notes": 1
+      },
+      "required_evidence": ["baseline output", "with-skill output", "quality delta", "release recommendation"]
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-bg="#101010">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Between the Lines Brief</title>
+    <link rel="icon" href="data:,">
+    <link rel="preconnect" href="https://api.fontshare.com">
+    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=gambetta@300,400,500,600,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="brief-shell">
+      <header class="masthead" id="top">
+        <div class="mark" aria-hidden="true"></div>
+        <h1>Between the Lines</h1>
+        <p>A note from Dex - for the reader</p>
+        <span class="hairline" aria-hidden="true"></span>
+      </header>
+
+      <article class="brief-article" aria-label="Editorial brief">
+        <section class="brief-section" id="history" data-section-title="History Lesson">
+          <div class="lens-pill"><span>1</span> History Lesson</div>
+          <h2>The Old Problem Shows You the Shape of This One</h2>
+          <p>You are trying to explain a topic that looks new because the tools are new. The useful move is to find the older version of the same problem, then borrow the part that still works.</p>
+          <p>The section should not become trivia. The precedent earns its place only when it gives the reader a mechanism they can use right now.</p>
+        </section>
+
+        <section class="brief-section" id="field-rule" data-section-title="Field Rule">
+          <div class="lens-pill"><span>2</span> How Another Field Solves It</div>
+          <h2>Borrow the Rule Before You Borrow the Surface</h2>
+          <p>Another field may already have a compact operating rule for the same kind of ambiguity. Use the rule, not the costume.</p>
+          <p>This is where the brief turns analogy into action: what should the reader change, sequence, remove, protect, or check?</p>
+        </section>
+
+        <section class="brief-section" id="decision-frame" data-section-title="Decision Frame">
+          <div class="lens-pill"><span>3</span> A Way to Think</div>
+          <h2>The Right Frame Separates Cheap Choices from Expensive Ones</h2>
+          <p>A good frame reduces argument. It tells the reader what can be decided quickly and what deserves slower judgment.</p>
+          <p>Use this section to sort the topic, not summarize it. The reader should leave with a clearer order of operations.</p>
+        </section>
+
+        <section class="brief-section" id="read-next" data-section-title="Read Next">
+          <div class="read-next">
+            <h2>Read Next</h2>
+            <a href="#top">Return to the top</a>
+            <p>Use this block for source links with a short reason each link matters.</p>
+          </div>
+        </section>
+      </article>
+    </main>
+
+    <nav class="section-switcher" aria-label="Sections">
+      <button class="section-current" type="button" aria-expanded="false">1 - History Lesson</button>
+      <div class="section-list"></div>
+    </nav>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

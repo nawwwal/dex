@@ -25,6 +25,7 @@ Defaults:
 - Use `baseline=previous` for existing skills.
 - Use `baseline=none` for new skills.
 - Store transient run artifacts under `.dex/evals/<skill-name>/<timestamp>/round-N/`.
+- Every runnable eval case must leave a run record: prompt, JSONL trace path, stdout/stderr or artifact paths, deterministic check results, optional rubric JSON, score, and pass/fail.
 - Commit only durable skill changes, eval fixtures, validators, and docs.
 
 ## Required Setup
@@ -72,9 +73,12 @@ Each round must run the same loop:
    - Use fresh subagents or `codex exec` runs as the isolation boundary.
    - Run the designed eval suite, not an improvised prompt set.
    - Use raw artifacts and prompts, not your diagnosis or expected fix.
+   - For `codex exec` forward runs, use `--json` and save stdout as JSONL before grading.
+   - For qualitative judge runs, use `--output-schema` and save the rubric JSON.
 
 4. **Grade**
    - Use deterministic checks for objective claims.
+   - Parse JSONL `command_execution` and `turn.completed` events for command and token checks.
    - Use rubric or judge checks for subjective quality.
    - Record pass rate, routing accuracy, time, token cost, turns or commands, and failure notes.
 

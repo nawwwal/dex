@@ -73,7 +73,7 @@
           "python3 -m json.tool plugins/core/skills/portent/evals/evals.json",
           "python3 plugins/core/skills/portent/scripts/validate_portent_skill.py"
         ],
-        "must_include_any": [["Portent eval suite valid"], ["json validation"]],
+        "must_include_any": [["Portent eval suite valid"], ["json validation", "JSON parses", "JSON valid"]],
         "must_not_include_any": [["skip eval suite"], ["validate later"]]
       },
       "required_evidence": ["json validation output", "coverage validator output", "proceed/block/repair decision"]

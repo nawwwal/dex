@@ -1,0 +1,205 @@
+{
+  "skill_name": "brief",
+  "version": 1,
+  "skill_type": "artifact",
+  "notes": "Dex eval suite for the HTML editorial brief skill. Cases judge dynamic sectioning, Blackline visual strategy, source/link treatment, theme behavior, floating section switcher, and route-away behavior from deck tools.",
+  "standards": {
+    "required_coverage": [
+      "explicit trigger",
+      "implicit trigger",
+      "negative-control",
+      "artifact case",
+      "eval suite health",
+      "response quality",
+      "dynamic sectioning",
+      "blackline visuals",
+      "no image placeholders",
+      "inline links and read next",
+      "floating switcher",
+      "adaptive theme",
+      "route away from decks"
+    ],
+    "response_quality": [
+      "Creates an actual browser-native HTML brief artifact, not a slide deck or outline.",
+      "Derives a topic-specific section spine instead of using a fixed template.",
+      "Uses Blackline-style visuals as cognitive anchors and omits broken or placeholder image slots.",
+      "Uses direct, specific editorial copy with claim-led section titles.",
+      "Uses inline links plus a final Read Next block with short descriptions.",
+      "Supports readable light/dark color variants and a floating bottom section switcher."
+    ]
+  },
+  "evals": [
+    {
+      "id": "eval-suite-health-before-forward-run",
+      "category": "known-failure",
+      "coverage": ["eval suite health", "response quality"],
+      "should_trigger": true,
+      "run_mode": "deterministic-or-clean-context",
+      "prompt": "Use /dex eval on plugins/tools/skills/brief. Before any clean-context evaluator runs, validate that the brief eval suite is healthy and gradeable.",
+      "expected_output": "The agent validates eval JSON, runs the brief eval validator, runs syntax checks for the template JavaScript and helper scripts, and runs representative contrast checks.",
+      "assertions": [
+        "Runs JSON validation before clean-context forward runs.",
+        "Runs the brief-specific eval validator.",
+        "Runs syntax checks for the template JavaScript and contrast helper.",
+        "Runs representative contrast checks."
+      ],
+      "deterministic_checks": {
+        "commands": [
+          "python3 -m json.tool plugins/tools/skills/brief/evals/evals.json",
+          "python3 plugins/tools/skills/brief/scripts/validate_brief_evals.py",
+          "node --check plugins/tools/skills/brief/assets/report-template/script.js",
+          "node --check plugins/tools/skills/brief/scripts/contrast-check.js",
+          "node plugins/tools/skills/brief/scripts/contrast-check.js '#f4f1eb:#101010:dark-body' '#161514:#faf8f2:light-body'"
+        ],
+        "must_include_any": [["brief eval suite valid"], ["body=PASS"]],
+        "must_not_include_any": [["html-presentation"], ["Reveal"]]
+      },
+      "required_evidence": ["json validation output", "validator output", "syntax output", "contrast output"]
+    },
+    {
+      "id": "explicit-html-brief-artifact",
+      "category": "positive",
+      "coverage": ["explicit trigger", "artifact case", "response quality", "dynamic sectioning", "inline links and read next", "floating switcher", "adaptive theme"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $brief to turn evals/fixtures/source-brief.md into a browser-native HTML brief with a dark theme, inline links, Read Next, and the bottom section switcher.",
+      "files": ["evals/fixtures/source-brief.md"],
+      "expected_output": "The agent creates or specifies static HTML/CSS/JS files for a long-form brief, derives section lenses from the topic, includes inline links plus Read Next, and implements the bottom floating switcher.",
+      "assertions": [
+        "Produces an HTML brief artifact rather than slides.",
+        "Derives sections from the source topic.",
+        "Includes inline links and a Read Next block.",
+        "Includes a floating bottom section switcher.",
+        "Uses a readable dark color theme."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["index.html"], ["Read Next"], ["section switcher"], ["data-theme"], ["data-bg"]],
+        "must_not_include_any": [["Reveal.js"], ["PowerPoint"], ["deckSpec"]]
+      },
+      "required_evidence": ["source fixture inspected", "HTML artifact", "derived section spine", "link behavior", "theme behavior"]
+    },
+    {
+      "id": "blackline-visual-generation-required",
+      "category": "positive",
+      "coverage": ["artifact case", "blackline visuals", "no image placeholders", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Use $brief with evals/fixtures/visual-brief.md. Generate Blackline-style visuals where the explanation needs conceptual anchors. If generation fails, do not leave prompts or empty slots.",
+      "files": ["evals/fixtures/visual-brief.md"],
+      "expected_output": "The agent tries to generate actual Blackline visuals, places them based on comprehension, uses section-specific terminology, and removes any failed image slots from the final HTML.",
+      "assertions": [
+        "Attempts actual image generation rather than only writing prompts.",
+        "Places images where they clarify concepts.",
+        "Uses topic-specific image terminology.",
+        "Leaves no broken image slots or image-coming-soon copy."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["Blackline"], ["image generation"], ["cognitive anchor"], ["no placeholders"]],
+        "must_not_include_any": [["image coming soon"], ["TODO image"], ["prompt goes here"], ["controlled vocabulary"]]
+      },
+      "required_evidence": ["visual strategy", "generation attempt", "image placement decision", "placeholder removal"]
+    },
+    {
+      "id": "implicit-visual-explainer-request",
+      "category": "positive",
+      "coverage": ["implicit trigger", "artifact case", "response quality", "dynamic sectioning"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Make this topic into a polished web report someone can read and understand quickly. It should feel like the Between the Lines examples, with visuals and source links. Source: evals/fixtures/source-brief.md.",
+      "files": ["evals/fixtures/source-brief.md"],
+      "expected_output": "The agent routes to brief without the skill name being mentioned, builds a web report artifact, and avoids deck language.",
+      "assertions": [
+        "Routes implicit web report requests to brief.",
+        "Creates an HTML report artifact.",
+        "Avoids slide deck or Reveal language."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["HTML brief"], ["web report"], ["Between the Lines"], ["visuals"]],
+        "must_not_include_any": [["Reveal.js"], ["slide deck"], ["speaker notes"]]
+      },
+      "required_evidence": ["implicit route", "artifact focus", "deck route avoided"]
+    },
+    {
+      "id": "negative-control-reveal-deck",
+      "category": "negative-control",
+      "coverage": ["negative-control", "route away from decks"],
+      "should_trigger": false,
+      "run_mode": "clean-context-forward",
+      "prompt": "Build a Reveal.js deck with fragments, speaker notes, and PDF export.",
+      "expected_output": "The brief skill should not take over. The agent should route to an appropriate deck or presentation workflow, not create a brief.",
+      "assertions": [
+        "Does not use brief as the primary workflow.",
+        "Routes deck work away from brief.",
+        "Does not claim to support Reveal.js."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["Reveal.js"], ["deck"], ["route"]],
+        "must_not_include_any": [["brief as primary"], ["HTML brief artifact"]]
+      },
+      "required_evidence": ["route-away decision"]
+    },
+    {
+      "id": "negative-control-powerpoint",
+      "category": "negative-control",
+      "coverage": ["negative-control", "route away from decks"],
+      "should_trigger": false,
+      "run_mode": "clean-context-forward",
+      "prompt": "Create a PowerPoint deck and export it as PPTX.",
+      "expected_output": "The brief skill should not take over PPTX work.",
+      "assertions": [
+        "Does not use brief as the primary workflow.",
+        "Routes to a PPTX or presentation workflow.",
+        "Does not create HTML report files."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["PowerPoint"], ["PPTX"], ["route"]],
+        "must_not_include_any": [["brief as primary"], ["index.html"]]
+      },
+      "required_evidence": ["route-away decision"]
+    },
+    {
+      "id": "negative-control-narrative-only",
+      "category": "negative-control",
+      "coverage": ["negative-control", "route away from decks"],
+      "should_trigger": false,
+      "run_mode": "clean-context-forward",
+      "prompt": "Help me prepare talking points for a design review. Do not build an artifact.",
+      "expected_output": "The brief skill should not build anything and should route to narrative coaching.",
+      "assertions": [
+        "Does not use brief as the primary workflow.",
+        "Does not build HTML.",
+        "Routes narrative-only work elsewhere."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["narrative"], ["talking points"], ["route"]],
+        "must_not_include_any": [["index.html"], ["HTML brief"]]
+      },
+      "required_evidence": ["route-away decision"]
+    },
+    {
+      "id": "template-supports-switcher-and-theme",
+      "category": "positive",
+      "coverage": ["artifact case", "floating switcher", "adaptive theme", "no image placeholders"],
+      "should_trigger": true,
+      "run_mode": "deterministic-or-clean-context",
+      "prompt": "Validate the bundled brief report template for section switcher behavior, adaptive theme hooks, and absence of placeholder image slots.",
+      "files": ["evals/fixtures/source-brief.md"],
+      "expected_output": "The agent verifies that the template contains section switcher markup/script, data-theme/data-bg hooks, and no image placeholder text.",
+      "assertions": [
+        "Checks template JavaScript syntax.",
+        "Checks adaptive theme hooks.",
+        "Checks switcher markup and behavior hooks.",
+        "Checks there are no placeholder image strings."
+      ],
+      "deterministic_checks": {
+        "commands": [
+          "node --check plugins/tools/skills/brief/assets/report-template/script.js",
+          "node plugins/tools/skills/brief/scripts/contrast-check.js '#f4f1eb:#101010:dark-body' '#161514:#faf8f2:light-body'"
+        ],
+        "must_include_any": [["body=PASS"], ["large=PASS"]],
+        "must_not_include_any": [["image coming soon"], ["TODO image"], ["Reveal"]]
+      },
+      "required_evidence": ["syntax check", "contrast check", "template inspection"]
+    }
+  ]
+}

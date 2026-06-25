@@ -16,6 +16,8 @@ Never use `gemini-2.5-flash-image` or any `gemini-2.x` / `gemini-1.x` image mode
 
 ## Invocation
 
+Before running generation, make the execution contract visible: path `generate`, model `gemini-3.1-flash-image-preview` by default, and either `scripts/generate.py` or inline `google-genai`.
+
 ### Natural language (inline code)
 
 Use when: contextual decisions needed, multi-turn generation, prompt refinement required.

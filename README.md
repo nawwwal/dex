@@ -1,19 +1,20 @@
 # dex
 
-Dex is a small agent toolkit for the work that keeps repeating: setting up an agent environment, teaching unfamiliar concepts before execution, finding the crux of a product problem, checking design quality, shipping Blade-heavy dashboard work, reviewing plans with another model, and turning media or memory into something usable.
+Dex is a small agent toolkit for the work that keeps repeating: setting up an agent environment, explaining unfamiliar concepts before execution, finding the crux of a product problem, checking design quality, shipping Blade-heavy dashboard work, reviewing plans with another model, and turning media or memory into something usable.
 
 It is not a giant prompt pack. The point is to keep the sharp workflows close, named plainly, and split by ownership so an agent can load the right behavior without dragging half the repo into context.
 
 ## The Shape
 
-Dex ships four marketplace plugins.
+Dex ships five marketplace plugins.
 
 | Plugin | Owns | Does not own |
 |---|---|---|
-| `core` | Agent setup, teaching unfamiliar concepts, council-style investigation, reflection, DevRev, session wrap-up, Portent/Tolaria knowledge records | Design implementation, browser tooling, media utilities |
+| `core` | Agent setup, explaining unfamiliar concepts, council-style investigation, reflection, DevRev, session wrap-up, Portent/Tolaria knowledge records | Design implementation, browser tooling, media utilities |
 | `design` | Product thinking, content design, divergence, presentation narrative, interactive playground artifacts | Blade, shaders, sound, generic code hardening, private review frameworks |
 | `dev` | Design engineering: Blade, dashboard implementation, hardening, shaders, sound | Product strategy, presentation coaching, third-party browser tools |
-| `tools` | Utility tools: Codex review, browser-native HTML presentations, unified media generation/optimization | Core setup, design critique, implementation doctrine |
+| `tools` | Utility tools: Codex review, browser-native HTML visual briefs, unified media generation/optimization, official mymind MCP | Core setup, design critique, implementation doctrine |
+| `fun` | Anti-productivity experiments, generative games, voice and taste exercises, strange-but-contained creative prompts | Setup, production work, factual research, workflow automation |
 
 This split is the product. When a workflow starts to sprawl, move it to the plugin that owns the actual behavior instead of making a router that knows too much.
 
@@ -32,6 +33,7 @@ Install only what you need:
 /plugin install design@nawwwal-dex
 /plugin install dev@nawwwal-dex
 /plugin install tools@nawwwal-dex
+/plugin install fun@nawwwal-dex
 ```
 
 Current released versions:
@@ -68,19 +70,19 @@ Optional integrations depend on the skill you use: Figma MCP for Figma work, Dev
 
 ### Core
 
-`core` is the control plane. It should stay boring in the best way: setup, teaching, routing to durable records, and workflows that help agents reason across context and close sessions cleanly.
+`core` is the control plane. It should stay boring in the best way: setup, explanation before execution, routing to durable records, and workflows that help agents reason across context and close sessions cleanly.
 
 | Skill | Use it for |
 |---|---|
 | `dex` | Fresh setup, doctor checks, `.agents` bootstrap, Claude/Codex compatibility links, project design-context capture |
-| `teach` | Explaining unfamiliar code, architecture, concepts, alternatives, tradeoffs, and clever functions before execution; recording learned concepts in `~/.agents/memory/teach/` with a hook-refreshed SQLite search index |
+| `why` | Explaining unfamiliar code, architecture, concepts, alternatives, tradeoffs, and clever functions before execution; using Tolaria/Portent as the knowledge base for learner profiles and saved concepts |
 | `council` | Multi-domain parallel investigation with dynamic lens composition: design critique, product decisions, research, code audits, workflow friction, expert debate |
 | `reflect` | Portent/Tolaria reflection: emerging patterns, leverage points, and drift across active knowledge objects |
 | `devrev` | Sprint routines, grooming, enrichment, schema-discovered DevRev MCP work, and Portent-backed local DevRev knowledge |
 | `wrap` | End-of-session recap, meaningful micro-commits, verification summary, and Portent handoff |
 | `portent` | Tolaria knowledge-base capture, session logs, project context, source packets, derived assertions, MOCs, current todos, briefings, organization, search, and archive using the Portent object model |
 
-`teach` ships a Codex Stop hook for refreshing its SQLite concept index. `portent` ships a prompt-time context receipt hook that reminds the agent to use `core:portent`/Tolaria MCP before behavior-changing work when prior context may matter, then write durable session knowledge back before the final response when useful. Codex hooks run when `[features].hooks` is enabled and the hook is trusted through the normal `/hooks` review flow; without that, the Markdown notes remain canonical and the index can be rebuilt manually.
+`why` treats `teach` and `learn` as routing aliases, but the canonical skill and visible token are `why`. It uses Tolaria/Portent for learner profiles and saved concepts instead of a local SQLite memory index. `portent` ships a prompt-time context receipt hook that reminds the agent to use `core:portent`/Tolaria MCP before behavior-changing work when prior context may matter, then write durable session knowledge back before the final response when useful. Codex hooks run when `[features].hooks` is enabled and the hook is trusted through the normal `/hooks` review flow.
 
 `council` lives here because it is a thinking primitive, not a misc tool.
 
@@ -119,8 +121,10 @@ This plugin exists because coding agents need different instructions than design
 | Skill | Use it for |
 |---|---|
 | `codex` | Cross-model plan review through the Codex CLI |
-| `html-presentation` | Browser-native HTML presentation decks with Reveal.js: deck construction, theme, motion, speaker notes, browser preview, and export behavior |
+| `brief` | Browser-native editorial HTML briefs with dynamic sectioning, Blackline-style visuals, inline sources, read-next links, adaptive color themes, and floating section navigation |
 | `media-tools` | AI image generation/editing, compression, format conversion, and resizing for images and video |
+
+It also bundles the official mymind MCP server. Use `/mcp` or the Codex MCP server UI to authenticate when the client prompts.
 
 Tools should stay tools. If a tool grows taste, policy, or product judgment, it probably belongs somewhere else.
 
@@ -269,6 +273,7 @@ Examples:
 /dex release dev
 /dex release design
 /dex release tools minor
+/dex release fun initial
 /dex eval plugins/design/skills/crux
 ```
 
@@ -303,6 +308,7 @@ Update installed plugins:
 /plugin update design@nawwwal-dex
 /plugin update dev@nawwwal-dex
 /plugin update tools@nawwwal-dex
+/plugin update fun@nawwwal-dex
 ```
 
 Or reload active sessions:

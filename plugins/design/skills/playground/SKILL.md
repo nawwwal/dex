@@ -38,7 +38,7 @@ When routing to a companion skill, name the exact skill in the response before d
 - **Sketch mode rules:** 2–3 variants max, shared source fixture and assumptions, named interaction model per variant, compare/pick-one export, no diverge ceremony.
 
 For concrete UI layout changes, component tuning, generated objects, or surface editing, prefer `artifact editor` unless the source clearly requires a map, review surface, state machine, scrubber, or simulator.
-For `artifact editor`, explicitly include live preview, reset, and export / paste-back output.
+For `artifact editor`, explicitly include live preview, reset, source assumptions, and export / paste-back output. If the environment is read-only and no file can be created, still describe those controls in the paste-back artifact contract.
 
 5. Build the artifact.
 Default to one self-contained HTML file with inline CSS/JS, no remote scripts, instant interaction, export/paste-back output, browser inspection, keyboard access, reduced-motion support, and mobile handling.

@@ -1,4 +1,0 @@
-interface:
-  display_name: "HTML Presentation"
-  short_description: "Build Reveal.js decks as browser-native HTML"
-  default_prompt: "Use $html-presentation to create a working Reveal.js presentation from this material."
