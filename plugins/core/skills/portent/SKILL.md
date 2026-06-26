@@ -1,7 +1,7 @@
 ---
 name: portent
 description: "Use when storing, organizing, retrieving, or briefing from the user's Tolaria knowledge base using the Portent object model: project context, responsibilities, operations, session logs, decisions, source packets, derived assertions, MOCs, current todos, tasks, events, notes, topics, people, archived records, and durable handoffs."
-allowed-tools: Bash, Read, Write, Edit, Glob, Grep, mcp__tolaria__list_vaults, mcp__tolaria__open_note
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep, mcp__qmd__status, mcp__qmd__search, mcp__qmd__query, mcp__qmd__get, mcp__qmd__multi_get, mcp__tolaria__list_vaults, mcp__tolaria__open_note
 ---
 
 # Portent
@@ -22,15 +22,23 @@ Read `references/portent-spec.md` when classification, lifecycle, or relationshi
    - If multiple plausible writable vaults remain and the user gave no hint, ask which vault to use before writing.
    - If the selected vault has no path, or the path is missing or unreadable, stop and report that the Tolaria vault cannot be used.
 4. Read the vault's AGENTS.md first when `hasAgentInstructions` is true and the file exists.
-5. When Tolaria only provides vault discovery/opening, use direct Markdown fallback inside the resolved vault path:
+5. Use qmd for retrieval when it is available:
+   - Use `mcp__qmd__search` for exact title, wikilink, ID, person, project, and phrase lookup.
+   - Use `mcp__qmd__query` for important or fuzzy searches where aliases, nearby concepts, or stale wording may matter.
+   - Read qmd results with `mcp__qmd__get` or direct Markdown reads before relying on snippets.
+   - Keep only the active Portent vault collection unless the user asks otherwise: remove older deprecated qmd collections with `qmd collection remove <name>`, then run `qmd cleanup`.
+   - If qmd is missing the active vault or the index is stale, run `qmd collection add "<vault_path>" --name portent --mask "*.md"` when the collection is absent, then `qmd update`.
+   - After qmd collection or index changes, run `qmd embed -c portent`; Portent retrieval should not rely on stale or missing embeddings.
+   - If qmd MCP/CLI is unavailable or still misses likely context, use direct Markdown search inside the resolved vault path.
+6. Use direct Markdown fallback inside the resolved vault path when qmd or Tolaria tooling is incomplete:
    - Verify the resolved path exists and is readable before searching or writing.
    - Orient with filesystem reads of AGENTS.md, index notes, and nearby README files when present.
    - Search Markdown files in the vault path by title, frontmatter, wikilinks, and content.
    - Read matching Markdown files directly from the vault path.
    - Write by creating or editing Markdown files in the vault path with YAML frontmatter and wikilinks.
    - Never write outside the resolved vault path as a substitute for Tolaria.
-6. Do not invent Tolaria write, search, create, update, or delete tool names.
-7. Open created or edited notes with `mcp__tolaria__open_note` when useful for review.
+7. Do not invent Tolaria write, search, create, update, or delete tool names.
+8. Open created or edited notes with `mcp__tolaria__open_note` when useful for review.
 
 Do not write canonical knowledge records to `~/.claude/log`, `~/.claude/TASKS.md`, or generic Codex memory. Those may be legacy inputs, but Tolaria is the source of truth.
 
@@ -44,7 +52,7 @@ When the active vault contains the operating notes below, load them for brain-gr
 - `[[portent-index]]`
 - `[[brain-log]]`
 
-Use existing Tolaria MCP tools for discovery, search, note reads, note creation, opening, and refresh.
+Use qmd MCP or qmd CLI for Portent retrieval. Use Tolaria MCP for vault discovery, note opening, and UI-facing operations when available.
 
 Use direct Markdown edits inside the resolved Tolaria vault path for updating existing notes, saved views, index notes, log notes, relationship repair, and contract maintenance.
 
@@ -83,7 +91,7 @@ Do not store every conclusion. Store only Aditya-relevant durable conclusions wi
 
 Use `supersedes` only when a newer object or assertion replaces an older one. Otherwise preserve older records and mark them stale, historical, or unchecked.
 
-Prefer index-plus-whole-object reading over opaque vector memory until Tolaria search and Portent index reads repeatedly miss relevant objects.
+Prefer qmd index-plus-whole-object reading over opaque vector memory. If qmd is stale or misses likely context, update the qmd collection or fall back to direct Markdown search before saying no context exists.
 
 ## Mode Routing
 
@@ -167,7 +175,7 @@ Set `archived: true`. Preserve relationships and add a short archive note explai
 
 Use when the user asks what exists, what is known, or where something lives.
 
-Search by title, type, relationship, and content. If no Tolaria search tool is exposed, search the resolved vault's Markdown files directly. Return the object title, type, lifecycle state, and why it matters. Do not turn search results into a briefing unless the user asks for synthesis.
+Search by title, type, relationship, and content. Use qmd first: exact terms through `mcp__qmd__search`, fuzzy or alias-heavy queries through `mcp__qmd__query`, then read matching objects with `mcp__qmd__get` or direct Markdown. If qmd is unavailable or stale, search the resolved vault's Markdown files directly. Return the object title, type, lifecycle state, and why it matters. Do not turn search results into a briefing unless the user asks for synthesis.
 
 ## Object Writing Rules
 
@@ -187,7 +195,7 @@ related_to:
 
 Keep filenames stable and boring. The title and frontmatter carry meaning; the folder does not.
 
-Prefer updating an existing object over creating a duplicate. Before writing a new `Project`, `Responsibility`, `Operation`, `Topic`, or `Person`, search for a likely existing object.
+Prefer updating an existing object over creating a duplicate. Before writing a new `Project`, `Responsibility`, `Operation`, `Topic`, or `Person`, search qmd and then the resolved vault path for a likely existing object.
 
 Use extra relationship or provenance fields only when they change future retrieval or trust:
 

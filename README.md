@@ -64,7 +64,7 @@ jq
 node
 ```
 
-Optional integrations depend on the skill you use: Figma MCP for Figma work, DevRev MCP for DevRev workflows, Slack MCP for message workflows, Tolaria MCP for Portent knowledge-base work, the official mymind MCP for mymind search, and `agent-browser` for skills that explicitly call it as an external browser tool. Dex does not package `agent-browser`.
+Optional integrations depend on the skill you use: Figma MCP for Figma work, DevRev MCP for DevRev workflows, Slack MCP for message workflows, qmd for Portent search, Tolaria MCP for Portent vault discovery/opening/writeback, the official mymind MCP for mymind search, and `agent-browser` for skills that explicitly call it as an external browser tool. Dex does not package `agent-browser`.
 
 ## What Each Plugin Gives You
 
@@ -80,9 +80,9 @@ Optional integrations depend on the skill you use: Figma MCP for Figma work, Dev
 | `reflect` | Portent/Tolaria reflection: emerging patterns, leverage points, and drift across active knowledge objects |
 | `devrev` | Sprint routines, grooming, enrichment, schema-discovered DevRev MCP work, and Portent-backed local DevRev knowledge |
 | `wrap` | End-of-session recap, meaningful micro-commits, verification summary, and Portent handoff |
-| `portent` | Tolaria knowledge-base capture, session logs, project context, source packets, derived assertions, MOCs, current todos, briefings, organization, search, and archive using the Portent object model |
+| `portent` | Tolaria knowledge-base capture, qmd-backed search, session logs, project context, source packets, derived assertions, MOCs, current todos, briefings, organization, and archive using the Portent object model |
 
-`why` treats `teach` and `learn` as routing aliases, but the canonical skill and visible token are `why`. It uses Tolaria/Portent for learner profiles and saved concepts instead of a local SQLite memory index. `portent` ships a prompt-time context receipt hook that reminds the agent to use `core:portent`/Tolaria MCP before behavior-changing work when prior context may matter, then write durable session knowledge back before the final response when useful. Codex hooks run when `[features].hooks` is enabled and the hook is trusted through the normal `/hooks` review flow.
+`why` treats `teach` and `learn` as routing aliases, but the canonical skill and visible token are `why`. It uses Tolaria/Portent for learner profiles and saved concepts instead of a local SQLite memory index. `portent` uses qmd for Portent search and Tolaria for vault discovery, note opening, and writeback. It ships a prompt-time context receipt hook that reminds the agent to use `core:portent` before behavior-changing work when prior context may matter, then write durable session knowledge back before the final response when useful. Codex hooks run when `[features].hooks` is enabled and the hook is trusted through the normal `/hooks` review flow.
 
 `council` lives here because it is a thinking primitive, not a misc tool.
 
