@@ -121,7 +121,7 @@ This plugin exists because coding agents need different instructions than design
 | Skill | Use it for |
 |---|---|
 | `codex` | Cross-model plan review through the Codex CLI |
-| `brief` | Browser-native editorial HTML briefs with dynamic sectioning, Blackline-style visuals, inline sources, read-next links, adaptive color themes, and floating section navigation |
+| `brief` | Browser-native editorial HTML briefs with dynamic sectioning, Blackline-style visuals, inline sources, read-next links, adaptive color themes, and roller-style floating section navigation |
 | `media-tools` | AI image generation/editing, compression, format conversion, and resizing for images and video |
 
 It also bundles the official mymind MCP server. Use `/mcp` or the Codex MCP server UI to authenticate when the client prompts.

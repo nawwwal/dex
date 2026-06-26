@@ -6,7 +6,8 @@ const list = document.querySelector(".section-list");
 let selectedSection = null;
 let selectionLockUntil = 0;
 let wheelDelta = 0;
-let wheelLockUntil = 0;
+let wheelGestureLocked = false;
+let wheelGestureUnlockTimer = null;
 
 function hexToRgb(hex) {
   const value = hex.replace("#", "").trim();
@@ -144,12 +145,20 @@ window.addEventListener("wheel", (event) => {
   if (!isWheelInsideSwitcher(event)) return;
 
   event.preventDefault();
+
+  clearTimeout(wheelGestureUnlockTimer);
+  wheelGestureUnlockTimer = setTimeout(() => {
+    wheelDelta = 0;
+    wheelGestureLocked = false;
+  }, 360);
+
+  if (wheelGestureLocked) return;
+
   wheelDelta += event.deltaY;
 
-  const now = performance.now();
-  if (Math.abs(wheelDelta) < 28 || now < wheelLockUntil) return;
+  if (Math.abs(wheelDelta) < 28) return;
 
   stepCurrent(wheelDelta > 0 ? 1 : -1);
   wheelDelta = 0;
-  wheelLockUntil = now + 220;
+  wheelGestureLocked = true;
 }, { passive: false });

@@ -152,21 +152,22 @@
       "coverage": ["artifact case", "floating switcher", "roller switcher", "scroll containment", "adaptive theme", "no image placeholders"],
       "should_trigger": true,
       "run_mode": "deterministic-or-clean-context",
-      "prompt": "Check the report template section menu. Collapsed should show the current section centered. On hover it should become a compact roller: active row stays in the middle, only the previous and next rows show with fade and scale, scrolling inside changes sections instead of scrolling the page, and the label text should not fade out and reappear.",
+      "prompt": "Check the report template section menu. Collapsed should show the current section centered. On hover it should become a compact roller: active row stays in the middle, only the previous and next rows show with fade and scale, scrolling inside changes one section per gesture instead of falling through to the page or racing to the last item, and the label text should not fade out and reappear.",
       "files": ["evals/fixtures/source-brief.md"],
-      "expected_output": "The agent verifies template JavaScript and CSS support the roller switcher, text-position morph, active-center behavior, wheel containment, adaptive theme hooks, and absence of placeholder image slots.",
+      "expected_output": "The agent verifies template JavaScript and CSS support the roller switcher, text-position morph, active-center behavior, wheel containment with trackpad inertia guarding, adaptive theme hooks, and absence of placeholder image slots.",
       "assertions": [
         "Checks template JavaScript syntax.",
         "Checks adaptive theme hooks.",
         "Checks switcher markup and behavior hooks.",
         "Checks wheel containment for the hovered switcher.",
+        "Checks trackpad inertia cannot advance repeatedly to the last item from one gesture.",
         "Checks there are no placeholder image strings."
       ],
       "deterministic_checks": {
         "commands": [
           "node --check plugins/tools/skills/brief/assets/report-template/script.js",
           "node plugins/tools/skills/brief/scripts/contrast-check.js '#f4f1eb:#101010:dark-body' '#161514:#faf8f2:light-body'",
-          "rg -n 'wheel|preventDefault|overscroll-behavior|backdrop-filter' plugins/tools/skills/brief/assets/report-template/script.js plugins/tools/skills/brief/assets/report-template/styles.css"
+          "rg -n 'wheel|preventDefault|wheelGestureLocked|overscroll-behavior|backdrop-filter' plugins/tools/skills/brief/assets/report-template/script.js plugins/tools/skills/brief/assets/report-template/styles.css"
         ],
         "must_include_any": [["body=PASS"], ["large=PASS"], ["wheel"], ["aria-current"]],
         "must_not_include_any": [["image coming soon"], ["TODO image"], ["Reveal"]]
