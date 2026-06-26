@@ -41,7 +41,7 @@ Current released versions:
 <!-- dex-current-versions:start -->
 | Plugin | Version |
 |---|---:|
-| `core` | `1.2.9` |
+| `core` | `1.2.10` |
 | `design` | `1.2.4` |
 | `dev` | `1.0.5` |
 | `tools` | `1.3.0` |
