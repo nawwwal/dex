@@ -220,7 +220,7 @@ For local Codex development, the repo marketplace lives at:
 .agents/plugins/marketplace.json
 ```
 
-Codex marketplace entries use `local` sources, with paths relative to the marketplace checkout. The marketplace itself is Git-tracked; individual plugin entries should not use Git source fields.
+Codex marketplace entries use `git-subdir` sources that point at this repo on `main`, with each plugin entry targeting its `./plugins/<name>` folder. The marketplace itself is Git-tracked; keep those source fields aligned with the release contract.
 
 After editing plugin files, start a new session or run:
 

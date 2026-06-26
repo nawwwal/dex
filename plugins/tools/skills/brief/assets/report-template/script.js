@@ -3,6 +3,10 @@ const sections = [...document.querySelectorAll(".brief-section[id]")];
 const switcher = document.querySelector(".section-switcher");
 const current = document.querySelector(".section-current");
 const list = document.querySelector(".section-list");
+let selectedSection = null;
+let selectionLockUntil = 0;
+let wheelDelta = 0;
+let wheelLockUntil = 0;
 
 function hexToRgb(hex) {
   const value = hex.replace("#", "").trim();
@@ -52,52 +56,100 @@ function applyTheme() {
 }
 
 function buildSwitcher() {
-  list.replaceChildren(
+  const wheel = document.createElement("div");
+  wheel.className = "section-wheel";
+  wheel.replaceChildren(
     ...sections.map((section, index) => {
       const label = section.dataset.sectionTitle || section.querySelector("h2")?.textContent || `Section ${index + 1}`;
       const link = document.createElement("a");
+      const labelText = document.createElement("span");
       link.href = `#${section.id}`;
-      link.textContent = `${index + 1} - ${label}`;
+      labelText.className = "section-label";
+      labelText.textContent = `${index + 1} - ${label}`;
+      link.append(labelText);
+      link.dataset.sectionId = section.id;
+      link.addEventListener("click", () => {
+        selectedSection = section;
+        selectionLockUntil = performance.now() + 900;
+        setCurrent(section);
+      });
       return link;
     })
   );
+  list.replaceChildren(wheel);
 }
 
-function updateCurrent() {
-  const active = sections.reduce((candidate, section) => {
-    const top = section.getBoundingClientRect().top;
-    return top < window.innerHeight * 0.45 ? section : candidate;
-  }, sections[0]);
+function setCurrent(active) {
   const index = sections.indexOf(active);
   const label = active?.dataset.sectionTitle || active?.querySelector("h2")?.textContent || "Section";
   current.textContent = `${index + 1} - ${label}`;
+  switcher.style.setProperty("--active-index", index);
+  switcher.style.setProperty("--section-count", sections.length);
+  list.querySelectorAll("a").forEach((link) => {
+    if (link.dataset.sectionId === active.id) {
+      link.setAttribute("aria-current", "true");
+    } else {
+      link.removeAttribute("aria-current");
+    }
+  });
+}
+
+function updateCurrent() {
+  if (selectedSection && performance.now() < selectionLockUntil) {
+    setCurrent(selectedSection);
+    return;
+  }
+
+  selectedSection = null;
+  const scroller = document.scrollingElement || doc;
+  const atBottom = window.scrollY + window.innerHeight >= scroller.scrollHeight - 32;
+  const activationLine = 120;
+  const active = atBottom
+    ? sections[sections.length - 1]
+    : sections.reduce((candidate, section) => {
+        const top = section.getBoundingClientRect().top;
+        return top <= activationLine ? section : candidate;
+      }, sections[0]);
+  setCurrent(active);
+}
+
+function stepCurrent(direction) {
+  const currentLink = list.querySelector('a[aria-current="true"]');
+  const currentIndex = sections.findIndex((section) => section.id === currentLink?.dataset.sectionId);
+  const nextIndex = Math.min(Math.max(currentIndex + direction, 0), sections.length - 1);
+  if (nextIndex === currentIndex) return;
+
+  selectedSection = sections[nextIndex];
+  selectionLockUntil = performance.now() + 900;
+  setCurrent(selectedSection);
+  selectedSection.scrollIntoView({ behavior: "smooth", block: "start" });
+  history.replaceState(null, "", `#${selectedSection.id}`);
+}
+
+function isWheelInsideSwitcher(event) {
+  const rect = switcher.getBoundingClientRect();
+  return (
+    (event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom) ||
+    switcher.matches(":hover, :focus-within")
+  );
 }
 
 applyTheme();
 buildSwitcher();
 updateCurrent();
 
-current.addEventListener("click", () => {
-  const expanded = switcher.classList.toggle("is-open");
-  current.setAttribute("aria-expanded", String(expanded));
-});
-
-switcher.addEventListener("pointerenter", () => {
-  switcher.classList.add("is-hovered");
-});
-
-switcher.addEventListener("pointerleave", () => {
-  switcher.classList.remove("is-hovered");
-});
-
-switcher.addEventListener("focusin", () => {
-  switcher.classList.add("is-hovered");
-});
-
-switcher.addEventListener("focusout", () => {
-  window.setTimeout(() => {
-    if (!switcher.contains(document.activeElement)) switcher.classList.remove("is-hovered");
-  }, 0);
-});
-
 window.addEventListener("scroll", updateCurrent, { passive: true });
+
+window.addEventListener("wheel", (event) => {
+  if (!isWheelInsideSwitcher(event)) return;
+
+  event.preventDefault();
+  wheelDelta += event.deltaY;
+
+  const now = performance.now();
+  if (Math.abs(wheelDelta) < 28 || now < wheelLockUntil) return;
+
+  stepCurrent(wheelDelta > 0 ? 1 : -1);
+  wheelDelta = 0;
+  wheelLockUntil = now + 220;
+}, { passive: false });

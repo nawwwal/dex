@@ -38,12 +38,16 @@ The floating switcher sits at the bottom center.
 Behavior:
 
 - collapsed state shows current section number and title
-- hover or keyboard focus expands all sections
+- hover or keyboard focus morphs the collapsed pill into a compact scrollable dropdown
+- collapsed state uses the same active row label, centered inside the pill, so hover feels like one text object moving into position
+- expanded rows are always left-aligned, including during hover-out collapse
+- selection changes move only the highlight layer, not label text, alignment, or font weight
+- dropdown corners should be softly rounded, not fully pill-shaped
 - clicking a section scrolls to it
 - current section updates on scroll
 - works without covering body text on small screens
 
-Use buttons or anchors with accessible labels. Do not rely only on hover.
+Use CSS for the open/close morph. JavaScript may populate links and update the current label, but must not be required for the dropdown animation itself. Use buttons or anchors with accessible labels. Do not rely only on hover; keyboard focus must reveal the same menu.
 
 ## Figure Markup
 

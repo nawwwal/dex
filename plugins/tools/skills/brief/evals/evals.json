@@ -1,31 +1,36 @@
 {
   "skill_name": "brief",
-  "version": 1,
+  "version": 2,
   "skill_type": "artifact",
-  "notes": "Dex eval suite for the HTML editorial brief skill. Cases judge dynamic sectioning, Blackline visual strategy, source/link treatment, theme behavior, floating section switcher, and route-away behavior from deck tools.",
+  "notes": "Dex eval suite for the HTML editorial brief skill. Forward cases use ordinary user prompts and judge whether brief produces a single browser-native HTML report with dynamic sectioning, Blackline visuals, source links, adaptive themes, and the compact roller-style section switcher.",
   "standards": {
     "required_coverage": [
       "explicit trigger",
       "implicit trigger",
+      "contextual trigger",
       "negative-control",
       "artifact case",
       "eval suite health",
       "response quality",
+      "normal-user prompts",
       "dynamic sectioning",
       "blackline visuals",
       "no image placeholders",
       "inline links and read next",
       "floating switcher",
+      "roller switcher",
+      "scroll containment",
       "adaptive theme",
       "route away from decks"
     ],
     "response_quality": [
-      "Creates an actual browser-native HTML brief artifact, not a slide deck or outline.",
+      "Creates one browser-native HTML brief artifact, not a slide deck, outline, or companion prompt file.",
       "Derives a topic-specific section spine instead of using a fixed template.",
-      "Uses Blackline-style visuals as cognitive anchors and omits broken or placeholder image slots.",
+      "Uses Blackline-generated visuals as cognitive anchors and omits broken or placeholder image slots.",
       "Uses direct, specific editorial copy with claim-led section titles.",
       "Uses inline links plus a final Read Next block with short descriptions.",
-      "Supports readable light/dark color variants and a floating bottom section switcher."
+      "Supports readable light/dark color variants and a compact floating bottom section switcher.",
+      "Keeps switcher text stable during selection changes; only the active highlight moves."
     ]
   },
   "evals": [
@@ -36,7 +41,7 @@
       "should_trigger": true,
       "run_mode": "deterministic-or-clean-context",
       "prompt": "Use /dex eval on plugins/tools/skills/brief. Before any clean-context evaluator runs, validate that the brief eval suite is healthy and gradeable.",
-      "expected_output": "The agent validates eval JSON, runs the brief eval validator, runs syntax checks for the template JavaScript and helper scripts, and runs representative contrast checks.",
+      "expected_output": "The agent validates eval JSON, runs the brief eval validator, runs syntax checks for template JavaScript and helper scripts, and runs representative contrast checks.",
       "assertions": [
         "Runs JSON validation before clean-context forward runs.",
         "Runs the brief-specific eval validator.",
@@ -57,16 +62,16 @@
       "required_evidence": ["json validation output", "validator output", "syntax output", "contrast output"]
     },
     {
-      "id": "explicit-html-brief-artifact",
+      "id": "explicit-brief-from-notes",
       "category": "positive",
-      "coverage": ["explicit trigger", "artifact case", "response quality", "dynamic sectioning", "inline links and read next", "floating switcher", "adaptive theme"],
+      "coverage": ["explicit trigger", "artifact case", "response quality", "normal-user prompts", "dynamic sectioning", "inline links and read next", "floating switcher", "adaptive theme"],
       "should_trigger": true,
       "run_mode": "clean-context-forward",
-      "prompt": "Use $brief to turn evals/fixtures/source-brief.md into a browser-native HTML brief with a dark theme, inline links, Read Next, and the bottom section switcher.",
+      "prompt": "Can you use the brief skill on these notes and make one polished HTML report? I want it to read like a short editorial explainer, with source links, a Read Next section, and a dark theme.",
       "files": ["evals/fixtures/source-brief.md"],
-      "expected_output": "The agent creates or specifies static HTML/CSS/JS files for a long-form brief, derives section lenses from the topic, includes inline links plus Read Next, and implements the bottom floating switcher.",
+      "expected_output": "The agent creates static HTML/CSS/JS for a long-form brief, derives section lenses from the notes, includes inline links plus Read Next, and implements the floating bottom switcher.",
       "assertions": [
-        "Produces an HTML brief artifact rather than slides.",
+        "Produces one final browser-native HTML report artifact rather than slides, outlines, or companion prompt files.",
         "Derives sections from the source topic.",
         "Includes inline links and a Read Next block.",
         "Includes a floating bottom section switcher.",
@@ -74,17 +79,38 @@
       ],
       "deterministic_checks": {
         "must_include_any": [["index.html"], ["Read Next"], ["section switcher"], ["data-theme"], ["data-bg"]],
-        "must_not_include_any": [["Reveal.js"], ["PowerPoint"], ["deckSpec"]]
+        "must_not_include_any": [["Reveal.js"], ["PowerPoint"], ["deckSpec"], ["image coming soon"]]
       },
       "required_evidence": ["source fixture inspected", "HTML artifact", "derived section spine", "link behavior", "theme behavior"]
     },
     {
-      "id": "blackline-visual-generation-required",
+      "id": "implicit-between-lines-web-report",
       "category": "positive",
-      "coverage": ["artifact case", "blackline visuals", "no image placeholders", "response quality"],
+      "coverage": ["implicit trigger", "contextual trigger", "artifact case", "response quality", "normal-user prompts", "dynamic sectioning", "blackline visuals"],
       "should_trigger": true,
       "run_mode": "clean-context-forward",
-      "prompt": "Use $brief with evals/fixtures/visual-brief.md. Generate Blackline-style visuals where the explanation needs conceptual anchors. If generation fails, do not leave prompts or empty slots.",
+      "prompt": "I have a messy note about marketplace metadata. Turn it into that Between the Lines style web report: clear narrative, smart sections, a few simple drawings where they help, and links inside the writing.",
+      "files": ["evals/fixtures/source-brief.md"],
+      "expected_output": "The agent routes to brief without requiring the skill name, builds a web report artifact, and avoids deck language.",
+      "assertions": [
+        "Routes implicit web report requests to brief.",
+        "Creates an HTML report artifact.",
+        "Uses dynamic, claim-led sectioning.",
+        "Avoids slide deck or Reveal language."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["HTML brief"], ["web report"], ["Between the Lines"], ["visuals"]],
+        "must_not_include_any": [["Reveal.js"], ["slide deck"], ["speaker notes"], ["deck"]]
+      },
+      "required_evidence": ["implicit route", "artifact focus", "section derivation", "deck route avoided"]
+    },
+    {
+      "id": "blackline-visual-explainer",
+      "category": "positive",
+      "coverage": ["artifact case", "blackline visuals", "no image placeholders", "response quality", "normal-user prompts", "dynamic sectioning"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "This webhook simulator idea is hard to picture. Make it into a visual HTML brief and try hard to generate Blackline drawings wherever a drawing would make the concept easier. If an image cannot be generated, just leave it out.",
       "files": ["evals/fixtures/visual-brief.md"],
       "expected_output": "The agent tries to generate actual Blackline visuals, places them based on comprehension, uses section-specific terminology, and removes any failed image slots from the final HTML.",
       "assertions": [
@@ -100,24 +126,73 @@
       "required_evidence": ["visual strategy", "generation attempt", "image placement decision", "placeholder removal"]
     },
     {
-      "id": "implicit-visual-explainer-request",
+      "id": "simple-request-adaptive-depth",
       "category": "positive",
-      "coverage": ["implicit trigger", "artifact case", "response quality", "dynamic sectioning"],
+      "coverage": ["contextual trigger", "artifact case", "response quality", "normal-user prompts", "dynamic sectioning", "blackline visuals", "no image placeholders"],
       "should_trigger": true,
       "run_mode": "clean-context-forward",
-      "prompt": "Make this topic into a polished web report someone can read and understand quickly. It should feel like the Between the Lines examples, with visuals and source links. Source: evals/fixtures/source-brief.md.",
-      "files": ["evals/fixtures/source-brief.md"],
-      "expected_output": "The agent routes to brief without the skill name being mentioned, builds a web report artifact, and avoids deck language.",
+      "prompt": "Make a readable HTML brief from this. Keep the structure as long as the idea needs, not a fixed number of sections, and use drawings only where they actually make the explanation easier.",
+      "files": ["evals/fixtures/visual-brief.md"],
+      "expected_output": "The agent adapts report length and visual density to the topic instead of hard-coding section or image counts.",
       "assertions": [
-        "Routes implicit web report requests to brief.",
-        "Creates an HTML report artifact.",
-        "Avoids slide deck or Reveal language."
+        "Does not use a fixed four-section outline when the content needs another shape.",
+        "Does not hard-code a required image count.",
+        "Keeps image placement tied to comprehension.",
+        "Leaves no visual placeholders."
       ],
       "deterministic_checks": {
-        "must_include_any": [["HTML brief"], ["web report"], ["Between the Lines"], ["visuals"]],
-        "must_not_include_any": [["Reveal.js"], ["slide deck"], ["speaker notes"]]
+        "must_include_any": [["dynamic"], ["adaptive"], ["where they help"], ["HTML brief"]],
+        "must_not_include_any": [["exactly four sections"], ["must include 10 images"], ["image slot"], ["TODO image"]]
       },
-      "required_evidence": ["implicit route", "artifact focus", "deck route avoided"]
+      "required_evidence": ["adaptive section plan", "adaptive visual plan", "artifact decision"]
+    },
+    {
+      "id": "template-roller-switcher-regression",
+      "category": "positive",
+      "coverage": ["artifact case", "floating switcher", "roller switcher", "scroll containment", "adaptive theme", "no image placeholders"],
+      "should_trigger": true,
+      "run_mode": "deterministic-or-clean-context",
+      "prompt": "Check the report template section menu. Collapsed should show the current section centered. On hover it should become a compact roller: active row stays in the middle, only the previous and next rows show with fade and scale, scrolling inside changes sections instead of scrolling the page, and the label text should not fade out and reappear.",
+      "files": ["evals/fixtures/source-brief.md"],
+      "expected_output": "The agent verifies template JavaScript and CSS support the roller switcher, text-position morph, active-center behavior, wheel containment, adaptive theme hooks, and absence of placeholder image slots.",
+      "assertions": [
+        "Checks template JavaScript syntax.",
+        "Checks adaptive theme hooks.",
+        "Checks switcher markup and behavior hooks.",
+        "Checks wheel containment for the hovered switcher.",
+        "Checks there are no placeholder image strings."
+      ],
+      "deterministic_checks": {
+        "commands": [
+          "node --check plugins/tools/skills/brief/assets/report-template/script.js",
+          "node plugins/tools/skills/brief/scripts/contrast-check.js '#f4f1eb:#101010:dark-body' '#161514:#faf8f2:light-body'",
+          "rg -n 'wheel|preventDefault|overscroll-behavior|backdrop-filter' plugins/tools/skills/brief/assets/report-template/script.js plugins/tools/skills/brief/assets/report-template/styles.css"
+        ],
+        "must_include_any": [["body=PASS"], ["large=PASS"], ["wheel"], ["aria-current"]],
+        "must_not_include_any": [["image coming soon"], ["TODO image"], ["Reveal"]]
+      },
+      "required_evidence": ["syntax check", "contrast check", "template inspection", "wheel containment check"]
+    },
+    {
+      "id": "theme-color-request",
+      "category": "positive",
+      "coverage": ["contextual trigger", "artifact case", "normal-user prompts", "adaptive theme", "response quality"],
+      "should_trigger": true,
+      "run_mode": "clean-context-forward",
+      "prompt": "Can the report use a warmer background color, but still stay readable in both light and dark versions? Keep the same brief format.",
+      "files": ["evals/fixtures/source-brief.md"],
+      "expected_output": "The agent uses the brief theme hooks so background, foreground, muted text, panels, borders, and links derive readable colors from the selected theme.",
+      "assertions": [
+        "Supports a configurable background color.",
+        "Preserves readable foreground contrast.",
+        "Keeps the brief format and typography intact.",
+        "Does not create a new visual system."
+      ],
+      "deterministic_checks": {
+        "must_include_any": [["data-bg"], ["data-theme"], ["contrast"], ["light"], ["dark"]],
+        "must_not_include_any": [["new template"], ["slide theme"], ["Reveal"]]
+      },
+      "required_evidence": ["theme hook", "contrast reasoning", "format preservation"]
     },
     {
       "id": "negative-control-reveal-deck",
@@ -175,31 +250,6 @@
         "must_not_include_any": [["index.html"], ["HTML brief"]]
       },
       "required_evidence": ["route-away decision"]
-    },
-    {
-      "id": "template-supports-switcher-and-theme",
-      "category": "positive",
-      "coverage": ["artifact case", "floating switcher", "adaptive theme", "no image placeholders"],
-      "should_trigger": true,
-      "run_mode": "deterministic-or-clean-context",
-      "prompt": "Validate the bundled brief report template for section switcher behavior, adaptive theme hooks, and absence of placeholder image slots.",
-      "files": ["evals/fixtures/source-brief.md"],
-      "expected_output": "The agent verifies that the template contains section switcher markup/script, data-theme/data-bg hooks, and no image placeholder text.",
-      "assertions": [
-        "Checks template JavaScript syntax.",
-        "Checks adaptive theme hooks.",
-        "Checks switcher markup and behavior hooks.",
-        "Checks there are no placeholder image strings."
-      ],
-      "deterministic_checks": {
-        "commands": [
-          "node --check plugins/tools/skills/brief/assets/report-template/script.js",
-          "node plugins/tools/skills/brief/scripts/contrast-check.js '#f4f1eb:#101010:dark-body' '#161514:#faf8f2:light-body'"
-        ],
-        "must_include_any": [["body=PASS"], ["large=PASS"]],
-        "must_not_include_any": [["image coming soon"], ["TODO image"], ["Reveal"]]
-      },
-      "required_evidence": ["syntax check", "contrast check", "template inspection"]
     }
   ]
 }

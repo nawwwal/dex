@@ -19,17 +19,29 @@ REQUIRED_COVERAGE = {
     "artifact case",
     "eval suite health",
     "response quality",
+    "normal-user prompts",
+    "contextual trigger",
     "dynamic sectioning",
     "blackline visuals",
     "no image placeholders",
     "inline links and read next",
     "floating switcher",
+    "roller switcher",
+    "scroll containment",
     "adaptive theme",
     "route away from decks",
 }
 
 ALLOWED_CATEGORIES = {"positive", "negative-control", "known-failure"}
 ALLOWED_RUN_MODES = {"clean-context-forward", "deterministic-or-clean-context"}
+SPECIALIZED_FORWARD_PROMPT_TERMS = {
+    "$brief",
+    "evals/fixtures",
+    "deterministic_checks",
+    "run_mode",
+    "assertions",
+    "expected_output",
+}
 
 
 def fail(message: str) -> None:
@@ -95,6 +107,7 @@ def main() -> int:
     coverage_seen: set[str] = set()
     negative_count = 0
     artifact_count = 0
+    normal_prompt_count = 0
 
     for case in evals:
         case_id = case.get("id")
@@ -112,6 +125,12 @@ def main() -> int:
             fail(f"{case_id} category must be one of {sorted(ALLOWED_CATEGORIES)}")
         if case["run_mode"] not in ALLOWED_RUN_MODES:
             fail(f"{case_id} run_mode must be one of {sorted(ALLOWED_RUN_MODES)}")
+        if case["run_mode"] == "clean-context-forward":
+            prompt = case["prompt"]
+            if any(term in prompt for term in SPECIALIZED_FORWARD_PROMPT_TERMS):
+                fail(f"{case_id} clean-context-forward prompt is too eval-specific")
+            if "normal-user prompts" in case["coverage"]:
+                normal_prompt_count += 1
         if not isinstance(case["should_trigger"], bool):
             fail(f"{case_id} should_trigger must be boolean")
         if case["category"] == "negative-control":
@@ -147,6 +166,8 @@ def main() -> int:
         fail("at least three negative controls are required")
     if artifact_count < 4:
         fail("at least four artifact-backed cases are required")
+    if normal_prompt_count < 5:
+        fail("at least five clean-context cases must use normal-user prompts")
 
     print("brief eval suite valid")
     return 0
