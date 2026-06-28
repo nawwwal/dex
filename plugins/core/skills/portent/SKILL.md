@@ -1,77 +1,94 @@
 ---
 name: portent
-description: "Use when storing, organizing, retrieving, or briefing from the user's Tolaria knowledge base using the Portent object model: project context, responsibilities, operations, session logs, decisions, source packets, derived assertions, MOCs, current todos, tasks, events, notes, topics, people, archived records, and durable handoffs."
-allowed-tools: Bash, Read, Write, Edit, Glob, Grep, mcp__qmd__status, mcp__qmd__search, mcp__qmd__query, mcp__qmd__get, mcp__qmd__multi_get, mcp__tolaria__list_vaults, mcp__tolaria__open_note
+description: "Use when retrieving from or writing to Aditya's Tolaria/Portent knowledge base: project context, decisions, RCAs, blockers, PR or DevRev state, Slack/Gmail/Calendar meeting context, behavioral rules, technical/design/team knowledge, ways of working, session logs, handoffs, current todos, tasks, people, topics, archived records, and durable agent memory. Use qmd for retrieval; use Tolaria/direct Markdown for vault discovery, note opening, refresh, and writeback."
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep, mcp__qmd__status, mcp__qmd__search, mcp__qmd__query, mcp__qmd__get, mcp__qmd__multi_get, mcp__tolaria__list_vaults, mcp__tolaria__get_vault_context, mcp__tolaria__create_note, mcp__tolaria__open_note, mcp__tolaria__refresh_vault
 ---
 
 # Portent
 
-Use the user's Tolaria vault as the knowledge base and Portent as the organizing model.
+Use the knowledge base as a habit loop:
 
-Portent is object-first: folders are storage, not meaning. Every durable object must answer "what is this?" with a Portent type, and every organized object must answer "what will this be useful for?" with relationships.
+1. **Orient**: use the configured default vault from global `~/.agents/AGENTS.md`, read vault `AGENTS.md` when present, and check qmd health when retrieval matters.
+2. **Retrieve**: use qmd, not Tolaria search. Pick the cheapest qmd mode that fits: `search` for exact anchors, `vsearch` for semantic recall, `query` for synthesis or reranking, then read source text with `get` or `multi_get`.
+3. **Decide**: answer from retrieved text and live sources when facts may drift.
+4. **Write**: update the best existing Markdown object when durable knowledge appeared.
+5. **Refresh**: refresh Tolaria and qmd after edits when tooling works.
+6. **Report**: say what was read, what changed, and what was unavailable.
 
-Read `references/portent-spec.md` when classification, lifecycle, or relationship choices are unclear.
+Tolaria is the vault UI and note surface. qmd is the search brain. Portent is the shape of memory.
 
-## Start Here
+Do not use Tolaria full-text search as the main retrieval path. If qmd is unavailable, use direct Markdown search in the resolved vault path and say qmd is degraded.
 
-1. Resolve the active Tolaria vault with `mcp__tolaria__list_vaults` when it is available.
-2. Treat only the tools listed in this skill frontmatter as guaranteed: `mcp__tolaria__list_vaults` and `mcp__tolaria__open_note`.
-3. Select the vault deterministically:
-   - If `list_vaults` returns one vault, use it.
-   - If the user gives a vault label, name, or path hint, match that hint against the listed vault labels and paths.
-   - If multiple plausible writable vaults remain and the user gave no hint, ask which vault to use before writing.
-   - If the selected vault has no path, or the path is missing or unreadable, stop and report that the Tolaria vault cannot be used.
-4. Read the vault's AGENTS.md first when `hasAgentInstructions` is true and the file exists.
-5. Use qmd for retrieval when it is available:
-   - Use `mcp__qmd__search` for exact title, wikilink, ID, person, project, and phrase lookup.
-   - Use structured `mcp__qmd__query` for important or fuzzy searches where aliases, nearby concepts, or stale wording may matter. Send typed `lex`, `vec`, and `hyde` searches with an `intent`; do not paste the user's sentence as a bare query when you can add likely titles, aliases, people, projects, filenames, and the document shape you expect.
-   - Read qmd results with `mcp__qmd__get` or `mcp__qmd__multi_get` before relying on snippets. Use docids, `qmd://` paths, or line windows such as `#abc123:120:40` so answers can cite the source text.
-   - For factual, historical, decision, or handoff answers, run the loop: search candidates, retrieve the relevant full document or line window, answer from retrieved text, and name the qmd sources or checked queries when context is missing.
-   - Before saying "no context", search harder from at least three angles: exact anchors, aliases, map notes such as `portent-index` and `brain-log`, and a broader structured query.
-   - Do not mutate qmd collections, embeddings, or cleanup state during ordinary retrieval.
-   - Keep only the active Portent vault collection unless the user asks otherwise: remove older deprecated qmd collections with `qmd collection remove <name>`, then run `qmd cleanup`.
-   - If qmd is missing the active vault or the index is stale, run `qmd collection add "<vault_path>" --name portent --mask "*.md"` when the collection is absent, then `qmd update`.
-   - After qmd collection or index changes, run `qmd embed -c portent`; Portent retrieval should not rely on stale or missing embeddings.
-   - If qmd MCP/CLI is unavailable or still misses likely context, use direct Markdown search inside the resolved vault path.
-6. Use direct Markdown fallback inside the resolved vault path when qmd or Tolaria tooling is incomplete:
-   - Verify the resolved path exists and is readable before searching or writing.
-   - Orient with filesystem reads of AGENTS.md, index notes, and nearby README files when present.
-   - Search Markdown files in the vault path by title, frontmatter, wikilinks, and content.
-   - Read matching Markdown files directly from the vault path.
-   - Write by creating or editing Markdown files in the vault path with YAML frontmatter and wikilinks.
-   - Never write outside the resolved vault path as a substitute for Tolaria.
-7. Do not invent Tolaria write, search, create, update, or delete tool names.
-8. Open created or edited notes with `mcp__tolaria__open_note` when useful for review.
+## References
 
-Do not write canonical knowledge records to `~/.claude/log`, `~/.claude/TASKS.md`, or generic Codex memory. Those may be legacy inputs, but Tolaria is the source of truth.
+- Read `references/retrieval.md` for qmd search patterns, source-reading rules, and degraded retrieval fallback.
+- Read `references/writeback.md` for what to write, where to put it, and how to avoid "no update needed" mistakes.
+- Read `references/hooks.md` when changing hook behavior or checking how hooks support the Portent loop.
+- Read `references/portent-spec.md` only when object type, lifecycle, relationship, source packet, derived assertion, or MOC choices are unclear.
+- Read `references/setup.md` when Tolaria, qmd, the `portent` collection, or local qmd models are missing or broken.
 
-## Compiled Portent Operations
+## Hook Layer
 
-When the active vault contains the operating notes below, load them for brain-grade behavior:
+Hooks are receipts and reminders, not the memory system. The bundled `UserPromptSubmit` hook should only inject the default vault/qmd/writeback contract. Keep retrieval, source reading, and note edits in this skill flow.
 
-- `[[portent-operating-contract]]`
-- `[[portent-write-templates]]`
-- `[[portent-ingest-query-lint-runbook]]`
-- `[[portent-index]]`
-- `[[brain-log]]`
+## Start Pattern
 
-Use qmd MCP or qmd CLI for Portent retrieval. Use Tolaria MCP for vault discovery, note opening, and UI-facing operations when available.
+1. Use configured vault:
+   - Default to the vault path and qmd collection recorded in global `~/.agents/AGENTS.md`.
+   - For this machine, that is `/Users/aditya.nawal/Documents/oddly-specific` and qmd collection `portent`.
+   - Treat that configured path as already resolved. Do not call `mcp__tolaria__list_vaults` just to confirm it.
+   - Do not rediscover the vault on every run.
+   - Use `mcp__tolaria__list_vaults` only when the configured path is missing or unreadable, the user names another vault, multiple vaults are plausibly involved, or a Tolaria operation fails because the vault target is ambiguous.
+   - If the selected vault path is missing or unreadable, stop; do not write elsewhere.
+2. Read vault instructions:
+   - If `hasAgentInstructions` is true and `AGENTS.md` exists, read it before writing.
+3. Retrieve with qmd:
+   - Use `mcp__qmd__search`/`qmd search` for exact anchors.
+   - Use `qmd vsearch` for semantic recall when the user's words may not match the saved note.
+   - Use `mcp__qmd__query`/`qmd query` for hybrid reranked synthesis with `intent`, `lex`, `vec`, and `hyde`.
+   - Use `mcp__qmd__get`, `mcp__qmd__multi_get`, `qmd get`, or `qmd multi-get` before trusting snippets.
+   - Do not run every qmd mode by default. Escalate only when the first mode is weak, partial, contradictory, or the stakes justify broader recall.
+4. Write if useful:
+   - Update existing notes first.
+   - Create a new note only when no current object owns the fact.
+   - Use direct Markdown edits inside the vault path, or `mcp__tolaria__create_note` when it is available and appropriate.
+5. Refresh:
+   - Use `mcp__tolaria__refresh_vault` after note edits when visible.
+   - Run `qmd update -c portent` and `qmd embed -c portent` after Markdown edits when qmd works.
 
-Use direct Markdown edits inside the resolved Tolaria vault path for updating existing notes, saved views, index notes, log notes, relationship repair, and contract maintenance.
+## What To Keep
 
-Prefer compiled Portent objects over raw source re-reading. Verify live systems when facts are drift-prone.
+Write durable, Aditya-relevant knowledge freely:
 
-## Portent Defaults
+- behavior: agent corrections, preferred workflows, repeated failure modes, communication rules
+- technical: APIs, contracts, repo behavior, test paths, server maps, data/state shape
+- design: UI decisions, system constraints, visual direction, interaction rules
+- team: owners, reviewers, source-of-truth channels, escalation paths, dependency maps
+- work state: decisions, blockers, RCAs, PR state, DevRev state, meeting outcomes, handoffs
+- personal operating context: Aditya's ways of working, recurring preferences, focus constraints, review style
 
-Use these types before inventing anything custom:
+Skip broad team noise, transient chat, stale bot output, and unsupported guesses.
+
+## Writeback Audit
+
+Before the final response on non-trivial work, ask:
+
+1. Did this create or change a reusable decision, RCA, blocker, source boundary, task, handoff, behavior rule, system behavior, or working-style preference?
+2. Would Aditya or a future agent search for this later?
+3. Is there an existing object that should own it?
+
+If yes, write it. "No update needed" is allowed only after this audit.
+
+Behavior corrections usually go to `[[agent-behavior-gotchas]]`. Knowledge-base maintenance goes to `[[brain-log]]`. Project state goes to the owning Project, Operation, Responsibility, Event, or Task.
+
+## Object Defaults
+
+Use the default types before inventing anything:
 
 - PORT: `Project`, `Operation`, `Responsibility`, `Task`
 - ENTP: `Event`, `Note`, `Topic`, `Person`
 
-Use these relationships first:
-
-- `belongs_to`: primary context, ownership, or composition; usually one main parent.
-- `related_to`: secondary usefulness, association, or many-to-many context.
+Use `belongs_to` for the main parent and `related_to` for useful secondary links.
 
 Use lifecycle fields:
 
@@ -80,141 +97,25 @@ organized: false
 archived: false
 ```
 
-Set `organized: true` only when the object has a clear title, type, and enough relationships to explain future use.
+Set `organized: true` only when the object has a clear title, type, and enough relationships to help future retrieval.
 
-## Source Packets, Assertions, And MOCs
+## Source Discipline
 
-Keep raw evidence, agent interpretation, and prompt-ready maps visibly separate.
+Separate:
 
-- Source packet: raw evidence such as a Slack thread, PR, DevRev issue, meeting note, browser finding, screenshot, or user correction. Store it as an `Event` or `Note` with source, actor, timestamp, and source status when available.
-- Derived assertion: an agent-made conclusion from one or more source packets. Put it in a `Key assertions` section or use frontmatter such as `derived_from`, `assertion_type`, `source_status`, and `last_verified` when structured fields will help later retrieval.
-- MOC: map of content. Use it as a prompt-context surface, not a link dump. A useful MOC has `Current`, `Historical`, `Key assertions`, `Open gaps`, and `Read next`.
+- source packet: raw evidence, usually an `Event` or `Note`
+- derived assertion: agent conclusion with provenance in `Key assertions` or fields such as `derived_from`
+- MOC: map of content with `Current`, `Historical`, `Key assertions`, `Open gaps`, and `Read next`
 
-Do not store every conclusion. Store only Aditya-relevant durable conclusions with sources. Do not infer facts about people from agent-authored messages unless speaker attribution is clear.
-
-Use `supersedes` only when a newer object or assertion replaces an older one. Otherwise preserve older records and mark them stale, historical, or unchecked.
-
-Prefer qmd index-plus-whole-object reading over opaque vector memory. If qmd is stale or misses likely context, update the qmd collection or fall back to direct Markdown search before saying no context exists.
-
-## Mode Routing
-
-Choose the mode from the user's request. If no mode is named, infer it from the outcome they want.
-
-### Capture
-
-Use for quick dumping, rough notes, links, screenshots, fragments, or "remember this".
-
-Create the lightest useful object. Default to `Note` for knowledge, `Event` for something that happened, and `Task` only when the user is recording work to do. Keep `organized: false` unless the parent/type/relationships are clear.
-
-Minimum capture frontmatter:
-
-```yaml
----
-type: Note
-organized: false
-archived: false
-related_to: []
----
-```
-
-### Log
-
-Use for completed work sessions, decisions, incidents, meetings, achievements, or handoffs that should survive the chat.
-
-Create an `Event` unless the output is itself a durable artifact, in which case create or update a `Note` and relate it to the event. Prefer one event per meaningful session.
-
-The event should include:
-
-- What happened, with concrete evidence.
-- Decisions and rationale.
-- Key assertions when the log contains agent-derived conclusions; each assertion should name its source, confidence or staleness when known, and any live-source gap.
-- Changed files, commits, links, DevRev IDs, PRs, docs, or external anchors when available.
-- Carry-forward tasks or open questions.
-- Relationships to the primary `Project`, `Responsibility`, people, and topics.
-
-### Organize
-
-Use when the user asks to clean up captured material, attach context, build project maps, or convert loose notes into Portent objects.
-
-For each candidate:
-
-1. Pick a default Portent type.
-2. Improve the title so it names the real object.
-3. Add one primary `belongs_to` when there is a clear parent.
-4. Add `related_to` links for useful secondary context.
-5. Set `organized: true` only when future use is obvious.
-6. Delete or leave captured when no useful attachment exists.
-
-### Brief
-
-Use for "brief me", "what should I know", "what changed", "what is active", project briefings, weekly reviews, and handoff prep.
-
-Build the briefing from organized Portent objects first, then recent captured objects. Cover:
-
-- Active projects and the latest event per project.
-- Open tasks or external task references related to those projects.
-- Decisions made since the last brief.
-- Quiet projects or responsibilities that may need attention.
-- Current vs historical facts when state may have changed.
-- Open gaps, stale assertions, or sources not checked.
-- Read-next objects when the brief is acting as an MOC.
-- Useful next actions, separated from facts.
-
-### Todo
-
-Use when the user asks for current todos, next actions, backlog, or what to do next.
-
-Tasks may live outside the knowledge base. In Tolaria, store a `Task` object only when the task needs durable context or relationships. Otherwise, record a reference to the external task tool or issue and relate it to its `Project`, `Operation`, or `Responsibility`.
-
-When external task tools are unavailable, say which sources were checked and which were not.
-
-### Archive
-
-Use when something is done, stale, no longer active, or should disappear from active views while staying searchable.
-
-Set `archived: true`. Preserve relationships and add a short archive note explaining why it is no longer active.
-
-### Search
-
-Use when the user asks what exists, what is known, or where something lives.
-
-Search by title, type, relationship, and content. Use qmd first: exact terms through `mcp__qmd__search`, fuzzy or alias-heavy queries through `mcp__qmd__query`, then read matching objects with `mcp__qmd__get` or direct Markdown. If qmd is unavailable or stale, search the resolved vault's Markdown files directly. Return the object title, type, lifecycle state, and why it matters. Do not turn search results into a briefing unless the user asks for synthesis.
-
-## Object Writing Rules
-
-Use Markdown frontmatter plus wikilinks:
-
-```yaml
----
-type: Event
-organized: true
-archived: false
-belongs_to: "[[Launch Portent v0.1]]"
-related_to:
-  - "[[Alice Example]]"
-  - "[[Knowledge graphs]]"
----
-```
-
-Keep filenames stable and boring. The title and frontmatter carry meaning; the folder does not.
-
-Prefer updating an existing object over creating a duplicate. Before writing a new `Project`, `Responsibility`, `Operation`, `Topic`, or `Person`, search qmd and then the resolved vault path for a likely existing object.
-
-Use extra relationship or provenance fields only when they change future retrieval or trust:
-
-- `source`, `source_status`, `last_verified`, `compiled_from`
-- `derived_from`, `assertion_type`
-- `supersedes`
-
-Default to prose sections when a field would be one-off decoration.
+Do not turn every inference into memory. Store only durable, source-bounded, Aditya-relevant facts.
 
 ## Response Contract
 
-After a write, report:
+After retrieval or writeback, keep the chat response short:
 
-- Created or updated objects.
-- Type and lifecycle state.
-- Key relationships added or missing.
-- Any sources not checked.
+- Sources read or qmd/direct-Markdown fallback used
+- Objects created or updated
+- Type, lifecycle, and key relationships when a note changed
+- qmd/Tolaria/source gaps
 
-Keep the answer short. The knowledge base should hold the detail; the chat response should state what changed and what remains uncertain.
+Never claim qmd, Tolaria, or live systems were checked if they were unavailable.

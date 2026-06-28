@@ -74,7 +74,7 @@ Optional integrations depend on the skill you use: Figma MCP for Figma work, Dev
 
 | Skill | Use it for |
 |---|---|
-| `dex` | Fresh setup, doctor checks, `.agents` bootstrap, Claude/Codex compatibility links, project design-context capture |
+| `dex` | Fresh setup, doctor checks, `.agents` bootstrap, release workflow, and actor/judge skill evals |
 | `why` | Explaining unfamiliar code, architecture, concepts, alternatives, tradeoffs, and clever functions before execution; using Tolaria/Portent as the knowledge base for learner profiles and saved concepts |
 | `council` | Multi-domain parallel investigation with dynamic lens composition: design critique, product decisions, research, code audits, workflow friction, expert debate |
 | `reflect` | Portent/Tolaria reflection: emerging patterns, leverage points, and drift across active knowledge objects |
@@ -82,7 +82,7 @@ Optional integrations depend on the skill you use: Figma MCP for Figma work, Dev
 | `wrap` | End-of-session recap, meaningful micro-commits, verification summary, and Portent handoff |
 | `portent` | Tolaria knowledge-base capture, qmd-backed search, session logs, project context, source packets, derived assertions, MOCs, current todos, briefings, organization, and archive using the Portent object model |
 
-`why` treats `teach` and `learn` as routing aliases, but the canonical skill and visible token are `why`. It uses Tolaria/Portent for learner profiles and saved concepts instead of a local SQLite memory index. `portent` uses qmd for Portent search and Tolaria for vault discovery, note opening, and writeback. It ships a prompt-time context receipt hook that reminds the agent to use `core:portent` before behavior-changing work when prior context may matter, then write durable session knowledge back before the final response when useful. Codex hooks run when `[features].hooks` is enabled and the hook is trusted through the normal `/hooks` review flow.
+`why` treats `teach` and `learn` as routing aliases, but the canonical skill and visible token are `why`. It uses Tolaria/Portent for learner profiles and saved concepts instead of a local SQLite memory index. `portent` uses qmd for Portent search and Tolaria for note opening, refresh, and writeback. It chooses the qmd mode that fits the task: exact search for anchors, vector search for semantic recall, hybrid query for synthesis, then source reads with `get`/`multi-get`. It ships a prompt-time context receipt hook that reminds the agent to use `core:portent` before behavior-changing work when prior context may matter, then write durable session knowledge back before the final response when useful. Codex hooks run when `[features].hooks` is enabled and the hook is trusted through the normal `/hooks` review flow.
 
 `council` lives here because it is a thinking primitive, not a misc tool.
 
@@ -297,7 +297,7 @@ Version policy:
 
 Skills are package contents, not library APIs. Skill edits and removals are patch releases. Major is only for marketplace/install-contract changes.
 
-The eval skill is for testing and improving Dex skills before release. It uses `skill-creator` and runs repeated eval-and-repair rounds: snapshot the current skill, design or refresh the relevant eval suite before touching the target skill, run clean-context trigger and quality evals, grade deterministic and rubric checks, diagnose failures, repair the skill or evals, then re-run. Local run artifacts belong under `.dex/evals/`; commit only durable skill changes, eval fixtures, validators, and docs.
+The eval skill is for testing and improving Dex skills before release. It uses `skill-creator` and runs repeated eval-and-repair rounds: snapshot the current skill, design or refresh the relevant eval suite before touching the target skill, run clean-context actor attempts, grade them with separate hidden-criteria judges, diagnose skill failures separately from harness failures, repair the skill or evals, then re-run. Local run artifacts belong under `.dex/evals/`; commit only durable skill changes, eval fixtures, validators, and docs.
 
 ## Update
 

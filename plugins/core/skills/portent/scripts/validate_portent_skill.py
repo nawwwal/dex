@@ -3,238 +3,159 @@ from __future__ import annotations
 
 import json
 import re
-import shlex
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-REPO_ROOT = ROOT.parents[3]
 EVALS = ROOT / "evals" / "evals.json"
 
 REQUIRED_FILES = {
     "SKILL.md",
+    "references/retrieval.md",
+    "references/writeback.md",
+    "references/hooks.md",
+    "references/setup.md",
     "references/portent-spec.md",
     "evals/evals.json",
-    "evals/fixtures/captured-material.md",
-    "evals/fixtures/portent-vault-state.md",
-    "evals/fixtures/pre-repair-log-snapshot.md",
-    "evals/fixtures/tolaria-agents-vault.md",
-    "evals/fixtures/tolaria-missing-path.md",
-    "evals/fixtures/tolaria-single-vault.md",
-    "evals/fixtures/tolaria-vault-list.md",
-    "evals/fixtures/vault-snapshot.md",
 }
 
-SKILL_REQUIRED_PATTERNS = [
-    r"name:\s*portent",
-    r"description:.*Tolaria knowledge base",
-    r"description:.*Portent object model",
-    r"mcp__qmd__search",
-    r"mcp__qmd__query",
-    r"mcp__qmd__get",
-    r"mcp__qmd__multi_get",
-    r"typed `lex`, `vec`, and `hyde` searches",
-    r"answer from retrieved text",
-    r"Before saying \"no context\"",
-    r"Do not mutate qmd collections",
-    r"qmd collection add",
-    r"qmd collection remove",
-    r"qmd cleanup",
-    r"qmd embed",
-    r"Use qmd for retrieval",
-    r"mcp__tolaria__list_vaults",
-    r"mcp__tolaria__open_note",
-    r"source packets",
-    r"derived assertions",
-    r"MOCs",
-    r"If `list_vaults` returns one vault, use it",
-    r"multiple plausible writable vaults remain.*ask which vault",
-    r"path is missing or unreadable.*stop",
-    r"Never write outside the resolved vault path",
-    r"Do not invent Tolaria write, search, create, update, or delete tool names",
-    r"Do not write canonical knowledge records to `~/.claude/log`",
-    r"Use qmd MCP or qmd CLI for Portent retrieval",
-    r"## Mode Routing",
-    r"### Capture",
-    r"### Log",
-    r"### Organize",
-    r"### Brief",
-    r"### Todo",
-    r"### Archive",
-    r"### Search",
-    r"`Project`, `Operation`, `Responsibility`, `Task`",
-    r"`Event`, `Note`, `Topic`, `Person`",
-    r"`belongs_to`",
-    r"`related_to`",
-    r"organized: false",
-    r"archived: false",
-    r"Prefer updating an existing object over creating a duplicate",
-    r"Key assertions",
-    r"derived_from",
-    r"supersedes",
-    r"Current.*Historical.*Open gaps.*Read next",
-]
-
-SPEC_REQUIRED_PATTERNS = [
-    r"Model reality first",
-    r"Project",
-    r"Operation",
-    r"Responsibility",
-    r"Task",
-    r"Event",
-    r"Note",
-    r"Topic",
-    r"Person",
-    r"belongs_to",
-    r"related_to",
-    r"Captured",
-    r"Organized",
-    r"Archived",
-    r"Extension Rules",
-    r"Memory Layers",
-    r"Source packet",
-    r"Derived assertion",
+SKILL_REQUIRED = [
+    r"Use the knowledge base as a habit loop",
+    r"Orient.*Retrieve.*Write.*Refresh.*Report",
+    r"global `~/.agents/AGENTS.md`",
+    r"already resolved",
+    r"Do not call `mcp__tolaria__list_vaults` just to confirm it",
+    r"Do not rediscover the vault on every run",
+    r"fails because the vault target is ambiguous",
+    r"qmd is the search brain",
+    r"Do not use Tolaria full-text search",
+    r"cheapest qmd mode that fits",
+    r"references/retrieval\.md",
+    r"references/writeback\.md",
+    r"references/hooks\.md",
+    r"references/setup\.md",
+    r"mcp__tolaria__create_note",
+    r"qmd vsearch",
+    r"qmd query",
+    r"qmd get",
+    r"Do not run every qmd mode by default",
+    r"qmd update -c portent",
+    r"qmd embed -c portent",
+    r"Behavior corrections usually go to `\[\[agent-behavior-gotchas\]\]`",
+    r"Knowledge-base maintenance goes to `\[\[brain-log\]\]`",
+    r"No update needed",
+    r"PORT: `Project`, `Operation`, `Responsibility`, `Task`",
+    r"ENTP: `Event`, `Note`, `Topic`, `Person`",
+    r"source packet",
+    r"derived assertion",
     r"MOC",
-    r"supersedes",
 ]
 
-REQUIRED_COVERAGE = {
-    "explicit trigger",
-    "implicit trigger",
-    "contextual trigger",
-    "negative-control",
-    "known failure",
-    "artifact case",
-    "eval suite health",
-    "repair regression",
-    "benchmark comparison",
-    "response quality",
-    "tolaria mcp routing",
-    "markdown fallback",
-    "port types",
-    "entp types",
-    "lifecycle state",
-    "relationship integrity",
-    "duplicate prevention",
-    "no legacy write regression",
-    "mode capture",
-    "mode log",
-    "mode organize",
-    "mode brief",
-    "mode todo",
-    "mode archive",
-    "mode search",
-}
+FORBIDDEN_SKILL = [
+    r"mcp__tolaria__search_notes",
+    r"Use Tolaria search as",
+    r"Tolaria search for",
+]
 
-REQUIRED_QUALITY = {
-    "Models reality with Portent objects instead of folder names.",
-    "Uses Tolaria as the canonical knowledge base.",
-    "Chooses the smallest correct Portent type.",
-    "Separates captured, organized, and archived lifecycle states.",
-    "Uses belongs_to for primary context and related_to for secondary context.",
-    "Searches for existing durable objects before creating duplicates.",
-    "Keeps capture fast and organization pessimistic.",
-    "Keeps briefings factual and separates next actions from facts.",
-    "Names unchecked sources or unavailable tools.",
-    "Reports created or updated objects with type, lifecycle, and relationships.",
-}
+RETRIEVAL_REQUIRED = [
+    r"qmd is the retrieval plane",
+    r"Tolaria search is not",
+    r"already resolved",
+    r"vault target is ambiguous",
+    r"lex",
+    r"vec",
+    r"hyde",
+    r"qmd get",
+    r"qmd multi-get",
+    r"qmd search",
+    r"qmd vsearch",
+    r"qmd query",
+    r"Mode Selection",
+    r"Do not run every qmd mode by default",
+    r"at least three angles",
+    r"agent-behavior-gotchas",
+    r"qmd is degraded",
+    r"direct Markdown search",
+]
+
+WRITEBACK_REQUIRED = [
+    r"Writeback should feel easy",
+    r"Update existing notes before creating new notes",
+    r"agent behavior corrections",
+    r"Aditya working-style preferences",
+    r"technical contracts",
+    r"design decisions",
+    r"team ownership",
+    r"source packet",
+    r"derived assertion",
+    r"no update needed",
+]
+
+SETUP_REQUIRED = [
+    r"# Portent Setup",
+    r"npm install -g @tobilu/qmd",
+    r"qmd collection add",
+    r"qmd update",
+    r"qmd search",
+    r"qmd vsearch",
+    r"qmd query",
+    r"qmd embed -c portent",
+    r"Do not run installs.*without user confirmation",
+    r"Readiness Check",
+    r"Persist The Default Vault",
+    r"~/.agents/AGENTS.md",
+    r"Do not rediscover the vault on every run",
+    r"Hooks",
+    r"UserPromptSubmit",
+    r"portent_context_receipt\.py --self-test",
+]
+
+HOOKS_REQUIRED = [
+    r"Hooks keep the knowledge loop present",
+    r"do not replace the skill",
+    r"Prompt receipt",
+    r"already-resolved default vault",
+    r"UserPromptSubmit",
+    r"Future stop audit",
+    r"Do not put retrieval inside hooks",
+    r"portent_context_receipt\.py",
+    r"hooks\.json",
+    r"hooks are degraded",
+    r"not to call `list_vaults` just to confirm it",
+]
 
 REQUIRED_EVAL_IDS = {
-    "eval-suite-health-before-forward-run",
-    "explicit-portent-capture-note",
-    "implicit-remember-this-capture",
-    "wrap-handoff-session-log-event",
-    "organize-captured-material",
-    "brief-active-work-from-portent",
-    "todo-durable-context-boundary",
-    "archive-completed-project",
-    "search-without-forced-synthesis",
-    "duplicate-prevention-before-project-create",
-    "project-context-update-existing-project",
-    "legacy-log-path-regression",
-    "mcp-limited-markdown-fallback",
-    "multi-vault-selection-requires-disambiguation",
-    "missing-unreadable-vault-path-stops",
-    "concrete-markdown-fallback-single-vault",
-    "vault-agents-read-before-write",
-    "custom-type-resistance",
-    "negative-control-devrev-sprint-workflow",
-    "negative-control-repo-code-search",
-    "negative-control-github-pr-release-execution",
-    "negative-control-generic-implementation-request",
-    "benchmark-against-log-snapshot",
+    "search-before-answering-known-work",
+    "write-agent-behavior-correction",
+    "capture-working-style-preference",
+    "update-project-state-from-pr-and-devrev",
+    "capture-meeting-transcript-signal",
+    "brief-current-plate-from-vault",
+    "retrieve-design-technical-context",
+    "qmd-degraded-markdown-fallback",
+    "do-not-write-broad-team-noise",
+    "handoff-after-nontrivial-codex-work",
+    "prevent-duplicate-knowledge-object",
+    "setup-repair-is-interactive",
+    "use-configured-vault-not-rediscovery",
+    "readiness-check-before-setup-complete",
+    "pulse-daily-digest-writeback",
+    "come-back-list-update",
+    "slack-thread-routing-memory",
+    "promotion-growth-context-brief",
+    "posthog-analytics-context",
+    "visual-direction-retrieval",
+    "access-route-retrieval",
+    "people-and-owner-map",
+    "hooks-support-not-replace-skill",
 }
 
-ALLOWED_RUN_MODES = {"clean-context-forward", "deterministic-or-clean-context"}
-ALLOWED_DETERMINISTIC_KEYS = {
-    "commands",
-    "must_include_any",
-    "must_not_include_any",
-}
-BENCHMARK_MUST_RECORD = {
-    "pass_rate",
-    "routing_accuracy",
-    "time_seconds",
-    "tokens_or_unknown",
-    "turns_or_commands",
-    "quality_delta",
-    "accepted_cost_tradeoff",
-}
-
-BENCHMARK_REQUIRED_EVIDENCE = {
-    "baseline output",
-    "current output",
-    "scored delta",
-}
-
-POLARITY_TRAP_FORBIDDEN_TERMS = {
-    "delete",
-    "briefing",
-    "type: project",
-    "type: operation",
-    "type: event",
-    "type: task",
-    "type: note",
-    "portent object",
-    "belongs_to",
-    "belongs_to:",
-    "related_to",
-    "related_to:",
-    "custom type",
-    "custom relationship",
-}
-
-SOURCE_DEPENDENT_CASES = {
-    "organize-captured-material",
-    "brief-active-work-from-portent",
-    "todo-durable-context-boundary",
-    "archive-completed-project",
-    "search-without-forced-synthesis",
-    "duplicate-prevention-before-project-create",
-    "project-context-update-existing-project",
-    "mcp-limited-markdown-fallback",
-    "vault-agents-read-before-write",
-    "benchmark-against-log-snapshot",
-}
-
-MODE_SOURCE_TERMS = {
-    "mode organize": {"fixture", "source", "captured", "existing"},
-    "mode brief": {"fixture", "snapshot", "source", "record"},
-    "mode todo": {"fixture", "source", "project", "external"},
-    "mode archive": {"fixture", "source", "relationship", "link"},
-    "mode search": {"fixture", "source", "result", "metadata", "search"},
-}
-
-ROUTE_AWAY_REQUIRED_IDS = {
-    "negative-control-devrev-sprint-workflow",
-    "negative-control-repo-code-search",
-    "negative-control-github-pr-release-execution",
-    "negative-control-generic-implementation-request",
-}
+REQUIRED_CATEGORIES = {"retrieval", "writeback", "brief", "fallback", "boundary", "setup"}
+MUTATION_POLICIES = {"none", "dry_run_portent", "repo_guidance"}
 
 
 def fail(message: str) -> None:
-    raise SystemExit(f"portent eval validation failed: {message}")
+    raise SystemExit(f"portent validation failed: {message}")
 
 
 def read(path: str) -> str:
@@ -244,87 +165,196 @@ def read(path: str) -> str:
     return target.read_text(encoding="utf-8")
 
 
-def resolve_fixture(path_text: str) -> Path:
-    path = Path(path_text)
-    if path.is_absolute():
-        return path
-    if path.parts and path.parts[0] == "evals":
-        return ROOT / path
-    return ROOT / "evals" / path
+def require_patterns(name: str, text: str, patterns: list[str]) -> None:
+    for pattern in patterns:
+        if not re.search(pattern, text, re.IGNORECASE | re.DOTALL):
+            fail(f"{name} missing pattern: {pattern}")
 
 
-def command_paths_exist(case_id: str, command: str) -> None:
-    for token in shlex.split(command):
-        if token.endswith(".py") and token.startswith("plugins/"):
-            if not (REPO_ROOT / token).exists():
-                fail(f"{case_id} deterministic command references missing script {token}")
+def forbid_patterns(name: str, text: str, patterns: list[str]) -> None:
+    for pattern in patterns:
+        if re.search(pattern, text, re.IGNORECASE | re.DOTALL):
+            fail(f"{name} contains forbidden pattern: {pattern}")
 
 
-def validate_grouped_terms(case_id: str, key: str, value: object) -> None:
-    if not isinstance(value, list):
-        fail(f"{case_id} deterministic_checks.{key} must be a list")
-    for group in value:
-        if not isinstance(group, list) or not group:
-            fail(f"{case_id} deterministic check groups must be non-empty lists")
-        for term in group:
-            if not isinstance(term, str) or not term.strip():
-                fail(f"{case_id} deterministic check terms must be non-empty strings")
+def validate_evals() -> None:
+    data = json.loads(EVALS.read_text(encoding="utf-8"))
+    if data.get("skill_name") != "portent":
+        fail("evals/evals.json skill_name must be portent")
+    if data.get("version") != 2:
+        fail("evals/evals.json version must be 2")
+    if data.get("judge_contract", {}).get("strategy") != "rubric-based outcome evaluation":
+        fail("judge_contract must use rubric-based outcome evaluation")
+    if data.get("judge_contract", {}).get("pass_threshold", 0) < 0.8:
+        fail("pass_threshold must be at least 0.8")
+    scoring = data.get("judge_contract", {}).get("scoring", {})
+    if not scoring.get("formula") or "dimension_score" not in scoring.get("formula", ""):
+        fail("judge_contract.scoring.formula must define weighted dimension scoring")
+    if scoring.get("must_include_groups_required") is not True:
+        fail("judge_contract.scoring.must_include_groups_required must be true")
+    if scoring.get("must_not_include_violation") != "fail":
+        fail("judge_contract.scoring.must_not_include_violation must be fail")
+    scale = scoring.get("dimension_scale", {})
+    if not all(str(i) in scale for i in range(4)):
+        fail("judge_contract.scoring.dimension_scale must define 0, 1, 2, and 3")
 
+    execution = data.get("execution", {})
+    if execution.get("requires_mock_vault") is not True:
+        fail("execution.requires_mock_vault must be true")
+    if execution.get("allow_live_vault_mutation") is not False:
+        fail("execution.allow_live_vault_mutation must be false")
+    if execution.get("allow_repo_mutation_by_default") is not False:
+        fail("execution.allow_repo_mutation_by_default must be false")
+    if execution.get("repo_mutation_requires_explicit_case") is not True:
+        fail("execution.repo_mutation_requires_explicit_case must be true")
+    if execution.get("do_not_leak_judge_criteria") is not True:
+        fail("execution.do_not_leak_judge_criteria must be true")
+    judge_only = set(execution.get("judge_only_fields", []))
+    for field in ("expected_behavior", "rubric", "must_include_any", "must_not_include_any"):
+        if field not in judge_only:
+            fail(f"execution.judge_only_fields must include {field}")
+    forbidden_actor_reads = "\n".join(execution.get("forbidden_actor_reads", []))
+    for path in ("evals/evals.json", ".codex/memories", "MEMORY.md"):
+        if path not in forbidden_actor_reads:
+            fail(f"execution.forbidden_actor_reads must include {path}")
+    allowed_actor_context = "\n".join(execution.get("allowed_actor_context", []))
+    for source in ("natural prompt", "Portent skill path", "task artifacts"):
+        if source not in allowed_actor_context:
+            fail(f"execution.allowed_actor_context must include {source}")
+    if execution.get("actor_write_root") != "/tmp/portent-eval/<eval-id>":
+        fail("execution.actor_write_root must be /tmp/portent-eval/<eval-id>")
+    mutation_policies = execution.get("mutation_policies", {})
+    for policy in MUTATION_POLICIES:
+        if policy not in mutation_policies:
+            fail(f"execution.mutation_policies must define {policy}")
+    forbidden_output = "\n".join(execution.get("forbidden_actor_output_patterns", []))
+    for pattern in (".codex/memories", "MEMORY.md", "skills/portent/evals", "expected_behavior"):
+        if pattern not in forbidden_output:
+            fail(f"execution.forbidden_actor_output_patterns must include {pattern}")
+    pre_post_checks = "\n".join(execution.get("pre_post_checks", []))
+    for check in ("git status before", "git status after", "fail repo diffs", "fail live vault diffs"):
+        if check not in pre_post_checks:
+            fail(f"execution.pre_post_checks must include {check}")
+    transcript_required = set(execution.get("actor_transcript_required", []))
+    for field in ("tools or commands used", "files read", "files written", "dry-run targets", "live-vault mutation check"):
+        if field not in transcript_required:
+            fail(f"execution.actor_transcript_required must include {field}")
 
-def flatten_groups(value: object) -> list[str]:
-    if not isinstance(value, list):
-        return []
-    return [
-        term.lower()
-        for group in value
-        if isinstance(group, list)
-        for term in group
-        if isinstance(term, str)
-    ]
+    standards = "\n".join(data.get("standards", {}).get("must", []))
+    require_patterns(
+        "eval standards",
+        standards,
+        [
+            r"qmd.*Tolaria",
+            r"mode.*search.*vsearch.*query.*get",
+            r"Do not force every qmd mode",
+            r"Read source text",
+            r"Update existing Portent objects",
+            r"behavioral, technical, design, team, system",
+            r"no update needed",
+            r"judge-only",
+            r"isolated read/write contract",
+            r"must not read Codex memory",
+            r"must not mutate repo files unless",
+        ],
+    )
 
+    evals = data.get("evals")
+    if not isinstance(evals, list):
+        fail("evals must be a list")
+    ids = {case.get("id") for case in evals}
+    missing = REQUIRED_EVAL_IDS - ids
+    if missing:
+        fail(f"missing eval ids: {sorted(missing)}")
 
-def validate_negative_polarity_traps(case_id: str, deterministic: dict) -> None:
-    terms = flatten_groups(deterministic.get("must_not_include_any", []))
-    for term in terms:
-        normalized = " ".join(term.split())
-        if normalized in POLARITY_TRAP_FORBIDDEN_TERMS:
-            fail(
-                f"{case_id} must_not_include_any forbids broad polarity-trap term "
-                f"{term!r}; use a concrete bad-output phrase instead"
-            )
+    categories = {case.get("category") for case in evals}
+    missing_categories = REQUIRED_CATEGORIES - categories
+    if missing_categories:
+        fail(f"missing eval categories: {sorted(missing_categories)}")
 
+    for case in evals:
+        case_id = case.get("id")
+        for key in ("category", "prompt", "expected_behavior", "rubric", "must_include_any", "must_not_include_any"):
+            if key not in case:
+                fail(f"{case_id} missing {key}")
+        if case.get("mutation_policy") not in MUTATION_POLICIES:
+            fail(f"{case_id} must declare mutation_policy")
+        if not isinstance(case.get("live_allowed"), bool):
+            fail(f"{case_id} must declare live_allowed boolean")
+        if case.get("mutation_policy") == "repo_guidance" and case_id not in {
+            "use-configured-vault-not-rediscovery",
+            "hooks-support-not-replace-skill",
+        }:
+            fail(f"{case_id} may not use repo_guidance mutation policy")
+        if case_id == "qmd-degraded-markdown-fallback":
+            degraded = case.get("qmd_degraded_contract", {})
+            if degraded.get("allowed_qmd_calls") != 1:
+                fail("qmd-degraded-markdown-fallback must allow only one qmd failure capture")
+            if "direct Markdown" not in degraded.get("after_failure", ""):
+                fail("qmd-degraded-markdown-fallback must require direct Markdown after failure")
+        if len(str(case["prompt"]).strip()) < 30:
+            fail(f"{case_id} prompt is too weak")
+        prompt_lower = str(case["prompt"]).lower()
+        for leak_term in ("expected_behavior", "rubric", "must_include", "must_not_include"):
+            if leak_term in prompt_lower:
+                fail(f"{case_id} prompt leaks judge term {leak_term}")
+        rubric = case["rubric"]
+        if not isinstance(rubric, dict) or not rubric:
+            fail(f"{case_id} rubric must be a non-empty object")
+        for dimension, weight in rubric.items():
+            if not isinstance(dimension, str) or not isinstance(weight, int) or not 1 <= weight <= 3:
+                fail(f"{case_id} rubric weights must be integers 1-3")
 
-def has_source_grounding(case: dict, coverage: list[str]) -> bool:
-    evidence_terms = " ".join(case.get("required_evidence", [])).lower()
-    assertion_terms = " ".join(case.get("assertions", [])).lower()
-    prompt = str(case.get("prompt", "")).lower()
-    files = case.get("files", [])
-    for mode, terms in MODE_SOURCE_TERMS.items():
-        if mode in coverage and not (
-            any(term in evidence_terms for term in terms)
-            or any(term in assertion_terms for term in terms)
-            or (files and any(term in prompt for term in ("fixture", "snapshot", "source")))
-        ):
-            return False
-    return True
-
-
-def deterministic_checks_are_possible(case_id: str, case: dict) -> None:
-    deterministic = case.get("deterministic_checks")
-    if not isinstance(deterministic, dict):
-        return
-    include_terms = flatten_groups(deterministic.get("must_include_any", []))
-    assertions = " ".join(case.get("assertions", [])).lower()
-    expected = str(case.get("expected_output", "")).lower()
-
-    if (
-        "belongs_to" in include_terms
-        and ("only if" in assertions or "when known" in assertions or "when known" in expected)
-    ):
-        fail(f"{case_id} requires belongs_to deterministically while allowing it only if known")
-    if "belongs_to:" in flatten_groups(deterministic.get("must_not_include_any", [])):
-        if any(term == "belongs_to" for term in include_terms):
-            fail(f"{case_id} both requires and forbids belongs_to")
+        forbidden = " ".join(
+            term
+            for group in case.get("must_not_include_any", [])
+            if isinstance(group, list)
+            for term in group
+            if isinstance(term, str)
+        ).lower()
+        if case_id != "setup-repair-is-interactive" and "installed without asking" not in forbidden:
+            pass
+        if case_id in {"search-before-answering-known-work", "qmd-degraded-markdown-fallback"}:
+            if "tolaria search" not in forbidden and "mcp__tolaria__search_notes" not in forbidden:
+                fail(f"{case_id} must forbid Tolaria search")
+        if case_id in {
+            "brief-current-plate-from-vault",
+            "retrieve-design-technical-context",
+            "slack-thread-routing-memory",
+            "promotion-growth-context-brief",
+            "posthog-analytics-context",
+            "visual-direction-retrieval",
+            "access-route-retrieval",
+            "people-and-owner-map",
+        }:
+            if "qmd_retrieval" not in rubric or "source_read" not in rubric:
+                fail(f"{case_id} must score qmd retrieval and source reads")
+            if "mode_choice" not in rubric:
+                fail(f"{case_id} must score qmd mode choice")
+            include_text = " ".join(
+                term
+                for group in case.get("must_include_any", [])
+                if isinstance(group, list)
+                for term in group
+                if isinstance(term, str)
+            ).lower()
+            if not any(
+                term in include_text
+                for term in ("qmd search", "qmd vsearch", "qmd query", "mcp__qmd__search", "mcp__qmd__query")
+            ):
+                fail(f"{case_id} must require at least one qmd retrieval mode")
+            if not any(
+                term in include_text
+                for term in (
+                    "qmd get",
+                    "qmd multi-get",
+                    "mcp__qmd__get",
+                    "mcp__qmd__multi_get",
+                    "source text",
+                    "sources read",
+                )
+            ):
+                fail(f"{case_id} must require source reads")
 
 
 def main() -> int:
@@ -333,206 +363,19 @@ def main() -> int:
             fail(f"missing required file {path}")
 
     skill = read("SKILL.md")
-    for pattern in SKILL_REQUIRED_PATTERNS:
-        if not re.search(pattern, skill, re.IGNORECASE | re.DOTALL):
-            fail(f"SKILL.md missing pattern: {pattern}")
-
-    spec = read("references/portent-spec.md")
-    for pattern in SPEC_REQUIRED_PATTERNS:
-        if not re.search(pattern, spec, re.IGNORECASE | re.DOTALL):
-            fail(f"portent-spec.md missing pattern: {pattern}")
-
-    data = json.loads(EVALS.read_text(encoding="utf-8"))
-    if data.get("skill_name") != "portent":
-        fail("evals/evals.json must set skill_name to portent")
-    if data.get("version", 0) < 1:
-        fail("evals/evals.json must set version >= 1")
-
-    standards = data.get("standards")
-    if not isinstance(standards, dict):
-        fail("standards must be an object")
-    required = set(standards.get("required_coverage", []))
-    missing_required = REQUIRED_COVERAGE - required
-    if missing_required:
-        fail(f"standards.required_coverage missing {sorted(missing_required)}")
-    quality = set(standards.get("response_quality", []))
-    missing_quality = REQUIRED_QUALITY - quality
-    if missing_quality:
-        fail(f"standards.response_quality missing {sorted(missing_quality)}")
-    benchmark_requirements = standards.get("benchmark_requirements")
-    if not isinstance(benchmark_requirements, dict):
-        fail("standards.benchmark_requirements must be an object")
-    missing_benchmark = BENCHMARK_MUST_RECORD - set(benchmark_requirements.get("must_record", []))
-    if missing_benchmark:
-        fail(f"standards.benchmark_requirements.must_record missing {sorted(missing_benchmark)}")
-
-    evals = data.get("evals")
-    if not isinstance(evals, list) or len(evals) < len(REQUIRED_EVAL_IDS):
-        fail("evals must contain the required Portent cases")
-
-    ids: set[str] = set()
-    coverage_seen: set[str] = set()
-    categories: set[str] = set()
-    rubric_count = 0
-    assertion_blob: list[str] = []
-
-    for index, case in enumerate(evals, start=1):
-        case_id = case.get("id")
-        if not isinstance(case_id, str) or not case_id:
-            fail(f"case {index} missing id")
-        if case_id in ids:
-            fail(f"duplicate eval id {case_id}")
-        ids.add(case_id)
-
-        for key in (
-            "category",
-            "coverage",
-            "should_trigger",
-            "run_mode",
-            "prompt",
-            "expected_output",
-            "assertions",
-            "required_evidence",
-        ):
-            if key not in case:
-                fail(f"{case_id} missing {key}")
-        if not isinstance(case["should_trigger"], bool):
-            fail(f"{case_id} should_trigger must be boolean")
-        if case["run_mode"] not in ALLOWED_RUN_MODES:
-            fail(f"{case_id} run_mode must be one of {sorted(ALLOWED_RUN_MODES)}")
-        if not isinstance(case["prompt"], str) or len(case["prompt"].strip()) < 20:
-            fail(f"{case_id} prompt is too weak")
-        if not isinstance(case["expected_output"], str) or len(case["expected_output"].strip()) < 30:
-            fail(f"{case_id} expected_output is too weak")
-
-        coverage = case["coverage"]
-        if not isinstance(coverage, list) or not coverage:
-            fail(f"{case_id} coverage must be a non-empty list")
-        coverage_seen.update(coverage)
-        categories.add(str(case["category"]))
-        if case_id in SOURCE_DEPENDENT_CASES and not case.get("files"):
-            fail(f"{case_id} is source-dependent and must declare fixture files")
-        if not has_source_grounding(case, coverage):
-            fail(f"{case_id} mode-specific case lacks source-grounding evidence")
-
-        assertions = case["assertions"]
-        if not isinstance(assertions, list) or len(assertions) < 3:
-            fail(f"{case_id} needs at least three assertions")
-        for assertion in assertions:
-            if not isinstance(assertion, str) or len(assertion.strip()) < 20:
-                fail(f"{case_id} has a weak assertion")
-            assertion_blob.append(assertion.lower())
-
-        required_evidence = case["required_evidence"]
-        if not isinstance(required_evidence, list) or not required_evidence:
-            fail(f"{case_id} needs required_evidence")
-
-        files = case.get("files", [])
-        if files:
-            if not isinstance(files, list):
-                fail(f"{case_id} files must be a list")
-            for fixture in files:
-                if not isinstance(fixture, str):
-                    fail(f"{case_id} file entries must be strings")
-                if not resolve_fixture(fixture).exists():
-                    fail(f"{case_id} fixture missing: {fixture}")
-        if "artifact case" in coverage and not files and not any(token.startswith("/") for token in str(case["prompt"]).split()):
-            fail(f"{case_id} artifact case needs fixture files or an absolute path")
-
-        deterministic = case.get("deterministic_checks")
-        if deterministic is not None:
-            if not isinstance(deterministic, dict):
-                fail(f"{case_id} deterministic_checks must be an object")
-            unknown_keys = set(deterministic) - ALLOWED_DETERMINISTIC_KEYS
-            if unknown_keys:
-                fail(f"{case_id} deterministic_checks has unknown keys {sorted(unknown_keys)}")
-            commands = deterministic.get("commands", [])
-            if commands:
-                if not isinstance(commands, list) or not all(isinstance(command, str) for command in commands):
-                    fail(f"{case_id} deterministic commands must be strings")
-                for command in commands:
-                    command_paths_exist(case_id, command)
-            for key in ("must_include_any", "must_not_include_any"):
-                if key in deterministic:
-                    validate_grouped_terms(case_id, key, deterministic[key])
-            validate_negative_polarity_traps(case_id, deterministic)
-            deterministic_checks_are_possible(case_id, case)
-
-        if "response quality" in coverage:
-            rubric = case.get("quality_rubric")
-            if not isinstance(rubric, dict) or not rubric:
-                fail(f"{case_id} covers response quality but has no quality_rubric")
-            for dimension, weight in rubric.items():
-                if not isinstance(dimension, str) or not isinstance(weight, int) or not 1 <= weight <= 3:
-                    fail(f"{case_id} quality_rubric values must be integer weights 1-3")
-            rubric_count += 1
-
-        if case["category"] == "known-failure" and case_id != "eval-suite-health-before-forward-run":
-            for key in ("known_failure_source", "before_failure_signal", "fixed_by"):
-                if key not in case:
-                    fail(f"{case_id} missing {key}")
-
-        if "benchmark comparison" in coverage:
-            benchmark = case.get("benchmark")
-            if not isinstance(benchmark, dict):
-                fail(f"{case_id} benchmark comparison case needs benchmark object")
-            baseline_fixture = benchmark.get("baseline_fixture")
-            if not isinstance(baseline_fixture, str) or not baseline_fixture.strip():
-                fail(f"{case_id} benchmark comparison case needs benchmark.baseline_fixture")
-            if baseline_fixture not in files:
-                fail(f"{case_id} benchmark.baseline_fixture must also be declared in files")
-            if not resolve_fixture(baseline_fixture).exists():
-                fail(f"{case_id} benchmark.baseline_fixture missing: {baseline_fixture}")
-            missing_record = BENCHMARK_MUST_RECORD - set(benchmark.get("must_record", []))
-            if missing_record:
-                fail(f"{case_id} benchmark.must_record missing {sorted(missing_record)}")
-            missing_evidence = BENCHMARK_REQUIRED_EVIDENCE - set(required_evidence)
-            if missing_evidence:
-                fail(f"{case_id} required_evidence missing benchmark evidence {sorted(missing_evidence)}")
-
-        if case_id == "vault-agents-read-before-write":
-            agents_text = " ".join(
-                [
-                    str(case.get("prompt", "")),
-                    str(case.get("expected_output", "")),
-                    " ".join(case.get("assertions", [])),
-                    " ".join(case.get("required_evidence", [])),
-                ]
-            ).lower()
-            for term in ("agents.md", "read", "before", "hasagentinstructions", "inbox/captures"):
-                if term not in agents_text:
-                    fail(f"{case_id} missing AGENTS.md read-before-write term {term!r}")
-
-    missing_ids = REQUIRED_EVAL_IDS - ids
-    if missing_ids:
-        fail(f"missing eval ids {sorted(missing_ids)}")
-    missing_route_away = ROUTE_AWAY_REQUIRED_IDS - ids
-    if missing_route_away:
-        fail(f"missing route-away negative controls {sorted(missing_route_away)}")
-    missing_coverage = REQUIRED_COVERAGE - coverage_seen
-    if missing_coverage:
-        fail(f"no eval case covers {sorted(missing_coverage)}")
-    required_categories = {"positive", "contextual", "negative-control", "known-failure", "boundary", "benchmark"}
-    missing_categories = required_categories - categories
-    if missing_categories:
-        fail(f"eval categories missing {sorted(missing_categories)}")
-    if rubric_count < 10:
-        fail("at least ten cases should carry a response-quality rubric")
-
-    negative_ids = {
-        case["id"]
-        for case in evals
-        if case.get("category") == "negative-control" and case.get("should_trigger") is False
-    }
-    if not ROUTE_AWAY_REQUIRED_IDS <= negative_ids:
-        fail("negative controls must cover DevRev, repo search, GitHub/release, and implementation route-away cases")
-
-    blob = "\n".join(assertion_blob)
-    for term in ("tolaria", "type", "organized", "archived", "belongs_to", "related_to", "legacy", "duplicate"):
-        if term not in blob:
-            fail(f"eval assertions missing term {term}")
-
-    print("Portent eval suite valid")
+    require_patterns("SKILL.md", skill, SKILL_REQUIRED)
+    forbid_patterns("SKILL.md", skill, FORBIDDEN_SKILL)
+    require_patterns("retrieval.md", read("references/retrieval.md"), RETRIEVAL_REQUIRED)
+    require_patterns("writeback.md", read("references/writeback.md"), WRITEBACK_REQUIRED)
+    require_patterns("hooks.md", read("references/hooks.md"), HOOKS_REQUIRED)
+    require_patterns("setup.md", read("references/setup.md"), SETUP_REQUIRED)
+    require_patterns(
+        "portent-spec.md",
+        read("references/portent-spec.md"),
+        [r"Memory Layers", r"Source packet", r"Derived assertion", r"MOC", r"Project", r"Event"],
+    )
+    validate_evals()
+    print("Portent skill valid")
     return 0
 
 

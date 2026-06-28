@@ -30,6 +30,22 @@ Use the smallest isolation boundary that preserves eval integrity:
 
 The default architecture is `/dex eval` plus clean subagents or `codex exec` plus `skill-creator`. Do not introduce a separate `skill-eval-rubric` skill. Keep the rubric here unless the user explicitly asks to package it for reuse outside Dex.
 
+## Actor/Judge Eval Pattern
+
+Use this pattern when a skill is meant to work in the middle of real tasks:
+
+1. **Actor run**: a fresh subagent or `codex exec` receives only the natural prompt, target skill path, allowed files/fixtures, and safety boundaries.
+2. **Transcript capture**: record final answer, tools/commands, files read, files written, dry-run targets, intended real targets, and pre/post repo or vault state.
+3. **Judge run**: a separate read-only judge receives the actor transcript plus hidden expected behavior, deterministic checks, rubrics, fixtures, and artifacts.
+4. **Diagnosis**: classify each failure as skill behavior, harness isolation, bad fixture, tool/model limitation, or overfit assertion.
+5. **Repair**: the main thread repairs the smallest durable surface and reruns the same actor cases.
+
+Actor prompts must look like normal user work. Do not include expected behavior, rubrics, must-include terms, fail signals, hidden answers, or the desired fix.
+
+Actor contexts must not read eval files, Codex memory, hidden judge criteria, prior judge output, or broad search output that exposes those files. If a case needs memory, pass a bounded fixture as task input.
+
+Actors must not mutate live vaults. Actors must not mutate repo files unless the case explicitly declares repo-guidance mutation as the behavior under test. Otherwise, writes go to the run artifact directory and name the intended real target.
+
 ## Skill Type
 
 Classify the target before writing evals:
@@ -56,7 +72,16 @@ Use JSON for multi-case suites when possible. The durable prompt row fields are 
       "should_trigger": true,
       "prompt": "Use design:crux to find the crux in this plan.",
       "files": ["evals/files/sample-plan.md"],
-      "expected_output": "A concise crux analysis grounded in the supplied plan.",
+      "actor_context": {
+        "allowed_reads": ["SKILL.md", "references/**", "evals/files/sample-plan.md"],
+        "forbidden_reads": ["evals/evals.json", ".codex/memories/**"],
+        "mutation_policy": "none",
+        "live_allowed": false
+      },
+      "judge_only": {
+        "expected_behavior": "A concise crux analysis grounded in the supplied plan.",
+        "rubric_checks": ["source_grounding", "weak_joint", "final_question"]
+      },
       "assertions": [
         "Inspects the supplied file before asking questions.",
         "Names the weak joint instead of giving generic advice.",
@@ -65,8 +90,7 @@ Use JSON for multi-case suites when possible. The durable prompt row fields are 
       "deterministic_checks": {
         "must_include_any": [["weak joint"], ["crux question"]],
         "must_not_include_any": [["I cannot inspect"], ["generic best practices"]]
-      },
-      "rubric_checks": ["source_grounding", "weak_joint", "final_question"]
+      }
     }
   ]
 }
@@ -118,6 +142,16 @@ Each runnable case must produce a local run record under `.dex/evals/<skill-name
   "id": "explicit-crux-request",
   "prompt": "Use design:crux to find the crux in this plan.",
   "should_trigger": true,
+  "actor_transcript": {
+    "final_answer": "artifacts/explicit-crux-request.final.txt",
+    "tools_or_commands": ["Read evals/files/sample-plan.md"],
+    "files_read": ["evals/files/sample-plan.md"],
+    "files_written": [],
+    "dry_run_targets": [],
+    "intended_real_targets": [],
+    "pre_status": "artifacts/pre-status.txt",
+    "post_status": "artifacts/post-status.txt"
+  },
   "trace_jsonl": "artifacts/explicit-crux-request.trace.jsonl",
   "stdout_path": "artifacts/explicit-crux-request.stdout.txt",
   "stderr_path": "artifacts/explicit-crux-request.stderr.txt",
@@ -136,6 +170,8 @@ Deterministic checks inspect JSONL events and artifacts first:
 - skill invocation: the expected skill appears in the trace, loaded instructions, or explicit evaluator evidence
 - command behavior: `command_execution` events include or exclude the expected commands
 - artifact behavior: expected files exist, expected files are absent, or `git status --porcelain` matches an allow list
+- isolation behavior: actor did not read eval files, hidden judge criteria, Codex memory, or forbidden broad-search output
+- mutation behavior: actor wrote only to allowed artifact paths unless the case explicitly allows repo edits
 - efficiency: command count, token usage from `turn.completed` events, and repeated-command loops stay within the case limit
 
 Use model-assisted grading only after deterministic checks cannot answer the question. The rubric run must be read-only, must use `--output-schema`, and must write structured JSON next to the trace.
@@ -272,6 +308,8 @@ Rules:
 Use one primary label per failure:
 
 - instruction gap: skill does not tell the agent what to do
+- harness isolation: actor saw hidden eval criteria, Codex memory, prior judge output, or forbidden files
+- mutation-policy problem: actor changed live vault or repo files outside the case policy
 - trigger/description problem: skill loads too often, not often enough, or wrong skill wins
 - missing fixture or bad eval: test lacks the evidence needed to grade
 - model/tool limitation: failure is outside skill guidance

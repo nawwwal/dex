@@ -45,12 +45,29 @@ Then read `./eval-framework.md` for the eval case format, grading rules, benchma
 Keep the roles separate:
 
 - `/dex eval` owns orchestration: rounds, baselines, artifacts, stop criteria, and release recommendation.
-- Fresh subagents or `codex exec` runs own evaluation: with-skill attempts, baseline attempts, judge checks, comparison, and failure analysis.
+- Fresh subagents or `codex exec` actor runs own task attempts: with-skill attempts, baseline attempts, generated artifacts, tool use, and final answers.
+- A separate judge owns grading: hidden criteria, rubric checks, comparison, and failure analysis.
 - `skill-creator` owns repair: revise the target skill, references, scripts, evals, validators, or metadata based on observed failures.
 
 Do not create a separate `skill-eval-rubric` skill for this workflow. Keep the rubric in `./eval-framework.md` unless the user explicitly asks for a reusable cross-repo rubric skill.
 
 Do not require a persistent custom eval agent by default. Use ordinary fresh subagents or `codex exec` for clean-context evals. Create a custom eval agent only when repeated evaluator configuration becomes valuable across repos, such as a stable model, sandbox, tool allowlist, or developer-instruction profile that would otherwise be copied into every eval prompt.
+
+## Actor/Judge Contract
+
+Default to the actor/judge split we use for serious skill evals:
+
+1. **Actor**: a fresh subagent or `codex exec` run receives only the natural task prompt, target skill path, allowed fixtures/artifacts, and safety boundaries.
+2. **Capture**: save the actor's final answer, tools/commands, files read, files written, dry-run paths, intended real targets, and pre/post repo or vault state.
+3. **Judge**: a separate read-only judge receives the actor transcript plus hidden expected behavior, rubrics, deterministic checks, and artifacts.
+4. **Diagnose**: separate skill failures from harness failures. Memory leaks, eval-file reads, unexpected repo writes, or fixture mistakes are harness failures unless they reveal a real skill instruction gap.
+5. **Repair**: the main thread applies the smallest skill/eval/validator fix. Actors and judges do not repair the skill unless explicitly assigned that role.
+
+Actor prompts must not include expected behavior, rubrics, must-include terms, fail signals, diagnosis, or the desired fix. They should look like normal user work.
+
+Actor contexts must not read eval files, hidden rubrics, Codex memory, prior judge output, or broad search output that surfaces those files. If a case needs prior memory as fixture data, pass that fixture explicitly.
+
+Actors must not mutate the live vault. Actors must not mutate repo files unless the case explicitly marks repo guidance as the target behavior. Otherwise write intended artifacts under `.dex/evals/...` or `/tmp/<eval-id>` and name the real target.
 
 ## Round Loop
 
@@ -69,17 +86,19 @@ Each round must run the same loop:
    - If an eval would be expensive or unsafe to run, still write the case and mark the run condition.
 
 3. **Evaluate**
-   - Run clean-context evals with minimum leaked context.
-   - Use fresh subagents or `codex exec` runs as the isolation boundary.
+   - Run clean-context actor evals with minimum leaked context.
+   - Use fresh subagents or `codex exec` runs as the actor isolation boundary.
    - Run the designed eval suite, not an improvised prompt set.
-   - Use raw artifacts and prompts, not your diagnosis or expected fix.
+   - Use raw artifacts and natural prompts, not your diagnosis, rubric, or expected fix.
    - For `codex exec` forward runs, use `--json` and save stdout as JSONL before grading.
-   - For qualitative judge runs, use `--output-schema` and save the rubric JSON.
+   - For subagent actor runs, close completed agents after capturing their final transcript so thread limits do not bias the suite.
 
 4. **Grade**
+   - Run grading as a separate judge pass after actor capture.
    - Use deterministic checks for objective claims.
    - Parse JSONL `command_execution` and `turn.completed` events for command and token checks.
    - Use rubric or judge checks for subjective quality.
+   - For qualitative judge runs, use `--output-schema` and save the rubric JSON.
    - Record pass rate, routing accuracy, time, token cost, turns or commands, and failure notes.
 
 5. **Diagnose**

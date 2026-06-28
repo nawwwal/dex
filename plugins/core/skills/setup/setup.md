@@ -35,6 +35,13 @@ CHECK Dex marketplace/plugin wiring:
   - ~/.agents/plugins/marketplace.json
   - ~/.codex/config.toml entries for nawwwal-dex when using Codex
   - ~/.claude/plugins/marketplaces/nawwwal-dex when using Claude
+CHECK Portent knowledge-base readiness:
+  - ~/.agents/AGENTS.md names the default Portent vault path and qmd collection
+  - configured vault path exists and has AGENTS.md
+  - qmd is installed and `qmd status` works
+  - qmd collection `portent` points at the configured vault
+  - qmd embeddings are current
+  - Tolaria/qmd MCP tools are visible when the active runtime exposes them
 ```
 
 Report before changing anything:
@@ -45,6 +52,7 @@ Found:
   ~/.agents/memory: yes/no
   compatibility links: ok/drift/missing
   Dex plugin wiring: ok/drift/missing
+  Portent readiness: ok/drift/missing/degraded
 Missing tools: [...]
 Planned changes: [...]
 ```
@@ -105,7 +113,30 @@ For Claude, check:
 
 This phase reports drift. It does not run marketplace install/update commands unless the user explicitly asks.
 
-## Phase 5 - Report
+## Phase 5 - Portent Readiness Check
+
+Report only unless the user explicitly asks to repair.
+
+Check:
+
+- `~/.agents/AGENTS.md` contains the default vault path and qmd collection.
+- The configured vault path exists and is readable.
+- The vault has `AGENTS.md`.
+- `qmd status` works.
+- qmd has a `portent` collection for the configured vault.
+- qmd has no pending embeddings.
+- Tolaria MCP can list/open the configured vault when visible.
+- qmd MCP is visible when the runtime supports it; otherwise qmd CLI is enough.
+
+If something is broken, print the smallest next action:
+
+```text
+Portent readiness: degraded
+Broken: qmd native module was compiled for a different Node ABI
+Smallest fix: rebuild or reinstall @tobilu/qmd, then run qmd update/embed for collection portent
+```
+
+## Phase 6 - Report
 
 ```
 Dex setup report
@@ -126,4 +157,5 @@ Verified:
   canonical root: ~/.agents
   compatibility links: ok/drift/missing
   Dex plugin wiring: ok/drift/missing
+  Portent readiness: ok/drift/missing/degraded
 ```

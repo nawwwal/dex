@@ -1,8 +1,6 @@
 ---
 name: dex
 description: "Use when configuring or checking a Dex agent environment, especially fresh installs, .agents bootstrap, Claude/Codex compatibility links, plugin wiring, or project design context capture."
-disable-model-invocation: true
-argument-hint: "[setup | doctor | setup design]"
 ---
 
 # /dex - Dex Environment
