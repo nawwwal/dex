@@ -48,6 +48,7 @@ Hooks are receipts and reminders, not the memory system. The bundled `UserPrompt
    - Use `mcp__qmd__query`/`qmd query` for hybrid reranked synthesis with `intent`, `lex`, `vec`, and `hyde`.
    - Use `mcp__qmd__get`, `mcp__qmd__multi_get`, `qmd get`, or `qmd multi-get` before trusting snippets.
    - Do not run every qmd mode by default. Escalate only when the first mode is weak, partial, contradictory, or the stakes justify broader recall.
+   - For Slack drafts, posts, or replies, qmd retrieval is not complete until the source text identifies the destination channel or thread, the message purpose, and the intended actor or reviewer to tag when the ask is person-owned. A channel-only result is incomplete for PR review asks.
 4. Write if useful:
    - Update existing notes first.
    - Create a new note only when no current object owns the fact.
