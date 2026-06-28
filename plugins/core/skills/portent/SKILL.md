@@ -10,8 +10,8 @@ Use the knowledge base as a habit loop:
 
 1. **Orient**: use the configured default vault from global `~/.agents/AGENTS.md`, read vault `AGENTS.md` when present, and check qmd health when retrieval matters.
 2. **Retrieve**: use qmd, not Tolaria search. Pick the cheapest qmd mode that fits: `search` for exact anchors, `vsearch` for semantic recall, `query` for synthesis or reranking, then read source text with `get` or `multi_get`.
-3. **Decide**: answer from retrieved text and live sources when facts may drift.
-4. **Write**: update the best existing Markdown object when durable knowledge appeared.
+3. **Decide**: answer from retrieved text and live sources when facts may drift. If the why, rationale, tradeoff, owner, source boundary, or future-use angle is missing, ask one focused context question and continue with the work.
+4. **Write**: capture first. Update the best existing Markdown object for non-trivial work unless the material is clearly transient, unsupported, unsafe to store, or not Aditya-relevant.
 5. **Refresh**: refresh Tolaria and qmd after edits when tooling works.
 6. **Report**: say what was read, what changed, and what was unavailable.
 
@@ -49,26 +49,39 @@ Hooks are receipts and reminders, not the memory system. The bundled `UserPrompt
    - Use `mcp__qmd__get`, `mcp__qmd__multi_get`, `qmd get`, or `qmd multi-get` before trusting snippets.
    - Do not run every qmd mode by default. Escalate only when the first mode is weak, partial, contradictory, or the stakes justify broader recall.
    - For Slack drafts, posts, or replies, qmd retrieval is not complete until the source text identifies the destination channel or thread, the message purpose, and the intended actor or reviewer to tag when the ask is person-owned. A channel-only result is incomplete for PR review asks.
-4. Write if useful:
+4. Capture by default:
+   - For non-trivial work, expect a writeback or a short explicit reason why not.
    - Update existing notes first.
-   - Create a new note only when no current object owns the fact.
+   - Create a new note only when no current object owns the fact. Avoid tiny narrow notes when a project, operation, responsibility, map, gotcha, or brain-log entry can own the update.
    - Use direct Markdown edits inside the vault path, or `mcp__tolaria__create_note` when it is available and appropriate.
+   - If Aditya corrects the agent, treat it as a writeback trigger, not a debate. Update `[[agent-behavior-gotchas]]` or the owning object.
 5. Refresh:
    - Use `mcp__tolaria__refresh_vault` after note edits when visible.
    - Run `qmd update -c portent` and `qmd embed -c portent` after Markdown edits when qmd works.
 
 ## What To Keep
 
-Write durable, Aditya-relevant knowledge freely:
+Write durable, Aditya-relevant knowledge freely. Bias toward capture for non-trivial work:
 
 - behavior: agent corrections, preferred workflows, repeated failure modes, communication rules
-- technical: APIs, contracts, repo behavior, test paths, server maps, data/state shape
-- design: UI decisions, system constraints, visual direction, interaction rules
+- technical: APIs, contracts, repo behavior, test paths, server maps, data/state shape, why an implementation path was chosen
+- design: UI decisions, design rationale, options considered, rejected approaches, system constraints, visual direction, interaction rules
 - team: owners, reviewers, source-of-truth channels, escalation paths, dependency maps
 - work state: decisions, blockers, RCAs, PR state, DevRev state, meeting outcomes, handoffs
 - personal operating context: Aditya's ways of working, recurring preferences, focus constraints, review style
 
-Skip broad team noise, transient chat, stale bot output, and unsupported guesses.
+Skip broad team noise, purely transient chat, stale bot output, unsupported guesses, and sensitive raw data that should be summarized instead.
+
+## Context Hunger
+
+When work has a durable angle, ask for the missing context that would help future sessions:
+
+- why this is being done
+- what decision was made and what was rejected
+- what constraint, source, owner, or channel made the decision correct
+- what future agent should do differently
+
+Ask one or two precise questions when the answer would materially improve the knowledge base. Do not block urgent execution; write the known facts and mark the open context gap.
 
 ## Writeback Audit
 
@@ -78,7 +91,7 @@ Before the final response on non-trivial work, ask:
 2. Would Aditya or a future agent search for this later?
 3. Is there an existing object that should own it?
 
-If yes, write it. "No update needed" is allowed only after this audit.
+If yes, write it. "No update needed" is allowed only after this audit and should name the reason, such as "only transient chat" or "unsupported guess."
 
 Behavior corrections usually go to `[[agent-behavior-gotchas]]`. Knowledge-base maintenance goes to `[[brain-log]]`. Project state goes to the owning Project, Operation, Responsibility, Event, or Task.
 

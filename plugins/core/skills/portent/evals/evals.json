@@ -33,8 +33,11 @@
       "Choose the qmd mode that fits the task: search for exact anchors, vsearch for semantic recall, query for hybrid reranked synthesis, then get or multi-get source text before factual answers. Do not force every qmd mode by default. Use direct Markdown fallback only when qmd is degraded; do not use Tolaria full-text search.",
       "Read source text with get, multi-get, or direct file read before answering from remembered context.",
       "Update existing Portent objects before creating new ones.",
-      "Write durable behavioral, technical, design, team, system, and working-style knowledge when useful.",
-      "Treat no update needed as valid only after a writeback audit.",
+      "Write durable behavioral, technical, design, team, system, and working-style knowledge by default for non-trivial work unless there is a concrete skip reason.",
+      "Treat no update needed as valid only after a writeback audit, and require the actor to name the skip reason.",
+      "Ask one focused context question or record an open gap when the why, rationale, tradeoff, owner, source boundary, or future-use angle is missing.",
+      "Prefer existing owning objects over tiny narrow notes.",
+      "Treat user corrections as writeback triggers, not debates.",
       "Report qmd, Tolaria, and live-source gaps honestly.",
       "Agent-under-test receives only the natural task prompt, skill path, and task artifacts. expected_behavior, rubric, must_include_any, and must_not_include_any are judge-only and must not be leaked into the tested context.",
       "Run actor evals in an isolated read/write contract: the actor may read only the natural prompt, Portent skill, directly linked Portent references, mock vault/task artifacts, and live tools needed by the task. The actor must not read Codex memory, eval files, hidden rubrics, or broad repo search results that surface eval content.",
@@ -187,6 +190,190 @@
         ],
         [
           "no durable update"
+        ]
+      ],
+      "mutation_policy": "dry_run_portent",
+      "live_allowed": false
+    },
+    {
+      "id": "capture-design-rationale",
+      "category": "writeback",
+      "prompt": "A UI review decided to keep Blade Collapsible instead of swapping to a tertiary Button because the control discloses hidden content. Store the decision so future agents do not repeat the wrong component swap.",
+      "expected_behavior": "Agent updates the existing design-system or behavior owner with the decision, rationale, rejected option, and future rule instead of only logging that a UI review happened.",
+      "rubric": {
+        "design_rationale_captured": 3,
+        "rejected_option_named": 2,
+        "existing_owner_updated": 3,
+        "future_agent_rule": 2,
+        "no_tiny_note_sprawl": 2,
+        "refresh_or_gap_reported": 1
+      },
+      "must_include_any": [
+        [
+          "design rationale",
+          "rationale",
+          "why"
+        ],
+        [
+          "Collapsible"
+        ],
+        [
+          "tertiary Button",
+          "rejected option"
+        ],
+        [
+          "existing",
+          "updated existing"
+        ],
+        [
+          "future agents",
+          "standing rule"
+        ]
+      ],
+      "must_not_include_any": [
+        [
+          "no update needed"
+        ],
+        [
+          "created a tiny note",
+          "created a narrow note"
+        ],
+        [
+          "logged only in brain-log"
+        ]
+      ],
+      "mutation_policy": "dry_run_portent",
+      "live_allowed": false
+    },
+    {
+      "id": "ask-for-missing-context",
+      "category": "writeback",
+      "prompt": "Aditya says: 'Polish this Agent Studio interaction quickly.' The repo change is clear, but no reason, owner, tradeoff, or future-use context is provided.",
+      "expected_behavior": "Agent proceeds with the task but asks one focused context question or records an open gap for the missing why/rationale so future sessions can learn from the work.",
+      "rubric": {
+        "focused_context_question": 3,
+        "continues_task": 2,
+        "records_gap_or_intended_write": 2,
+        "no_interrogation": 2,
+        "no_defensive_skip": 2
+      },
+      "must_include_any": [
+        [
+          "why",
+          "rationale",
+          "context"
+        ],
+        [
+          "one question",
+          "focused question",
+          "open gap"
+        ],
+        [
+          "continue",
+          "proceed"
+        ]
+      ],
+      "must_not_include_any": [
+        [
+          "no update needed"
+        ],
+        [
+          "not enough context to proceed"
+        ],
+        [
+          "several questions",
+          "many questions"
+        ]
+      ],
+      "mutation_policy": "dry_run_portent",
+      "live_allowed": false
+    },
+    {
+      "id": "correction-is-writeback-trigger",
+      "category": "writeback",
+      "prompt": "Aditya is frustrated: 'Why are you being so defensive about storing this? Agents should store more behavioral, technical, and design context. Fix this.'",
+      "expected_behavior": "Agent treats the correction as a behavior-rule writeback, updates agent-behavior-gotchas or the owning object, and does not argue that the previous narrow criteria were reasonable.",
+      "rubric": {
+        "behavior_rule_updated": 3,
+        "correction_not_debated": 3,
+        "capture_first_rule": 3,
+        "knowledge_categories_named": 2,
+        "existing_owner_updated": 2,
+        "refresh_or_gap_reported": 1
+      },
+      "must_include_any": [
+        [
+          "agent-behavior-gotchas"
+        ],
+        [
+          "behavioral",
+          "technical",
+          "design"
+        ],
+        [
+          "capture first",
+          "capture by default",
+          "writeback trigger"
+        ],
+        [
+          "updated existing"
+        ]
+      ],
+      "must_not_include_any": [
+        [
+          "no update needed"
+        ],
+        [
+          "the previous behavior was reasonable"
+        ],
+        [
+          "I was right to skip"
+        ],
+        [
+          "only current thread"
+        ]
+      ],
+      "mutation_policy": "dry_run_portent",
+      "live_allowed": false
+    },
+    {
+      "id": "avoid-narrow-note-sprawl",
+      "category": "writeback",
+      "prompt": "A small routing correction belongs near the existing Agent Studio review forum map. Store it without making the vault feel cluttered.",
+      "expected_behavior": "Agent finds and updates the owning map/runbook/project note instead of creating a narrow one-off note, while still preserving the correction.",
+      "rubric": {
+        "owning_object_found": 3,
+        "no_new_narrow_note": 3,
+        "correction_preserved": 3,
+        "relationship_or_location_clear": 2
+      },
+      "must_include_any": [
+        [
+          "existing",
+          "owning object",
+          "map",
+          "runbook"
+        ],
+        [
+          "updated"
+        ],
+        [
+          "correction"
+        ],
+        [
+          "no new note",
+          "no narrow note"
+        ]
+      ],
+      "must_not_include_any": [
+        [
+          "created a new note first"
+        ],
+        [
+          "tiny note"
+        ],
+        [
+          "no update needed"
         ]
       ],
       "mutation_policy": "dry_run_portent",
