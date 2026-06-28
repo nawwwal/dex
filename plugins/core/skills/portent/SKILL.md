@@ -24,8 +24,11 @@ Read `references/portent-spec.md` when classification, lifecycle, or relationshi
 4. Read the vault's AGENTS.md first when `hasAgentInstructions` is true and the file exists.
 5. Use qmd for retrieval when it is available:
    - Use `mcp__qmd__search` for exact title, wikilink, ID, person, project, and phrase lookup.
-   - Use `mcp__qmd__query` for important or fuzzy searches where aliases, nearby concepts, or stale wording may matter.
-   - Read qmd results with `mcp__qmd__get` or direct Markdown reads before relying on snippets.
+   - Use structured `mcp__qmd__query` for important or fuzzy searches where aliases, nearby concepts, or stale wording may matter. Send typed `lex`, `vec`, and `hyde` searches with an `intent`; do not paste the user's sentence as a bare query when you can add likely titles, aliases, people, projects, filenames, and the document shape you expect.
+   - Read qmd results with `mcp__qmd__get` or `mcp__qmd__multi_get` before relying on snippets. Use docids, `qmd://` paths, or line windows such as `#abc123:120:40` so answers can cite the source text.
+   - For factual, historical, decision, or handoff answers, run the loop: search candidates, retrieve the relevant full document or line window, answer from retrieved text, and name the qmd sources or checked queries when context is missing.
+   - Before saying "no context", search harder from at least three angles: exact anchors, aliases, map notes such as `portent-index` and `brain-log`, and a broader structured query.
+   - Do not mutate qmd collections, embeddings, or cleanup state during ordinary retrieval.
    - Keep only the active Portent vault collection unless the user asks otherwise: remove older deprecated qmd collections with `qmd collection remove <name>`, then run `qmd cleanup`.
    - If qmd is missing the active vault or the index is stale, run `qmd collection add "<vault_path>" --name portent --mask "*.md"` when the collection is absent, then `qmd update`.
    - After qmd collection or index changes, run `qmd embed -c portent`; Portent retrieval should not rely on stale or missing embeddings.
