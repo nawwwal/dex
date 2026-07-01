@@ -24,6 +24,9 @@ Thumbs.db
 readout-*.json
 stats-cache.json
 
+# PMB local project tracking state
+track_cursors.json
+
 # Session data (never commit)
 sessions/
 learnings-queue.json*

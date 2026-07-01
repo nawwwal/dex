@@ -79,7 +79,7 @@ Optional integrations depend on the skill you use: Figma MCP for Figma work, Dev
 | `council` | Multi-domain parallel investigation with dynamic lens composition: design critique, product decisions, research, code audits, workflow friction, expert debate |
 | `reflect` | PMB reflection: emerging patterns, leverage points, and drift across active memory |
 | `devrev` | Sprint routines, grooming, enrichment, schema-discovered DevRev MCP work, and PMB-backed local DevRev knowledge |
-| `memory` | PMB persistent memory: recall, lessons, goals, session continuity, and durable records. |
+| `memory` | PMB persistent memory: recall, CLI write/read/manage workflows, lessons, goals, session continuity, and durable records. |
 
 `why` treats `teach` and `learn` as routing aliases, but the canonical skill and visible token are `why`. PMB owns persistent memory, recall, lessons, goals, and handoff state. Dex only teaches the agent when to use the memory tools and when to leave a durable record.
 

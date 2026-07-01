@@ -1,6 +1,6 @@
 ---
 name: memory
-description: Use when a task depends on persistent PMB memory, project facts, lessons, goals, decisions, session continuity, user preferences, or durable memory updates across agent sessions
+description: Use when a task depends on persistent PMB memory, project facts, lessons, goals, decisions, session continuity, user preferences, durable memory updates across agent sessions, or PMB CLI write/read/manage workflows
 ---
 
 # Memory
@@ -15,6 +15,10 @@ PMB is the persistent memory layer. Use it to start informed, keep work continuo
 - Use `overview` for a broad topic.
 - Use `project_overview` for a named project.
 - Use `session_brief` after compaction, interruption, or a long gap.
+- Use `find_lessons` before repeating a procedure where stored lessons may change the approach.
+- Use `list_goals` when the task may relate to open work.
+
+Prefer MCP tools inside agent sessions. Use PMB CLI commands for setup, imports, project tracking, inspection, repair, and maintenance.
 
 ## Write Pattern
 
@@ -22,10 +26,10 @@ Use `record_batch` before the final response when the work creates durable memor
 
 | Type | Use for |
 | --- | --- |
-| `fact` | Stable truth |
+| `fact` | Stable truth that should be recalled later |
 | `lesson` | Reusable rule, correction, or failure to avoid |
 | `goal` | Ongoing or future work |
-| `activity` | Lightweight work log |
+| `activity` | Lightweight work log, decision, completion, or failure |
 | `milestone` | Checkpoint in a larger chain |
 
 Use `record_keyed_fact` for attributes with one current value.
@@ -33,6 +37,15 @@ Use `record_keyed_fact` for attributes with one current value.
 Use `list_goals` and `update_goal` when the task changes goal state.
 
 Use `find_lessons` and `mark_lesson_followed` when lessons are surfaced.
+
+## Detailed PMB Operations
+
+Read `references/pmb-cli.md` when the task asks how to:
+
+- Fill memory from terminal commands, imports, project tracking, or distilled session output.
+- Retrieve memory through search, overviews, timelines, audits, lessons, goals, or session briefs.
+- Manage workspaces, snapshots, exports, deletion, cleanup, repair, indexing, or sync.
+- Choose between MCP tools and PMB CLI commands.
 
 ## Boundaries
 
