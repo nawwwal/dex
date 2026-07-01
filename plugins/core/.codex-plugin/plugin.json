@@ -1,6 +1,6 @@
 {
   "name": "core",
-  "version": "1.2.13",
+  "version": "1.2.14",
   "description": "Agent environment setup, explanation, council, reflection, DevRev, and PMB memory workflows",
   "author": {
     "name": "Aditya Nawal"
