@@ -4,9 +4,9 @@
   "eval_clock": "2026-06-15T10:00:00+05:30",
   "purpose": "Real-use checks for DevRev Sync State as the shared operating view across morning, EOD, and ad-hoc attention queries.",
   "standards": [
-    "Use [[DevRev local knowledge]] as the single DevRev operating note in Tolaria.",
+    "Use PMB Sync State memory as the single DevRev operating note in PMB.",
     "Overwrite only the ## Sync State section for agent-owned reconciled state.",
-    "Treat DevRev as the operational anchor, with Slack and Tolaria as supporting evidence.",
+    "Treat DevRev as the operational anchor, with Slack and PMB as supporting evidence.",
     "Use GitHub and Codex only from a supplied External evidence block.",
     "Keep DevRev and other external mutations confirmation-gated.",
     "Cache freshness assertions use eval_clock, not the wall-clock date when the eval runner executes."
@@ -20,14 +20,14 @@
       "fixtures": ["fixtures/devrev-local-knowledge-stale-sync.md"],
       "expected_output": "A morning attention brief based on stale Sync State plus narrow DevRev and Slack refresh.",
       "assertions": [
-        "Reads [[DevRev local knowledge]] and the existing ## Sync State.",
+        "Reads PMB Sync State memory and the existing ## Sync State.",
         "Treats stale Sync State as a reason to fetch narrow DevRev and Slack evidence.",
         "Renders Attention now, On my plate, I am blocking, Blocked / waiting, Drift detected, Focus, and Source coverage.",
         "Overwrites only ## Sync State."
       ],
       "deterministic_checks": {
         "must_include_any": [["## Sync State"], ["source_coverage"], ["Attention now"]],
-        "must_not_include_any": [["[[active-work-ledger]]"], ["plugins/core/skills/portent"]]
+        "must_not_include_any": [["[[active-work-ledger]]"], ["plugins/core/skills/memory"]]
       }
     },
     {
@@ -120,17 +120,17 @@
       "id": "source-failure-honesty",
       "category": "source-coverage",
       "should_trigger": true,
-      "prompt": "Morning sync, but Slack is unavailable and Tolaria is read-only.",
+      "prompt": "Morning sync, but Slack is unavailable and PMB is read-only.",
       "fixtures": ["fixtures/source-failure-state.md"],
-      "expected_output": "A partial-evidence answer that names Slack unavailable and Tolaria read-only in source_coverage.",
+      "expected_output": "A partial-evidence answer that names Slack unavailable and PMB read-only in source_coverage.",
       "assertions": [
-        "Names Slack unavailable and Tolaria read-only in source_coverage.",
+        "Names Slack unavailable and PMB read-only in source_coverage.",
         "Still answers from the evidence it has.",
         "Does not pretend unavailable sources were checked."
       ],
       "deterministic_checks": {
-        "must_include_any": [["Slack unavailable"], ["Tolaria read-only"], ["source_coverage"]],
-        "must_not_include_any": [["Slack checked"], ["Tolaria updated successfully"]]
+        "must_include_any": [["Slack unavailable"], ["PMB read-only"], ["source_coverage"]],
+        "must_not_include_any": [["Slack checked"], ["PMB updated successfully"]]
       }
     },
     {
@@ -151,20 +151,20 @@
       }
     },
     {
-      "id": "no-portent-ledger-regression",
+      "id": "no-pmb-ledger-regression",
       "category": "negative",
       "should_trigger": true,
       "prompt": "Set up the DevRev ledger.",
       "fixtures": ["fixtures/devrev-local-knowledge-fresh-sync.md"],
-      "expected_output": "A DevRev Sync State answer that does not create or route work into a Portent ledger.",
+      "expected_output": "A DevRev Sync State answer that does not create or route work into a PMB ledger.",
       "assertions": [
-        "Uses [[DevRev local knowledge]] and ## Sync State.",
-        "Does not edit core:portent.",
+        "Uses PMB Sync State memory and ## Sync State.",
+        "Does not edit core:memory.",
         "Does not create a separate active work ledger."
       ],
       "deterministic_checks": {
-        "must_include_any": [["[[DevRev local knowledge]]"], ["## Sync State"]],
-        "must_not_include_any": [["[[active-work-ledger]]"], ["plugins/core/skills/portent"]]
+        "must_include_any": [["PMB Sync State memory"], ["## Sync State"]],
+        "must_not_include_any": [["[[active-work-ledger]]"], ["plugins/core/skills/memory"]]
       }
     },
     {

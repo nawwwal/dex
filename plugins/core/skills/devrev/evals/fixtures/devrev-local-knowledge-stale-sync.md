@@ -1,5 +1,5 @@
 ---
-title: DevRev local knowledge
+title: DevRev PMB Sync State
 ---
 
 user_don: don:identity:dvrv-us-1:devo/0:user/123
@@ -18,7 +18,7 @@ end: 2026-06-26T18:29:59+05:30
 
 last_synced: 2026-06-14T09:00:00+05:30
 last_mode: morning
-source_coverage: DevRev checked; Slack checked; Tolaria checked; GitHub not provided; Codex not provided
+source_coverage: DevRev checked; Slack checked; PMB checked; GitHub not provided; Codex not provided
 
 ### Plate
 | Item | Area | State | Freshness | Evidence | Next action | Confidence |
@@ -28,7 +28,7 @@ source_coverage: DevRev checked; Slack checked; Tolaria checked; GitHub not prov
 ### Signals
 | Source | Signal | Related item | Freshness | Evidence | Action |
 |---|---|---|---|---|---|
-| Tolaria | Earlier plan said Sync State was needed | ISS-202 | historical | DevRev local knowledge | Reconcile with live DevRev |
+| PMB | Earlier plan said Sync State was needed | ISS-202 | historical | DevRev PMB Sync State | Reconcile with live DevRev |
 
 ### Proposed writebacks
 | Target | Item | Proposed change | Reason |

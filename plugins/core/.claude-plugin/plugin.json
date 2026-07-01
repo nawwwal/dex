@@ -1,6 +1,6 @@
 {
   "name": "core",
-  "description": "Agent environment setup, explanation, council, reflection, DevRev, session wrap-up, and Portent knowledge-base workflows",
+  "description": "Agent environment setup, explanation, council, reflection, DevRev, and PMB memory workflows",
   "version": "1.2.12",
   "author": {
     "name": "Aditya Nawal"

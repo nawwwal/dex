@@ -47,6 +47,6 @@ Show table to user. On approval:
 ## Phase 4 — Update Sync State
 
 Read `references/sync-state.md`.
-Read `## Sync State` in `[[DevRev local knowledge]]`, then overwrite only that section.
+Read Sync State in PMB, then overwrite only that record.
 
 Use the section shape and source-coverage rules from `references/sync-state.md`. Set `last_mode: plan`; populate Plate with created/overlapping issues, Signals with context used in the breakdown, and Proposed writebacks for non-Sync-State changes that need confirmation.

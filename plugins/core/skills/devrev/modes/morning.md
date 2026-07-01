@@ -5,7 +5,7 @@ Goal: Today's attention in 30 seconds. DevRev is the operational anchor; `## Syn
 ## Phase 0 — Sync State cache check
 
 Read `references/sync-state.md`.
-Read `## Sync State` from `[[DevRev local knowledge]]`.
+Read Sync State from PMB.
 
 If all are true, answer from Sync State and skip live fetch:
 - `last_synced` is under 4 hours old.
@@ -51,20 +51,20 @@ Script returns:
 
 From script output + Slack asks + previous Sync State + any supplied `External evidence`, the LLM:
 1. Dedupes Slack asks against DevRev titles by semantic similarity.
-2. Reconciles DevRev operational state with supporting evidence from Slack, Tolaria, and supplied external evidence.
+2. Reconciles DevRev operational state with supporting evidence from Slack, PMB, and supplied external evidence.
 3. Separates confirmed work from drift and writeback proposals.
 4. Picks one focus recommendation (judgment: highest urgency + momentum).
 5. Renders:
 
 ```
 ## Sync State
-source_coverage: [DevRev checked; Slack checked; Tolaria checked; GitHub/Codex not provided or supplied]
+source_coverage: [DevRev checked; Slack checked; PMB checked; GitHub/Codex not provided or supplied]
 
 → ATTENTION NOW: [ISS-X or signal] — [why it needs attention]
 → ON MY PLATE: [ISS-Y: title] — [state, freshness, next action]
 → I AM BLOCKING: [item/person] — [what they need from me]
 → BLOCKED / WAITING: [item] — [who/what is blocking it]
-→ DRIFT DETECTED: [DevRev vs Slack/Tolaria/external mismatch]
+→ DRIFT DETECTED: [DevRev vs Slack/PMB/external mismatch]
 → FOCUS: [the one thing to start with — one sentence why]
 ```
 
@@ -73,6 +73,6 @@ If all empty: show first 3 from rest, sorted by target_close_date.
 
 ## Phase 4 — Update Sync State
 
-Overwrite only `## Sync State` in `[[DevRev local knowledge]]`.
+Overwrite only Sync State in PMB.
 
 Use the section shape and source-coverage rules from `references/sync-state.md`. Set `last_mode: morning`; populate Plate from DevRev issues, Signals from supporting evidence, and Proposed writebacks for drift that needs confirmation.

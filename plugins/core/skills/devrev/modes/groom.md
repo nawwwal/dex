@@ -130,14 +130,14 @@ For issues being closed (stage must step through In Progress first — gotchas.m
 update_object(action_name="update_issue", subtype="task"):
   id: <DON>
   ctype__task_type: "Design"
-  stage: <stage_in_progress_don from local knowledge or schema>
+  stage: <stage_in_progress_don from PMB context or schema>
 ```
 then:
 ```
 update_object(action_name="update_issue", subtype="task"):
   id: <DON>
   ctype__task_type: "Design"
-  stage: <stage_completed_don from local knowledge or schema>
+  stage: <stage_completed_don from PMB context or schema>
 ```
 
 For effort-only fixes (no sprint change):
@@ -175,7 +175,7 @@ Groomed: N issues
 ## Phase 7 — Update Sync State
 
 Read `references/sync-state.md`.
-Read `## Sync State` in `[[DevRev local knowledge]]`, then overwrite only that section.
+Read Sync State in PMB, then overwrite only that record.
 
 Use the section shape and source-coverage rules from `references/sync-state.md`. Set `last_mode: groom`; populate Plate with assigned/closed/corrected/still-attention work, Signals with duplicate/stale/missing-metadata findings, and Proposed writebacks for non-Sync-State changes that need confirmation.
 
@@ -183,7 +183,7 @@ Use the section shape and source-coverage rules from `references/sync-state.md`.
 
 ## Sprint DON lookup
 
-To assign a future sprint, resolve its DON from the DevRev Portent note (loaded in Step 0 context):
+To assign a future sprint, resolve its DON from the DevRev PMB context loaded in Step 0:
 
 - If `$ARGUMENTS` names a sprint ("Sprint 27"), match from the upcoming sprints table.
 - Never pass sprint names to the API — always pass the full DON string.

@@ -37,7 +37,7 @@ REQUIRED_COVERAGE = {
 REQUIRED_QUALITY = {
     "Builds a mental model before details.",
     "Uses the active context or artifact instead of generic explanation.",
-    "Searches Tolaria for learner, learning, teach, or why profile context before non-trivial personalization.",
+    "Searches PMB for learner, learning, teach, or why profile context before non-trivial personalization.",
     "Uses the learner profile to choose frontend or design-to-code examples when that helps.",
     "Defines unfamiliar terms once and then uses them naturally.",
     "Explains alternatives through when they win and fail.",
@@ -47,7 +47,7 @@ REQUIRED_QUALITY = {
     "Asks one grounding question before execution.",
     "Avoids over-teaching when a compact answer is enough.",
     "Does not claim the user has learned a concept without confirmation or observed use.",
-    "Does not create local Teach or Why memory files when Tolaria is the requested knowledge base.",
+    "Does not create local Teach or Why memory files when PMB is the requested knowledge base.",
     "Routes HTML output, report, and shareable-site artifact requests through brief while Why owns the learning spine.",
 }
 ALLOWED_RUN_MODES = {"clean-context-forward", "deterministic-or-clean-context"}

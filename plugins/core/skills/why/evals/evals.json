@@ -1,7 +1,7 @@
 {
   "skill_name": "why",
   "version": 1,
-  "notes": "Dex eval suite for Why. Cases judge routing, source-backed explanation, Tolaria-backed learner profile use, explicit knowledge-base writeback, and response feel. Passing output must explain the why behind unfamiliar work without reviving the old local Teach memory or SQLite index.",
+  "notes": "Dex eval suite for Why. Cases judge routing, source-backed explanation, PMB-backed learner profile use, explicit knowledge-base writeback, and response feel. Passing output must explain the why behind unfamiliar work without reviving the old local Teach memory or SQLite index.",
   "standards": {
     "required_coverage": [
       "explicit trigger",
@@ -29,7 +29,7 @@
     "response_quality": [
       "Builds a mental model before details.",
       "Uses the active context or artifact instead of generic explanation.",
-      "Searches Tolaria for learner, learning, teach, or why profile context before non-trivial personalization.",
+      "Searches PMB for learner, learning, teach, or why profile context before non-trivial personalization.",
       "Uses the learner profile to choose frontend or design-to-code examples when that helps.",
       "Defines unfamiliar terms once and then uses them naturally.",
       "Explains alternatives through when they win and fail.",
@@ -39,13 +39,13 @@
       "Asks one grounding question before execution.",
       "Avoids over-teaching when a compact answer is enough.",
       "Does not claim the user has learned a concept without confirmation or observed use.",
-      "Does not create local Teach or Why memory files when Tolaria is the requested knowledge base.",
+      "Does not create local Teach or Why memory files when PMB is the requested knowledge base.",
       "Routes HTML output, report, and shareable-site artifact requests through brief while Why owns the learning spine."
     ],
     "passing_run_must_record": [
       "route chosen",
       "files or artifacts inspected",
-      "Tolaria profile queries or reason skipped",
+      "PMB profile queries or reason skipped",
       "whether execution was gated",
       "concepts explained",
       "knowledge-base writes performed or intentionally skipped",
@@ -93,10 +93,10 @@
       "should_trigger": true,
       "run_mode": "clean-context-forward",
       "prompt": "Use $why to explain how SQLite FTS indexing works before implementing anything.",
-      "expected_output": "The agent searches Tolaria for relevant learner/profile context, teaches SQLite FTS with a mental model, alternatives, tradeoffs, read-next topics, and one grounding question before implementation.",
+      "expected_output": "The agent searches PMB for relevant learner/profile context, teaches SQLite FTS with a mental model, alternatives, tradeoffs, read-next topics, and one grounding question before implementation.",
       "assertions": [
         "Builds a mental model before implementation details.",
-        "Searches Tolaria for learner, learning, teach, or why profile context, or states why Tolaria was unavailable.",
+        "Searches PMB for learner, learning, teach, or why profile context, or states why PMB was unavailable.",
         "Defines SQLite FTS5 and distinguishes lexical search from semantic embedding search.",
         "Compares grep, SQLite LIKE, FTS5, and vector embeddings through when they win and fail.",
         "Explains tradeoffs as benefit, cost, and risk.",
@@ -110,7 +110,7 @@
         "read_next": 1,
         "execution_gate": 2
       },
-      "required_evidence": ["trigger route", "Tolaria profile lookup", "response-quality score", "grounding question"]
+      "required_evidence": ["trigger route", "PMB profile lookup", "response-quality score", "grounding question"]
     },
     {
       "id": "teach-alias-unfamiliar-context",
@@ -208,19 +208,19 @@
       "run_mode": "clean-context-forward",
       "prompt": "Write a compact debounce helper for UI input events and explain the clever parts.",
       "known_failure_source": "Teach-to-Why migration: knowledge-base examples must not leak into unrelated clever-function explanations.",
-      "before_failure_signal": "Mentions Tolaria, Portent, SQLite, FTS, BM25, lexical search, or inverted indexes while explaining a debounce helper.",
+      "before_failure_signal": "Mentions PMB, PMB, SQLite, FTS, BM25, lexical search, or inverted indexes while explaining a debounce helper.",
       "fixed_by": "Clever Function Rule now says not to import Why knowledge-base examples into unrelated answers.",
       "expected_output": "The answer includes a debounce helper plus concepts actually used by debounce logic, such as timers, closures, event frequency, cancellation, and latency tradeoffs.",
       "assertions": [
         "Includes a self-contained debounce helper or clearly described implementation.",
         "Explains only mechanisms used by debounce logic.",
-        "Does not mention Tolaria, Portent, SQLite, FTS, BM25, inverted indexes, or lexical search.",
+        "Does not mention PMB, PMB, SQLite, FTS, BM25, inverted indexes, or lexical search.",
         "States the simpler alternative and the latency/responsiveness tradeoff."
       ],
       "deterministic_checks": {
         "must_not_include_any": [
-          ["Tolaria"],
-          ["Portent"],
+          ["PMB"],
+          ["PMB"],
           ["SQLite"],
           ["FTS"],
           ["BM25"],
@@ -273,7 +273,7 @@
       "should_trigger": true,
       "run_mode": "clean-context-forward",
       "prompt": "Use $why to explain /Users/aditya.nawal/projects/dex/plugins/core/skills/why/SKILL.md to me like I have never seen skill routing or knowledge-base-backed learner profiles before.",
-      "expected_output": "The agent inspects the skill file, teaches from the actual file, explains routing and Tolaria-backed profiles, and avoids generic database advice disconnected from the skill.",
+      "expected_output": "The agent inspects the skill file, teaches from the actual file, explains routing and PMB-backed profiles, and avoids generic database advice disconnected from the skill.",
       "assertions": [
         "Inspects the target file before explaining it.",
         "Uses concrete sections or rules from the skill in the explanation.",
@@ -296,11 +296,11 @@
       "should_trigger": true,
       "run_mode": "clean-context-forward",
       "prompt": "Teach me the concept of inverted indexes and save it to my learning knowledge base.",
-      "expected_output": "The agent explains the concept, uses core:portent/Tolaria for the durable note, and avoids creating local Teach or Why memory directories or SQLite indexes.",
+      "expected_output": "The agent explains the concept, uses core:memory/PMB for the durable note, and avoids creating local Teach or Why memory directories or SQLite indexes.",
       "assertions": [
         "Explains the concept before writing.",
-        "Uses Tolaria or clearly states Tolaria is unavailable before any fallback.",
-        "Creates or updates a Tolaria Note, Topic, or Event only because the prompt has explicit save intent.",
+        "Uses PMB or clearly states PMB is unavailable before any fallback.",
+        "Creates or updates a PMB Note, Topic, or Event only because the prompt has explicit save intent.",
         "Does not create `~/.agents/memory/teach/`, `~/.agents/memory/why/`, `profile.md`, or `index.sqlite3`.",
         "Reports the knowledge-base object created or updated."
       ],
@@ -317,7 +317,7 @@
         "knowledge_base_write": 3,
         "no_local_memory": 3
       },
-      "required_evidence": ["concept explanation", "Tolaria object path or unavailable reason", "no local memory write"]
+      "required_evidence": ["concept explanation", "PMB object path or unavailable reason", "no local memory write"]
     },
     {
       "id": "response-feel-not-lecture",
@@ -353,16 +353,16 @@
       "run_mode": "clean-context-forward",
       "prompt": "Use $why to explain why the React component in plugins/core/skills/why/evals/fixtures/layout_shift_component.tsx has layout shift and hydration warnings. Search the knowledge base for the learner profile first.",
       "files": ["evals/fixtures/layout_shift_component.tsx"],
-      "expected_output": "The answer searches Tolaria for learner profile context, then explains the issue through design-to-code mechanics: user-visible behavior, HTML structure, CSS layout constraints, JavaScript/React rendering, TypeScript or prop invariants when relevant, and design-engineering tradeoffs.",
+      "expected_output": "The answer searches PMB for learner profile context, then explains the issue through design-to-code mechanics: user-visible behavior, HTML structure, CSS layout constraints, JavaScript/React rendering, TypeScript or prop invariants when relevant, and design-engineering tradeoffs.",
       "assertions": [
-        "Searches Tolaria for learner, learning, teach, or why profile context.",
-        "Uses the designer-to-design-engineer profile as the teaching lens when available or fallback when no Tolaria profile is found.",
+        "Searches PMB for learner, learning, teach, or why profile context.",
+        "Uses the designer-to-design-engineer profile as the teaching lens when available or fallback when no PMB profile is found.",
         "Inspects the fixture and grounds the explanation in `mounted`, conditional `<p>`, or the unsized image.",
         "Explains frontend mechanics in detail instead of defaulting to backend or database examples.",
         "Connects React behavior to HTML, CSS, browser rendering, and user-visible UI behavior.",
         "Names tradeoffs such as accessibility, performance, maintainability, and design-system fit.",
         "Gives focused read-next topics across HTML, CSS, JavaScript, TypeScript, or React.",
-        "Does not create or update local profile files because durable profiles belong in Tolaria."
+        "Does not create or update local profile files because durable profiles belong in PMB."
       ],
       "quality_rubric": {
         "profile_lookup": 3,
@@ -372,7 +372,7 @@
         "read_next": 1,
         "no_local_memory": 2
       },
-      "required_evidence": ["Tolaria profile lookup", "fixture inspected", "frontend mechanics", "design-to-code bridge", "read-next topics", "local memory intentionally skipped"]
+      "required_evidence": ["PMB profile lookup", "fixture inspected", "frontend mechanics", "design-to-code bridge", "read-next topics", "local memory intentionally skipped"]
     },
     {
       "id": "negative-control-direct-implementation",

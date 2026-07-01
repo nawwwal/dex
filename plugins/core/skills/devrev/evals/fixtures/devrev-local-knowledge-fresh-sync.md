@@ -1,5 +1,5 @@
 ---
-title: DevRev local knowledge
+title: DevRev PMB Sync State
 ---
 
 user_don: don:identity:dvrv-us-1:devo/0:user/123
@@ -18,7 +18,7 @@ end: 2026-06-26T18:29:59+05:30
 
 last_synced: 2026-06-15T09:00:00+05:30
 last_mode: morning
-source_coverage: DevRev checked; Slack checked; Tolaria checked; GitHub not provided; Codex not provided
+source_coverage: DevRev checked; Slack checked; PMB checked; GitHub not provided; Codex not provided
 
 ### Plate
 | Item | Area | State | Freshness | Evidence | Next action | Confidence |

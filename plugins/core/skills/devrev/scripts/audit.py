@@ -18,7 +18,7 @@ REQUIRED_EVAL_IDS = {
     "external-github-codex-evidence",
     "source-failure-honesty",
     "proposed-writebacks-not-auto-write",
-    "no-portent-ledger-regression",
+    "no-pmb-ledger-regression",
     "no-session-policy-regression",
 }
 
@@ -110,7 +110,7 @@ def sync_contract_check(skill_dir: str) -> dict:
     eod = read(eod_path)
     sync_ref = read(sync_ref_path)
 
-    _require_text(skill, "[[DevRev local knowledge]]", "skill_mentions_local_note", violations)
+    _require_text(skill, "PMB", "skill_mentions_pmb", violations)
     _require_text(skill, "## Sync State", "skill_mentions_sync_state", violations)
     _require_text(skill, "External evidence", "skill_mentions_external_evidence", violations)
     _require_text(skill, "source_coverage", "skill_mentions_source_coverage", violations)
@@ -146,13 +146,23 @@ def sync_contract_check(skill_dir: str) -> dict:
     _require_text(morning, "source_coverage", "morning_reports_source_coverage", violations)
     _require_text(morning, "External evidence", "morning_accepts_external_evidence", violations)
     _require_text(morning, "references/sync-state.md", "morning_reads_sync_reference", violations)
-    _require_any(morning.lower(), ["overwrite only `## sync state`", "overwrite `## sync state`"], "morning_updates_sync_state", violations)
+    _require_any(
+        morning.lower(),
+        ["overwrite only `## sync state`", "overwrite `## sync state`", "overwrite only sync state in pmb"],
+        "morning_updates_sync_state",
+        violations,
+    )
 
     _require_text(eod, "## Sync State", "eod_reads_sync_state", violations)
     _require_text(eod, "source_coverage", "eod_reports_source_coverage", violations)
     _require_text(eod, "External evidence", "eod_accepts_external_evidence", violations)
     _require_text(eod, "references/sync-state.md", "eod_reads_sync_reference", violations)
-    _require_any(eod.lower(), ["overwrite only `## sync state`", "overwrite `## sync state`"], "eod_updates_sync_state", violations)
+    _require_any(
+        eod.lower(),
+        ["overwrite only `## sync state`", "overwrite `## sync state`", "overwrite only sync state in pmb"],
+        "eod_updates_sync_state",
+        violations,
+    )
 
     runtime_files = [skill_path, os.path.join(skill_dir, "gotchas.md")]
     runtime_files.extend(sorted(glob.glob(os.path.join(skill_dir, "modes", "*.md"))))

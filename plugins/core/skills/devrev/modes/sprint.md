@@ -131,7 +131,7 @@ Applied: 7 issues
 ### Phase 5 — Update Sync State
 
 Read `references/sync-state.md`.
-Read `## Sync State` in `[[DevRev local knowledge]]`, then overwrite only that section.
+Read Sync State in PMB, then overwrite only that record.
 
 Use the section shape and source-coverage rules from `references/sync-state.md`. Set `last_mode: sprint`; populate Plate with the confirmed schedule plus at-risk/stretch work, Signals with priority/velocity/blocker evidence, and Proposed writebacks for non-Sync-State changes that need confirmation.
 

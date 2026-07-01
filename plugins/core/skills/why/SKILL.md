@@ -12,7 +12,7 @@ Assume the active context is unfamiliar to the user. Explain the concepts, mecha
 ## Core Workflow
 
 1. Identify the learning target from the user request, active files, pasted text, error output, code diff, tool output, or design context.
-2. Search the Tolaria knowledge base for relevant teaching and learning profiles before choosing examples, depth, analogies, or reading paths.
+2. Search PMB memory for relevant teaching and learning profiles before choosing examples, depth, analogies, or reading paths.
 3. Read the most relevant profile records and concept records. If no profile exists, use the bundled fallback profile below for the current answer only.
 4. Explain how it works in concrete terms. Define unfamiliar terms once, then use them naturally.
 5. Name the important concepts involved.
@@ -23,7 +23,7 @@ Assume the active context is unfamiliar to the user. Explain the concepts, mecha
    - "Does this mental model work well enough for me to proceed?"
    - "Which part should I unpack further before I change the code?"
 9. After the user confirms or shows understanding, perform the original task if it was part of the request.
-10. Save learned concepts, teaching preferences, or learner-profile updates to Tolaria only when the user explicitly asks to save, remember, or add the learning.
+10. Save learned concepts, teaching preferences, or learner-profile updates to PMB only when the user explicitly asks to save, remember, or add the learning.
 
 ## Brief Artifact Handoff
 
@@ -41,9 +41,9 @@ The boundary is: Why explains why the idea works; Brief turns that explanation i
 
 ## Knowledge Base Profile Resolution
 
-Canonical teaching and learning context lives in Tolaria, not in `~/.agents/memory/teach/`.
+Canonical teaching and learning context lives in PMB.
 
-Before a non-trivial explanation, search Tolaria with the concrete learning target plus profile aliases:
+Before a non-trivial explanation, search PMB with the concrete learning target plus profile aliases:
 
 ```text
 why profile
@@ -60,13 +60,13 @@ agent-behavior-gotchas
 Use the result order this way:
 
 1. Prompt-provided learner context controls the current answer.
-2. Tolaria profile or preference records control durable personalization.
-3. Relevant Tolaria concept notes or project notes control examples and source grounding.
+2. PMB profile or preference records control durable personalization.
+3. Relevant PMB concept or project records control examples and source grounding.
 4. The bundled fallback profile below fills gaps only when the knowledge base has no useful profile.
 
-If Tolaria tools are unavailable, say which profile search was skipped and continue from prompt context plus the fallback profile. Do not create a parallel local profile file as a substitute.
+If PMB tools are unavailable, say which profile search was skipped and continue from prompt context plus the fallback profile. Do not create a parallel local profile file as a substitute.
 
-Do not report profile-search or knowledge-base plumbing in the answer unless it changes the explanation, the user asked about memory/profile state, the request is a knowledge-base write, or higher-priority source-status instructions require it. The learning answer should not leak Tolaria, Portent, or profile machinery into unrelated concepts.
+Do not report profile-search or memory plumbing in the answer unless it changes the explanation, the user asked about memory/profile state, the request is a memory write, or higher-priority source-status instructions require it. The learning answer should not leak PMB or profile machinery into unrelated concepts.
 
 ## Execution Gates
 
@@ -83,7 +83,7 @@ If the user says "before changing it", do not edit yet. If they ask for a compac
 
 ## Fallback Learner Profile
 
-Use this only when Tolaria has no useful profile record and the prompt gives no learner context:
+Use this only when PMB has no useful profile record and the prompt gives no learner context:
 
 ```markdown
 ---
@@ -169,59 +169,29 @@ Do not import Why's own knowledge-base examples into unrelated answers. Explain 
 
 ## Knowledge Base Writes
 
-Use Tolaria through `core:portent` for durable learning records.
+Use PMB for durable learning records.
 
 Write only after explicit save intent. Examples: "save this to my learning profile", "remember this concept", "add this to the knowledge base", "track that I learned this".
 
-Prefer these objects:
+Prefer these PMB event types:
 
-- `Note` for a concept, mental model, or reusable explanation.
-- `Topic` for a broad concept cluster.
-- `Event` for a learning session, walkthrough, or completed teaching pass.
+- `fact` for a concept, mental model, or reusable explanation.
+- `lesson` for a reusable teaching preference or correction.
+- `activity` for a learning session, walkthrough, or completed teaching pass.
 
-Minimum concept-note shape:
+Minimum concept record shape:
 
-```markdown
----
-type: Note
-organized: false
-archived: false
-related_to:
-  - "[[Why]]"
----
-
-# Concept Name
-
-## Concept
-
-[what it means]
-
-## Why It Matters
-
-[what decision, behavior, or implementation it changes]
-
-## How It Works
-
-[observable mechanics]
-
-## Alternatives
-
-- [alternative] -> when it wins -> when it fails
-
-## Tradeoffs
-
-- [choice] -> benefit -> cost -> risk
-
-## Read Next
-
-- [topic] -> why it matters
-
-## Seen In
-
-- [source context]
+```text
+Concept: [what it means]
+Why it matters: [what decision, behavior, or implementation it changes]
+How it works: [observable mechanics]
+Alternatives: [alternative -> when it wins -> when it fails]
+Tradeoffs: [choice -> benefit -> cost -> risk]
+Read next: [topic -> why it matters]
+Seen in: [source context]
 ```
 
-Do not create `~/.agents/memory/teach/`, `~/.agents/memory/why/`, SQLite indexes, or local profile files. Tolaria is the canonical knowledge base.
+Do not create `~/.agents/memory/teach/`, `~/.agents/memory/why/`, SQLite indexes, or local profile files. PMB is the canonical memory system.
 
 ## Output Rules
 
@@ -233,4 +203,4 @@ Do not create `~/.agents/memory/teach/`, `~/.agents/memory/why/`, SQLite indexes
 - Avoid fake certainty about what the user has learned; use confirmation or observed user response.
 - Keep knowledge-base updates focused on durable concepts, not every small fact.
 - Never put private project details into a reusable concept note unless the source context matters for recall.
-- Do not claim a Tolaria write happened unless you created or updated the note and can name it.
+- Do not claim a PMB write happened unless you created or updated the record and can summarize it.

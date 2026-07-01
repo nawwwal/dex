@@ -9,5 +9,5 @@ Supplied by automation. Use this text as evidence; do not fetch GitHub or Codex 
 
 ### Codex
 
-- Session note 2026-06-15: user asked for morning/EOD sync over DevRev, Slack, Tolaria, and supplied GitHub/Codex evidence.
+- Session note 2026-06-15: user asked for morning/EOD sync over DevRev, Slack, PMB, and supplied GitHub/Codex evidence.
 - Session note 2026-06-15: explicit non-goal is automation scheduling inside the skill.

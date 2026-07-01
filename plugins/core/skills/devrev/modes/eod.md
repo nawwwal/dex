@@ -5,7 +5,7 @@ Goal: Close the day, reconcile active work, update `## Sync State`, and prep tom
 ## Phase 0 — Read current Sync State
 
 Read `references/sync-state.md`.
-Read `## Sync State` from `[[DevRev local knowledge]]` before fetching live data.
+Read Sync State from PMB before fetching live data.
 
 If the prompt contains an `External evidence` block, carry it into reconciliation. GitHub and Codex evidence are valid only from this supplied block; do not fetch them directly.
 
@@ -47,7 +47,7 @@ Do not mutate DevRev without confirmation.
 
 ## Phase 5 — Update Sync State
 
-Overwrite only `## Sync State` in `[[DevRev local knowledge]]` regardless of whether DevRev writes were applied.
+Overwrite only Sync State in PMB regardless of whether DevRev writes were applied.
 
 Use the section shape and `source_coverage` rules from `references/sync-state.md`. Set `last_mode: eod`; populate Plate from still-open/completed work and user answers, Signals from supporting evidence, and Proposed writebacks for drafted but unconfirmed DevRev changes.
 

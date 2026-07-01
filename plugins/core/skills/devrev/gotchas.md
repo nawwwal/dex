@@ -35,7 +35,7 @@ Current update schemas expose both `stage` and `stage_name`. `stage_name` enums 
 
 Workaround: Prefer the custom stage DON for writes. Use `stage_name` only when the discovered subtype schema has the exact intended value and verification reads back the intended state.
 
-Resolve stage DONs from the DevRev local knowledge note or current subtype schema. Do not ship user-specific stage IDs in the skill.
+Resolve stage DONs from PMB DevRev context or current subtype schema. Do not ship user-specific stage IDs in the skill.
 
 ## 5. get_valid_stage_transitions is only partially reliable
 

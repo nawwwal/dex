@@ -1,8 +1,8 @@
 # Sync State Reference
 
-`[[DevRev local knowledge]]` is the single DevRev operating note in Tolaria. Agents may overwrite only its `## Sync State` section.
+PMB Sync State memory is the single DevRev operating cache. Agents may overwrite only the Sync State record.
 
-Do not edit DevRev config, project map, active sprint, Track A, or Track B as part of local knowledge sync. If one of those sections appears stale, add a `Proposed writebacks` row.
+Do not edit DevRev config, project map, active sprint, Track A, or Track B as part of Sync State updates. If one of those sections appears stale, add a `Proposed writebacks` row.
 
 ## Section Shape
 
@@ -11,7 +11,7 @@ Do not edit DevRev config, project map, active sprint, Track A, or Track B as pa
 
 last_synced: 2026-06-15T09:00:00+05:30
 last_mode: morning
-source_coverage: DevRev checked; Slack checked; Tolaria checked; GitHub not provided; Codex not provided
+source_coverage: DevRev checked; Slack checked; PMB checked; GitHub not provided; Codex not provided
 
 ### Plate
 | Item | Area | State | Freshness | Evidence | Next action | Confidence |
@@ -30,7 +30,7 @@ source_coverage: DevRev checked; Slack checked; Tolaria checked; GitHub not prov
 
 - DevRev: issue ID, owner, sprint, stage, priority, target dates, remaining effort.
 - Slack: asks, blockers, decisions, urgency, coordination gaps.
-- Tolaria: durable context, prior decisions, caveats, current local knowledge.
+- PMB: durable context, prior decisions, caveats, current Sync State.
 - GitHub/Codex: only when supplied in an `External evidence` block. Do not fetch directly in v1.
 
 ## Source Coverage
@@ -51,4 +51,4 @@ Use short values: `current`, `stale`, `conflicted`, `blocked`, `historical`.
 
 - Overwrite `## Sync State` as housekeeping after reconciliation.
 - Treat `Proposed writebacks` as drafts, not permission to mutate external systems.
-- Require explicit confirmation before mutating DevRev, Slack, GitHub, Codex, or non-Sync-State Tolaria sections.
+- Require explicit confirmation before mutating DevRev, Slack, GitHub, Codex, or non-Sync-State PMB sections.

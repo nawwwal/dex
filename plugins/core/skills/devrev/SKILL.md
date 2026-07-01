@@ -1,8 +1,7 @@
 ---
 name: devrev
-description: "DevRev sprint management and attention sync through [[DevRev local knowledge]] and Sync State. Use for /devrev morning, EOD closeout, sprint planning, backlog grooming, feature task planning, DevRev enrichment, and ad-hoc questions like what is on my plate, what is blocking me, what needs attention, or what is stale across DevRev, Slack, Tolaria, and supplied External evidence."
-allowed-tools: Bash, Read, Write, Task, mcp__qmd__search, mcp__qmd__get,
-  mcp__tolaria__list_vaults, mcp__tolaria__open_note,
+description: "DevRev sprint management and attention sync through PMB memory and Sync State. Use for /devrev morning, EOD closeout, sprint planning, backlog grooming, feature task planning, DevRev enrichment, and ad-hoc questions like what is on my plate, what is blocking me, what needs attention, or what is stale across DevRev, Slack, PMB, and supplied External evidence."
+allowed-tools: Bash, Read, Write, Task,
   mcp__devrev_remote_mcp_server__get_tool_metadata,
   mcp__devrev_remote_mcp_server__discover_schema,
   mcp__devrev_remote_mcp_server__get_self,
@@ -23,37 +22,29 @@ allowed-tools: Bash, Read, Write, Task, mcp__qmd__search, mcp__qmd__get,
 
 # DevRev Skill — Generic Sprint Manager
 
-No hardcoded DON IDs. All personal context is loaded from the user's Tolaria knowledge base via the `core:portent` model. Shareable across users.
+No hardcoded DON IDs. All personal context is loaded from PMB memory. Shareable across users.
 
-## Step 0 — Load and validate Portent context
+## Memory
 
-Use `core:portent` rules for knowledge storage:
+Use PMB for durable DevRev context. Retrieve with `prepare`, `recall`, `overview`, or `project_overview` when prior state matters. Record durable outcomes with `record_batch`, using `fact`, `lesson`, `goal`, `activity`, or `milestone` as appropriate.
 
-1. Resolve the active Tolaria vault with `mcp__tolaria__list_vaults` when available.
-2. Read the vault's AGENTS.md first when present.
-3. Find the existing DevRev Portent object by title/frontmatter/content. Prefer `[[DevRev local knowledge]]`.
-4. If no DevRev object exists, abort: "DevRev Portent knowledge is missing. Create `[[DevRev local knowledge]]` in Tolaria first."
-5. Use only that resolved Tolaria note for DevRev local knowledge.
+Do not hardcode personal context into this skill. Store changing state in PMB.
 
-The DevRev Portent note must contain the local project map, active sprint block, upcoming sprint table, Track B table, and these body keys:
+## Step 0 — Load PMB context
+
+Use PMB as the source for DevRev local context:
+
+1. Call `prepare` or `overview` for DevRev when the task depends on prior state.
+2. Retrieve the DevRev local context from PMB. It should contain the local project map, active sprint block, upcoming sprint table, Track B table, and these keys:
 
 - `user_don`
 - `sprint_board`
 - `default_part`
 - `slack_mention`
 
-Validate the resolved Tolaria Markdown note path:
+If required keys are missing, stop and say which PMB DevRev context key is missing. Do not invent IDs.
 
-```bash
-python3 "$CLAUDE_SKILL_DIR/scripts/lib_memory.py" validate \
-  "<resolved_tolaria_vault_path>/.../DevRev local knowledge.md"
-```
-
-If `$CLAUDE_SKILL_DIR` is unavailable, use the resolved directory containing this `SKILL.md`.
-
-If `ok: false` — abort with the missing field and say the DevRev Portent note needs repair.
-
-If `ok: true` — extract placeholders from `context`:
+Extract placeholders from PMB context:
 - `$USER_DON`, `$SPRINT_BOARD`, `$DEFAULT_PART`, `$SLACK_MENTION`
 - `$ACTIVE_SPRINT_DON`, `$ACTIVE_SPRINT_START`, `$ACTIVE_SPRINT_END`
 - `$ISSUE_CONVENTIONS`
@@ -64,7 +55,7 @@ Load `gotchas.md` (Read tool) for any mode that writes to DevRev. Gotcha #9 (use
 
 Before morning, EOD, ad-hoc attention, plan, sprint, or groom reconciliation, read `references/sync-state.md`.
 
-Core rule: `[[DevRev local knowledge]]` is the single DevRev operating note in Tolaria, and agents may overwrite only its `## Sync State` section. DevRev is the operational anchor. Slack and Tolaria are supporting evidence. GitHub and Codex are accepted only from a supplied `External evidence` block.
+Core rule: PMB stores the DevRev operating context, and agents may update only the Sync State memory for reconciled state. DevRev is the operational anchor. Slack and PMB are supporting evidence. GitHub and Codex are accepted only from a supplied `External evidence` block.
 
 Do not add automation scheduling or mandatory session/ticket policy to this skill.
 
@@ -89,17 +80,17 @@ Do not assume old dedicated tools such as `list_issues`, `create_issue`, `update
 
 ```bash
 python3 "$CLAUDE_SKILL_DIR/scripts/sprint_state.py" freshness \
-  --memory "<resolved_tolaria_vault_path>/.../DevRev local knowledge.md"
+  --memory "<exported_or_cached_devrev_context_path>"
 ```
 
-If stale: record sprint rollover drift in `Proposed writebacks` inside `## Sync State` and ask the user how to proceed. Do not edit active sprint data outside `## Sync State`.
+If stale: record sprint rollover drift in Proposed writebacks inside Sync State and ask the user how to proceed. Do not edit active sprint data outside Sync State.
 
 ## Step 1 — Mode dispatch
 
 Parse `$ARGUMENTS` case-insensitively. Apply these rules IN ORDER:
 
 1. If $ARGUMENTS contains "eod", "closeout", "close out", or "end of day" → `modes/eod.md`
-2. If $ARGUMENTS contains both "devrev" and "ledger" → explain that the DevRev ledger is the existing `[[DevRev local knowledge]]` `## Sync State` section. Do not create a separate active-work ledger note and do not edit `core:portent`.
+2. If $ARGUMENTS contains both "devrev" and "ledger" → explain that the DevRev ledger is the existing PMB Sync State memory. Do not create a separate active-work ledger.
 3. If $ARGUMENTS contains "keep DevRev aware", "DevRev aware", "working session", or "start working" without explicit sync/refresh/morning/EOD/planning intent → explain that DevRev does not manage live working sessions. Use morning, EOD, or ad-hoc Sync State only when the user asks to sync or inspect attention.
 4. If $ARGUMENTS asks "what is on my plate?", "what is blocking me?", "what needs attention?", "what is stale?", or contains "reconcile", "drift", "blocked", "blocking", or "Slack says" → use the Sync State method from `modes/morning.md`
 5. If $ARGUMENTS contains "sprint" (anywhere) AND (first token is "plan" OR phrase matches "plan my sprint" / "plan sprint" / "sprint plan") → `modes/sprint.md` (planning sub-mode)
@@ -124,7 +115,7 @@ Read mode file + `gotchas.md`. Substitute Step 0 placeholders into mode logic.
 Prompts such as "what is on my plate?", "what is blocking me?", "what needs attention?", or "what is stale?" route through the same Sync State method as morning mode, even when the user does not type `/devrev`.
 
 Default behavior:
-1. Read `## Sync State` from `[[DevRev local knowledge]]`.
+1. Read Sync State from PMB.
 2. If `last_synced` is under 4 hours old and the user did not request refresh, answer from Sync State and report `source_coverage`.
 3. If Sync State is stale, missing, or refresh is requested, run the narrow DevRev + Slack refresh from `modes/morning.md`.
 4. Reconcile live data, existing Sync State, and any supplied `External evidence`.
@@ -150,7 +141,7 @@ Default behavior:
 
 Deterministic work → Python script. Probabilistic/judgment work → LLM.
 
-Scripts: date math, sprint health, JSON filtering, regex audits, Portent note validation.
+Scripts: date math, sprint health, JSON filtering, and regex audits.
 LLM: semantic dedup, story drafting, focus recommendation, blockers narrative.
 
 **NEVER use inline `python3 -c "..."` for date calculation or JSON parsing.** Always call named scripts. Inline one-liners bypass weekend validation and produce silent errors.
@@ -159,7 +150,7 @@ LLM: semantic dedup, story drafting, focus recommendation, blockers narrative.
 
 Before every `create_object(action_name="create_issue")`, resolve `applies_to_part`:
 
-1. Read the project map from the DevRev Portent note (already loaded in Step 0 context).
+1. Read the project map from PMB DevRev context loaded in Step 0.
 2. Match issue title and context keywords against project names, aliases, feature IDs, and enhancement IDs in that local project map.
 3. If match found → use that DON.
 4. If no match → fall back to `$DEFAULT_PART` and warn the user.
@@ -191,7 +182,7 @@ For sequential task scheduling (sprint planning), chain: next task starts = `add
 - `applies_to_part=[specific_enh_don]` — single enhancement
 - `target_close_date` range — upcoming issues only
 
-When ISS IDs are already known (from the DevRev Portent note or prior fetch), use `fetch_object_context` for the specific issues instead of a broad list. For list calls, request only the fields the mode will use, for example `["id","display_id","title","owned_by","stage","subtype","sprint","target_start_date","target_close_date","tnt__remaining_effort","ctype__task_type"]`.
+When ISS IDs are already known from PMB context or a prior fetch, use `fetch_object_context` for the specific issues instead of a broad list. For list calls, request only the fields the mode will use, for example `["id","display_id","title","owned_by","stage","subtype","sprint","target_start_date","target_close_date","tnt__remaining_effort","ctype__task_type"]`.
 
 ## Writing conventions
 
@@ -248,8 +239,8 @@ This prevents the skill from reporting "done" when writes only partially applied
 
 ## Update local DevRev knowledge rule
 
-Use direct Markdown edits inside the resolved vault path. No script, no subagent.
+Use PMB writes for local DevRev knowledge. No script, no subagent.
 
-After every morning, EOD, plan, sprint, or groom reconciliation, overwrite only `## Sync State` in `[[DevRev local knowledge]]` with the latest Plate, Signals, Proposed writebacks, `last_synced`, `last_mode`, and `source_coverage`.
+After every morning, EOD, plan, sprint, or groom reconciliation, update only Sync State in PMB with the latest Plate, Signals, Proposed writebacks, `last_synced`, `last_mode`, and `source_coverage`.
 
-Do not edit DevRev config, project map, active sprint, Track A, or Track B as part of local knowledge sync. If one of those sections appears stale, add a `Proposed writebacks` row explaining the desired change and ask for confirmation before any external DevRev mutation.
+Do not edit DevRev config, project map, active sprint, Track A, or Track B as part of PMB Sync State updates. If one of those sections appears stale, add a `Proposed writebacks` row explaining the desired change and ask for confirmation before any external DevRev mutation.

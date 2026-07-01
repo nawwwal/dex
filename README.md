@@ -10,7 +10,7 @@ Dex ships five marketplace plugins.
 
 | Plugin | Owns | Does not own |
 |---|---|---|
-| `core` | Agent setup, explaining unfamiliar concepts, council-style investigation, reflection, DevRev, session wrap-up, Portent/Tolaria knowledge records | Design implementation, browser tooling, media utilities |
+| `core` | Agent setup, explaining unfamiliar concepts, council-style investigation, reflection, DevRev, PMB memory workflows | Design implementation, browser tooling, media utilities |
 | `design` | Product thinking, content design, divergence, presentation narrative, interactive playground artifacts | Blade, shaders, sound, generic code hardening, private review frameworks |
 | `dev` | Design engineering: Blade, dashboard implementation, hardening, shaders, sound | Product strategy, presentation coaching, third-party browser tools |
 | `tools` | Utility tools: Codex review, browser-native HTML visual briefs, unified media generation/optimization, official mymind MCP | Core setup, design critique, implementation doctrine |
@@ -64,7 +64,7 @@ jq
 node
 ```
 
-Optional integrations depend on the skill you use: Figma MCP for Figma work, DevRev MCP for DevRev workflows, Slack MCP for message workflows, qmd for Portent search, Tolaria MCP for Portent vault discovery/opening/writeback, the official mymind MCP for mymind search, and `agent-browser` for skills that explicitly call it as an external browser tool. Dex does not package `agent-browser`.
+Optional integrations depend on the skill you use: Figma MCP for Figma work, DevRev MCP for DevRev workflows, Slack MCP for message workflows, PMB for persistent memory, the official mymind MCP for mymind search, and `agent-browser` for skills that explicitly call it as an external browser tool. Dex does not package `agent-browser`.
 
 ## What Each Plugin Gives You
 
@@ -75,14 +75,13 @@ Optional integrations depend on the skill you use: Figma MCP for Figma work, Dev
 | Skill | Use it for |
 |---|---|
 | `dex` | Fresh setup, doctor checks, `.agents` bootstrap, release workflow, and actor/judge skill evals |
-| `why` | Explaining unfamiliar code, architecture, concepts, alternatives, tradeoffs, and clever functions before execution; using Tolaria/Portent as the knowledge base for learner profiles and saved concepts |
+| `why` | Explaining unfamiliar code, architecture, concepts, alternatives, tradeoffs, and clever functions before execution; using PMB memory for learner profiles and saved concepts |
 | `council` | Multi-domain parallel investigation with dynamic lens composition: design critique, product decisions, research, code audits, workflow friction, expert debate |
-| `reflect` | Portent/Tolaria reflection: emerging patterns, leverage points, and drift across active knowledge objects |
-| `devrev` | Sprint routines, grooming, enrichment, schema-discovered DevRev MCP work, and Portent-backed local DevRev knowledge |
-| `wrap` | End-of-session recap, meaningful micro-commits, verification summary, and Portent handoff |
-| `portent` | Tolaria knowledge-base capture, qmd-backed search, session logs, project context, source packets, derived assertions, MOCs, current todos, briefings, organization, and archive using the Portent object model |
+| `reflect` | PMB reflection: emerging patterns, leverage points, and drift across active memory |
+| `devrev` | Sprint routines, grooming, enrichment, schema-discovered DevRev MCP work, and PMB-backed local DevRev knowledge |
+| `memory` | PMB persistent memory: recall, lessons, goals, session continuity, and durable records. |
 
-`why` treats `teach` and `learn` as routing aliases, but the canonical skill and visible token are `why`. It uses Tolaria/Portent for learner profiles and saved concepts instead of a local SQLite memory index. `portent` uses qmd for Portent search and Tolaria for note opening, refresh, and writeback. It chooses the qmd mode that fits the task: exact search for anchors, vector search for semantic recall, hybrid query for synthesis, then source reads with `get`/`multi-get`. It now defaults to capture-first writeback for non-trivial work: behavioral, technical, design, team, system, rationale, and working-style knowledge should update the owning object unless there is a concrete skip reason. It ships a prompt-time context receipt hook that reminds the agent to use `core:portent` before behavior-changing work when prior context may matter, then write durable session knowledge back before the final response when useful. Codex hooks run when `[features].hooks` is enabled and the hook is trusted through the normal `/hooks` review flow.
+`why` treats `teach` and `learn` as routing aliases, but the canonical skill and visible token are `why`. PMB owns persistent memory, recall, lessons, goals, and handoff state. Dex only teaches the agent when to use the memory tools and when to leave a durable record.
 
 `council` lives here because it is a thinking primitive, not a misc tool.
 
